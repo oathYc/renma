@@ -205,25 +205,48 @@ class ApiController extends  Controller
         }
     }
     /**
-     * 用户信息
-     * 头像修改
+     * 图片上传
      */
-    public function actionAlterAvatar(){
-        $uid = Yii::$app->request->post('uid');
+    public function actionUploadImage(){
         $file = $_FILES['upload'];
-        if(!$uid){
-            Methods::jsonData(0,'用户uid不存在');
-        }
         if(!$file){
             Methods::jsonData(0,'请上传图片');
         }
         $upload = new \UploadFile();
         $upload->int_max_size = 3145728;
         $upload->arr_allow_exts = array('jpg', 'gif', 'png', 'jpeg');
-        $upload->str_save_path = Yii::$app->params['upImage'];
+        $upload->str_save_path = Yii::$app->params['uploadDir'];
         $arr_rs = $upload->upload($file);
         if ($arr_rs['int_code'] == 1) {
-            $filePath = 'http://slv.hzlyzhenzhi.com'.'/' . Yii::$app->params['upImage'] . $arr_rs['arr_data']['arr_data'][0]['savename'];
+            $filePath =[];
+            foreach($arr_rs['arr_data']['arr_data'] as $k => $v){
+                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
+            }
+            $filePath = implode("\n",$filePath);
+            Methods::jsonData(1,'上传成功',['imageUrl'=>$filePath]);
+        } else {
+            Methods::jsonData(0,'上传失败，请重试');
+        }
+    }
+    /**
+     * 图片上传
+     */
+    public function actionFileImage(){
+        $file = $_FILES['upload'];
+        if(!$file){
+            Methods::jsonData(0,'请上传文件');
+        }
+        $upload = new \UploadFile();
+        $upload->int_max_size = 3145728;
+        $upload->arr_allow_exts = array('avi', 'rm', 'rmvb', 'divx','mpg','wmv','mp4','mkv');
+        $upload->str_save_path = Yii::$app->params['uploadDir'];
+        $arr_rs = $upload->upload($file);
+        if ($arr_rs['int_code'] == 1) {
+            $filePath =[];
+            foreach($arr_rs['arr_data']['arr_data'] as $k => $v){
+                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
+            }
+            $filePath = implode("\n",$filePath);
             Methods::jsonData(1,'上传成功',['imageUrl'=>$filePath]);
         } else {
             Methods::jsonData(0,'上传失败，请重试');

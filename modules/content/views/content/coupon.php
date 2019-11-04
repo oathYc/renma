@@ -2,50 +2,50 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/content/index">内容模块</a> <span class="divider">/</span></li>
-        <li class="active">广告列表</li>
+        <li class="active">优惠券</li>
     </ul>
     <ul class="nav">
         <li class="dropdown pull-right">
             <a class="dropdown-toggle"
-               href="/content/content/advert-add">添加广告</a>
+               href="/content/content/coupon-add">添加优惠券</a>
         </li>
     </ul>
-    <form action="/content/content/advert" method="get" class="form-horizontal">
+    <form action="/content/content/coupon" method="get" class="form-horizontal">
         <table class="table">
             <tr>
             </tr>
         </table>
     </form>
-    <form action="/content/content/advert" method="post">
+    <form action="/content/content/coupon" method="post">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>标题</th>
-                <th>文件对象</th>
-                <th>使用状态</th>
-                <th>跳转地址</th>
-                <th>添加时间</th>
+                <th>名称</th>
+                <th>价格</th>
+<!--                <th>数量</th>-->
+                <th>起步价</th>
+                <th>说明</th>
+                <th>时间</th>
                 <th >操作</th>
             </tr>
             </thead>
             <tbody>
             <?php
-            foreach($advert as $kss => $v) {
+            foreach( $data as $kss => $v) {
                 ?>
                 <tr>
                     <td ><span><?php echo $v['id']?></span></td>
-                    <td ><span ><?php echo $v['title']?></span></td>
-                    <td ><span><?php echo $v['type']==1?'图片':'视频'?></span></td>
-                    <td ><span><?php echo $v['status']==1?'使用中':'禁用中'?></span></td>
-                    <td ><span><?php echo $v['imageUrl']?></span></td>
+                    <td ><span ><?php echo $v['name']?></span></td>
+                    <td ><span><?php echo $v['money']?></span></td>
+<!--                    <td ><span>--><?php //echo $v['number']?><!--</span></td>-->
+                    <td ><span><?php echo $v['least']?></span></td>
+                    <td ><span title="<?php echo $v['remark']?>"><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <a class="btn" href="/content/content/advert-add?id=<?php echo $v['id']; ?>">修改</a>
-                            <a class="btn" href="/content/content/alter-status?id=<?php echo $v['id']; ?>"><?php echo $v['status']==1?'禁用':'启用'?></a>
-                            <a class="btn" href="JavaScript:if(confirm('确认删除该广告？')){location.href='/content/content/advert-delete?id=<?php echo $v['id']; ?>'}">删除</a>
+                            <a class="btn" href="JavaScript:if(confirm('确认删除该优惠券？')){location.href='/content/content/coupon-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>
                 </tr>

@@ -8,7 +8,9 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\Advert;
 use app\modules\content\models\Category;
+use app\modules\content\models\Coupon;
 use app\modules\content\models\Logo;
+use PHPUnit\Framework\Constraint\Count;
 use yii\data\Pagination;
 use yii;
 
@@ -230,5 +232,75 @@ class ContentController  extends AdminController
             echo '<script>alert("失败，请重试");history.go(-1);</script>';
             die;
         }
+    }
+    /**
+     * 优惠券
+     */
+    public function actionCoupon(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Coupon::find()->asArray()->count();
+        $page =  new Pagination(['totalCount'=>$count]);
+        $data = Coupon::find()->asArray()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('coupon',['count'=>$count,'page'=>$page,'data'=>$data]);
+    }
+    /**
+     * 优惠券编辑
+     * 新增
+     * 增加后不能修改
+     */
+    public function actionCouponAdd(){
+        if($_POST){
+            $name = Yii::$app->request->post('name');
+            $money = Yii::$app->request->post('money');
+            $least = Yii::$app->request->post('least',0);
+//            $number = Yii::$app->request->post('number');
+            $remark = Yii::$app->request->post('remark');
+            if(!$name){
+                echo "<script>alert('请填写优惠券名称');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$money || $money <= 0){
+                echo "<script>alert('请填写正确的优惠券金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+//            if(!$number || $number < 1){
+//                echo "<script>alert('请填写正确的优惠券数量');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+            $model = new Coupon();
+            $model->name = $name;
+            $model->money = $money;
+            $model->least = $least?$least:0;
+//            $model->number = $number;
+            $model->remark = $remark;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('添加成功');setTimeout(function(){location.href='coupon';},1000)</script>";die;
+            }else{
+                echo "<script>alert('添加失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            return $this->render('coupon-add',[]);
+        }
+    }
+    /**
+     * 优惠券删除
+     */
+    public function actionCouponDelete(){
+        $id = Yii::$app->request->post('id');
+        if(!$id){
+            echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $res = Coupon::deleteAll("id = $id");
+        if($res){
+            echo "<script>alert('删除成功');setTimeout(function(){location.href='coupon';},1000)</script>";die;
+        }else{
+            echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 优选商品
+     */
+    public function actionGoodProduct(){
+        
     }
 }

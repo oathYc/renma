@@ -3,7 +3,7 @@ return [
     'adminEmail' => 'admin@example.com',
     'baseUrl' => '',
     'htmlUrl' => '/html',
-    'upImage' => 'files/upload/image',
+    'uploadDir' => 'files/attach/file',
     'upSpoken' => 'files/upload/spoken/',
     'synchronousPush' => 'files/push/',
     'defaultImg' => '/cn/images/details_defaultImg.png',
@@ -11,4 +11,5 @@ return [
     'alipay_path' => dirname(__FILE__).'/../libs/yii2_alipay/',
     'appId'=>'',
     'secret'=>'',
+    'domain'=>'http://127.0.0.1',
     ];
