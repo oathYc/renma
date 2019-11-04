@@ -301,6 +301,6 @@ class ContentController  extends AdminController
      * 优选商品
      */
     public function actionGoodProduct(){
-        
+
     }
 }
