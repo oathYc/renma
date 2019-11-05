@@ -7,8 +7,11 @@ namespace app\modules\content\controllers;
 use app\libs\Methods;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Category;
+use app\modules\content\models\Coupon;
 use app\modules\content\models\Member;
+use app\modules\content\models\Order;
 use app\modules\content\models\Product;
+use app\modules\content\models\UserCoupon;
 use yii\web\Controller;
 use Yii;
 
@@ -267,6 +270,110 @@ class ApiController extends  Controller
             }
         }else{
             Methods::jsonData(0,'参数错误');
+        }
+    }
+    /**
+     * 用户下单
+     */
+    public function actionCreateOrder(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        $number = Yii::$app->request->post('number',1);
+        $integral = Yii::$app->request->post('integral',0);//积分
+        $couponId = Yii::$app->request->post('couponId',0);//优惠券id
+        $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
+        $remark = Yii::$app->request->post('remark');//订单备注
+        $address = Yii::$app->request->post('addressId',0);//收货地址Id
+        $time = time();
+        $orderNumber = 'RM'.$time.rand(123456,999999);
+        if(!$uid){
+            Methods::jsonData(0,'用户uid不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品Id不存在');
+        }
+        if(!$number || $number < 1){
+            Methods::jsonData(0,'商品数量不正确');
+        }
+        $product = Product::findOne($productId);
+        if(!$product){
+            Methods::jsonData(0,'没有该商品');
+        }
+        $totalPrice = $number*$product->price;
+        //积分抵扣
+        if(!$integral){
+            $integral = 0;
+            $inteMoney = 0;
+        }else{
+            //判断用户积分是否足够
+            $user = Member::findOne($uid);
+            if($user->integral < $integral){
+                Methods::jsonData(0,'用户积分不足');
+            }
+            $inteMoney = $integral;//积分金钱比例换算
+        }
+        //优惠券金额换算
+        if(!$couponId){
+            $couponId = 0;
+            $couponMoney = 0;//优惠券优惠价格
+        }else{
+            //判断用户是否已经使用过该优惠券
+            $userCoupon = UserCoupon::find()->where("uid = $uid and couponId = $couponId")->one();
+            if($userCoupon){
+                Methods::jsonData(0,'你已经使用过该优惠券（每张只能用一次）');
+            }
+            $coupon = Coupon::findOne($couponId);
+            if($coupon['least'] > $totalPrice){
+                Methods::jsonData(0,'该优惠券使用最低价格应不小于'.$coupon['least'].'元');
+            }else{
+                $couponMoney = $coupon['money'];
+            }
+        }
+        //抵扣金额
+        $reducePrice = $inteMoney+$couponMoney;
+        //实际支付价格
+        $payPrice = $totalPrice - $reducePrice;
+        if($payPrice <= 0){
+            $payPrice = 0;
+            $status = 1;//支付成功 不需调微信下单接口
+        }else{
+            $status = 0;
+        }
+        $model = new Order();
+        $model->orderNumber = $orderNumber;
+        $model->uid = $uid;
+        $model->productId = $productId;
+        $model->productTitle = $product->title;
+        $model->totalPrice = $totalPrice;
+        $model->reducePrice = $reducePrice;
+        $model->payPrice = $payPrice;
+        $model->coupon = $couponId;
+        $model->number = $number;
+        $model->extInfo = '';
+        $model->status = $status;
+        $model->createTime = $time;
+        if($status == 1){
+            $model->finishTime = $time;
+        }
+        $model->payType = 1;
+        $model->type = $type;
+        $model->address = $address;
+        $model->integral = $integral;
+        $model->remark = $remark;
+        $res = $model->save();
+        if($res){
+            //记录用户优惠券使用记录
+            if($couponId){
+                UserCoupon::addRecord($uid,$couponId,$model->id);
+            }
+            if($status ==0){//需要支付金额
+                $return  = WeixinPayController::WxOrder($orderNumber,$product->title,$payPrice,$model->id);
+                die(json_encode($return));
+            }else{//不需要支付金额
+                Methods::jsonData(1,'success',['status'=>1]);//支付成功
+            }
+        }else{
+            Methods::jsonData(0,'订单添加失败');
         }
     }
 }
