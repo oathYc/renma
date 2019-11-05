@@ -8,6 +8,7 @@ use app\libs\Methods;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Category;
 use app\modules\content\models\Member;
+use app\modules\content\models\Product;
 use yii\web\Controller;
 use Yii;
 
@@ -250,6 +251,22 @@ class ApiController extends  Controller
             Methods::jsonData(1,'上传成功',['imageUrl'=>$filePath]);
         } else {
             Methods::jsonData(0,'上传失败，请重试');
+        }
+    }
+    /**
+     * 获取商品信息
+     */
+    public function actionGetProduct(){
+        $id = Yii::$app->request->post('id');
+        if($id){
+            $product = Product::find()->select("id,title,price,brand")->asArray()->one();
+            if($product){
+                Methods::jsonData(1,'success',$product);
+            }else{
+                Methods::jsonData(0,'参数错误');
+            }
+        }else{
+            Methods::jsonData(0,'参数错误');
         }
     }
 }

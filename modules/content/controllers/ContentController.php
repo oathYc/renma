@@ -9,7 +9,10 @@ use app\libs\Methods;
 use app\modules\content\models\Advert;
 use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
+use app\modules\content\models\GoodProduct;
 use app\modules\content\models\Logo;
+use app\modules\content\models\Product;
+use app\modules\content\models\ShopMessage;
 use PHPUnit\Framework\Constraint\Count;
 use yii\data\Pagination;
 use yii;
@@ -301,6 +304,101 @@ class ContentController  extends AdminController
      * 优选商品
      */
     public function actionGoodProduct(){
-
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = GoodProduct::find()->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = GoodProduct::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $product = Product::findOne($v['productId']);
+            $data[$k]['productName'] = $product->title;
+            $data[$k]['brand'] = $product->brand;
+            $data[$k]['tradeAddress'] = $product->tradeAddress;
+        }
+        return $this->render('good-product',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
+    /**
+     * 优选商品
+     * 商品添加
+     */
+    public function actionGoodProductAdd(){
+        if($_POST){
+            $productId = Yii::$app->request->post('productId');
+            $rank = Yii::$app->request->post('rank');
+            //商品是否存在
+            $product = Product::findOne($productId);
+            if(!$productId){
+                echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$product){
+                echo "<script>alert('没有该商品');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            //是否已经是优选商品
+            $had = GoodProduct::find()->where("productId = $productId")->one();
+            if($had){
+                echo "<script>alert('该商品已是优选商品，请勿重复添加');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                $model = new GoodProduct();
+                $model->productId = $productId;
+                $model->rank = $rank?$rank:0;
+                $model->createTime = time();
+                $res = $model->save();
+                if($res){
+                    echo "<script>alert('添加成功');setTimeout(function(){location.href='good-product';},1000)</script>";die;
+                }else{
+                    echo "<script>alert('添加失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }
+        }else{
+            return $this->render('good-product-add');
+        }
+    }
+    /**
+     * 优选商品
+     * 商品删除
+     */
+    public function actionGoodProductDelete(){
+        $id = Yii::$app->request->post('id');
+        if(!$id){
+            echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $res = GoodProduct::deleteAll("id = $id");
+        if($res){
+            echo "<script>alert('删除成功');setTimeout(function(){location.href='good-product';},1000)</script>";die;
+        }else{
+            echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 关于我们
+     */
+    public function actionAboutUs(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 1;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='about-us';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 1")->asArray()->one();
+            return $this->render('about-us',['data'=>$about]);
+        }
+    }
+
 }
