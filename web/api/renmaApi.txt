@@ -1,149 +1,149 @@
 
-ä»é©¬å°ç¨‹åºæ¥å£
-    åŸŸå      http://lck.hzlyzhenzhi.com
-    è¯·æ±‚å‚æ•°    postæ–¹å¼
-    è¿”å›ç»“æ„    code (0-æŠ¥é”™ 1-æˆåŠŸ)    message(å¯¹åº”çš„codeä¿¡æ¯)  data(è¿”å›çš„æ•°æ®ä¿¡æ¯)
+ÈÊÂíĞ¡³ÌĞò½Ó¿Ú
+    ÓòÃû      http://lck.hzlyzhenzhi.com
+    ÇëÇó²ÎÊı    post·½Ê½
+    ·µ»Ø½á¹¹    code (0-±¨´í 1-³É¹¦)    message(¶ÔÓ¦µÄcodeĞÅÏ¢)  data(·µ»ØµÄÊı¾İĞÅÏ¢)
 
-    æ¥å£åç§°       å¾®ä¿¡æˆæƒç™»å½•
-    æ¥å£åœ°å€        /content/api/weixin-login
-    æ¥å£å‚æ•°        code        å¾®ä¿¡æˆæƒåè¿”å›çš„ä¸´æ—¶code
-                    avatar      å¤´åƒ
-                    province    çœ
-                    city        å¸‚
-                    area        åœ°åŒº
-                    nickname    æ˜µç§°
-                    phone       ç”µè¯
-                    password    å¯†ç 
-
-
-    æ¥å£åç§°       è´¦å·ç™»å½•ï¼ˆå·²ç»å¾®ä¿¡æˆæƒç™»å½•è¿‡ï¼‰
-    æ¥å£åœ°å€        /content/api/user-login
-    æ¥å£å‚æ•°        phone       ç”µè¯
-                    password    å¯†ç 
+    ½Ó¿ÚÃû³Æ       Î¢ĞÅÊÚÈ¨µÇÂ¼
+    ½Ó¿ÚµØÖ·        /content/api/weixin-login
+    ½Ó¿Ú²ÎÊı        code        Î¢ĞÅÊÚÈ¨ºó·µ»ØµÄÁÙÊ±code
+                    avatar      Í·Ïñ
+                    province    Ê¡
+                    city        ÊĞ
+                    area        µØÇø
+                    nickname    êÇ³Æ
+                    phone       µç»°
+                    password    ÃÜÂë
 
 
-    æ¥å£åç§°       ä¸ªäººä¿¡æ¯ä¿®æ”¹
-    æ¥å£åœ°å€        /content/api/alter-msg
-    æ¥å£å‚æ•°        uid       ç”¨æˆ·id
-                    avatar    å¤´åƒåœ°å€ï¼ˆè°ƒç”¨å›¾ç‰‡ä¸Šä¼ æ¥å£è¿”å›çš„åœ°å€ï¼‰
-                    nickname    æ˜µç§°
-                    username    å§“å
-                    sex         æ€§åˆ«  1-ç”· 2-å¥³
-                    birthday    ç”Ÿæ—¥
-                    work        èŒä¸š
-                    province    çœ
-                    city        å¸‚
-                    area        åœ°åŒº
-                    identity    èº«ä»½è¯
+    ½Ó¿ÚÃû³Æ       ÕËºÅµÇÂ¼£¨ÒÑ¾­Î¢ĞÅÊÚÈ¨µÇÂ¼¹ı£©
+    ½Ó¿ÚµØÖ·        /content/api/user-login
+    ½Ó¿Ú²ÎÊı        phone       µç»°
+                    password    ÃÜÂë
+
+
+    ½Ó¿ÚÃû³Æ       ¸öÈËĞÅÏ¢ĞŞ¸Ä
+    ½Ó¿ÚµØÖ·        /content/api/alter-msg
+    ½Ó¿Ú²ÎÊı        uid       ÓÃ»§id
+                    avatar    Í·ÏñµØÖ·£¨µ÷ÓÃÍ¼Æ¬ÉÏ´«½Ó¿Ú·µ»ØµÄµØÖ·£©
+                    nickname    êÇ³Æ
+                    username    ĞÕÃû
+                    sex         ĞÔ±ğ  1-ÄĞ 2-Å®
+                    birthday    ÉúÈÕ
+                    work        Ö°Òµ
+                    province    Ê¡
+                    city        ÊĞ
+                    area        µØÇø
+                    identity    Éí·İÖ¤
 
 
 
-    æ¥å£åç§°       å›¾ç‰‡ä¸Šä¼ 
-    æ¥å£åœ°å€        /content/api/upload-image
-    æ¥å£å‚æ•°        upload       å›¾ç‰‡æ–‡ä»¶å¯¹è±¡
-    è¿”å›å‚æ•°        è¿”å›å‚¨å­˜å¥½çš„å›¾ç‰‡åœ°å€ï¼ˆdataå†…çš„imageUrlï¼‰
+    ½Ó¿ÚÃû³Æ       Í¼Æ¬ÉÏ´«
+    ½Ó¿ÚµØÖ·        /content/api/upload-image
+    ½Ó¿Ú²ÎÊı        upload       Í¼Æ¬ÎÄ¼ş¶ÔÏó
+    ·µ»Ø²ÎÊı        ·µ»Ø´¢´æºÃµÄÍ¼Æ¬µØÖ·£¨dataÄÚµÄimageUrl£©
 
-    æ¥å£åç§°        è§†é¢‘ä¸Šä¼ 
-    æ¥å£åœ°å€        /content/api/file-image
-    æ¥å£å‚æ•°        upload       å›¾ç‰‡æ–‡ä»¶å¯¹è±¡
-    è¿”å›å‚æ•°        è¿”å›å‚¨å­˜å¥½çš„å›¾ç‰‡åœ°å€ï¼ˆdataå†…çš„fileUrlï¼‰
+    ½Ó¿ÚÃû³Æ        ÊÓÆµÉÏ´«
+    ½Ó¿ÚµØÖ·        /content/api/file-image
+    ½Ó¿Ú²ÎÊı        upload       Í¼Æ¬ÎÄ¼ş¶ÔÏó
+    ·µ»Ø²ÎÊı        ·µ»Ø´¢´æºÃµÄÍ¼Æ¬µØÖ·£¨dataÄÚµÄfileUrl£©
 
-    æ¥å£åç§°        å•†å“åˆ†ç±»è·å–
-    æ¥å£åœ°å€        /content/api/product-category
-    æ¥å£å‚æ•°        pid       çˆ¶ç±»idï¼ˆé»˜è®¤ä¸º0  è·å–ä¸€çº§åˆ†ç±»ï¼‰
+    ½Ó¿ÚÃû³Æ        ÉÌÆ··ÖÀà»ñÈ¡
+    ½Ó¿ÚµØÖ·        /content/api/product-category
+    ½Ó¿Ú²ÎÊı        pid       ¸¸Ààid£¨Ä¬ÈÏÎª0  »ñÈ¡Ò»¼¶·ÖÀà£©
 
-    æ¥å£åç§°        å•†å“ä¸Šä¼ 
-    æ¥å£åœ°å€        /content/api/product-upload
-    æ¥å£å‚æ•°        uid       ç”¨æˆ·id
-                    title       å•†å“åç§°
-                    catPid      å•†å“ä¸€çº§åˆ†ç±»id
-                    catCid      å•†å“äºŒçº§åˆ†ç±»id
-                    price       å•†å“ä»·æ ¼
-                    brand       å•†å“å“ç‰Œ
-                    headMsg     å•†å“å°é¢ä¿¡æ¯ï¼ˆå›¾ç‰‡æˆ–è§†é¢‘ è°ƒå¯¹åº”çš„ä¸Šä¼ æ¥å£è·å–å­˜å‚¨åœ°å€ï¼‰
-                    voltage     å•†å“ç”µå‹å€¼
-                    mileage     å•†å“ç»­èˆªé‡Œç¨‹
-                    sex         å•†å“ä½¿ç”¨æ€§åˆ« 0-é€šç”¨ 1-ç”· 2-å¥³
-                    image       å•†å“å›¾ç‰‡ä»‹ç»ï¼ˆå›¾ç‰‡ä¸Šä¼ æ¥å£å­˜å‚¨ï¼‰
-                    tradeAddress å•†å“è¯¦ç»†åœ°å€
-                    type        å•†å“å¯¹è±¡    1-ç»´ä¿® 2-æ–°è½¦ 3-äºŒæ‰‹è½¦
-                    introduce   å•†å“è¯¦æƒ…ä»‹ç»
+    ½Ó¿ÚÃû³Æ        ÉÌÆ·ÉÏ´«
+    ½Ó¿ÚµØÖ·        /content/api/product-upload
+    ½Ó¿Ú²ÎÊı        uid       ÓÃ»§id
+                    title       ÉÌÆ·Ãû³Æ
+                    catPid      ÉÌÆ·Ò»¼¶·ÖÀàid
+                    catCid      ÉÌÆ·¶ş¼¶·ÖÀàid
+                    price       ÉÌÆ·¼Û¸ñ
+                    brand       ÉÌÆ·Æ·ÅÆ
+                    headMsg     ÉÌÆ··âÃæĞÅÏ¢£¨Í¼Æ¬»òÊÓÆµ µ÷¶ÔÓ¦µÄÉÏ´«½Ó¿Ú»ñÈ¡´æ´¢µØÖ·£©
+                    voltage     ÉÌÆ·µçÑ¹Öµ
+                    mileage     ÉÌÆ·Ğøº½Àï³Ì
+                    sex         ÉÌÆ·Ê¹ÓÃĞÔ±ğ 0-Í¨ÓÃ 1-ÄĞ 2-Å®
+                    image       ÉÌÆ·Í¼Æ¬½éÉÜ£¨Í¼Æ¬ÉÏ´«½Ó¿Ú´æ´¢£©
+                    tradeAddress ÉÌÆ·ÏêÏ¸µØÖ·
+                    type        ÉÌÆ·¶ÔÏó    1-Î¬ĞŞ 2-ĞÂ³µ 3-¶şÊÖ³µ
+                    introduce   ÉÌÆ·ÏêÇé½éÉÜ
 
-    æ¥å£åç§°        é¦–é¡µä¿¡æ¯
-    æ¥å£åœ°å€        /content/api/home-index
-    æ¥å£å‚æ•°        page       é¡µæ•°ï¼ˆä¼˜é€‰åŒºå•†å“çš„é¡µæ•°å•†å“è·å–ï¼‰ é»˜è®¤ä¸º1
+    ½Ó¿ÚÃû³Æ        Ê×Ò³ĞÅÏ¢
+    ½Ó¿ÚµØÖ·        /content/api/home-index
+    ½Ó¿Ú²ÎÊı        page       Ò³Êı£¨ÓÅÑ¡ÇøÉÌÆ·µÄÒ³ÊıÉÌÆ·»ñÈ¡£© Ä¬ÈÏÎª1
 
-    æ¥å£åç§°        é¦–é¡µæœç´¢
-    æ¥å£åœ°å€        /content/api/index-search
-    æ¥å£å‚æ•°        search       æœç´¢å†…å®¹
+    ½Ó¿ÚÃû³Æ        Ê×Ò³ËÑË÷
+    ½Ó¿ÚµØÖ·        /content/api/index-search
+    ½Ó¿Ú²ÎÊı        search       ËÑË÷ÄÚÈİ
 
-    æ¥å£åç§°        æ ç›®è¿›å…¥ï¼ˆç»´ä¿® æ–°è½¦ äºŒæ‰‹è½¦ï¼‰
-    æ¥å£åœ°å€        /content/api/product-access
-    æ¥å£å‚æ•°        type       æ ç›® 1-ç»´ä¿® 2-æ–°è½¦ 3-äºŒæ‰‹è½¦
-                    page        é¡µæ•° é»˜è®¤ä¸º1
-                    search      æœç´¢å†…å®¹
-                    priceMin    æœ€ä½ä»·
-                    priceMax    æœ€é«˜ä»·
-                    brand       å“ç‰Œ
-                    voltageMin  æœ€ä½ç”µå‹
-                    voltageMax  æœ€é«˜ç”µå‹
-                    mileageMin  æœ€ä½ç»­èˆªé‡Œç¨‹
-                    mileageMax  æœ€å¥½ç»­èˆªé‡Œç¨‹
-                    sex          ä½¿ç”¨æ€§åˆ«   0-é€šç”¨ 1-ç”· 2-å¥³ é»˜è®¤0
+    ½Ó¿ÚÃû³Æ        À¸Ä¿½øÈë£¨Î¬ĞŞ ĞÂ³µ ¶şÊÖ³µ£©
+    ½Ó¿ÚµØÖ·        /content/api/product-access
+    ½Ó¿Ú²ÎÊı        type       À¸Ä¿ 1-Î¬ĞŞ 2-ĞÂ³µ 3-¶şÊÖ³µ
+                    page        Ò³Êı Ä¬ÈÏÎª1
+                    search      ËÑË÷ÄÚÈİ
+                    priceMin    ×îµÍ¼Û
+                    priceMax    ×î¸ß¼Û
+                    brand       Æ·ÅÆ
+                    voltageMin  ×îµÍµçÑ¹
+                    voltageMax  ×î¸ßµçÑ¹
+                    mileageMin  ×îµÍĞøº½Àï³Ì
+                    mileageMax  ×îºÃĞøº½Àï³Ì
+                    sex          Ê¹ÓÃĞÔ±ğ   0-Í¨ÓÃ 1-ÄĞ 2-Å® Ä¬ÈÏ0
 
-    æ¥å£åç§°        å•†å“è¯¦æƒ…
-    æ¥å£åœ°å€        /content/api/product-detail
-    æ¥å£å‚æ•°        productId       å•†å“Id
-                    uid             ç”¨æˆ·id
-
-
-    æ¥å£åç§°        ç”¨æˆ·åœ°å€æ•°æ®
-    æ¥å£åœ°å€        /content/api/user-address
-    æ¥å£å‚æ•°        uid       ç”¨æˆ·id
-                    default     é»˜è®¤åœ°å€ï¼ˆ1-è·å–é»˜è®¤åœ°å€ 0-è·å–æ‰€æœ‰ é»˜è®¤0ï¼‰
+    ½Ó¿ÚÃû³Æ        ÉÌÆ·ÏêÇé
+    ½Ó¿ÚµØÖ·        /content/api/product-detail
+    ½Ó¿Ú²ÎÊı        productId       ÉÌÆ·Id
+                    uid             ÓÃ»§id
 
 
-    æ¥å£åç§°        æ·»åŠ ä¿®æ”¹åœ°å€
-    æ¥å£åœ°å€        /content/api/add-address
-    æ¥å£å‚æ•°        uid       ç”¨æˆ·id
-                    addressId   åœ°å€idï¼ˆä¼ çš„æ—¶å€™ä¸ºä¿®æ”¹ ä¸ä¼ ä¸ºæ–°å¢ï¼‰
-                    province    çœ
-                    city        å¸‚
-                    area        åœ°åŒº
-                    address     è¯¦ç»†åœ°å€
-                    name        å§“å
-                    phone       ç”µè¯
-                    default     è®¾ä¸ºé»˜è®¤ï¼ˆ0-ä¸è®¾ä¸ºé»˜è®¤ 1-è®¾ä¸ºé»˜è®¤ï¼‰
+    ½Ó¿ÚÃû³Æ        ÓÃ»§µØÖ·Êı¾İ
+    ½Ó¿ÚµØÖ·        /content/api/user-address
+    ½Ó¿Ú²ÎÊı        uid       ÓÃ»§id
+                    default     Ä¬ÈÏµØÖ·£¨1-»ñÈ¡Ä¬ÈÏµØÖ· 0-»ñÈ¡ËùÓĞ Ä¬ÈÏ0£©
 
 
-    æ¥å£åç§°        é»˜è®¤åœ°å€è®¾ç½®
-    æ¥å£åœ°å€        /content/api/address-default
-    æ¥å£å‚æ•°        uid         ç”¨æˆ·id
-                    addressId   åœ°å€id
+    ½Ó¿ÚÃû³Æ        Ìí¼ÓĞŞ¸ÄµØÖ·
+    ½Ó¿ÚµØÖ·        /content/api/add-address
+    ½Ó¿Ú²ÎÊı        uid       ÓÃ»§id
+                    addressId   µØÖ·id£¨´«µÄÊ±ºòÎªĞŞ¸Ä ²»´«ÎªĞÂÔö£©
+                    province    Ê¡
+                    city        ÊĞ
+                    area        µØÇø
+                    address     ÏêÏ¸µØÖ·
+                    name        ĞÕÃû
+                    phone       µç»°
+                    default     ÉèÎªÄ¬ÈÏ£¨0-²»ÉèÎªÄ¬ÈÏ 1-ÉèÎªÄ¬ÈÏ£©
 
 
-    æ¥å£åç§°        åˆ é™¤åœ°å€
-    æ¥å£åœ°å€        /content/api/address-delete
-    æ¥å£å‚æ•°        uid         ç”¨æˆ·id
-                    addressId   åœ°å€id
+    ½Ó¿ÚÃû³Æ        Ä¬ÈÏµØÖ·ÉèÖÃ
+    ½Ó¿ÚµØÖ·        /content/api/address-default
+    ½Ó¿Ú²ÎÊı        uid         ÓÃ»§id
+                    addressId   µØÖ·id
 
 
-    æ¥å£åç§°        é»˜è®¤åœ°å€è®¾ç½®
-    æ¥å£åœ°å€        /content/api/address-default
-    æ¥å£å‚æ•°        uid         ç”¨æˆ·id
-                    addressId   åœ°å€id
+    ½Ó¿ÚÃû³Æ        É¾³ıµØÖ·
+    ½Ó¿ÚµØÖ·        /content/api/address-delete
+    ½Ó¿Ú²ÎÊı        uid         ÓÃ»§id
+                    addressId   µØÖ·id
 
 
-    æ¥å£åç§°        ç”¨æˆ·ä¸‹å•
-    æ¥å£åœ°å€        /content/api/create-order
-    æ¥å£å‚æ•°        uid         ç”¨æˆ·id
-                    productId   å•†å“id
-                    number      æ•°é‡ é»˜è®¤1
-                    integral    ä½¿ç”¨ç§¯åˆ† é»˜è®¤0 ä¸ä½¿ç”¨
-                    couponId    ä¼˜æƒ åˆ¸id  é»˜è®¤0 ä¸ä½¿ç”¨
-                    type        ç±»å‹ 1-å……å€¼ -ä¹°å•†å“
-                    remark      è®¢å•å¤‡æ³¨
-                    addressId   æ”¶è´§åœ°å€id
+    ½Ó¿ÚÃû³Æ        Ä¬ÈÏµØÖ·ÉèÖÃ
+    ½Ó¿ÚµØÖ·        /content/api/address-default
+    ½Ó¿Ú²ÎÊı        uid         ÓÃ»§id
+                    addressId   µØÖ·id
+
+
+    ½Ó¿ÚÃû³Æ        ÓÃ»§ÏÂµ¥
+    ½Ó¿ÚµØÖ·        /content/api/create-order
+    ½Ó¿Ú²ÎÊı        uid         ÓÃ»§id
+                    productId   ÉÌÆ·id
+                    number      ÊıÁ¿ Ä¬ÈÏ1
+                    integral    Ê¹ÓÃ»ı·Ö Ä¬ÈÏ0 ²»Ê¹ÓÃ
+                    couponId    ÓÅ»İÈ¯id  Ä¬ÈÏ0 ²»Ê¹ÓÃ
+                    type        ÀàĞÍ 1-³äÖµ -ÂòÉÌÆ·
+                    remark      ¶©µ¥±¸×¢
+                    addressId   ÊÕ»õµØÖ·id
 
 
 
