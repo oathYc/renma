@@ -5,9 +5,13 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\Methods;
+use app\modules\content\models\Address;
+use app\modules\content\models\Advert;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
+use app\modules\content\models\GoodProduct;
+use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
@@ -126,6 +130,27 @@ class ApiController extends  Controller
         die(json_encode(['code' => $code]));
     }
 
+    //后台接口
+    /**
+     * 获取商品信息
+     * 组团获取商品信息
+     */
+    public function actionGetProduct(){
+        $id = Yii::$app->request->post('id');
+        if($id){
+            $product = Product::find()->select("id,title,price,brand")->asArray()->one();
+            if($product){
+                Methods::jsonData(1,'success',$product);
+            }else{
+                Methods::jsonData(0,'参数错误');
+            }
+        }else{
+            Methods::jsonData(0,'参数错误');
+        }
+    }
+
+    //小程序接口
+
     /**
      * 用户登录
      * 微信授权
@@ -138,7 +163,8 @@ class ApiController extends  Controller
         $city = $request->post('city');
         $area = $request->post('area');
         $nickname = $request->post('nickname');
-
+        $phone = $request->post('phone');
+        $password = $request->post('password');
         $appId = Yii::$app->params['appId'];
         $secret = Yii::$app->params['secret'];
         if(!$code){
@@ -161,6 +187,8 @@ class ApiController extends  Controller
             $model->province = $province;
             $model->city = $city;
             $model->area = $area;
+            $model->phone = $phone;
+            $model->password = $password;
             $model->save();
             $member = Member::find()->where("id = {$model->id}")->asArray()->one();
             //判断用户邀请码
@@ -171,21 +199,41 @@ class ApiController extends  Controller
         }
     }
     /**
+     * 账号登录
+     * 授权后
+     */
+    public function actionUserLogin(){
+        $phone = Yii::$app->request->post('phone');
+        $password = Yii::$app->request0>post('password');
+        if(!$phone){
+            Methods::jsonData(0,'电话不存在');
+        }
+        if(!$password){
+            Methods::jsonData(0,'密码不存在');
+            $user = Member::find()->where("phone = '{$phone}' and password = '{$password}'")->asArray()->one();
+            if($user){
+                Methods::jsonData(1,'登录成功',['user'=>$user]);
+            }else{
+                Methods::jsonData(0,'电话或密码错误');
+            }
+        }
+    }
+    /**
      * 用户信息
      * 个人信息修改
      */
     public function actionAlterMsg(){
         $uid = Yii::$app->request->post('uid');
-        $avatar = Yii::$app->request->post('avatar');
-        $nickname = Yii::$app->request->post('nickname');
-        $username = Yii::$app->request->post('username');
+        $avatar = Yii::$app->request->post('avatar');//头像地址
+        $nickname = Yii::$app->request->post('nickname');//昵称
+        $username = Yii::$app->request->post('username');//姓名
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $birthday = Yii::$app->request->post('birthday');
-        $work = Yii::$app->request->post('work');
+        $work = Yii::$app->request->post('work');//职业
         $province = Yii::$app->request->post('province');
         $city = Yii::$app->request->post('city');
         $area = Yii::$app->request->post('area');
-        $identity = Yii::$app->request->post('identity');
+        $identity = Yii::$app->request->post('identity');//身份证号
         if(!$uid){
             Methods::jsonData(0,'用户uid不存在');
         }
@@ -233,7 +281,7 @@ class ApiController extends  Controller
         }
     }
     /**
-     * 图片上传
+     * 视频上传
      */
     public function actionFileImage(){
         $file = $_FILES['upload'];
@@ -256,21 +304,304 @@ class ApiController extends  Controller
             Methods::jsonData(0,'上传失败，请重试');
         }
     }
+
     /**
-     * 获取商品信息
+     * 商品分类
+     * 获取
      */
-    public function actionGetProduct(){
-        $id = Yii::$app->request->post('id');
-        if($id){
-            $product = Product::find()->select("id,title,price,brand")->asArray()->one();
-            if($product){
-                Methods::jsonData(1,'success',$product);
-            }else{
-                Methods::jsonData(0,'参数错误');
-            }
+    public function actionProductCategory(){
+        $pid = Yii::$app->request->post('pid',0);
+        if($pid){
+            $category = Category::find()->where("pid = $pid")->asArray()->all();
         }else{
+            $category = Category::find()->where("pid = 0")->asArray()->all();
+        }
+        if(!$category)$category=[];
+        Methods::jsonData(1,'success',$category);
+    }
+    /**
+     * 商品上传
+     * 上传
+     */
+    public function actionProductUpload(){
+        $request = Yii::$app->request;
+        $uid = $request->post('uid');
+        $title = $request->post('title');//商品名称
+        $catPid = $request->post('catPid');//一级分类
+        $catCid = $request->post('catCid');//二级分类;
+        $price = $request->post('price');//价格
+        $brand = $request->post('brand');//品牌
+        $headMsg = $request->post('headMsg');//封面信息
+        $voltage = $request->post('voltage');//电压
+        $mileage = $request->post('mileage');//续航里程
+        $sex = $request->post('sex',0);//使用性别 0-通用 1-男 2-女
+        $image = $request->post('image');//图片集合
+        $tradeAddress = $request->post('tradeAddress');//商品详细地址
+        $type = $request->post('type',0);//商品特性  1-维修 2-新车 3-二手车
+        $introduce = $request->post('introduce');//详细介绍
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$title){
+            Methods::jsonData(0,'商品名称不存在');
+        }
+        if(!$catPid){
+            Methods::jsonData(0,'商品分类不存在（一级）');
+        }
+        if(!$catCid){
+            Methods::jsonData(0,'商品分类不存在（二级）');
+        }
+        if(!$catPid){
+            Methods::jsonData(0,'商品分类不存在（一级）');
+        }
+        if(!$price){
+            Methods::jsonData(0,'商品价格不存在');
+        }
+        if(!$brand){
+            Methods::jsonData(0,'商品品牌不存在');
+        }
+        if(!$headMsg){
+            Methods::jsonData(0,'商品封面信息不存在');
+        }
+        if(!$voltage){
+            Methods::jsonData(0,'商品电压数据不存在');
+        }
+        if(!$mileage){
+            Methods::jsonData(0,'商品续航里程不存在');
+        }
+        if(!$image){
+            Methods::jsonData(0,'商品图片数据不存在');
+        }
+        if(!$tradeAddress){
+            Methods::jsonData(0,'商品交易地址不存在');
+        }
+        $model = new Product();
+        $model->uid = $uid;
+        $model->title = $title;
+        $model->catPid = $catPid;
+        $model->catCip = $catCid;
+        $model->price = $price;
+        $model->voltage = $voltage;
+        $model->mileage = $mileage;
+        $model->sex = $sex;
+        $model->headMsg = $headMsg;
+        $model->image = $image;
+        $model->tradeAddress = $tradeAddress;
+        $model->brand = $brand;
+        $model->introduce = $introduce;
+        $model->type = $type;
+        $res = $model->save();
+        if($res){
+            $product = Product::find()->where("id = {$model->id}")->asArray()->one();
+            $product['catPidName'] = Category::find()->where("id = {$catPid}")->asArray()->one()['name'];
+            $product['catCidName'] = Category::find()->where("id = {$catCid}")->asArray()->one()['name'];
+            Methods::jsonData(1,'上传成功',$product);
+        }else{
+            Methods::jsonData(0,'上传失败');
+        }
+    }
+
+    /**
+     * 首页信息
+     */
+    public function actionHomeIndex(){
+        //logo内容
+        $logo = Logo::find()->where("status = 1")->asArray()->one();
+        //广告内容
+        $advert = Advert::find()->where('status = 1')->asArray()->orderBy('rank desc')->all();
+        //优选内容
+        $page = Yii::$app->request->post('page',1);
+        if(!$page)$page =1;
+        $goodProduct = GoodProduct::getGoodProduct($page);
+        $data = ['logo'=>$logo,'advert'=>$advert,'goodProduct'=>$goodProduct['goodProduct'],'goodTotal'=>$goodProduct['goodTotal']];
+        Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 首页搜索
+     */
+    public function actionIndexSearch(){
+        $search = Yii::$app->request->post('search','');
+        if($search){
+            $where = " title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
+            $product = Product::find()->where($where)->limit(10)->asArray()->all();
+        }else{
+            $product = [];
+        }
+        Methods::jsonData(1,'success',$product);
+    }
+    /**
+     * 不同类型进入
+     * type 1-维修 2-新车 3-二手车
+     */
+    public function actionProductAccess(){
+        $type = Yii::$app->request->post('type',1);
+        $page = Yii::$app->request->post('page',1);
+        $search =Yii::$app->request->post('search','');
+        $priceMin = Yii::$app->request->post('priceMin');//最低价
+        $priceMax = Yii::$app->request->post('priceMax');//最高价
+        $brand = Yii::$app->request->post('brand');//品牌
+        $voltageMin = Yii::$app->request->post('voltageMin');//最低电压
+        $voltageMax = Yii::$app->request->post('voltageMax');//最高电压
+        $mileageMin = Yii::$app->request->post('mileageMin');//续航里程最小
+        $mileageMax = Yii::$app->request->post('mileageMax');//续航里程最大
+        $sex = Yii::$app->request->post('sex',0);//1-男 2-女
+        $where = " type = $type ";
+        if($search){
+            $where .= " title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
+        }
+        if($priceMin){
+            $where .= " and price >= $priceMin";
+        }
+        if($priceMax){
+            $where .= " and price <= $priceMax";
+        }
+        if($brand){
+            $where .= " and brand = $brand";
+        }
+        if($voltageMin){
+            $where .= " and voltage >= $voltageMin";
+        }
+        if($voltageMax){
+            $where .= " and voltage <= $voltageMax";
+        }
+        if($mileageMin){
+            $where .= " and mileage >= $mileageMin";
+        }
+        if($mileageMax){
+            $where .= " and mileage <= $mileageMax";
+        }
+        if($sex){
+            $where .= " and sex = $sex";
+        }
+        $total = Product::find()->where($where)->count();
+        if(!$page)$page =1;
+        $offset = 10*($page-1);
+        $product = Product::find()->where($where)->asArray()->offset($offset)->limit(10)->all();
+        Methods::jsonData(1,'success',['total'=>$total,'product'=>$product]);
+    }
+    /**
+     * 商品详情
+     */
+    public function actionProductDetail(){
+        $productId = Yii::$app->request->post('productId',0);
+        $uid = Yii::$app->request->post('uid');
+        if(!$productId){
             Methods::jsonData(0,'参数错误');
         }
+        //商品数据
+        $product = Product::find()->where("id = {$productId}")->asArray()->one();
+        $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
+        $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+        //用户积分
+        $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
+        //用户默认收货地址数据
+        $userAddress = Address::find()->where("uid = $uid and default = 1")->asArray()->one();
+        //用户优惠券
+        $userCoupon = Coupon::getUserCoupon($uid);
+        $data = ['userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon];
+        Methods::jsonData(1,'上传成功',$data);
+    }
+    /**
+     * 用户地址数据
+     */
+    public function actionUserAddress(){
+        $uid = Yii::$app->request->post('uid',0);
+        $default = Yii::$app->request->post('default',0);
+        if($default ==1){
+            $address = Address::find()->where("uid = '{$uid}' and `default` = 1")->asArray()->one();
+        }else{
+            $address = Address::find()->where("uid = '{$uid}'")->orderBy('`default` desc')->asArray()->all();
+        }
+        die(json_encode(['code'=>1,'message'=>'success','data'=>$address]));
+    }
+    /**
+     * 添加 修改用户地址
+     */
+    public function actionAddAddress(){
+        $uid = Yii::$app->request->post('uid');
+        $addressId = Yii::$app->request->post('addressId');
+        $province = Yii::$app->request->post('province');
+        $city = Yii::$app->request->post('city');
+        $area = Yii::$app->request->post('area');
+        $address = Yii::$app->request->post('address');
+        $name = Yii::$app->request->post('name');
+        $phone = Yii::$app->request->post('phone');
+        $default = Yii::$app->request->post('default',0);
+        if(!$province){
+            Methods::jsonData(0,'请选择省份');
+        }
+        if(!$city){
+            Methods::jsonData(0,'请选择市区');
+        }
+        if(!$name){
+            Methods::jsonData(0,'请填写收货人');
+        }
+        if(!$phone){
+            Methods::jsonData(0,'请填写联系电话');
+        }
+        if($addressId){//修改
+            $model = Address::findOne($addressId);
+        }else{//新增
+            $model = new Address();
+        }
+        $model->createTime = time();
+        $model->uid = $uid;
+        $model->province = $province;
+        $model->city = $city;
+        $model->area = $area;
+        $model->address = $address;
+        $model->name = $name;
+        $model->phone = $phone;
+        if($default ==1){
+            $model->default = 1;
+        }else{
+            $model->default = 0;
+        }
+        $res = $model->save();
+        if($res){
+            if($default ==1){
+                Address::updateAll(['default'=>0],"uid = '{$uid}' and id != '{$model->id}'");
+            }
+            $data = Address::find()->where("id = {$model->id}")->asArray()->one();
+            $data = ['code'=>1,'message'=>'操作成功','data'=>$data];
+        }else{
+            $data = ['code'=>0,'message'=>'操作失败，请重试'];
+        }
+        die(json_encode($data));
+    }
+    /**
+     * 设置默认地址
+     */
+    public function actionAddressDefault(){
+        $uid = Yii::$app->request->post('uid');
+        $addressId = Yii::$app->request->post('addressId');
+        if(!$addressId || !$uid){
+            $data = ['code'=>0,'message'=>'参数错误'];
+        }else{
+            Address::updateAll(['default'=>0],"uid = '{$uid}'");
+            Address::updateAll(['default'=>1],"id = $addressId and uid = '{$uid}'");
+            $data = ['code'=>1,'message'=>'设置成功'];
+        }
+        die(json_encode($data));
+    }
+    /**
+     * 地址删除
+     */
+    public function actionAddressDelete(){
+        $addressId = Yii::$app->request->post('addressId');
+        $uid = Yii::$app->request->post('uid');
+        if(!$addressId || !$uid){
+            Methods::jsonData(0,'参数错误');
+        }
+        $res = Address::deleteAll("id = $addressId and uid = '{$uid}'");
+        if($res){
+            $code = 1;
+            $message = '删除成功';
+        }else{
+            $code = 0 ;
+            $message = '删除失败，请重试';
+        }
+        Methods::jsonData($code,$message);
     }
     /**
      * 用户下单
