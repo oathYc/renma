@@ -1,0 +1,176 @@
+
+仁马小程序接口
+    域名      http://lck.hzlyzhenzhi.com
+    请求参数    post方式
+    返回结构    code (0-报错 1-成功)    message(对应的code信息)  data(返回的数据信息)
+
+    接口名称       微信授权登录
+    接口地址        /content/api/weixin-login
+    接口参数        code        微信授权后返回的临时code
+                    avatar      头像
+                    province    省
+                    city        市
+                    area        地区
+                    nickname    昵称
+                    phone       电话
+                    password    密码
+
+
+    接口名称       账号登录（已经微信授权登录过）
+    接口地址        /content/api/user-login
+    接口参数        phone       电话
+                    password    密码
+
+
+    接口名称       个人信息修改
+    接口地址        /content/api/alter-msg
+    接口参数        uid       用户id
+                    avatar    头像地址（调用图片上传接口返回的地址）
+                    nickname    昵称
+                    username    姓名
+                    sex         性别  1-男 2-女
+                    birthday    生日
+                    work        职业
+                    province    省
+                    city        市
+                    area        地区
+                    identity    身份证
+
+
+
+    接口名称       图片上传
+    接口地址        /content/api/upload-image
+    接口参数        upload       图片文件对象
+    返回参数        返回储存好的图片地址（data内的imageUrl）
+
+    接口名称        视频上传
+    接口地址        /content/api/file-image
+    接口参数        upload       图片文件对象
+    返回参数        返回储存好的图片地址（data内的fileUrl）
+
+    接口名称        商品分类获取
+    接口地址        /content/api/product-category
+    接口参数        pid       父类id（默认为0  获取一级分类）
+
+    接口名称        商品上传
+    接口地址        /content/api/product-upload
+    接口参数        uid       用户id
+                    title       商品名称
+                    catPid      商品一级分类id
+                    catCid      商品二级分类id
+                    price       商品价格
+                    brand       商品品牌
+                    headMsg     商品封面信息（图片或视频 调对应的上传接口获取存储地址）
+                    voltage     商品电压值
+                    mileage     商品续航里程
+                    sex         商品使用性别 0-通用 1-男 2-女
+                    image       商品图片介绍（图片上传接口存储）
+                    tradeAddress 商品详细地址
+                    type        商品对象    1-维修 2-新车 3-二手车
+                    introduce   商品详情介绍
+
+    接口名称        首页信息
+    接口地址        /content/api/home-index
+    接口参数        page       页数（优选区商品的页数商品获取） 默认为1
+
+    接口名称        首页搜索
+    接口地址        /content/api/index-search
+    接口参数        search       搜索内容
+
+    接口名称        栏目进入（维修 新车 二手车）
+    接口地址        /content/api/product-access
+    接口参数        type       栏目 1-维修 2-新车 3-二手车
+                    page        页数 默认为1
+                    search      搜索内容
+                    priceMin    最低价
+                    priceMax    最高价
+                    brand       品牌
+                    voltageMin  最低电压
+                    voltageMax  最高电压
+                    mileageMin  最低续航里程
+                    mileageMax  最好续航里程
+                    sex          使用性别   0-通用 1-男 2-女 默认0
+
+    接口名称        商品详情
+    接口地址        /content/api/product-detail
+    接口参数        productId       商品Id
+                    uid             用户id
+
+
+    接口名称        用户地址数据
+    接口地址        /content/api/user-address
+    接口参数        uid       用户id
+                    default     默认地址（1-获取默认地址 0-获取所有 默认0）
+
+
+    接口名称        添加修改地址
+    接口地址        /content/api/add-address
+    接口参数        uid       用户id
+                    addressId   地址id（传的时候为修改 不传为新增）
+                    province    省
+                    city        市
+                    area        地区
+                    address     详细地址
+                    name        姓名
+                    phone       电话
+                    default     设为默认（0-不设为默认 1-设为默认）
+
+
+    接口名称        默认地址设置
+    接口地址        /content/api/address-default
+    接口参数        uid         用户id
+                    addressId   地址id
+
+
+    接口名称        删除地址
+    接口地址        /content/api/address-delete
+    接口参数        uid         用户id
+                    addressId   地址id
+
+
+    接口名称        默认地址设置
+    接口地址        /content/api/address-default
+    接口参数        uid         用户id
+                    addressId   地址id
+
+
+    接口名称        用户下单
+    接口地址        /content/api/create-order
+    接口参数        uid         用户id
+                    productId   商品id
+                    number      数量 默认1
+                    integral    使用积分 默认0 不使用
+                    couponId    优惠券id  默认0 不使用
+                    type        类型 1-充值 -买商品
+                    remark      订单备注
+                    addressId   收货地址id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

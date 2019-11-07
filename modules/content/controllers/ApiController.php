@@ -299,7 +299,7 @@ class ApiController extends  Controller
                 $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
             }
             $filePath = implode("\n",$filePath);
-            Methods::jsonData(1,'上传成功',['imageUrl'=>$filePath]);
+            Methods::jsonData(1,'上传成功',['fileUrl'=>$filePath]);
         } else {
             Methods::jsonData(0,'上传失败，请重试');
         }
@@ -492,12 +492,18 @@ class ApiController extends  Controller
         $product = Product::find()->where("id = {$productId}")->asArray()->one();
         $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
         $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
-        //用户积分
-        $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
-        //用户默认收货地址数据
-        $userAddress = Address::find()->where("uid = $uid and default = 1")->asArray()->one();
-        //用户优惠券
-        $userCoupon = Coupon::getUserCoupon($uid);
+        if($uid){
+            //用户积分
+            $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
+            //用户默认收货地址数据
+            $userAddress = Address::find()->where("uid = $uid and default = 1")->asArray()->one();
+            //用户优惠券
+            $userCoupon = Coupon::getUserCoupon($uid);
+        }else{
+            $userIntegral = 0;
+            $userAddress = [];
+            $userCoupon = [];
+        }
         $data = ['userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon];
         Methods::jsonData(1,'上传成功',$data);
     }
