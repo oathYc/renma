@@ -219,9 +219,55 @@
     接口名称        提交质保商品
     接口地址        /content/api/quality-add
     接口参数        uid         用户id
-                    ptoductId   商品id
+                    productId   商品id
                     gyTime      商品钢印日期
                     barCode     商品条形码
+
+    接口名称        申请售后
+    接口地址        /content/api/product-after
+    接口参数        uid         用户id
+                    qualityId   质保内容id
+
+    接口名称        组团首页
+    接口地址        /content/api/group-index
+    接口参数        page         页数 默认1
+
+    接口名称        组团商品详情
+    接口地址        /content/api/group-product
+    接口参数        productId         商品id
+
+    接口名称        我的邀请
+    接口地址        /content/api/my-share
+    接口参数        uid         用户id
+
+    接口名称        我的订单
+    接口地址        /content/api/my-order
+    接口参数        uid         用户id
+                    type        类型 99-全部 0-待支付 1-成功
+
+    接口名称        人工客服
+    接口地址        /content/api/service
+    接口参数
+
+    接口名称        积分记录
+    接口地址        /content/api/user-integral-history
+    接口参数        uid         用户id
+                    page        页数 默认1
+
+    接口名称        猜你喜欢
+    接口地址        /content/api/guess-you
+    接口参数        uid         用户id
+
+
+    接口名称        会员充值页面
+    接口地址        /content/api/member-recharge
+    接口参数        uid         用户id
+
+
+    接口名称        会员历史记录
+    接口地址        /content/api/user_member
+    接口参数        uid         用户id
+
 
 
 
