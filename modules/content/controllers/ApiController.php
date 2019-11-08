@@ -15,6 +15,7 @@ use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
+use app\modules\content\models\Shop;
 use app\modules\content\models\UserCoupon;
 use yii\web\Controller;
 use Yii;
@@ -713,4 +714,155 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单添加失败');
         }
     }
+    /**
+     * 附近店铺搜索
+     * 根据用户当前地区来模糊搜索
+     * 返回部分数据由前端调三方获取实时距离
+     */
+    public function actionNearbyShop(){
+        $area = Yii::$app->request->post('area');//当前地区
+        if(!$area){
+            Methods::jsonData(0,'参数错误');
+        }
+        $page = Yii::$app->request->post('page',1);
+        $offset = 10*($page-1);
+        $shop = Shop::find()->select(" id,headImage,name,phone")->where("area = '{$area}'")->asArray()->offset($offset)->limit(10)->all();
+        Methods::jsonData(1,'success',$shop);
+    }
+    /**
+     * 商铺详情
+     */
+    public function actionShopDetail(){
+        $shopId = Yii::$app->request->post('shopId');
+        if(!$shopId){
+            Methods::jsonData(0,'参数错误');
+        }
+        $shop = Shop::find()->where("id = $shopId")->asArray()->one();
+        Methods::jsonData(1,'success',$shop);
+    }
+    /**
+     * 商铺申请
+     * 会员申请
+     */
+    public function actionShopApply(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'参数错误');
+        }
+        //是否已经申请
+        $shopApplay = Shop::find()->where("uid = $uid")->asArray()->one();
+        if($shopApplay){
+            if($shopApplay['status'] ==1){
+                Methods::jsonData(0,'你已经是商铺店主了，无需再申请');
+            }elseif($shopApplay['status'] == -1){
+                Methods::jsonData(0,'你已经申请店铺，并且为通过审核，请联系平台协商处理');
+            }else{
+                Methods::jsonData(0,'你已经申请商铺，等待平台审核中');
+            }
+        }else{
+            //查看是否为会员
+            $user = Member::findOne($uid);
+            if($user){
+                if($user->member ==1){
+                    $name = Yii::$app->request->post('name');
+                    $phone = Yii::$app->request->post('phone');
+                    $shopTime = Yii::$app->request->post('shopTime');
+                    $video = Yii::$app->request->post('video');
+                    $image = Yii::$app->request->post('image');
+                    $address = Yii::$app->request->post('address');
+                    $introduce = Yii::$app->request->post('introduce');
+                    $headImage = Yii::$app->request->post('headImage');
+                    $province = Yii::$app->request->post('province');
+                    $city = Yii::$app->request->post('city');
+                    $area = Yii::$app->request->post('area');
+                    $uid = Yii::$app->request->post('uid');
+                    if(!$uid){
+                        Methods::jsonData(0,'用户id不存咋');
+                    }
+                    if(!$name){
+                        Methods::jsonData(0,'店铺名不存在');
+                    }
+                    if(!$phone){
+                        Methods::jsonData(0,'店铺电话不存在');
+                    }
+                    if(!$shopTime){
+                        Methods::jsonData(0,'营业时间不存在');
+                    }
+                    if($headImage){
+                        Methods::jsonData(0,'封面图片不存在');
+                    }
+                    if(!$address){
+                        Methods::jsonData(0,'详细地址不存在');
+                    }
+                    if(!$introduce){
+                        Methods::jsonData(0,'店铺详细介绍不存在');
+                    }
+                    if(!$province){
+                        Methods::jsonData(0,'店铺省份不存在');
+                    }
+                    if(!$city){
+                        Methods::jsonData(0,'店铺市级不存在');
+                    }
+                    if(!$area){
+                        Methods::jsonData(0,'店铺地区不存在');
+                    }
+                    $model = new Shop();
+                    $model->name = $name;
+                    $model->phone = $phone;
+                    $model->shopTime = $shopTime;
+                    $model->video = $video;
+                    $model->image = $image;
+                    $model->address = $address;
+                    $model->introduce = $introduce;
+                    $model->headImage = $headImage;
+                    $model->province = $province;
+                    $model->city = $city;
+                    $model->area = $area;
+                    $model->uid = $uid;
+                    $model->status = 0;
+                    $model->createTime = time();
+                    $re = $model->save();
+                    if($re){
+                        Methods::jsonData(1,'申请成功，等待平台审核中');
+                    }else{
+                        Methods::jsonData(0,'申请失败');
+                    }
+                }else{
+                    Methods::jsonData(0,'你还不是会员，只有会员才可以申请商铺');
+                }
+            }else{
+                Methods::jsonData(0,'没有该用户');
+            }
+        }
+    }
+    /**
+     * 商铺申请结果
+     */
+    public function actionShopApplyCheck(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'参数错误');
+        }
+        //是否是会员
+        $user = Member::findOne($uid);
+        if(!$user){
+            Methods::jsonData(0,'没有该用户');
+        }
+        if(!$user->member ==1){
+            Methods::jsonData(0,'你该不是会员（商铺为会员特权）');
+        }
+        //是否申请
+        $shop = Shop::find()->where("uid = $uid")->asArray()->one();
+        if(!$shop){
+            Methods::jsonData(1,'你还没有申请店铺',['status'=>-99]);
+        }
+        if($shop['status']==1){//返回状态 status  -99 未申请 0-申请审核中 1申请成功 -1 申请失败
+            Methods::jsonData(1,'申请成功，已是商铺店主',$shop);
+        }elseif($shop['status']==-1){
+            Methods::jsonData(1,'平台拒绝了你的申请商铺',$shop);
+        }else{
+            Methods::jsonData(1,'申请审核中',$shop);
+        }
+    }
+
 }

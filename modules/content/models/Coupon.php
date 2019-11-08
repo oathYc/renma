@@ -20,14 +20,25 @@ class Coupon extends ActiveRecord
         if(!$uid){
             $total = 0;
         }else{
-            $data = self::find()->asArray()->all();
-            foreach($data as $k => $v){
-                $userCou = UserCoupon::find()->where("couponId = {$v['id']} and uid = $uid")->one();
-                if(!$userCou){
-                    $coupon[] = $v;
+            //是否是会员 会员特权
+            $memeber = Member::findOne($uid);
+            if(!$memeber){
+                $total = 0;
+            }else{
+                if($memeber->member == 1){
+                    $data = self::find()->asArray()->all();
+                    foreach($data as $k => $v){
+                        $userCou = UserCoupon::find()->where("couponId = {$v['id']} and uid = $uid")->one();
+                        if(!$userCou){
+                            $coupon[] = $v;
+                        }
+                    }
+                    $total = count($coupon);
+                }else{
+                    $total = 0;
                 }
             }
-            $total = count($coupon);
+
         }
         return ['total'=>$total,'coupon'=>$coupon];
     }
