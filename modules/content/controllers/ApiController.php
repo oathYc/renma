@@ -15,8 +15,13 @@ use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
+use app\modules\content\models\Quality;
 use app\modules\content\models\Shop;
+use app\modules\content\models\ShopCart;
+use app\modules\content\models\ShopMessage;
+use app\modules\content\models\User;
 use app\modules\content\models\UserCoupon;
+use app\modules\content\models\UserPush;
 use yii\web\Controller;
 use Yii;
 
@@ -775,10 +780,6 @@ class ApiController extends  Controller
                     $province = Yii::$app->request->post('province');
                     $city = Yii::$app->request->post('city');
                     $area = Yii::$app->request->post('area');
-                    $uid = Yii::$app->request->post('uid');
-                    if(!$uid){
-                        Methods::jsonData(0,'用户id不存咋');
-                    }
                     if(!$name){
                         Methods::jsonData(0,'店铺名不存在');
                     }
@@ -865,4 +866,209 @@ class ApiController extends  Controller
         }
     }
 
+    /**
+     * 用户购物车
+     * 加入购物车
+     */
+    public function actionCartAdd(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $res = ShopCart::find()->where("uid = $uid and productId = $productId")->one();
+        if(!$res){
+            $model = new ShopCart();
+            $model->uid = $uid ;
+            $model->productId = $productId;
+            $model->createTime = time();
+            $res = $model->save();
+            if(!$res){
+                Methods::jsonData(0,'加入失败');
+            }
+        }
+        $userCart = ShopCart::find()->where("uid = $uid")->asArray()->all();
+        foreach($userCart as $k => $v){
+            $product = Product::findOne($v['productId']);
+            if($product){
+                $userCart[$k]['title'] = $product->title;
+                $userCart[$k]['brand'] = $product->brand;
+                $userCart[$k]['price'] = $product->price;
+                $userCart[$k]['headMsg'] = $product->headMsg;
+                $userCart[$k]['tradeAddress'] = $product->tradeAddress;
+            }else{
+                unset($userCart[$k]);//商品已删除
+            }
+        }
+        Methods::jsonData(1,'加入成功',$userCart);
+    }
+    /**
+     * 用户购物车
+     * 商品获取
+     */
+    public function actionUserCart(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $userCart = ShopCart::find()->where("uid = $uid")->asArray()->all();
+        foreach($userCart as $k => $v){
+            $product = Product::findOne($v['productId']);
+            if($product){
+                $userCart[$k]['title'] = $product->title;
+                $userCart[$k]['brand'] = $product->brand;
+                $userCart[$k]['price'] = $product->price;
+                $userCart[$k]['headMsg'] = $product->headMsg;
+                $userCart[$k]['tradeAddress'] = $product->tradeAddress;
+            }else{
+                unset($userCart[$k]);//商品已删除
+            }
+        }
+        Methods::jsonData(1,'加入成功',$userCart);
+
+    }
+    /**
+     * 用户购物车
+     * 商品删除
+     */
+    public function actionCartDelete(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productIds','');//多个逗号隔开
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $res = ShopCart::deleteAll("id in ($productId) and uid = $uid");
+        if($res){
+            $userCart = ShopCart::find()->where("uid = $uid")->asArray()->all();
+            foreach($userCart as $k => $v){
+                $product = Product::findOne($v['productId']);
+                if($product){
+                    $userCart[$k]['title'] = $product->title;
+                    $userCart[$k]['brand'] = $product->brand;
+                    $userCart[$k]['price'] = $product->price;
+                    $userCart[$k]['headMsg'] = $product->headMsg;
+                    $userCart[$k]['tradeAddress'] = $product->tradeAddress;
+                }else{
+                    unset($userCart[$k]);//商品已删除
+                }
+            }
+            Methods::jsonData(1,'加入成功',$userCart);
+        }else{
+            Methods::jsonData(0,'删除失败');
+        }
+    }
+
+    /**
+     * 个人中心
+     * 数据获取
+     */
+    public function actionUserPersonal(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $user = Member::find()->where("id = $uid")->asArray()->one();
+        if($user){
+            $totalCou = Coupon::find()->count();
+            $userCou = UserCoupon::find()->where("uid = $uid")->count();
+            $userCoupon = $totalCou-$userCou;//优惠券数量  所有减去用户已经用了的
+            $user['couponNumber'] = $userCoupon;
+        }
+        Methods::jsonData(1,'success',$user);
+    }
+    /**
+     * =关于我们
+     */
+    public function actionAboutUs(){
+        $content = ShopMessage::find()->where("type = 1")->asArray()->one();
+        Methods::jsonData(1,'success',$content);
+    }
+    /**
+     * 意见反馈
+     */
+    public function actionOpinion(){
+        $uid = Yii::$app->request->post('uid');
+        $content = Yii::$app->request->post('content');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$content){
+            Methods::jsonData(0,'意见内容不存在');
+        }
+        $model = new UserPush();
+        $model->uid = $uid;
+        $model->content = $content;
+        $model->type = 1;//意见反馈
+        $model->createTime = time();
+        $res = $model->save();
+        if($res){
+            Methods::jsonData(1,'反馈成功');
+        }else{
+            Methods::jsonData(0,'提交失败');
+        }
+    }
+    /**
+     * 质保商品
+     * 用户质保商品数据
+     */
+    public function actionUserQuality(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page');
+        if(!$page)$page = 1;
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $offset = ($page-1)*10;
+        $total = Quality::find()->where("uid = $uid")->count();
+        $data = Quality::find()->where(" uid = $uid")->asArray()->offset($offset)->limit(10)->all();
+        Methods::jsonData(1,'success',['total'=>$total,'quality'=>$data]);
+    }
+    /**
+     * y质保商品
+     * 用户提交
+     */
+    public function actionQualityAdd(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        $gyTime = Yii::$app->request->post('gyTime');
+        $barCode = Yii::$app->request->post('barCode');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存咋');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        if(!$gyTime){
+            Methods::jsonData(0,'商品钢印日期不存在');
+        }
+        if(!$barCode){
+            Methods::jsonData(0,'商品条形码不存在');
+        }
+        $product = Product::find()->where("id = $productId")->asArray()->one();
+        if(!$product){
+            Methods::jsonData(0,'商品已删除，请联系商家');
+        }
+        $model = new Quality();
+        $model->uid = $uid;
+        $model->productId = $productId;
+        $model->catId = $product['catCid'];
+        $model->brand = $product['brand'];
+        $model->buyTime = $product['createTime'];
+        $model->gyTime = $gyTime;
+        $model->barCode = $barCode;
+        $model->createTime = time();
+        $model->productName = $product['title'];
+        $res = $model->save();
+        if($res){
+            Methods::jsonData(1,'提交成功');
+        }else{
+            Methods::jsonData(0,'提交失败');
+        }
+    }
 }

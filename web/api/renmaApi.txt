@@ -147,8 +147,81 @@
 
 
 
+    接口名称        附近店铺
+    接口地址        /content/api/nearby-shop
+    接口参数        area         当前地区
+                    page         页数 默认1
 
 
+    接口名称        店铺详情
+    接口地址        /content/api/shop-detail
+    接口参数        shopId         店铺Id
+
+
+    接口名称        店铺申请
+    接口地址        /content/api/shop-apply
+    接口参数        uid         用户id
+                    name        商铺名
+                    phone       联系电话
+                    shopTime    营业时间 08:00-17:00
+                    video       店铺视频介绍 可不传
+                    image       店铺图片信息 可不传
+                    address     店铺地址
+                    introduce   详细信息
+                    headImage   店铺封面图
+                    province    省
+                    city        市
+                    area        地区
+                    uid         用户id
+
+
+
+    接口名称        店铺申请结果查询
+    接口地址        /content/api/shop-apply-check
+    接口参数        uid         用户id
+
+
+    接口名称        加入购物车
+    接口地址        /content/api/cart-add
+    接口参数        uid         用户id
+                    productId   商品id
+
+
+    接口名称        用户购物车商品
+    接口地址        /content/api/user-cart
+    接口参数        uid         用户id
+
+
+    接口名称        购物车商品移除
+    接口地址        /content/api/cart-delete
+    接口参数        uid         用户id
+                    productIds   商品id集合 一个的时候传对应的值 多个的时候用英文逗号分开 1,2,3
+
+
+    接口名称        个人中心接口
+    接口地址        /content/api/user-personal
+    接口参数        uid         用户id
+
+    接口名称        关于我们
+    接口地址        /content/api/about-us
+    接口参数
+
+    接口名称        意见反馈
+    接口地址        /content/api/opinion
+    接口参数        uid         用户id
+                    content     反馈内容
+
+    接口名称        质保商品数据获取
+    接口地址        /content/api/user-quality
+    接口参数        uid         用户id
+                    page         页数
+
+    接口名称        提交质保商品
+    接口地址        /content/api/quality-add
+    接口参数        uid         用户id
+                    ptoductId   商品id
+                    gyTime      商品钢印日期
+                    barCode     商品条形码
 
 
 
