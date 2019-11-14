@@ -259,8 +259,8 @@
 
 
     接口名称        会员历史记录
-    接口地址        /content/api/user_member
-    接口参数        uid         用户id
+    接口地址        /content/api/
+    接口参数
 
 
 

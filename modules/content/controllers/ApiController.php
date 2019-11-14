@@ -1141,12 +1141,15 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        $page = Yii::$app->request->post('page',1);
-        $offset = ($page-1)*10;
-        $total = MemberLog::find()->where("uid = $uid")->count();
-        $data = MemberLog::find()->where(" uid = $uid")->asArray()->orderBy('endTime desc')->offset($offset)->limit(10)->all();
-        $data = ['total'=>$total,'data'=>$data];
-        Methods::jsonData(1,'succcess',$data);
+        $where = " uid = $uid";
+        if($type !=99){
+            $where .= " and status = $type";
+        }
+        $page =Yii::$app->request->post('page',1);
+        $offset = ($page -1)*10;
+        $total = Order::find()->where($where)->count();
+        $data = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'success',['total'=>$total,'order'=>$data]);
     }
 
 
@@ -1184,14 +1187,6 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $memebeContent = ShopMessage::find()->where("type =3")->asArray()->one();
         Methods::jsonData(1,'success',$memebeContent);
-    }
-    /**
-     * 会员历史记录
-     */
-    public function actionUserMember(){
-        $uid = Yii::$app->request->post('uid');
-        $order = Order::find()->where("uid = $uid and status =1 and type =1")->asArray()->all();
-        Methods::jsonData(1,'sucess',$order);
     }
 
     /**
@@ -1255,6 +1250,22 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(0,'用户不存在');
         }
+    }
+    /**
+     * 会员申请
+     * 会员申请历史记录
+     */
+    public function actionMemberLog(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $page = Yii::$app->request->post('page',1);
+        $offset = ($page-1)*10;
+        $total = MemberLog::find()->where("uid = $uid")->count();
+        $data = MemberLog::find()->where(" uid = $uid")->asArray()->orderBy('endTime desc')->offset($offset)->limit(10)->all();
+        $data = ['total'=>$total,'data'=>$data];
+        Methods::jsonData(1,'success',$data);
     }
     /**
      * 组团购买

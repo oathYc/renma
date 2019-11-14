@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 14/11/2019 15:55:50
+ Date: 14/11/2019 17:05:35
 */
 
 SET NAMES utf8mb4;
@@ -304,6 +304,7 @@ CREATE TABLE `cy_quality_product`  (
   `barCode` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '条形码',
   `createTime` int(11) NULL DEFAULT NULL COMMENT '上传时间',
   `productName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '质保商品名称',
+  `after` tinyint(1) NULL DEFAULT 0 COMMENT '1-申请售后',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '质保商品' ROW_FORMAT = Dynamic;
 
