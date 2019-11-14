@@ -12,6 +12,7 @@ use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
 use app\modules\content\models\GroupProduct;
+use app\modules\content\models\Integral;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberLog;
@@ -440,6 +441,7 @@ class ApiController extends  Controller
     /**
      * 不同类型进入
      * type 1-维修 2-新车 3-二手车
+     * l栏目进入
      */
     public function actionProductAccess(){
         $type = Yii::$app->request->post('type',1);
@@ -1079,6 +1081,120 @@ class ApiController extends  Controller
 
 
     /**
+     * 申请售后
+     */
+    public function actionProductAfter(){
+        $uid = Yii::$app->request->post('uid');
+        $qualityId = Yii::$app->request->post('qualityId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$qualityId){
+            Methods::jsonData(0,'质保id不存在');
+        }
+        $res = Quality::updateAll(['after'=>1],"uid = $uid and id = $qualityId");
+        if($res){
+            Methods::jsonData(1,'申请售后成功');
+        }else{
+            Methods::jsonData(0,'申请事变');
+        }
+    }
+    /**
+     * 组团首页
+     */
+    public function actionGroupIndex(){
+        $page = Yii::$app->request->post('page',1);
+        $offset = ($page-1)*10;
+        $groupProduct = GroupProduct::find()->orderBy("rank desc")->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'success',$groupProduct);
+    }
+    /**
+     * 组团商品详情
+     */
+    public function actionGroupProductDetail(){
+        $productId = Yii::$app->request->post('productId');
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $product = GroupProduct::find()->where("productId = $productId")->asArray()->one();
+        Methods::jsonData(1,'success',$product);
+    }
+    /**
+     * 我的邀请
+     * 邀请有奖
+     */
+    public function actionMyShare(){
+        $uid = Yii::$app->request->post('uid');
+        if($uid){
+            Methods::jsonData(0,'用户uid不存在');
+        }
+        $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
+        $myShare = [];
+        Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare]);
+    }
+    /**
+     * 我的订单
+     */
+    public function actionMyOrder(){
+        $type = Yii::$app->request->post('type',99);//99-全部 0-待支付 1-支付成功
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $page = Yii::$app->request->post('page',1);
+        $offset = ($page-1)*10;
+        $total = MemberLog::find()->where("uid = $uid")->count();
+        $data = MemberLog::find()->where(" uid = $uid")->asArray()->orderBy('endTime desc')->offset($offset)->limit(10)->all();
+        $data = ['total'=>$total,'data'=>$data];
+        Methods::jsonData(1,'succcess',$data);
+    }
+
+
+    /**
+     * 人工客服
+     */
+    public function actionService(){
+        $service = ShopMessage::find()->where("type ==2")->asArray()->one();
+        Methods::jsonData(1,'success',$service);
+    }
+    /**
+     * 积分记录
+     */
+    public function actionUserIntegralHistory(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        $offset = 10*($page-1);
+        $total = Integral::find()->where("uid = $uid")->count();
+        $integral = Integral::find()->asArray()->where("uid = $uid")->offset($offset)->limit(10)->all();
+        Methods::jsonData(1,'success',['total'=>$total,'data'=>$integral]);
+    }
+    /**
+     * 猜你喜欢
+     */
+    public function actionGuessYou(){
+        $uid = Yii::$app->request->post('uid');
+        $offset = rand(11,99);
+        $data = Product::find()->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'sucess',$data);
+    }
+    /**
+     * 会员充值页面
+     */
+    public function actionMemberRecharge(){
+        $uid = Yii::$app->request->post('uid');
+        $memebeContent = ShopMessage::find()->where("type =3")->asArray()->one();
+        Methods::jsonData(1,'success',$memebeContent);
+    }
+    /**
+     * 会员历史记录
+     */
+    public function actionUserMember(){
+        $uid = Yii::$app->request->post('uid');
+        $order = Order::find()->where("uid = $uid and status =1 and type =1")->asArray()->all();
+        Methods::jsonData(1,'sucess',$order);
+    }
+
+    /**
      * 会员申请
      * 申请页面
      */
@@ -1140,24 +1256,6 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户不存在');
         }
     }
-
-    /**
-     * 会员申请
-     * 会员申请历史记录
-     */
-    public function actionMemberLog(){
-        $uid = Yii::$app->request->post('uid');
-        if(!$uid){
-            Methods::jsonData(0,'用户id不存在');
-        }
-        $page = Yii::$app->request->post('page',1);
-        $offset = ($page-1)*10;
-        $total = MemberLog::find()->where("uid = $uid")->count();
-        $data = MemberLog::find()->where(" uid = $uid")->asArray()->orderBy('endTime desc')->offset($offset)->limit(10)->all();
-        $data = ['total'=>$total,'data'=>$data];
-        Methods::jsonData(1,'succcess',$data);
-    }
-
     /**
      * 组团购买
      * 组团首页
@@ -1179,5 +1277,7 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $total = '';
+        $where = " uid = $uid";
+
     }
 }
