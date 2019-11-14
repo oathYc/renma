@@ -11,8 +11,10 @@ use app\modules\content\models\Catalog;
 use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
+use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
+use app\modules\content\models\MemberLog;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
@@ -973,17 +975,20 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
+        //检查用户会员状态
+        Member::checkMemberStatus($uid);
         $user = Member::find()->where("id = $uid")->asArray()->one();
         if($user){
             $totalCou = Coupon::find()->count();
             $userCou = UserCoupon::find()->where("uid = $uid")->count();
             $userCoupon = $totalCou-$userCou;//优惠券数量  所有减去用户已经用了的
             $user['couponNumber'] = $userCoupon;
+
         }
         Methods::jsonData(1,'success',$user);
     }
     /**
-     * =关于我们
+     * 关于我们
      */
     public function actionAboutUs(){
         $content = ShopMessage::find()->where("type = 1")->asArray()->one();
@@ -1030,7 +1035,7 @@ class ApiController extends  Controller
         Methods::jsonData(1,'success',['total'=>$total,'quality'=>$data]);
     }
     /**
-     * y质保商品
+     * 质保商品
      * 用户提交
      */
     public function actionQualityAdd(){
@@ -1070,5 +1075,109 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(0,'提交失败');
         }
+    }
+
+
+    /**
+     * 会员申请
+     * 申请页面
+     */
+    public function actionMemberApply(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        Member::checkMemberStatus($uid);
+        $user = Member::findOne($uid);
+        if(!$user){
+            Methods::jsonData(0,'用户不存在');
+        }
+        if($user->memeber ==1){
+            //获取会员到期时间
+            $endTime = MemberLog::find()->where("uid = $uid")->orderBy('endTime desc')->asArray()->one()['endTime'];
+            $member = 1;
+        }else{
+            $member = 0;
+            $endTime = '';
+        }
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100];
+        Methods::jsonData(1,'success',$data);
+    }
+
+    /**
+     * 会员申请
+     * 续费或者开通会员
+     * 月为单位
+     */
+    public function actionMemberApplyAdd(){
+        $uid = Yii::$app->request->post('uid');
+        $month = Yii::$app->request->post('month',1);
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $user = Member::findOne($uid);
+        if($user){
+            if($user->member ==1){//已经是会员  进行续费
+                $remark = '会员续费';
+                $firstTime = MemberLog::find()->where("uid = $uid ")->orderBy('endTime desc')->asArray()->one()['endTime'];
+            }else{//第一次开通会员
+                $remark = '会员开通';
+                $firstTime =strtotime(date('Y-m-d'));//今天的起始时间
+            }
+            $endTime = 86400*30*$month + strtotime($firstTime);
+            $model = new MemberLog();
+            $model->uid = $uid;
+            $model->beginTime = $firstTime;
+            $model->endTime = $endTime;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                Methods::jsonData(1,$remark.'成功',['id'=>$uid,'member'=>1,'endTime'=>$endTime,'money'=>100]);
+            }else{
+                Methods::jsonData(0,$remark,'失败');
+            }
+        }else{
+            Methods::jsonData(0,'用户不存在');
+        }
+    }
+
+    /**
+     * 会员申请
+     * 会员申请历史记录
+     */
+    public function actionMemberLog(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $page = Yii::$app->request->post('page',1);
+        $offset = ($page-1)*10;
+        $total = MemberLog::find()->where("uid = $uid")->count();
+        $data = MemberLog::find()->where(" uid = $uid")->asArray()->orderBy('endTime desc')->offset($offset)->limit(10)->all();
+        $data = ['total'=>$total,'data'=>$data];
+        Methods::jsonData(1,'succcess',$data);
+    }
+
+    /**
+     * 组团购买
+     * 组团首页
+     */
+    public function actionGroupProduct(){
+        //组团商品数据
+        $page = Yii::$app->request->post('page',1);
+        $offset = 10*($page-1);
+        $total = GroupProduct::find()->count();
+        $data = GroupProduct::find()->asArray()->orderBy('rank desc')->offset($offset)->limit(10)->all();
+        $data = ['total'=>$total,'data'=>$data] ;
+        Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 组团购买
+     * 我的组团
+     */
+    public function actionMyGroup(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        $total = '';
     }
 }

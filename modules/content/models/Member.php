@@ -46,4 +46,27 @@ class Member extends ActiveRecord
         }
     }
 
+    /**
+     * 检查用户会员状态
+     */
+    public static function checkMemberStatus($uid){
+        if(!$uid){
+            return false;
+        }else{
+            $memberLog = MemberLog::find()->where(" uid = $uid ")->orderBy('endTime desc')->asArray()->one();
+            if($memberLog){
+                $endTime = strtotime($memberLog['endTime'] + 86399);//最新会员结束时间
+                $todayTime = time();
+                if($endTime > $todayTime){//还在会员时间段内
+                    Member::updateAll(['status'=>1]," id = $uid");
+                }else{//会员过期
+                    Member::updateAll(['status'=>0],"id = $uid");
+                }
+            }else{//还没有开通会员
+                Member::updateAll(['member'=>0],"id = $uid");
+            }
+            return true;
+        }
+    }
+
 }
