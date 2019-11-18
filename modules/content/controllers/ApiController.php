@@ -512,7 +512,7 @@ class ApiController extends  Controller
             //用户积分
             $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
             //用户默认收货地址数据
-            $userAddress = Address::find()->where("uid = $uid and default = 1")->asArray()->one();
+            $userAddress = Address::find()->where("uid = $uid and `default` = 1")->asArray()->one();
             //用户优惠券
             $userCoupon = Coupon::getUserCoupon($uid);
         }else{
@@ -521,7 +521,7 @@ class ApiController extends  Controller
             $userCoupon = [];
         }
         $data = ['userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon];
-        Methods::jsonData(1,'上传成功',$data);
+        Methods::jsonData(1,'success',$data);
     }
     /**
      * 用户地址数据
