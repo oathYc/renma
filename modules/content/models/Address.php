@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
 class Address extends ActiveRecord
 {
     public static  function tableName(){
-        return '{{%address}}';
+        return '{{%user_address}}';
     }
 
 }
