@@ -173,8 +173,8 @@ class ApiController extends  Controller
         $city = $request->post('city');
         $area = $request->post('area');
         $nickname = $request->post('nickname');
-        $phone = $request->post('phone');
-        $password = $request->post('password');
+//        $phone = $request->post('phone');
+//        $password = $request->post('password');
         $appId = Yii::$app->params['appId'];
         $secret = Yii::$app->params['secret'];
         if(!$code){
@@ -197,8 +197,8 @@ class ApiController extends  Controller
             $model->province = $province;
             $model->city = $city;
             $model->area = $area;
-            $model->phone = $phone;
-            $model->password = $password;
+//            $model->phone = $phone;
+//            $model->password = $password;
             $model->save();
             $member = Member::find()->where("id = {$model->id}")->asArray()->one();
             //判断用户邀请码
@@ -235,7 +235,8 @@ class ApiController extends  Controller
     public function actionAlterMsg(){
         $uid = Yii::$app->request->post('uid');
         $avatar = Yii::$app->request->post('avatar');//头像地址
-        $nickname = Yii::$app->request->post('nickname');//昵称
+        $phone = Yii::$app->request->post('phone');//电话
+        $password = Yii::$app->request->post('password');//电话
         $username = Yii::$app->request->post('username');//姓名
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $birthday = Yii::$app->request->post('birthday');
@@ -249,7 +250,10 @@ class ApiController extends  Controller
         }
         $model = Member::findOne($uid);
         $model->avatar = $avatar;
-        $model->nickname = $nickname;
+        $model->phone = $phone;
+        if($password){
+            $model->password = md5($password);
+        }
         $model->username = $username;
         $model->sex = $sex;
         $model->birthday = $birthday;
@@ -1267,6 +1271,8 @@ class ApiController extends  Controller
         //组团商品数据
         $page = Yii::$app->request->post('page',1);
         $offset = 10*($page-1);
+        //检查用户组团状态
+        UserGroup::checkUserGroups();
         $total = GroupProduct::find()->count();
         $data = GroupProduct::find()->asArray()->orderBy('rank desc')->offset($offset)->limit(10)->all();
         $data = ['total'=>$total,'data'=>$data] ;
@@ -1420,6 +1426,6 @@ class ApiController extends  Controller
      * 组团邀请
      */
     public function actionGroupInvite(){
-        
+
     }
 }

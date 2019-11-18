@@ -12,8 +12,6 @@
                     city        市
                     area        地区
                     nickname    昵称
-                    phone       电话
-                    password    密码
 
 
     接口名称       账号登录（已经微信授权登录过）
@@ -26,7 +24,8 @@
     接口地址        /content/api/alter-msg
     接口参数        uid       用户id
                     avatar    头像地址（调用图片上传接口返回的地址）
-                    nickname    昵称
+                    phone       电话
+                    password    密码（无修改传空或者不传）
                     username    姓名
                     sex         性别  1-男 2-女
                     birthday    生日
@@ -222,13 +221,6 @@
     接口参数        uid         用户id
                     qualityId   质保内容id
 
-    接口名称        组团首页
-    接口地址        /content/api/group-index
-    接口参数        page         页数 默认1
-
-    接口名称        组团商品详情
-    接口地址        /content/api/group-product
-    接口参数        productId         商品id
 
     接口名称        我的邀请
     接口地址        /content/api/my-share
@@ -258,13 +250,53 @@
     接口参数        uid         用户id
 
 
-    接口名称        会员历史记录
-    接口地址        /content/api/
-    接口参数
+    接口名称        会员申请页面
+    接口地址        /content/api/member-apply
+    接口参数        uid         用户id
+    返回参数        member      1-会员 0-非会员
+                    endTime     会员到期时间
+                    money       会员学费（月费）
 
 
+    接口名称        会员申请请求
+    接口地址        /content/api/member-apply-add
+    接口参数        uid         用户id
+                    month       月 默认1
 
 
+    接口名称        会员申请历史记录
+    接口地址        /content/api/member-log
+    接口参数        uid         用户id
+                    page        页数 默认1
+
+    接口名称        组团首页
+    接口地址        /content/api/group-product
+    接口参数        page         页数 默认1
+
+    接口名称        我的组团
+    接口地址        /content/api/my-group
+    接口参数        uid         用户id
+                    page        页数 默认1
+                    type        类型 默认99  0-组团中 1-组团成功 2-组团失败
+
+
+    接口名称        组团详情
+    接口地址        /content/api/group-product-detail
+    接口参数        uid         用户id 传时获取自己是否参与组团 可不传
+                    productId   组团商品id
+
+
+    接口名称        组团参与
+    接口地址        /content/api/add-group
+    接口参数        uid         用户id
+                    productId   商品Id
+                    groupId     组团id（发起组团不传 参与已存在的时候必传）
+
+
+    接口名称        组团成功支付购买
+    接口地址        /content/api/group-buy
+    接口参数        uid         用户id
+                    groupId     组团的id
 
 
 
