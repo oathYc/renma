@@ -214,7 +214,7 @@ class ApiController extends  Controller
      */
     public function actionUserLogin(){
         $phone = Yii::$app->request->post('phone');
-        $password = Yii::$app->request0>post('password');
+        $password = Yii::$app->request->post('password');
         if(!$phone){
             Methods::jsonData(0,'电话不存在');
         }
