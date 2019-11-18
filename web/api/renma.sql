@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 14/11/2019 17:05:35
+ Date: 18/11/2019 11:04:02
 */
 
 SET NAMES utf8mb4;
@@ -472,9 +472,11 @@ CREATE TABLE `cy_user_group`  (
   `groupId` int(11) NULL DEFAULT NULL COMMENT '组团id',
   `promoter` tinyint(1) NULL DEFAULT 0 COMMENT '发起人 1-是 0不是',
   `promoterUid` int(11) NULL DEFAULT NULL COMMENT '发起人的uid',
-  `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态 0-组团中 1-组团成功 -1组团失败 ',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态 0-组团中 1-组团成功 2组团失败 ',
   `createTime` int(11) NULL DEFAULT NULL COMMENT '创建时间',
   `finishTime` int(11) NULL DEFAULT NULL COMMENT '组团成功时间',
+  `orderId` int(11) NULL DEFAULT NULL COMMENT '对应的订单id',
+  `userGroupId` int(11) NULL DEFAULT NULL COMMENT '同一组组团标识   发起人创建组团生成记录的id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户组团' ROW_FORMAT = Fixed;
 

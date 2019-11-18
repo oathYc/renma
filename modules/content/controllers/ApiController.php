@@ -220,12 +220,13 @@ class ApiController extends  Controller
         }
         if(!$password){
             Methods::jsonData(0,'密码不存在');
-            $user = Member::find()->where("phone = '{$phone}' and password = '{$password}'")->asArray()->one();
-            if($user){
-                Methods::jsonData(1,'登录成功',['user'=>$user]);
-            }else{
-                Methods::jsonData(0,'电话或密码错误');
-            }
+        }
+        $password = md5($password);
+        $user = Member::find()->where("phone = '{$phone}' and password = '{$password}'")->asArray()->one();
+        if($user){
+            Methods::jsonData(1,'登录成功',['user'=>$user]);
+        }else{
+            Methods::jsonData(0,'电话或密码错误');
         }
     }
     /**
