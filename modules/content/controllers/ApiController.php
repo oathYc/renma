@@ -299,8 +299,6 @@ class ApiController extends  Controller
      * 图片上传
      */
     public function actionUploadImage(){
-        var_dump($_FILES);
-        var_dump($_POST);die;
         $file = $_FILES['upload'];
         if(!$file){
             Methods::jsonData(0,'请上传图片');
@@ -313,7 +311,7 @@ class ApiController extends  Controller
         if ($arr_rs['int_code'] == 1) {
             $filePath =[];
             foreach($arr_rs['arr_data']['arr_data'] as $k => $v){
-                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
+                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['uploadDir'].$v['savename'];
             }
             $filePath = implode("\n",$filePath);
             Methods::jsonData(1,'上传成功',['imageUrl'=>$filePath]);
@@ -337,7 +335,7 @@ class ApiController extends  Controller
         if ($arr_rs['int_code'] == 1) {
             $filePath =[];
             foreach($arr_rs['arr_data']['arr_data'] as $k => $v){
-                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
+                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['uploadDir'].$v['savename'];
             }
             $filePath = implode("\n",$filePath);
             Methods::jsonData(1,'上传成功',['fileUrl'=>$filePath]);
