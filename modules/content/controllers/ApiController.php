@@ -299,6 +299,8 @@ class ApiController extends  Controller
      * 图片上传
      */
     public function actionUploadImage(){
+        var_dump($_FILES);
+        var_dump($_POST);die;
         $file = $_FILES['upload'];
         if(!$file){
             Methods::jsonData(0,'请上传图片');
