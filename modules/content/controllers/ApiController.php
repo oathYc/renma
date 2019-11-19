@@ -1462,4 +1462,70 @@ class ApiController extends  Controller
     public function actionGroupInvite(){
 
     }
+    /**
+     * 用户确认收货
+     */
+    public function actionUserSure(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post("orderId");
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单Id不存在');
+        }
+        $order = Order::find()->where(" id =$orderId and uid = $uid ")->one();
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order != 1){
+            Methods::jsonData(0,'该订单还未付款');
+        }
+        $logistics = Logistics::find()->where(" orderId = $orderId")->one();
+        if($logistics){
+            $logistics->status = 1;
+            $logistics->save();
+        }else{
+            Methods::jsonData(0,'该订单还未发货');
+        }
+        $order->typeStatus = 3;// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $res = $order->save();
+        if($res){
+            Methods::jsonData(1,'确认收货成功');
+        }else{
+            Methods::jsonData(0,'确认失败');
+        }
+    }
+    /**
+     * 用户订单评价
+     */
+    public function actionUserEvaluate(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        $content = Yii::$app->request->post('content');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单Id不存在');
+        }
+        $order = Order::find()->where(" id =$orderId and uid = $uid ")->one();
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order != 1){
+            Methods::jsonData(0,'该订单还未付款');
+        }
+        if(!$content){
+            Methods::jsonData(0,'请输入评价内容');
+        }
+        $order->evaluate = $content;
+        $res = $order->save();
+        if($res){
+            $order->typeStatus = 4;// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+            Methods::jsonData(1,'评价成功');
+        }else{
+            Methods::jsonData(0,'评价失败');
+        }
+    }
 }

@@ -298,8 +298,16 @@
     接口参数        uid         用户id
                     groupId     组团的id
 
+    接口名称        用户确认收货
+    接口地址        /content/api/user-sure
+    接口参数        uid         用户id
+                    orderId     订单id
 
-
+    接口名称        用户订单评价
+    接口地址        /content/api/user-evaluate
+    接口参数        uid         用户id
+                    orderId     订单id
+                    content    评价内容
 
 
 
