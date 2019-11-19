@@ -13,6 +13,7 @@ use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Integral;
+use app\modules\content\models\Logistics;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberLog;
@@ -728,6 +729,7 @@ class ApiController extends  Controller
         $model->number = $number;
         $model->extInfo = '';
         $model->status = $status;
+        $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $model->createTime = $time;
         if($status == 1){
             $model->finishTime = $time;
@@ -1157,14 +1159,14 @@ class ApiController extends  Controller
      * 我的订单
      */
     public function actionMyOrder(){
-        $type = Yii::$app->request->post('type',99);//99-全部 0-待支付 1-支付成功
+        $type = Yii::$app->request->post('typeStatus',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         $where = " uid = $uid";
         if($type !=99){
-            $where .= " and status = $type";
+            $where .= " and typeStatus = $type";
         }
         $page =Yii::$app->request->post('page',1);
         $offset = ($page -1)*10;
