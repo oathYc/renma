@@ -1384,6 +1384,13 @@ class ApiController extends  Controller
         $model->createTime = $time;
         $res = $model->save();
         if($res){
+            //记录同一组团标识
+            if($groupId){
+                $userGroupId = $promoter['id'];
+            }else{
+                $userGroupId = $model->id;
+            }
+            UserGroup::updateAll(['userGroupId'=>$userGroupId],"id = {$model->id}");
             //判断参与组团时是否是最后一个
             if(!$groupId){
                 UserGroup::checkUserGroup($groupId);
