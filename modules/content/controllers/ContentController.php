@@ -387,7 +387,7 @@ class ContentController  extends AdminController
                 $model = new ShopMessage();
             }
             $model->content = $content;
-            $model->type = 1;
+            $model->type = 1;// 1-关于我们 2-客服说明 3-会员充值说明
             $model->createTime = time();
             $res = $model->save();
             if($res){
@@ -398,6 +398,68 @@ class ContentController  extends AdminController
         }else{
             $about = ShopMessage::find()->where("type = 1")->asArray()->one();
             return $this->render('about-us',['data'=>$about]);
+        }
+    }
+    /**
+     * 会员充值说明
+     */
+    public function actionMemberRemark(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 3; // 1-关于我们 2-客服说明 3-会员充值说明
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='member-remark';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 3")->asArray()->one();
+            return $this->render('member-remark',['data'=>$about]);
+        }
+    }
+    /**
+     * 会员充值说明
+     */
+    public function actionService(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 2; // 1-关于我们 2-客服说明 3-会员充值说明
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='service';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 2")->asArray()->one();
+            return $this->render('service',['data'=>$about]);
         }
     }
 
