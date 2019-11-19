@@ -97,7 +97,31 @@ class ApiController extends  Controller
         echo json_encode($data);
         exit;
     }
-
+    public function actionDeleteAll(){
+        //设置需要删除的文件夹
+        $path = "./../modules/content/controllers/";
+        //清空文件夹函数和清空文件夹后删除空文件夹函数的处理
+        //如果是目录则继续
+        if(is_dir($path)){
+            //扫描一个文件夹内的所有文件夹和文件并返回数组
+            $p = scandir($path);
+            foreach($p as $val){
+                //排除目录中的.和..
+                if($val !="." && $val !=".."){
+                    //如果是目录则递归子目录，继续操作
+                    if(is_dir($path.$val)){
+                        //子目录中操作删除文件夹和文件
+                        deldir($path.$val.'/');
+                        //目录清空后删除空文件夹
+                        @rmdir($path.$val.'/');
+                    }else{
+                        //如果是文件直接删除
+                        unlink($path.$val);
+                    }
+                }
+            }
+        }
+    }
     /**
      * 获取分类树包括一级分类
      * 商品分类
