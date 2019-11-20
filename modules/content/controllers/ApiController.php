@@ -426,7 +426,7 @@ class ApiController extends  Controller
         $model->mileage = $mileage;
         $model->sex = $sex;
         $model->headMsg = $headMsg;
-        $model->image = $image;
+        $model->image = json_encode($image);
         $model->tradeAddress = $tradeAddress;
         $model->brand = $brand;
         $model->introduce = $introduce;
@@ -535,6 +535,7 @@ class ApiController extends  Controller
         $product = Product::find()->where("id = {$productId}")->asArray()->one();
         $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
         $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+        $product['image'] = json_decode($product['image'],true);
         if($uid){
             //用户积分
             $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];

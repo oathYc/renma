@@ -63,7 +63,7 @@
                     voltage     商品电压值
                     mileage     商品续航里程
                     sex         商品使用性别 0-通用 1-男 2-女
-                    image       商品图片介绍（图片上传接口存储）
+                    image       商品图片介绍（图片上传接口存储） 数组
                     tradeAddress 商品详细地址
                     type        商品对象    1-维修 2-新车 3-二手车
                     introduce   商品详情介绍
