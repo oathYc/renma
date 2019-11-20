@@ -67,6 +67,7 @@
                     tradeAddress 商品详细地址
                     type        商品对象    1-维修 2-新车 3-二手车
                     introduce   商品详情介绍
+                    number      商品库存
 
     接口名称        首页信息
     接口地址        /content/api/home-index

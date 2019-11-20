@@ -379,6 +379,7 @@ class ApiController extends  Controller
         $tradeAddress = $request->post('tradeAddress');//商品详细地址
         $type = $request->post('type',0);//商品特性  1-维修 2-新车 3-二手车
         $introduce = $request->post('introduce');//详细介绍
+        $number = $request->post('number',1);//数量
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -430,6 +431,7 @@ class ApiController extends  Controller
         $model->brand = $brand;
         $model->introduce = $introduce;
         $model->type = $type;
+        $model->number = $number;
         $res = $model->save();
         if($res){
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();
@@ -957,7 +959,8 @@ class ApiController extends  Controller
                 $userCart[$k]['title'] = $product->title;
                 $userCart[$k]['brand'] = $product->brand;
                 $userCart[$k]['price'] = $product->price;
-                $userCart[$k]['headMsg'] = $product->headMsg;
+                $userCart[$k]['productImage'] = $product->headMsg;
+                $userCart[$k]['productNumber'] = $product->number;
                 $userCart[$k]['tradeAddress'] = $product->tradeAddress;
             }else{
                 unset($userCart[$k]);//商品已删除
@@ -1172,6 +1175,11 @@ class ApiController extends  Controller
         $offset = ($page -1)*10;
         $total = Order::find()->where($where)->count();
         $data = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
+        foreach($data as $k => $v){
+            $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
+            $data[$k]['productImage'] = $product['headMsg'];
+            $data[$k]['productNumber'] = $product['number'];
+        }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$data]);
     }
 
