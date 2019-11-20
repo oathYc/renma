@@ -1528,4 +1528,34 @@ class ApiController extends  Controller
             Methods::jsonData(0,'评价失败');
         }
     }
+    /**
+     * 获取所有分类
+     */
+    public function actionProductAllCate(){
+        $pid = Category::find()->where("pid = 0")->asArray()->all();
+        foreach($pid as $k => $v){
+            $child = Category::find()->where("pid = {$v['id']}")->asArray()->all();
+            $pid[$k]['child'] = $child;
+        }
+        Methods::jsonData(1,'success',$pid);
+    }
+    /**
+     * 获取对应分类的商品数据
+     */
+    public function actionCateProduct(){
+        $catId = Yii::$app->request->post('catId',0);
+        $page = Yii::$app->request->post('page',1);
+        if(!$catId){
+            Methods::jsonData(0,'分类id不存在');
+        }
+        if($catId){
+            $where = " catCid = $catId";
+        }else{
+            $where = '';
+        }
+        $total = Product::find()->where($where)->count();
+        $offset = ($page-1)*10;
+        $data = Product::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'success',['total'=>$total,'data'=>$data]);
+    }
 }

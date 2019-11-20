@@ -432,7 +432,7 @@ class ContentController  extends AdminController
         }
     }
     /**
-     * 会员充值说明
+     * k客服联系
      */
     public function actionService(){
         $action = \Yii::$app->controller->action->id;
