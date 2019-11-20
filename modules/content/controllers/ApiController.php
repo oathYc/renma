@@ -883,6 +883,7 @@ class ApiController extends  Controller
     public function actionCartAdd(){
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
+        $number = Yii::$app->request->post('number',1);
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -895,6 +896,7 @@ class ApiController extends  Controller
             $model->uid = $uid ;
             $model->productId = $productId;
             $model->createTime = time();
+            $model->number = $number?$number:1;
             $res = $model->save();
             if(!$res){
                 Methods::jsonData(0,'加入失败');
@@ -1040,6 +1042,10 @@ class ApiController extends  Controller
         $offset = ($page-1)*10;
         $total = Quality::find()->where("uid = $uid")->count();
         $data = Quality::find()->where(" uid = $uid")->asArray()->offset($offset)->limit(10)->all();
+        foreach($data as $k => $v){
+            $data[$k]['productImage'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
+            $data[$k]['productPrice'] = Order::find()->where("orderNumber = '{$v['orderNumber']}'")->asArray()->one()['payPrice'];
+        }
         Methods::jsonData(1,'success',['total'=>$total,'quality'=>$data]);
     }
     /**
@@ -1048,14 +1054,15 @@ class ApiController extends  Controller
      */
     public function actionQualityAdd(){
         $uid = Yii::$app->request->post('uid');
-        $productId = Yii::$app->request->post('productId');
+//        $productId = Yii::$app->request->post('productId');
+        $orderNumber = Yii::$app->request->post('orderNumber','');
         $gyTime = Yii::$app->request->post('gyTime');
         $barCode = Yii::$app->request->post('barCode');
         if(!$uid){
             Methods::jsonData(0,'用户id不存咋');
         }
-        if(!$productId){
-            Methods::jsonData(0,'商品id不存在');
+        if(!$orderNumber){
+            Methods::jsonData(0,'订单号不存在');
         }
         if(!$gyTime){
             Methods::jsonData(0,'商品钢印日期不存在');
@@ -1063,6 +1070,14 @@ class ApiController extends  Controller
         if(!$barCode){
             Methods::jsonData(0,'商品条形码不存在');
         }
+        if(!$barCode){
+            Methods::jsonData(0,'商品条形码不存在');
+        }
+        $order = Order::find()->where("orderNumber = '{$orderNumber}' and uid = $uid")->asArray()->one();
+        if(!$order){
+            Methods::jsonData(0,'没有该订单');
+        }
+        $productId = $order['productId'];
         $product = Product::find()->where("id = $productId")->asArray()->one();
         if(!$product){
             Methods::jsonData(0,'商品已删除，请联系商家');
@@ -1070,6 +1085,7 @@ class ApiController extends  Controller
         $model = new Quality();
         $model->uid = $uid;
         $model->productId = $productId;
+        $model->orderNumber = $orderNumber;
         $model->catId = $product['catCid'];
         $model->brand = $product['brand'];
         $model->buyTime = $product['createTime'];

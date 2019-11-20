@@ -178,6 +178,7 @@
     接口地址        /content/api/cart-add
     接口参数        uid         用户id
                     productId   商品id
+                    number      商品数量 默认1
 
 
     接口名称        用户购物车商品
