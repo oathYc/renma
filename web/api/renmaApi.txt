@@ -214,7 +214,7 @@
     接口名称        提交质保商品
     接口地址        /content/api/quality-add
     接口参数        uid         用户id
-                    productId   商品id
+                    orderNumber   订单id
                     gyTime      商品钢印日期
                     barCode     商品条形码
 

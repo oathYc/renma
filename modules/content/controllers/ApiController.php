@@ -1117,7 +1117,7 @@ class ApiController extends  Controller
         $model->orderNumber = $orderNumber;
         $model->catId = $product['catCid'];
         $model->brand = $product['brand'];
-        $model->buyTime = $product['createTime'];
+        $model->buyTime = $order['createTime'];
         $model->gyTime = $gyTime;
         $model->barCode = $barCode;
         $model->createTime = time();
