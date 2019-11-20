@@ -155,6 +155,7 @@ class OrderController  extends AdminController
             $model->createTime = time();
             $res = $model->save();
             if($res){
+                Order::updateAll(['typeStatus'=>2]," id = $id");//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='order-logistics';},1000)</script>";die;
             }else{
                 echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;

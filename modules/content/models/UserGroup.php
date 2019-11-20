@@ -4,6 +4,7 @@
 namespace app\modules\content\models;
 
 
+use yii\data\Pagination;
 use yii\db\ActiveRecord;
 
 class UserGroup extends ActiveRecord
@@ -126,5 +127,18 @@ class UserGroup extends ActiveRecord
             }
         }
         return true;
+    }
+
+    /**
+     * 后台获取组团信息
+     */
+    public static function getUserGroup($page=1){
+        if(!$page){$page = 1;}
+        $count = self::find()->count();
+        $pages = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $limit = " limit ".(10*($page-1)).",10";
+        $sql = "select ug.id as gId,ug.createTime as ugTime,ug.*,m.*,p.title,p.price,p.brand from {{%user_group}} ug left join {{%member}} m on m.id = ug.uid left join {{%product}} p on p.id = ug.groupId order by ug.userGroupId desc $limit";
+        $data = \Yii::$app->db->createCommand($sql)->queryAll();
+        return ['count'=>$count,'page'=>$pages,'data'=>$data];
     }
 }

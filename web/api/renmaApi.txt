@@ -67,6 +67,7 @@
                     tradeAddress 商品详细地址
                     type        商品对象    1-维修 2-新车 3-二手车
                     introduce   商品详情介绍
+                    number      商品库存
 
     接口名称        首页信息
     接口地址        /content/api/home-index
@@ -299,10 +300,26 @@
     接口参数        uid         用户id
                     groupId     组团的id
 
+    接口名称        用户确认收货
+    接口地址        /content/api/user-sure
+    接口参数        uid         用户id
+                    orderId     订单id
+
+    接口名称        用户订单评价
+    接口地址        /content/api/user-evaluate
+    接口参数        uid         用户id
+                    orderId     订单id
+                    content    评价内容
+
+    接口名称        商品分类（所有）
+    接口地址        /content/api/product-all-cate
+    接口参数
 
 
-
-
+    接口名称        分类商品信息
+    接口地址        /content/api/cate-product
+    接口参数        catId         二级分类id
+                    page            页数 默认1
 
 
 

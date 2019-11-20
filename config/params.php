@@ -16,5 +16,5 @@ return [
     'wxNotify'=>'',
     'wxJSAPI'=>'JSAPI',//小程序支付
     'wxAttach'=>'微信小程序支付',//小程序支付
-    'domain'=>'http://127.0.0.1',
+    'domain'=>'http://lck.hzlyzhenzhi.com',
     ];
