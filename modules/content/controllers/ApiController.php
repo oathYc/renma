@@ -1568,16 +1568,23 @@ class ApiController extends  Controller
      * 获取对应分类的商品数据
      */
     public function actionCateProduct(){
-        $catId = Yii::$app->request->post('catId',0);
+        $catPid = Yii::$app->request->post('catPid',0);
+        $catCid = Yii::$app->request->post('catCid',0);
         $page = Yii::$app->request->post('page',1);
-        if(!$catId){
-            Methods::jsonData(0,'分类id不存在');
+        if(!$catCid){
+            Methods::jsonData(0,'二级分类id不存在');
         }
-        if($catId){
-            $where = " catCid = $catId";
-        }else{
-            $where = '';
+        if(!$catPid){
+            Methods::jsonData(0,'一级分类id不存在');
         }
+        $where = '';
+        if($catCid){
+            $where = " catCid = $catCid";
+        }
+        if($catPid){
+            $where = " catPid = $catPid";
+        }
+
         $total = Product::find()->where($where)->count();
         $offset = ($page-1)*10;
         $data = Product::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
