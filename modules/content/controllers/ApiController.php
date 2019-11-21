@@ -1571,12 +1571,12 @@ class ApiController extends  Controller
         $catPid = Yii::$app->request->post('catPid',0);
         $catCid = Yii::$app->request->post('catCid',0);
         $page = Yii::$app->request->post('page',1);
-        if(!$catCid){
-            Methods::jsonData(0,'二级分类id不存在');
-        }
-        if(!$catPid){
-            Methods::jsonData(0,'一级分类id不存在');
-        }
+//        if(!$catCid){
+//            Methods::jsonData(0,'二级分类id不存在');
+//        }
+//        if(!$catPid){
+//            Methods::jsonData(0,'一级分类id不存在');
+//        }
         $where = '';
         if($catCid){
             $where = " catCid = $catCid";
