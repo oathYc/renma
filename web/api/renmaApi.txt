@@ -63,7 +63,7 @@
                     voltage     商品电压值
                     mileage     商品续航里程
                     sex         商品使用性别 0-通用 1-男 2-女
-                    image       商品图片介绍（图片上传接口存储）
+                    image       商品图片介绍（图片上传接口存储） 数组
                     tradeAddress 商品详细地址
                     type        商品对象    1-维修 2-新车 3-二手车
                     introduce   商品详情介绍
@@ -179,6 +179,7 @@
     接口地址        /content/api/cart-add
     接口参数        uid         用户id
                     productId   商品id
+                    number      商品数量 默认1
 
 
     接口名称        用户购物车商品
@@ -213,7 +214,7 @@
     接口名称        提交质保商品
     接口地址        /content/api/quality-add
     接口参数        uid         用户id
-                    productId   商品id
+                    orderNumber   订单id
                     gyTime      商品钢印日期
                     barCode     商品条形码
 
