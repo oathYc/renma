@@ -83,6 +83,9 @@ class MemberController  extends AdminController
         $count = Member::find()->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
         $data = Member::find()->orderBy('id desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['inviter'] = Member::find()->where("inviterCode = '{$v['inviteCode']}'")->asArray()->one()['nickname'];
+        }
         return $this->render('user-share',['page'=>$page,'count'=>$count,'data'=>$data]);
 
     }
