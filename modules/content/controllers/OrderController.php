@@ -71,6 +71,10 @@ class OrderController  extends AdminController
         $count = Order::find()->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = Order::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
+            $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
+        }
         return $this->render('order-list',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
     /**
