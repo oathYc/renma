@@ -127,6 +127,7 @@ $config = [
                  ''=>'/cn/index/show',
                  'index.html'=>'/cn/index/index',  //首页
                  'admin.php'=>'/content/login/login',
+                 'member.php'=>'/content/Member/user-feedback',
              ],
 
          ],
