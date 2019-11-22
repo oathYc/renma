@@ -577,6 +577,7 @@ class ApiController extends  Controller
         $name = Yii::$app->request->post('name');
         $phone = Yii::$app->request->post('phone');
         $default = Yii::$app->request->post('default',0);
+        $label = Yii::$app->request->post('label','');
         if(!$province){
             Methods::jsonData(0,'请选择省份');
         }
@@ -602,6 +603,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->name = $name;
         $model->phone = $phone;
+        $model->label = $label;
         if($default ==1){
             $model->default = 1;
         }else{
@@ -1168,11 +1170,11 @@ class ApiController extends  Controller
      */
     public function actionMyShare(){
         $uid = Yii::$app->request->post('uid');
-        if($uid){
+        if(!$uid){
             Methods::jsonData(0,'用户uid不存在');
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
-        $myShare = [];
+        $myShare = Member::find()->where("inviterCode = '{$shareCode}'")->asArray()->all();
         Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare]);
     }
     /**
