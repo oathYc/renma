@@ -577,6 +577,7 @@ class ApiController extends  Controller
         $name = Yii::$app->request->post('name');
         $phone = Yii::$app->request->post('phone');
         $default = Yii::$app->request->post('default',0);
+        $label = Yii::$app->request->post('label','');
         if(!$province){
             Methods::jsonData(0,'请选择省份');
         }
@@ -602,6 +603,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->name = $name;
         $model->phone = $phone;
+        $model->label = $label;
         if($default ==1){
             $model->default = 1;
         }else{
@@ -1168,12 +1170,13 @@ class ApiController extends  Controller
      */
     public function actionMyShare(){
         $uid = Yii::$app->request->post('uid');
-        if($uid){
+        if(!$uid){
             Methods::jsonData(0,'用户uid不存在');
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
-        $myShare = [];
-        Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare]);
+        $myShare = Member::find()->where("inviterCode = '{$shareCode}'")->asArray()->all();
+        $shareUrl = "http://lck.hzlyzhenzhi.com/api/getcode.php?uid=$uid";
+        Methods::jsonData(1,'success',['shareUrl'=>$shareUrl,'inviteCode'=>$shareCode,'myShare'=>$myShare]);
     }
     /**
      * 我的订单
@@ -1568,16 +1571,23 @@ class ApiController extends  Controller
      * 获取对应分类的商品数据
      */
     public function actionCateProduct(){
-        $catId = Yii::$app->request->post('catId',0);
+        $catPid = Yii::$app->request->post('catPid',0);
+        $catCid = Yii::$app->request->post('catCid',0);
         $page = Yii::$app->request->post('page',1);
-        if(!$catId){
-            Methods::jsonData(0,'分类id不存在');
+//        if(!$catCid){
+//            Methods::jsonData(0,'二级分类id不存在');
+//        }
+//        if(!$catPid){
+//            Methods::jsonData(0,'一级分类id不存在');
+//        }
+        $where = '';
+        if($catCid){
+            $where = " catCid = $catCid";
         }
-        if($catId){
-            $where = " catCid = $catId";
-        }else{
-            $where = '';
+        if($catPid){
+            $where = " catPid = $catPid";
         }
+
         $total = Product::find()->where($where)->count();
         $offset = ($page-1)*10;
         $data = Product::find()->where($where)->offset($offset)->limit(10)->asArray()->all();

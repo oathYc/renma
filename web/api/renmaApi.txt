@@ -113,6 +113,7 @@
                     address     详细地址
                     name        姓名
                     phone       电话
+                    label       地址标签
                     default     设为默认（0-不设为默认 1-设为默认）
 
 
@@ -318,7 +319,8 @@
 
     接口名称        分类商品信息
     接口地址        /content/api/cate-product
-    接口参数        catId         二级分类id
+    接口参数        catPid          一级分类id
+                    catCid          二级分类id
                     page            页数 默认1
 
 

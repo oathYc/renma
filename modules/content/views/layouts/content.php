@@ -1,3 +1,8 @@
+<?php
+header("Pragma:no-cache");
+header("Cache-Control:no-cache,must-revalidate");
+$v = rand(1234,9999);
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,7 +17,7 @@
     <link href="/css/coreCss/bootstrap-combined.min.css" rel="stylesheet">
     <link href="/css/coreCss/layoutit.css" rel="stylesheet">
     <link href="/css/coreCss/plugin.css" rel="stylesheet">
-    <link href="/css/site.css" rel="stylesheet">
+    <link href="/css/site.css?v=<?php echo $v;?>" rel="stylesheet">
     <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
     <style>
         .choose_download {
