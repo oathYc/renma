@@ -490,7 +490,7 @@ class ApiController extends  Controller
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $where = " type = $type ";
         if($search){
-            $where .= " title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
+            $where .= " and title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
         }
         if($priceMin){
             $where .= " and price >= $priceMin";
@@ -767,6 +767,14 @@ class ApiController extends  Controller
      */
     public function actionNearbyShop(){
         $area = Yii::$app->request->post('area');//当前地区
+        $province = Yii::$app->request->post('province');
+        $city = Yii::$app->request->post('city');
+        if(!$province){
+            Methods::jsonData(0,'省份不存在');
+        }
+        if(!$city){
+            Methods::jsonData(0,'市级不存在');
+        }
         if(!$area){
             Methods::jsonData(0,'参数错误');
         }
@@ -1227,8 +1235,8 @@ class ApiController extends  Controller
      */
     public function actionGuessYou(){
         $uid = Yii::$app->request->post('uid');
-        $offset = rand(11,99);
-        $data = Product::find()->offset($offset)->limit(10)->asArray()->all();
+//        $offset = rand(11,99);
+        $data = Product::find()->limit(10)->asArray()->all();
         Methods::jsonData(1,'sucess',$data);
     }
     /**

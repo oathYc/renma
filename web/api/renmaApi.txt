@@ -144,7 +144,9 @@
 
     接口名称        附近店铺
     接口地址        /content/api/nearby-shop
-    接口参数        area         当前地区
+    接口参数        province         当前省份
+                    city         当前市级
+                    area         当前地区
                     page         页数 默认1
 
 
