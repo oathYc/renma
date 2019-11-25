@@ -1601,4 +1601,32 @@ class ApiController extends  Controller
         $data = Product::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
         Methods::jsonData(1,'success',['total'=>$total,'data'=>$data]);
     }
+    /**
+     * 邀请记录
+     */
+    public function actionShareSuccess(){
+       $uid = Yii::$app->request->post('uid');
+       $pid = Yii::$app->request->post('pid');//邀请人的uid
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$pid){
+            Methods::jsonData(0,'邀请人id不存在');
+        }
+        $parent = Member::findOne($pid);
+        if(!$parent){
+            Methods::jsonData(0,'不存在邀请人这个用户');
+        }
+        $self = Member::findOne($uid);
+        if(!$self){
+            Methods::jsonData(0,'邀请的用户不存在');
+        }
+        $self->inviterCode = $parent->inviteCode;
+        $res = $self->save();
+        if($res) {
+            Methods::jsonData(1, 'success');
+        }else{
+            Methods::jsonData(0,'失败');
+        }
+    }
 }

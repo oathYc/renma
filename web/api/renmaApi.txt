@@ -325,7 +325,10 @@
                     catCid          二级分类id
                     page            页数 默认1
 
-
+    接口名称        邀请记录
+    接口地址        /content/api/share-success
+    接口参数        uid          自己的uid
+                    pid           邀请人的uid
 
 
 
