@@ -1629,4 +1629,63 @@ class ApiController extends  Controller
             Methods::jsonData(0,'失败');
         }
     }
+    /**
+     * 订单评价
+     */
+    public function actionOrderComment(){
+        $uid = Yii::$app->request->post('id');
+        $orderId = Yii::$app->request->post('orderId');
+        $comment = Yii::$app->request->post('comment','');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        if(!$comment){
+            Methods::jsonData(0,'评论内容不存在');
+        }
+        $order = Order::find()->where("id = $orderId and uid = $uid")->one();
+        if(!$order){
+            Methods::jsonData(0,'没有该订单');
+        }
+        if($order->status != 1 || $order->typeStatus != 3){
+            Methods::jsonData(0,'订单状态不对');
+        }
+        $order->evaluate = $comment;
+        $order->typeStatus = 4;
+        $res = $order->save();
+        if($res){
+            Methods::jsonData(1,'评价成功');
+        }else{
+            Methods::jsonData(0,'评价失败');
+        }
+    }
+    /**
+     * 用户确认收货
+     */
+    public function actionMemberSureProduct(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        $order = Order::find()->where("id = $orderId and uid = $uid")->one();
+        if(!$order){
+            Methods::jsonData(0,'没有该订单');
+        }
+        if($order->status != 1){
+            Methods::jsonData(0,'订单状态不对');
+        }
+        $order->typeStatus = 3;
+        $res = $order->save();
+        if($res){
+            Methods::jsonData(1,'确认收货成功');
+        }else{
+            Methods::jsonData(0,'确认收货失败');
+        }
+    }
 }

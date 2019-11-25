@@ -330,9 +330,16 @@
     接口参数        uid          自己的uid
                     pid           邀请人的uid
 
+    接口名称        订单评价
+    接口地址        /content/api/order-comment
+    接口参数        uid             用户uid
+                    orderId         订单id
+                    comment         评价内容
 
-
-
+    接口名称        用户确认收货
+    接口地址        /content/api/member-sure-product
+    接口参数        uid             用户uid
+                    orderId         订单id
 
 
 
