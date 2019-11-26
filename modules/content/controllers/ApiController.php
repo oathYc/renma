@@ -230,7 +230,7 @@ class ApiController extends  Controller
             Member::inviteCode($model->id);
             Methods::jsonData(1,'登录成功',$member);
         }else{
-            Methods::jsonData(0,'请求错误');
+            Methods::jsonData(0,'请求错误',$return);
         }
     }
     /**
