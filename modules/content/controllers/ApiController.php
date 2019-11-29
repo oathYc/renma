@@ -1282,8 +1282,12 @@ class ApiController extends  Controller
     public function actionMemberApplyAdd(){
         $uid = Yii::$app->request->post('uid');
         $month = Yii::$app->request->post('month',1);
+        $money = Yii::$app->request->post('money',0);
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$money || $money <= 0){
+            Methods::jsonData(0,'金额不存在');
         }
         $user = Member::findOne($uid);
         if($user){
@@ -1294,15 +1298,20 @@ class ApiController extends  Controller
                 $remark = '会员开通';
                 $firstTime =strtotime(date('Y-m-d'));//今天的起始时间
             }
+            //生成订单
+            $orderNumber = 'RM'.time().rand(123456,999999);
+            $orderId = Order::createOrder($uid,$orderNumber,$money,$remark);
             $endTime = 86400*30*$month + strtotime($firstTime);
             $model = new MemberLog();
             $model->uid = $uid;
             $model->beginTime = $firstTime;
             $model->endTime = $endTime;
+            $model->orderId = $orderId;
             $model->createTime = time();
             $res = $model->save();
             if($res){
-                Methods::jsonData(1,$remark.'成功',['id'=>$uid,'member'=>1,'endTime'=>$endTime,'money'=>100]);
+                $return  = WeixinPayController::WxOrder($orderNumber,$remark,$money,$orderId);
+                die(json_encode($return));
             }else{
                 Methods::jsonData(0,$remark,'失败');
             }

@@ -267,6 +267,7 @@
     接口地址        /content/api/member-apply-add
     接口参数        uid         用户id
                     month       月 默认1
+                    money       充值金额
 
 
     接口名称        会员申请历史记录
