@@ -9,6 +9,7 @@
 namespace app\modules\content\controllers;
 
 use app\libs\Methods;
+use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use yii;
 use yii\web\Controller;
@@ -24,7 +25,7 @@ class WeixinPayController extends  Controller{
     public static  function WxOrder($orderNumber,$productName,$amount,$orderId){
         $paramArr = [];
         $paramArr['attach'] = \Yii::$app->params['wxAttach'];
-        $paramArr['appid'] = \Yii::$app->params['wxAppId'];
+        $paramArr['appid'] = \Yii::$app->params['appId'];
         $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
         $paramArr['nonce_str'] = md5($orderNumber);//随机数
         $paramArr['body'] = $productName;//商品描述
@@ -34,6 +35,9 @@ class WeixinPayController extends  Controller{
         $paramArr['notify_url'] = Yii::$app->params['wxNotify'];;//回调地址
         $paramArr['trade_type'] = \Yii::$app->params['wxJSAPI'];//交易类型 小程序支付 JSAPI
         $key = \Yii::$app->params['wxMchKey'];
+        //获取openid
+        $openid = self::getOpenid($orderId);
+        $paramArr['openid'] = $openid;
         //生成签名
         ksort($paramArr);
         $sign = self::signWxpay($paramArr,$key);
@@ -53,10 +57,12 @@ class WeixinPayController extends  Controller{
             <notify_url>{$paramArr['notify_url']}</notify_url>
             <trade_type>{$paramArr['trade_type']}</trade_type>
             <sign>{$paramArr['sign']}</sign>
+            <openid>{$paramArr['openid']}</openid>
           </xml>";
-
+var_dump($post_data);
         $return = Methods::post($url,$post_data);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
+        var_dump($return);
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
             $payUrl = $return['prepay_id'];
             $data = ['code'=>1,'message'=>'success','data'=>['status'=>0,'payUrl'=>$payUrl]];//,'msg'=>'支付请求成功'
@@ -68,6 +74,23 @@ class WeixinPayController extends  Controller{
         return $data;
     }
 
+    public static function getOpenid($orderId){
+//        if($orderId){
+//            $uid = Order::find()->where("id = $orderId")->asArray()->one()['uid'];
+//            if($uid){
+//                $openId = Member::find()->where("id = $uid")->asArray()->one()['openId'];
+//                if(!$openId){
+//                    $openId = '';
+//                }
+//            }else{
+//                $openId = '';
+//            }
+//        }else{
+//            $openId = '';
+//        }
+        $openId = 'oy4jd58CjEDNtvakAjCHGdR9qnKM';
+        return $openId;
+    }
     public static function getIP(){
         if($_SERVER['REMOTE_ADDR'])
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -88,6 +111,7 @@ class WeixinPayController extends  Controller{
             }
         }
         $signStr.='key='.$key;
+        var_dump($signArr);
         $signStr = md5($signStr);
         $signStr = strtoupper($signStr);
         return $signStr;

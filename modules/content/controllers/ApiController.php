@@ -216,6 +216,7 @@ class ApiController extends  Controller
             }else{
                 $model = new Member();
                 $model->createTime = time();
+                $model->openId = $openId;
             }
             $model->nickname = $nickname;
             $model->avatar = $avatar;
@@ -759,6 +760,14 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(0,'订单添加失败');
         }
+    }
+    /**
+     *测试
+     */
+    public function actionTest(){
+        $return  = WeixinPayController::WxOrder(time(),'ceshi',0.01,1);
+        var_dump($return);die;
+        die(json_encode($return));
     }
     /**
      * 附近店铺搜索
