@@ -1728,11 +1728,11 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        $order = Order::find()->where("uid = $uid and id = $orderId")->ond();
+        $order = Order::find()->where("uid = $uid and id = $orderId")->one();
         if(!$order){
             Methods::jsonData(0,'你没有下过改单');
         }
-        if($orderId != 0){
+        if($order->status != 0){
             Methods::jsonData(0,'订单状态不对，无法取消');
         }
         $res = Order::deleteAll("id = $orderId");
