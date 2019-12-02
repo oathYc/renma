@@ -772,10 +772,33 @@ class ApiController extends  Controller
         }
     }
     /**
-     *测试
+     *订单
+     * 继续付款
      */
-    public function actionTest(){
-        $return  = WeixinPayController::WxOrder(time(),'ceshi',0.01,1);
+    public function actionPayOrder(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        $order = Order::find()->where("uid = $uid and id = $orderId")->one();
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order->status != 0){
+            Methods::jsonData(0,'订单状态不对');
+        }
+        //订单时间超过半小时 更新订单号
+        $now = time();
+        $reduce = $now-1800;
+        if($order->createTime <= $reduce){
+            $order->orderNumber = $order->orderNumber.'2';
+            $order->save();
+        }
+        $return  = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->payPrice,$order->id);
         die(json_encode($return));
     }
     /**
