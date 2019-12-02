@@ -776,7 +776,6 @@ class ApiController extends  Controller
      */
     public function actionTest(){
         $return  = WeixinPayController::WxOrder(time(),'ceshi',0.01,1);
-        var_dump($return);die;
         die(json_encode($return));
     }
     /**

@@ -59,13 +59,10 @@ class WeixinPayController extends  Controller{
             <sign>{$paramArr['sign']}</sign>
             <openid>{$paramArr['openid']}</openid>
           </xml>";
-var_dump($post_data);
         $return = Methods::post($url,$post_data);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
-        var_dump($return);
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
-            $payUrl = $return['prepay_id'];
-            $data = ['code'=>1,'message'=>'success','data'=>['status'=>0,'payUrl'=>$payUrl]];//,'msg'=>'支付请求成功'
+            $data = ['code'=>1,'message'=>'success','data'=>$return];//,'msg'=>'支付请求成功'
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
         }else{
@@ -75,20 +72,22 @@ var_dump($post_data);
     }
 
     public static function getOpenid($orderId){
-//        if($orderId){
-//            $uid = Order::find()->where("id = $orderId")->asArray()->one()['uid'];
-//            if($uid){
-//                $openId = Member::find()->where("id = $uid")->asArray()->one()['openId'];
-//                if(!$openId){
-//                    $openId = '';
-//                }
-//            }else{
-//                $openId = '';
-//            }
-//        }else{
-//            $openId = '';
-//        }
-        $openId = 'oy4jd58CjEDNtvakAjCHGdR9qnKM';
+        if($orderId){
+            $uid = Order::find()->where("id = $orderId")->asArray()->one()['uid'];
+            if($uid){
+                $openId = Member::find()->where("id = $uid")->asArray()->one()['openId'];
+                if(!$openId){
+                    $openId = '';
+                }
+            }else{
+                $openId = '';
+            }
+        }else{
+            $openId = '';
+        }
+        if(!$openId){
+            $openId = 'oAi5t5bJ9pwX_Nc7C5skWtVJkygg';
+        }
         return $openId;
     }
     public static function getIP(){
