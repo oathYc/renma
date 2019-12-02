@@ -64,6 +64,7 @@ class WeixinPayController extends  Controller{
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
             $return['status'] = 0;//0-待支付 1-已支付
             $return['paySign'] = $sign;
+            $return['orderId'] = $orderId;
             $data = ['code'=>1,'message'=>'success','data'=>$return];//,'msg'=>'支付请求成功'
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
