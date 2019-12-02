@@ -137,9 +137,9 @@ class WeixinPayController extends  Controller{
             $result = self::checkWxpaySign($orderNo);
             if($result){
                 $amount = $amount/100;//换成元
-                $orderData = Order::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
+                $orderData = Order::find()->where("orderNumber = '{$orderNo}' and payPrice = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
-                    Order::updateAll(['status'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
+                    Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
@@ -167,12 +167,12 @@ class WeixinPayController extends  Controller{
         //查询数据库数据生成签名进行验证
         $orderData = Order::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
         $paramArr['attach'] = \Yii::$app->params['wxAttach'];
-        $paramArr['appid'] = \Yii::$app->params['wxAppId'];
+        $paramArr['appid'] = \Yii::$app->params['appId'];
         $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
         $paramArr['nonce_str'] = md5($orderNumber);//随机数
-        $paramArr['body'] = $orderData['product'];//商品描述
+        $paramArr['body'] = $orderData['productTitle'];//商品描述
         $paramArr['out_trade_no'] = $orderNumber;//商户订单号
-        $paramArr['total_fee'] = $orderData['money']*100;;//总金额 金额处理 单位为分
+        $paramArr['total_fee'] = $orderData['payPrice']*100;;//总金额 金额处理 单位为分
         $paramArr['spbill_create_ip'] = $orderData['ip'];//终端ip
         $paramArr['notify_url'] = Yii::$app->params['wxNotify'];;//回调地址
         $paramArr['trade_type'] = \Yii::$app->params['wxJSAPI'];//交易类型 小程序支付 JSAPI
