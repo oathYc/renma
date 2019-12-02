@@ -544,6 +544,7 @@ class ApiController extends  Controller
         }else{
             $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
             $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+            $product['oldImage'] = $product['image'];
             $product['image'] = json_decode($product['image'],true);
             if($uid){
                 //用户积分
@@ -775,6 +776,7 @@ class ApiController extends  Controller
      *测试
      */
     public function actionTest(){
+
         $return  = WeixinPayController::WxOrder(time(),'ceshi',0.01,1);
         die(json_encode($return));
     }
