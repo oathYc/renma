@@ -528,28 +528,38 @@ class ApiController extends  Controller
      */
     public function actionProductDetail(){
         $productId = Yii::$app->request->post('productId',0);
+        $page = Yii::$app->request->post('page',1);
         $uid = Yii::$app->request->post('uid');
         if(!$productId){
             Methods::jsonData(0,'参数错误');
         }
         //商品数据
         $product = Product::find()->where("id = {$productId}")->asArray()->one();
-        $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
-        $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
-        $product['image'] = json_decode($product['image'],true);
-        if($uid){
-            //用户积分
-            $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
-            //用户默认收货地址数据
-            $userAddress = Address::find()->where("uid = $uid and `default` = 1")->asArray()->one();
-            //用户优惠券
-            $userCoupon = Coupon::getUserCoupon($uid);
-        }else{
+        //商品评价
+        if(!$product){
+            $comment = ['total'=>0,'comment'=>[]];
             $userIntegral = 0;
             $userAddress = [];
             $userCoupon = [];
+        }else{
+            $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
+            $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+            $product['image'] = json_decode($product['image'],true);
+            if($uid){
+                //用户积分
+                $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
+                //用户默认收货地址数据
+                $userAddress = Address::find()->where("uid = $uid and `default` = 1")->asArray()->one();
+                //用户优惠券
+                $userCoupon = Coupon::getUserCoupon($uid);
+            }else{
+                $userIntegral = 0;
+                $userAddress = [];
+                $userCoupon = [];
+            }
+            $comment = Product::getComment($productId,$page);
         }
-        $data = ['userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon];
+        $data = ['userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment];
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -1671,6 +1681,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单状态不对');
         }
         $order->evaluate = $comment;
+        $order->evalTime = time();
         $order->typeStatus = 4;
         $res = $order->save();
         if($res){

@@ -16,7 +16,7 @@ class UserGroup extends ActiveRecord
     /**
      * 当前商品组团数据
      */
-    public static function 商getCurrentGroup($productId,$ownGroup){
+    public static function getCurrentGroup($productId,$ownGroup){
         if(!$productId){
             return [];
         }
