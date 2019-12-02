@@ -1716,4 +1716,30 @@ class ApiController extends  Controller
             Methods::jsonData(0,'确认收货失败');
         }
     }
+    /**
+     * 用户取消订单
+     */
+    public function actionMemberDeleteOrder(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $order = Order::find()->where("uid = $uid and id = $orderId")->ond();
+        if(!$order){
+            Methods::jsonData(0,'你没有下过改单');
+        }
+        if($orderId != 0){
+            Methods::jsonData(0,'订单状态不对，无法取消');
+        }
+        $res = Order::deleteAll("id = $orderId");
+        if($res){
+            Methods::jsonData(1,'success');
+        }else{
+            Methods::jsonData(0,'删除失败');
+        }
+    }
 }

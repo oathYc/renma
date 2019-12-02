@@ -342,6 +342,11 @@
     接口参数        uid             用户uid
                     orderId         订单id
 
+    接口名称        用户取消订单（待支付订单才可取消）
+    接口地址        /content/api/member-delete-order
+    接口参数        uid             用户uid
+                    orderId         订单id
+
 
 
 
