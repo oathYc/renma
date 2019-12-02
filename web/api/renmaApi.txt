@@ -348,6 +348,12 @@
                     orderId         订单id
 
 
+    接口名称        继续支付
+    接口地址        /content/api/pay-order
+    接口参数        uid             用户uid
+                    orderId         订单id
+
+
 
 
 
