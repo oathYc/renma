@@ -123,13 +123,14 @@ class OrderController  extends AdminController
         foreach($order as $k => $v){
             $logistics = Logistics::find()->where("orderId = {$v['id']}")->asArray()->one();
             if(!$logistics){
-                $logistics = ['logistics'=>'','name'=>'','status'=>'','createTime'=>''];
+                $logistics = ['id'=>0,'logistics'=>'','name'=>'','status'=>'','createTime'=>''];
             }
+            $logistics['status'] = $logistics['status']==1?'完成':($logistics['status']==0?'运送中':'');
             $address = Address::findOne($v['address']);
-            $logisticsAddress = $address->province.$address->ctiry.$address->area.$address->address;
-            $data[] = ['orderId'=>$v['id'],'orderNumber'=>$v['orderNumber'],'productName'=>$v['productName'],'productId'=>$v['productId'],'price'=>$v['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistics['logistics'],'logisticsName'=>$logistics['name'],'logisticsStatus'=>$logistics['status'],'logisticsTime'=>$logistics['createTime'],'logisticsAddress'=>$logisticsAddress];
+            $logisticsAddress = $address->province.$address->city.$address->area.$address->address;
+            $data[] = ['id'=>$logistics['id'],'orderId'=>$v['id'],'orderNumber'=>$v['orderNumber'],'productName'=>$v['productTitle'],'productId'=>$v['productId'],'price'=>$v['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistics['logistics'],'logisticsName'=>$logistics['name'],'logisticsStatus'=>$logistics['status'],'logisticsTime'=>$logistics['createTime'],'logisticsAddress'=>$logisticsAddress];
         }
-        return $this->render('order-list',['data'=>$data,'page'=>$page,'count'=>$count]);
+        return $this->render('order-logistics',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
     /**
      * 物流信息管理
@@ -138,7 +139,7 @@ class OrderController  extends AdminController
         if($_POST){
             $id = Yii::$app->request->post('id');
             $logistics = Yii::$app->request->post('logistics');//物流号
-            $name = Yii::$app->request->post('name');//物流类型
+            $name = Yii::$app->request->post('logisticsName');//物流类型
             if(!$id){
                 echo "<script>alert('id不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -171,13 +172,13 @@ class OrderController  extends AdminController
             }else{
                 $order = Order::find()->where("id = $id")->asArray()->one();
                 $address = Address::findOne($order['address']);
-                $logisticsAddress = $address->province.$address->ctiry.$address->area.$address->address;
+                $logisticsAddress = $address->province.$address->city.$address->area.$address->address;
                 $logistics = Logistics::findOne($id);
                 $logistic = isset($logistics['logistics'])?$logistics['logistics']:'';
                 $logisticsName = isset($logistics['name'])?$logistics['name']:'';
                 $logisticsStatus= isset($logistics['status'])?$logistics['status']:'';
                 $logisticsTime= isset($logistics['createTime'])?$logistics['createTime']:'';
-                $data = ['orderId'=>$order['id'],'orderNumber'=>$order['orderNumber'],'productName'=>$order['producrName'],'productId'=>$order['productId'],'price'=>$order['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistic,'logisticsName'=>$logisticsName,'logisticsStatus'=>$logisticsStatus,'logisticsTime'=>$logisticsTime,'logisticsAddress'=>$logisticsAddress];
+                $data = ['orderId'=>$order['id'],'orderNumber'=>$order['orderNumber'],'productTitle'=>$order['productTitle'],'productId'=>$order['productId'],'payPrice'=>$order['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistic,'logisticsName'=>$logisticsName,'logisticsStatus'=>$logisticsStatus,'logisticsTime'=>$logisticsTime,'logisticsAddress'=>$logisticsAddress];
             }
             return $this->render('logistics-add',['data'=>$data]);
         }

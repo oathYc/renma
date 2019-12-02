@@ -45,14 +45,14 @@
                     <td ><span><?php echo $v['phone']?></span></td>
                     <td ><span><?php echo $v['logistics']?></span></td>
                     <td ><span><?php echo $v['logisticsName']?></span></td>
-                    <td ><span><?php echo $v['logisticsStatus']==1?'完成':($v['logisticsStatus']==0?'运送中':'')?></span></td>
-                    <td ><span><?php echo $v['logisticsAddress']?></span></td>
+                    <td ><span><?php echo $v['logisticsStatus']?></span></td>
                     <td ><span><?php echo $v['logisticsTime']?date('Y-m-d H:i:s',$v['logisticsTime']):'';?></span></td>
+                    <td ><span><?php echo $v['logisticsAddress']?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <a class="btn" href="/content/order/logistics-add?id=<?php echo $v['orderId']; ?>">物流</a>
-                            <a class="btn" href="JavaScript:if(confirm('确认删除该物流信息？')){location.href='/content/order/logistics-delete?id=<?php echo $v['id']; ?>'}">删除</a>
+<!--                            <a class="btn" href="JavaScript:if(confirm('确认删除该物流信息？')){location.href='/content/order/logistics-delete?id=<?php echo $v['id']; ?>'}">删除</a>-->
                         </div>
                     </td>
                 </tr>
