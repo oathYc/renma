@@ -427,7 +427,7 @@ class ApiController extends  Controller
         $model->mileage = $mileage;
         $model->sex = $sex;
         $model->headMsg = $headMsg;
-        $model->image = json_encode($image);
+        $model->image = serialize($image);
         $model->tradeAddress = $tradeAddress;
         $model->brand = $brand;
         $model->introduce = $introduce;
@@ -544,8 +544,7 @@ class ApiController extends  Controller
         }else{
             $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
             $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
-            $product['oldImage'] = $product['image'];
-            $product['image'] = json_decode($product['image'],true);
+            $product['image'] = unserialize($product['image']);
             if($uid){
                 //用户积分
                 $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
@@ -776,7 +775,6 @@ class ApiController extends  Controller
      *测试
      */
     public function actionTest(){
-
         $return  = WeixinPayController::WxOrder(time(),'ceshi',0.01,1);
         die(json_encode($return));
     }
