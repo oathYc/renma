@@ -62,6 +62,7 @@ class WeixinPayController extends  Controller{
         $return = Methods::post($url,$post_data);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
+            $return['status'] = 0;//0-待支付 1-已支付
             $data = ['code'=>1,'message'=>'success','data'=>$return];//,'msg'=>'支付请求成功'
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
