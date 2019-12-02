@@ -110,7 +110,6 @@ class WeixinPayController extends  Controller{
             }
         }
         $signStr.='key='.$key;
-        var_dump($signArr);
         $signStr = md5($signStr);
         $signStr = strtoupper($signStr);
         return $signStr;
