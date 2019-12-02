@@ -1370,9 +1370,15 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $page = Yii::$app->request->post('page',1);
-        $offset = ($page-1)*10;
-        $total = MemberLog::find()->where("uid = $uid")->count();
-        $data = MemberLog::find()->where(" uid = $uid")->asArray()->orderBy('endTime desc')->offset($offset)->limit(10)->all();
+        $limit = " limit ".(10*($page-1)).',10 ';
+        $sql = " select ml.* from {{%memebr_log}} ml inner join {{order}} o on o.id = ml.orderId order by ml.createTime desc ";
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+        $total = count($data);
+        $sql .= $limit;
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+        foreach($data as $k => $v){
+            $data[$k]['createTime'] = date("Y-m-d H:i:s" ,$v['createTime']);
+        }
         $data = ['total'=>$total,'data'=>$data];
         Methods::jsonData(1,'success',$data);
     }
