@@ -1677,6 +1677,7 @@ class ApiController extends  Controller
         $order->typeStatus = 3;
         $res = $order->save();
         if($res){
+            Logistics::updateAll(['status'=>1],"orderId = $orderId");
             Methods::jsonData(1,'确认收货成功');
         }else{
             Methods::jsonData(0,'确认收货失败');
