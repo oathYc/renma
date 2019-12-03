@@ -181,12 +181,20 @@ class OrderController  extends AdminController
             }else{
                 $order = Order::find()->where("id = $id")->asArray()->one();
                 $address = Address::findOne($order['address']);
-                $logisticsAddress = $address->province.$address->city.$address->area.$address->address;
-                $logistics = Logistics::findOne($id);
+//                $logisticsAddress = $address->province.$address->city.$address->area.$address->address;
+                $logisticsAddress = $address->area.$address->address;
+                $logistics = Logistics::find()->where("orderId = $id")->asArray()->one();
                 $logistic = isset($logistics['logistics'])?$logistics['logistics']:'';
                 $logisticsName = isset($logistics['name'])?$logistics['name']:'';
-                $logisticsStatus= isset($logistics['status'])?$logistics['status']:'';
+                if($logistics){
+                    $logisticsStatus= $logistics['status']==1?'完成':'运输中';
+                }else{
+                    $logisticsStatus = '';
+                }
                 $logisticsTime= isset($logistics['createTime'])?$logistics['createTime']:'';
+                if($logisticsTime){
+                    $logisticsTime = date("Y-m-d H:i:s",$logisticsTime);
+                }
                 $data = ['orderId'=>$order['id'],'orderNumber'=>$order['orderNumber'],'productTitle'=>$order['productTitle'],'productId'=>$order['productId'],'payPrice'=>$order['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistic,'logisticsName'=>$logisticsName,'logisticsStatus'=>$logisticsStatus,'logisticsTime'=>$logisticsTime,'logisticsAddress'=>$logisticsAddress];
             }
             return $this->render('logistics-add',['data'=>$data]);

@@ -39,13 +39,13 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">物流状态</label>
                 <div class="controls">
-                    <input type="text" name="logistics" id="logistics" value="<?php echo isset($data['logisticsStatus'])?($data['logisticsStatus']==1?'完成':($data['logisticsStatus']==0?'运送中':'')):'';?>" readonly />
+                    <input type="text" name="logistics" id="logistics" value="<?php echo isset($data['logisticsStatus'])?$data['logisticsStatus']:'';?>" readonly />
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">物流时间</label>
                 <div class="controls">
-                    <input type="text" name="logisticsName" id="logisticsName" value="<?php echo isset($data['logisticsTime'])?date('Y-m-dH:i:s',$data['logisticsTime']):'';?>" readonly/>
+                    <input type="text" name="logisticsName" id="logisticsName" value="<?php echo isset($data['logisticsTime'])?$data['logisticsTime']:'';?>" readonly/>
                 </div>
             </div>
             <div class="control-group">
