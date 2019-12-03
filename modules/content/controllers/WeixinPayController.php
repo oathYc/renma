@@ -150,6 +150,7 @@ class WeixinPayController extends  Controller{
     public function actionWxpayNotify(){
         //获取通知的数据
         $xml = file_get_contents("php://input");
+        Methods::varDumpLog('weixin.txt',$xml,'a');
         if(!$xml){
             echo 'fail';die;
         }else{

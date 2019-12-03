@@ -93,4 +93,16 @@ class Methods
         return json_decode($data);
     }
 
+    /**
+     * @param $filename
+     * @param $content
+     * @param string $do
+     * 日志打印
+     */
+    public static function varDumpLog($filename,$content,$do='w'){
+        $path = fopen(IndexDir.'/files/log/'.$filename,$do);
+        fwrite($path,$content);
+        fclose($path);
+    }
+
 }

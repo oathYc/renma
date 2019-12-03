@@ -1231,7 +1231,7 @@ class ApiController extends  Controller
      * 我的订单
      */
     public function actionMyOrder(){
-        $type = Yii::$app->request->post('typeStatus',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $type = Yii::$app->request->post('type',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1689,7 +1689,7 @@ class ApiController extends  Controller
      * 订单评价
      */
     public function actionOrderComment(){
-        $uid = Yii::$app->request->post('id');
+        $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         $comment = Yii::$app->request->post('comment','');
         if(!$uid){
