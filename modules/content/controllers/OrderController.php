@@ -126,8 +126,12 @@ class OrderController  extends AdminController
                 $logistics = ['id'=>0,'logistics'=>'','name'=>'','status'=>'','createTime'=>''];
             }
             $logistics['status'] = $logistics['status']==1?'完成':($logistics['status']==0?'运送中':'');
-            $address = Address::findOne($v['address']);
-            $logisticsAddress = $address->province.$address->city.$address->area.$address->address;
+            $address = Address::find()->where("id = {$v['address']}")->asArray()->one();
+            if($address){
+                $logisticsAddress = $address['province'].$address['city'].$address['area'].$address['address'];
+            }else{
+                $logisticsAddress = '';
+            }
             $data[] = ['id'=>$logistics['id'],'orderId'=>$v['id'],'orderNumber'=>$v['orderNumber'],'productName'=>$v['productTitle'],'productId'=>$v['productId'],'price'=>$v['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistics['logistics'],'logisticsName'=>$logistics['name'],'logisticsStatus'=>$logistics['status'],'logisticsTime'=>$logistics['createTime'],'logisticsAddress'=>$logisticsAddress];
         }
         return $this->render('order-logistics',['data'=>$data,'page'=>$page,'count'=>$count]);
