@@ -76,8 +76,8 @@ class WeixinPayController extends  Controller{
             $ret['nonceStr'] = $nonceStr;
             $ret['package'] = $package;
             $ret['paySign'] = $jsapiSign;
-            $data = ['code'=>1,'message'=>'success','data'=>$ret];//,'msg'=>'支付请求成功'
             $ret['signType'] = $signType;
+            $data = ['code'=>1,'message'=>'success','data'=>$ret];//,'msg'=>'支付请求成功'
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
         }else{
