@@ -65,6 +65,9 @@ class WeixinPayController extends  Controller{
             $return['status'] = 0;//0-待支付 1-已支付
             $return['paySign'] = $sign;
             $return['orderId'] = $orderId;
+            //生成小程序调用签名
+            $jsapiSign = self::getJsapiSign($paramArr['appid'],time(),$paramArr['nonce_str'],'prepay_id='.$return['prepay_id'],'MD5');
+            $return['jsapiSign'] = $jsapiSign;
             $data = ['code'=>1,'message'=>'success','data'=>$return];//,'msg'=>'支付请求成功'
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
@@ -74,6 +77,17 @@ class WeixinPayController extends  Controller{
         return $data;
     }
 
+    public static function getJsapiSign($appid,$time,$nonceStr,$package,$signType){
+        $array['appId'] = $appid;
+        $array['timeStamp'] = $time;
+        $array['nonceStr'] = $nonceStr;
+        $array['package'] = $package;
+        $array['signType'] = $signType;
+        ksort($array);
+        $key = \Yii::$app->params['wxMchKey'];
+        $jsapiSign = self::signWxpay($array,$key);
+        return $jsapiSign;
+    }
     public static function getOpenid($orderId){
         if($orderId){
             $uid = Order::find()->where("id = $orderId")->asArray()->one()['uid'];
