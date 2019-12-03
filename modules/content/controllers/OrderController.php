@@ -131,8 +131,10 @@ class OrderController  extends AdminController
                 $logisticsAddress = $address['province'].$address['city'].$address['area'].$address['address'];
             }else{
                 $logisticsAddress = '';
+                $address['name'] = '';
+                $address['phone'] = '';
             }
-            $data[] = ['id'=>$logistics['id'],'orderId'=>$v['id'],'orderNumber'=>$v['orderNumber'],'productName'=>$v['productTitle'],'productId'=>$v['productId'],'price'=>$v['payPrice'],'name'=>$address->name,'phone'=>$address->phone,'logistics'=>$logistics['logistics'],'logisticsName'=>$logistics['name'],'logisticsStatus'=>$logistics['status'],'logisticsTime'=>$logistics['createTime'],'logisticsAddress'=>$logisticsAddress];
+            $data[] = ['id'=>$logistics['id'],'orderId'=>$v['id'],'orderNumber'=>$v['orderNumber'],'productName'=>$v['productTitle'],'productId'=>$v['productId'],'price'=>$v['payPrice'],'name'=>$address['name'],'phone'=>$address['phone'],'logistics'=>$logistics['logistics'],'logisticsName'=>$logistics['name'],'logisticsStatus'=>$logistics['status'],'logisticsTime'=>$logistics['createTime'],'logisticsAddress'=>$logisticsAddress];
         }
         return $this->render('order-logistics',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
