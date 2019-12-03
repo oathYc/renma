@@ -204,6 +204,9 @@ class WeixinPayController extends  Controller{
         $paramArr['notify_url'] = Yii::$app->params['wxNotify'];;//回调地址
         $paramArr['trade_type'] = \Yii::$app->params['wxJSAPI'];//交易类型 小程序支付 JSAPI
         $key = \Yii::$app->params['wxMchKey'];
+        //获取openid
+        $openid = self::getOpenid($orderData['id']);
+        $paramArr['openid'] = $openid;
         //生成签名
         ksort($paramArr);
         $sign = self::signWxpay($paramArr,$key);
