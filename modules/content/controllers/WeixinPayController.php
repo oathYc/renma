@@ -68,10 +68,16 @@ class WeixinPayController extends  Controller{
             $return['orderId'] = $orderId;
             //生成小程序调用签名
             $time = time();
-            $jsapiSign = self::getJsapiSign($paramArr['appid'],$time,$paramArr['nonce_str'],'prepay_id='.$return['prepay_id'],'MD5');
-            $return['jsapiSign'] = $jsapiSign;
-            $return['timeStamp'] = $time;
-            $data = ['code'=>1,'message'=>'success','data'=>$return];//,'msg'=>'支付请求成功'
+            $package = 'prepay_id='.$return['prepay_id'];
+            $signType ='MD5';
+            $nonceStr = $paramArr['nonce_str'];
+            $jsapiSign = self::getJsapiSign($paramArr['appid'],$time,$nonceStr,$package,$signType);
+            $ret['timeStamp'] = $time;
+            $ret['nonceStr'] = $nonceStr;
+            $ret['package'] = $package;
+            $ret['paySign'] = $jsapiSign;
+            $data = ['code'=>1,'message'=>'success','data'=>$ret];//,'msg'=>'支付请求成功'
+            $ret['signType'] = $signType;
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
         }else{
