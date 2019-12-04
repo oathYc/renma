@@ -22,7 +22,7 @@ class GoodProduct extends ActiveRecord
         foreach($goodProduct as $k => $v){
             $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
             $goodProduct[$k]['title'] = $product['title'];
-            $goodProduct[$k]['image'] = $product['headMsg'];
+            $goodProduct[$k]['headImage'] = $product['headMsg'];
             $goodProduct[$k]['price'] = $product['price'];
             $goodProduct[$k]['brand'] = $product['brand'];
         }
