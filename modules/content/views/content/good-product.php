@@ -43,7 +43,7 @@
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <a class="btn" href="/content/content/good-product-add?id=<?php echo $v['id']; ?>">修改</a>
+<!--                            <a class="btn" href="/content/content/good-product-add?id=--><?php //echo $v['id']; ?><!--">修改</a>-->
                             <a class="btn" href="JavaScript:if(confirm('确认移除该优选商品？')){location.href='/content/content/good-product-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>

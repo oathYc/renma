@@ -91,7 +91,7 @@ class ContentController  extends AdminController
             }
             $model->type = $type;
             $model->imageUrl = $imageUrl;
-            $model->url = $url;
+            $model->url = 'https://lck.hzlyzhenzhi.com'.$url;
             $model->status = $status;
             $model->title = $title;
             $model->rank = $rank?$rank:0;
