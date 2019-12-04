@@ -824,7 +824,7 @@ class ApiController extends  Controller
         }
         $page = Yii::$app->request->post('page',1);
         $offset = 10*($page-1);
-        $shop = Shop::find()->where("area = '{$area}'")->asArray()->offset($offset)->limit(10)->all();
+        $shop = Shop::find()->where("area = '{$area}' and province = '{$province}' and city = '{$city}'")->asArray()->offset($offset)->limit(10)->all();
         Methods::jsonData(1,'success',$shop);
     }
     /**
