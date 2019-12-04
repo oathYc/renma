@@ -1709,4 +1709,22 @@ class ApiController extends  Controller
             Methods::jsonData(0,'删除失败');
         }
     }
+    /**
+     * 订单类型数量
+     */
+    public function actionMyOrderNumber(){
+        $uid = Yii::$app->request->post('uid');
+        $type = [0,1,2,3,4];// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $data = [];
+        foreach($type as $k => $v){
+            if(!$uid){
+                $data[] = ['type'=>$v,'number'=>0];
+            }else{
+                $where = " uid = $uid  and typeStatus = $v";
+                $total = Order::find()->where($where)->count();
+                $data[] = ['type'=>$v,'number'=>$total];
+            }
+        }
+        Methods::jsonData(1,'success',$data);
+    }
 }

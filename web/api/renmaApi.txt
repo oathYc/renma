@@ -346,6 +346,10 @@
     接口参数        uid             用户uid
                     orderId         订单id
 
+    接口名称        订单类型数量
+    接口地址        /content/api/my-order-number
+    接口参数        uid             用户uid
+
 
 
 
