@@ -668,6 +668,7 @@ class ApiController extends  Controller
     }
     /**
      * 用户下单
+     * 单个商品购买
      */
     public function actionCreateOrder(){
         $uid = Yii::$app->request->post('uid');
@@ -766,6 +767,121 @@ class ApiController extends  Controller
             }
             if($status ==0){//需要支付金额
                 $return  = WeixinPayController::WxOrder($orderNumber,$product->title,$payPrice,$model->id);
+                die(json_encode($return));
+            }else{//不需要支付金额
+                Methods::jsonData(1,'success',['status'=>1]);//支付成功
+            }
+        }else{
+            Methods::jsonData(0,'订单添加失败');
+        }
+    }/**
+     * 用户下单
+     * 多个商品购买
+    * 购物车
+     */
+    public function actionCreateOrderByCart(){
+        $uid = Yii::$app->request->post('uid');
+        $products = Yii::$app->request->post('products','');//[['id'=>1,'number'=>1]]
+//        $number = Yii::$app->request->post('number',1);
+        $integral = Yii::$app->request->post('integral',0);//积分
+        $couponId = Yii::$app->request->post('couponId',0);//优惠券id
+        $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
+        $remark = Yii::$app->request->post('remark');//订单备注
+        $address = Yii::$app->request->post('addressId',0);//收货地址Id
+        $time = time();
+        $orderNumber = 'RM'.$time.rand(123456,999999);
+        if(!$uid){
+            Methods::jsonData(0,'用户uid不存在');
+        }
+        if(!$address){
+            Methods::jsonData(0,'请选择收货地址');
+        }
+        if(!is_array($products)){
+            Methods::jsonData(0,'商品信息错误');
+        }
+        $totalPrice = 0;
+        $productIds = [];
+        $numbers = 0;
+        foreach($products as $k => $v){
+            $price = Product::find()->where("id = {$v['id']}")->asArray()->one()['price'];
+            if(!$price)$price=0;
+            $number = isset($v['number'])?$v['number']:1;
+            $numbers += $number;
+            $price = $number*$price;
+            $totalPrice += $price;
+            $productIds[] = $v['id'];
+            ShopCart::deleteAll("uid = $uid and productId = {$v['id']}");
+        }
+        $productIds = implode(',',$productIds);
+        //积分抵扣
+        if(!$integral){
+            $integral = 0;
+            $inteMoney = 0;
+        }else{
+            //判断用户积分是否足够
+            $user = Member::findOne($uid);
+            if($user->integral < $integral){
+                Methods::jsonData(0,'用户积分不足');
+            }
+            $inteMoney = $integral;//积分金钱比例换算
+        }
+        //优惠券金额换算
+        if(!$couponId){
+            $couponId = 0;
+            $couponMoney = 0;//优惠券优惠价格
+        }else{
+            //判断用户是否有未有效的该优惠券
+            $userCoupon = UserCoupon::find()->where("uid = $uid and couponId = $couponId and status =0")->one();
+            if(!$userCoupon){
+                Methods::jsonData(0,'没有能使用的优惠券');
+            }
+            $coupon = Coupon::findOne($couponId);
+            if($coupon['least'] > $totalPrice){
+                Methods::jsonData(0,'该优惠券使用最低价格应不小于'.$coupon['least'].'元');
+            }else{
+                $couponMoney = $coupon['money'];
+            }
+        }
+        //抵扣金额
+        $reducePrice = $inteMoney+$couponMoney;
+        //实际支付价格
+        $payPrice = $totalPrice - $reducePrice;
+        if($payPrice <= 0){
+            $payPrice = 0;
+            $status = 1;//支付成功 不需调微信下单接口
+        }else{
+            $status = 0;
+        }
+        $model = new Order();
+        $model->orderNumber = $orderNumber;
+        $model->uid = $uid;
+        $model->productId = $productIds;
+        $model->productTitle = '购物车购买';
+        $model->totalPrice = $totalPrice;
+        $model->reducePrice = $reducePrice;
+        $model->payPrice = $payPrice;
+        $model->coupon = $couponId;
+        $model->number = $numbers;
+        $model->extInfo = '';
+        $model->status = $status;
+        $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $model->createTime = $time;
+        if($status == 1){
+            $model->finishTime = $time;
+        }
+        $model->payType = 1;
+        $model->type = $type;
+        $model->address = $address;
+        $model->integral = $integral;
+        $model->remark = $remark;
+        $res = $model->save();
+        if($res){
+            //记录用户优惠券使用记录
+            if($couponId){
+                UserCoupon::addRecord($uid,$couponId,$model->id);
+            }
+            if($status ==0){//需要支付金额
+                $return  = WeixinPayController::WxOrder($orderNumber,'购物车购买',$payPrice,$model->id);
                 die(json_encode($return));
             }else{//不需要支付金额
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功

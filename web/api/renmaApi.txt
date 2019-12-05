@@ -374,6 +374,16 @@
     接口地址        /content/api/member-coupon
     接口参数        uid              用户id
 
+    接口名称        用户下单(购物车购买)
+    接口地址        /content/api/create-order
+    接口参数        uid         用户id
+                    products    商品信息 数组 [['id'=>1,'number'=>1],['id'=>2,'number'=>2]]
+                    integral    使用积分 默认0 不使用
+                    couponId    优惠券id  默认0 不使用
+                    type        类型 1-充值 -买商品
+                    remark      订单备注
+                    addressId   收货地址id
+
 
 
 
