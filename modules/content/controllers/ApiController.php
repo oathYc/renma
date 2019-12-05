@@ -1790,4 +1790,18 @@ class ApiController extends  Controller
             Methods::jsonData(0,'兑换失败');
         }
     }
+    /**
+     * 商品评价
+     * type 0-全部 1-最新 2-有图 3-视频
+     */
+    public function actionProductComment(){
+        $type = Yii::$app->request->post('type',0);
+        $productId = Yii::$app->request->post('productId',0);
+        $page = Yii::$app->request->post('page',1);
+        if(!$productId){
+           Methods::jsonData(0,'商品id不存在');
+        }
+        $comment = Product::getCommentByType($productId,$type,$page);
+        Methods::jsonData(1,'success',$comment);
+    }
 }
