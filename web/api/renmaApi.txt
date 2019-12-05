@@ -370,6 +370,10 @@
                     type            类型 默认0 0-全部 1-最新 2-有图 3-视频
                     page            页数 默认 1
 
+    接口名称        用户优惠卷
+    接口地址        /content/api/member-coupon
+    接口参数        uid              用户id
+
 
 
 
