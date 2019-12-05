@@ -58,9 +58,9 @@ class Member extends ActiveRecord
                 $endTime = strtotime($memberLog['endTime'] + 86399);//最新会员结束时间
                 $todayTime = time();
                 if($endTime > $todayTime){//还在会员时间段内
-                    Member::updateAll(['status'=>1]," id = $uid");
+                    Member::updateAll(['member'=>1]," id = $uid");
                 }else{//会员过期
-                    Member::updateAll(['status'=>0],"id = $uid");
+                    Member::updateAll(['member'=>0],"id = $uid");
                 }
             }else{//还没有开通会员
                 Member::updateAll(['member'=>0],"id = $uid");
