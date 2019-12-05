@@ -1185,8 +1185,6 @@ class ApiController extends  Controller
             Methods::jsonData(0,'提交失败');
         }
     }
-
-
     /**
      * 申请售后
      */
@@ -1255,8 +1253,6 @@ class ApiController extends  Controller
         }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$data]);
     }
-
-
     /**
      * 人工客服
      */
@@ -1292,7 +1288,6 @@ class ApiController extends  Controller
         $memebeContent = ShopMessage::find()->where("type =3")->asArray()->one();
         Methods::jsonData(1,'success',$memebeContent);
     }
-
     /**
      * 会员申请
      * 申请页面
@@ -1318,7 +1313,6 @@ class ApiController extends  Controller
         $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100];
         Methods::jsonData(1,'success',$data);
     }
-
     /**
      * 会员申请
      * 续费或者开通会员
@@ -1805,5 +1799,18 @@ class ApiController extends  Controller
         }
         $comment = Product::getCommentByType($productId,$type,$page);
         Methods::jsonData(1,'success',$comment);
+    }
+    /**
+     * 会员优惠价
+     * 已领取
+     */
+    public function actionMemberCoupon(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $coupons = UserCoupon::find()->where("uid = $uid and status =0")->asArray()->all();
+        $count = count($coupons);
+        Methods::jsonData(1,'success',['total'=>$count,'coupons'=>$coupons]);
     }
 }
