@@ -11,6 +11,8 @@ namespace app\modules\content\controllers;
 use app\libs\Methods;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
+use app\modules\content\models\User;
+use app\modules\content\models\UserCoupon;
 use yii;
 use yii\web\Controller;
 
@@ -166,7 +168,15 @@ class WeixinPayController extends  Controller{
                 $amount = $amount/100;//换成元
                 $orderData = Order::find()->where("orderNumber = '{$orderNo}' and payPrice = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
+                    //添加积分
+                    $member = User::findOne($orderData['uid']);
+                    $hadIntegral = isset($member->integral)?$member->integral:0;
+                    $integral = $hadIntegral + 100;
+                    Member::updateAll(['integral'=>$integral]," uid = {$orderData['uid']}");
                     Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
+                    if($orderData['coupon'] > 0){
+                        UserCoupon::updateAll(['status'=>1]," uid = {$orderData['uid']} and status = 0 and couponId = {$orderData['coupon']}");
+                    }
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{

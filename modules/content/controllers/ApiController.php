@@ -714,10 +714,10 @@ class ApiController extends  Controller
             $couponId = 0;
             $couponMoney = 0;//优惠券优惠价格
         }else{
-            //判断用户是否已经使用过该优惠券
-            $userCoupon = UserCoupon::find()->where("uid = $uid and couponId = $couponId")->one();
-            if($userCoupon){
-                Methods::jsonData(0,'你已经使用过该优惠券（每张只能用一次）');
+            //判断用户是否有未有效的该优惠券
+            $userCoupon = UserCoupon::find()->where("uid = $uid and couponId = $couponId and status =0")->one();
+            if(!$userCoupon){
+                Methods::jsonData(0,'没有能使用的优惠券');
             }
             $coupon = Coupon::findOne($couponId);
             if($coupon['least'] > $totalPrice){
@@ -1073,12 +1073,11 @@ class ApiController extends  Controller
         Member::checkMemberStatus($uid);
         $user = Member::find()->where("id = $uid")->asArray()->one();
         if($user){
-            $totalCou = Coupon::find()->count();
-            $userCou = UserCoupon::find()->where("uid = $uid")->count();
-            $userCoupon = $totalCou-$userCou;//优惠券数量  所有减去用户已经用了的
-            $user['couponNumber'] = $userCoupon;
-
+            $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
+            $user['couponNumber'] = $userCou;
         }
+        $coupons = Coupon::find()->asArray()->limit(8)->all();
+        $user['coupons'] = $coupons;
         Methods::jsonData(1,'success',$user);
     }
     /**
@@ -1629,6 +1628,8 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         $comment = Yii::$app->request->post('comment','');
+        $image = Yii::$app->request->post('image');
+        $video = Yii::$app->request->post('video');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -1648,6 +1649,8 @@ class ApiController extends  Controller
         $order->evaluate = $comment;
         $order->evalTime = time();
         $order->typeStatus = 4;
+        $order->evalImage = serialize($image);
+        $order->evalVideo = serialize($video);
         $res = $order->save();
         if($res){
             Methods::jsonData(1,'评价成功');
@@ -1726,5 +1729,65 @@ class ApiController extends  Controller
             }
         }
         Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 优惠券页面
+     */
+    public function actionCouponMessage(){
+        $rule = ShopMessage::find()->where("type = 4")->asArray()->one();
+        $coupons = Coupon::find()->asArray()->all();
+        //当前积分
+        $uid = Yii::$app->request->post('uid');
+        if($uid){
+            $integral = Member::find()->where("id = $uid")->asArray()->one()['integral'];
+            $integral = $integral?$integral:0;
+        }else{
+            $integral = 0;
+        }
+        Methods::jsonData(1,'success',['integralRule'=>$rule,'coupons'=>$coupons,'integral'=>$integral]);
+    }
+    /**
+     * 积分兑换优惠券
+     */
+    public function actionIntegralCoupon(){
+        $uid = Yii::$app->request->post('uid');
+        $couponId = Yii::$app->request->post('couponId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$couponId){
+            Methods::jsonData(0,'优惠券id不存在');
+        }
+        $coupon = Coupon::findOne($couponId);
+        if(!$coupon){
+            Methods::jsonData(0,'该优惠券已停用');
+        }
+        $need = $coupon->integral;
+        $had = UserCoupon::find()->where("uid = $uid and couponId = $couponId and status = 1")->one();
+        if($had){
+            Methods::jsonData(0,'你已经有该优惠券，请使用后再兑换');
+        }
+        $user = Member::find()->where("id = $uid")->one();
+        if(!$user){
+            Methods::jsonData(0,'没有该用户');
+        }
+        $integral = $user->integral;
+        $integral = $integral?$integral:0;
+        if($integral < $need){
+            Methods::jsonData(0,'你的积分不够');
+        }
+        $user->integral = $integral - $need;
+        $res = $user->save();
+        if($res){
+            $model = new UserCoupon();
+            $model->uid = $uid;
+            $model->couponId = $couponId;
+            $model->createTime = time();
+            $model->status = 0;
+            $model->save();
+            Methods::jsonData(0,'兑换成功');
+        }else{
+            Methods::jsonData(0,'兑换失败');
+        }
     }
 }

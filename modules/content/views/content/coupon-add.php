@@ -20,12 +20,12 @@
                     <input type="text" name="money" id="money" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />
                 </div>
             </div>
-<!--            <div class="control-group">-->
-<!--                <label for="modulename" class="control-label">数量</label>-->
-<!--                <div class="controls">-->
-<!--                    <input type="text" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="control-group">
+                <label for="modulename" class="control-label">积分</label>
+                <div class="controls">
+                    <input type="text" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />
+                </div>
+            </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">起步价</label>
                 <div class="controls">

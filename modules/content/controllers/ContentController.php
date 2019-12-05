@@ -257,7 +257,7 @@ class ContentController  extends AdminController
             $name = Yii::$app->request->post('name');
             $money = Yii::$app->request->post('money');
             $least = Yii::$app->request->post('least',0);
-//            $number = Yii::$app->request->post('number');
+            $number = Yii::$app->request->post('number');
             $remark = Yii::$app->request->post('remark');
             if(!$name){
                 echo "<script>alert('请填写优惠券名称');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -265,14 +265,14 @@ class ContentController  extends AdminController
             if(!$money || $money <= 0){
                 echo "<script>alert('请填写正确的优惠券金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-//            if(!$number || $number < 1){
-//                echo "<script>alert('请填写正确的优惠券数量');setTimeout(function(){history.go(-1);},1000)</script>";die;
-//            }
+            if(!$number || $number < 1){
+                echo "<script>alert('请填写正确的兑换积分数量');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
             $model = new Coupon();
             $model->name = $name;
             $model->money = $money;
             $model->least = $least?$least:0;
-//            $model->number = $number;
+            $model->integral = $number;
             $model->remark = $remark;
             $model->createTime = time();
             $res = $model->save();
@@ -460,6 +460,42 @@ class ContentController  extends AdminController
         }else{
             $about = ShopMessage::find()->where("type = 2")->asArray()->one();
             return $this->render('service',['data'=>$about]);
+        }
+    }
+    /**
+     * 积分规则
+     */
+    public function actionIntegralRule(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            $image = Yii::$app->request->post('image');
+            if(!$content){
+                echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$image){
+                echo "<script>alert('请上传图片');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 4; // 1-关于我们 2-客服说明 3-会员充值说明 4-积分规则
+            $model->createTime = time();
+            $model->image = 'https://lck.hzlyzhenzhi.com'.$image;
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='integral-rule';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 4")->asArray()->one();
+            return $this->render('integral-rule',['data'=>$about]);
         }
     }
 
