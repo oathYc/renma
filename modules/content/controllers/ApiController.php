@@ -1093,6 +1093,7 @@ class ApiController extends  Controller
     public function actionOpinion(){
         $uid = Yii::$app->request->post('uid');
         $content = Yii::$app->request->post('content');
+        $image = Yii::$app->request->post('image');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -1104,6 +1105,7 @@ class ApiController extends  Controller
         $model->content = $content;
         $model->type = 1;//意见反馈
         $model->createTime = time();
+        $model->image = serialize($image);
         $res = $model->save();
         if($res){
             Methods::jsonData(1,'反馈成功');

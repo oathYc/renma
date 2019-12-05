@@ -208,6 +208,7 @@
     接口地址        /content/api/opinion
     接口参数        uid         用户id
                     content     反馈内容
+                    image        图片 数组
 
     接口名称        质保商品数据获取
     接口地址        /content/api/user-quality
