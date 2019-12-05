@@ -257,14 +257,14 @@ class ContentController  extends AdminController
             $name = Yii::$app->request->post('name');
             $money = Yii::$app->request->post('money');
             $least = Yii::$app->request->post('least',0);
-            $number = Yii::$app->request->post('number');
+            $number = Yii::$app->request->post('number',0);//为0时是店铺优惠价  大于0 积分兑换
             $remark = Yii::$app->request->post('remark');
             if(!$name){
                 echo "<script>alert('请填写优惠券名称');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            if(!$money || $money <= 0){
-                echo "<script>alert('请填写正确的优惠券金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
+//            if(!$money || $money <= 0){
+//                echo "<script>alert('请填写正确的优惠券金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
             if(!$number || $number < 1){
                 echo "<script>alert('请填写正确的兑换积分数量');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }

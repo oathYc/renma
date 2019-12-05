@@ -1303,11 +1303,11 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         Member::checkMemberStatus($uid);
-        $user = Member::findOne($uid);
+        $user = Member::find()->where("id = $uid")->asArray()->one();
         if(!$user){
             Methods::jsonData(0,'用户不存在');
         }
-        if($user->memeber ==1){
+        if($user['memeber'] ==1){
             //获取会员到期时间
             $endTime = MemberLog::find()->where("uid = $uid")->orderBy('endTime desc')->asArray()->one()['endTime'];
             $member = 1;

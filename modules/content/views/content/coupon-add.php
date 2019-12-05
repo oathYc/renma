@@ -23,7 +23,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">积分</label>
                 <div class="controls">
-                    <input type="text" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />
+                    <input type="text" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" placeholder="不填为店铺优惠卷"/>
                 </div>
             </div>
             <div class="control-group">
