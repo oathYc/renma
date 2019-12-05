@@ -1809,7 +1809,8 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        $coupons = UserCoupon::find()->where("uid = $uid and status =0")->asArray()->all();
+        $sql = " select * from {{%user_coupon}} uc inner join {{%coupon}} c onc.id = uc.couponId where uc.uid = $uid and uc.status =0";
+        $coupons = Yii::$app->db->createCommand($sql)->queryAll();
         $count = count($coupons);
         Methods::jsonData(1,'success',['total'=>$count,'coupons'=>$coupons]);
     }
