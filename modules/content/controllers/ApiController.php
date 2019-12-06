@@ -782,9 +782,7 @@ class ApiController extends  Controller
      */
     public function actionCreateOrderByCart(){
         $uid = Yii::$app->request->post('uid');
-        $products = Yii::$app->request->post('products','');//[['id'=>1,'number'=>1]]
-        var_dump($products);die;
-//        $number = Yii::$app->request->post('number',1);
+        $products = Yii::$app->request->post('products','');//1-2,2-2
         $integral = Yii::$app->request->post('integral',0);//积分
         $couponId = Yii::$app->request->post('couponId',0);//优惠券id
         $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
@@ -798,21 +796,25 @@ class ApiController extends  Controller
         if(!$address){
             Methods::jsonData(0,'请选择收货地址');
         }
-        if(!is_array($products)){
+        if(!$products){
             Methods::jsonData(0,'商品信息错误');
         }
         $totalPrice = 0;
         $productIds = [];
         $numbers = 0;
+        $products = explode(',',$products);
         foreach($products as $k => $v){
-            $price = Product::find()->where("id = {$v['id']}")->asArray()->one()['price'];
+            $arr = explode('-',$v);
+            if(count($arr)!=2){
+                continue;
+            }
+            $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
             if(!$price)$price=0;
-            $number = isset($v['number'])?$v['number']:1;
-            $numbers += $number;
-            $price = $number*$price;
+            $numbers += $arr[1];
+            $price = $arr[1]*$price;
             $totalPrice += $price;
-            $productIds[] = $v['id'];
-            ShopCart::deleteAll("uid = $uid and productId = {$v['id']}");
+            $productIds[] = $arr[0];
+            ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}");
         }
         $productIds = implode(',',$productIds);
         //积分抵扣
