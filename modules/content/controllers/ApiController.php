@@ -774,7 +774,8 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(0,'订单添加失败');
         }
-    }/**
+    }
+    /**
      * 用户下单
      * 多个商品购买
     * 购物车
@@ -782,6 +783,7 @@ class ApiController extends  Controller
     public function actionCreateOrderByCart(){
         $uid = Yii::$app->request->post('uid');
         $products = Yii::$app->request->post('products','');//[['id'=>1,'number'=>1]]
+        var_dump($products);die;
 //        $number = Yii::$app->request->post('number',1);
         $integral = Yii::$app->request->post('integral',0);//积分
         $couponId = Yii::$app->request->post('couponId',0);//优惠券id
