@@ -64,7 +64,9 @@ class Product extends ActiveRecord
         $sql3 = $sql.$where3;
         $content3 = \Yii::$app->db->createCommand($sql3)->queryAll();
         $count3 = count($content3);
-        $count = $count1+$count2+$count3;
+        $sql = $sql.$where;
+        $content = \Yii::$app->db->createCommand($sql)->queryAll();
+        $count = count($content);
         $counts= [
             ['type'=>0,'number'=>$count],
             ['type'=>1,'number'=>$count1],
