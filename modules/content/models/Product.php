@@ -64,7 +64,7 @@ class Product extends ActiveRecord
         $sql3 = $sql.$where3;
         $content3 = \Yii::$app->db->createCommand($sql3)->queryAll();
         $count3 = count($content3);
-        $sql = $sql.$where;
+        $sql = $sql." where o.productId = $productId and o.evalTime > 0 ";
         $content = \Yii::$app->db->createCommand($sql)->queryAll();
         $count = count($content);
         $counts= [
