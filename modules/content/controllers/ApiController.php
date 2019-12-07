@@ -1696,12 +1696,16 @@ class ApiController extends  Controller
 //        if(!$catPid){
 //            Methods::jsonData(0,'一级分类id不存在');
 //        }
-        $where = '';
+        $where = ' 1= 1';
         if($catCid){
-            $where = " catCid = $catCid";
+            $where .= " and  catCid = $catCid";
         }
         if($catPid){
-            $where = " catPid = $catPid";
+            $where .= " and catPid = $catPid";
+        }
+        $type = Yii::$app->request->post('type',0);//商品类型 1-维修 2-新车 3-二手车
+        if($type > 0){
+            $where .= " and type = $type ";
         }
 
         $total = Product::find()->where($where)->count();
