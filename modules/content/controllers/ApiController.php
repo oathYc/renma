@@ -421,7 +421,7 @@ class ApiController extends  Controller
         $model->uid = $uid;
         $model->title = $title;
         $model->catPid = $catPid;
-        $model->catCip = $catCid;
+        $model->catCid = $catCid;
         $model->price = $price;
         $model->voltage = $voltage;
         $model->mileage = $mileage;
