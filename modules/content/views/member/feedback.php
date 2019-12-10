@@ -17,6 +17,7 @@
             <thead>
             <tr>
                 <th>用户uid</th>
+                <th>用户昵称</th>
                 <th>反馈内容</th>
                 <th>反馈时间</th>
                 <th >操作</th>
@@ -27,7 +28,8 @@
             foreach( $data as $kss => $v) {
                 ?>
                 <tr>
-                    <td ><span><?php echo $v['id']?></span></td>
+                    <td ><span><?php echo $v['uid']?></span></td>
+                    <td ><span><?php echo $v['nickname']?></span></td>
                     <td ><span><?php echo $v['content']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
 

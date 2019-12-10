@@ -99,6 +99,9 @@ class MemberController  extends AdminController
         $count = UserPush::find()->where("type = 1")->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
         $data = UserPush::find()->orderBy('id desc')->where("type = 1")->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['nickname'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
+        }
         return $this->render('feedback',['page'=>$page,'count'=>$count,'data'=>$data]);
 
     }
