@@ -433,6 +433,7 @@ class ApiController extends  Controller
         $model->introduce = $introduce;
         $model->type = $type;
         $model->number = $number;
+        $model->createTime = time();
         $res = $model->save();
         if($res){
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();
