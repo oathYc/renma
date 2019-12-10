@@ -139,6 +139,7 @@
                     type        类型 1-充值 -买商品
                     remark      订单备注
                     addressId   收货地址id
+                    extInfo      其它信息  传定位地址信息
 
 
 
@@ -319,6 +320,7 @@
     接口参数        catPid          一级分类id
                     catCid          二级分类id
                     page            页数 默认1
+                    type            类型 0-全部 1-维修 2-新车 3-二手车
 
     接口名称        邀请记录
     接口地址        /content/api/share-success
@@ -383,6 +385,7 @@
                     type        类型 1-充值 -买商品
                     remark      订单备注
                     addressId   收货地址id
+                    extInfo      其它信息  传定位地址信息
 
 
 

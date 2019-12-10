@@ -421,7 +421,7 @@ class ApiController extends  Controller
         $model->uid = $uid;
         $model->title = $title;
         $model->catPid = $catPid;
-        $model->catCip = $catCid;
+        $model->catCid = $catCid;
         $model->price = $price;
         $model->voltage = $voltage;
         $model->mileage = $mileage;
@@ -678,6 +678,7 @@ class ApiController extends  Controller
         $couponId = Yii::$app->request->post('couponId',0);//优惠券id
         $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
         $remark = Yii::$app->request->post('remark');//订单备注
+        $extInfo  = Yii::$app->request->post('extInfo','');
         $address = Yii::$app->request->post('addressId',0);//收货地址Id
         $time = time();
         $orderNumber = 'RM'.$time.rand(123456,999999);
@@ -749,10 +750,17 @@ class ApiController extends  Controller
         $model->number = $number;
         $model->extInfo = '';
         $model->status = $status;
+        $model->extInfo = $extInfo;
         $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $model->createTime = $time;
         if($status == 1){
             $model->finishTime = $time;
+        }
+        if(is_array($remark)){
+            $remark = json_encode($remark);
+        }
+        if(is_array($extInfo)){
+            $remark = json_encode($extInfo);
         }
         $model->payType = 1;
         $model->type = $type;
@@ -786,6 +794,7 @@ class ApiController extends  Controller
         $integral = Yii::$app->request->post('integral',0);//积分
         $couponId = Yii::$app->request->post('couponId',0);//优惠券id
         $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
+        $extInfo  = Yii::$app->request->post('extInfo','');
         $remark = Yii::$app->request->post('remark');//订单备注
         $address = Yii::$app->request->post('addressId',0);//收货地址Id
         $time = time();
@@ -856,12 +865,19 @@ class ApiController extends  Controller
         }else{
             $status = 0;
         }
+        if(is_array($remark)){
+            $remark = json_encode($remark);
+        }
+        if(is_array($extInfo)){
+            $remark = json_encode($extInfo);
+        }
         $model = new Order();
         $model->orderNumber = $orderNumber;
         $model->uid = $uid;
         $model->productId = $productIds;
         $model->productTitle = '购物车购买';
         $model->totalPrice = $totalPrice;
+        $model->extInfo = $extInfo;
         $model->reducePrice = $reducePrice;
         $model->payPrice = $payPrice;
         $model->coupon = $couponId;
@@ -1696,12 +1712,16 @@ class ApiController extends  Controller
 //        if(!$catPid){
 //            Methods::jsonData(0,'一级分类id不存在');
 //        }
-        $where = '';
+        $where = ' 1= 1';
         if($catCid){
-            $where = " catCid = $catCid";
+            $where .= " and  catCid = $catCid";
         }
         if($catPid){
-            $where = " catPid = $catPid";
+            $where .= " and catPid = $catPid";
+        }
+        $type = Yii::$app->request->post('type',0);//商品类型 1-维修 2-新车 3-二手车
+        if($type > 0){
+            $where .= " and type = $type ";
         }
 
         $total = Product::find()->where($where)->count();
