@@ -128,7 +128,11 @@ class OrderController  extends AdminController
             }else{
                 $logistics['status'] = $logistics['status']==1?'完成':($logistics['status']==0?'运送中':'');
             }
-            $address = Address::find()->where("id = {$v['address']}")->asArray()->one();
+            if($v['address']){
+                $address = Address::find()->where("id = {$v['address']}")->asArray()->one();
+            }else{
+                $addrss = [];
+            }
             if($address){
 //                $logisticsAddress = $address['province'].$address['city'].$address['area'].$address['address'];
                 $logisticsAddress = $address['area'].$address['address'];
