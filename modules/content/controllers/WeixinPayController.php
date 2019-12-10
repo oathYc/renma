@@ -169,10 +169,10 @@ class WeixinPayController extends  Controller{
                 $orderData = Order::find()->where("orderNumber = '{$orderNo}' and payPrice = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
                     //添加积分
-                    $member = User::findOne($orderData['uid']);
+                    $member = Member::findOne($orderData['uid']);
                     $hadIntegral = isset($member->integral)?$member->integral:0;
                     $integral = $hadIntegral + 100;
-                    Member::updateAll(['integral'=>$integral]," uid = {$orderData['uid']}");
+                    Member::updateAll(['integral'=>$integral]," id = {$orderData['uid']}");
                     Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
                     if($orderData['coupon'] > 0){
                         UserCoupon::updateAll(['status'=>1]," uid = {$orderData['uid']} and status = 0 and couponId = {$orderData['coupon']}");
