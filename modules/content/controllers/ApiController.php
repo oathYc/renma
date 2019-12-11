@@ -439,6 +439,7 @@ class ApiController extends  Controller
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();
             $product['catPidName'] = Category::find()->where("id = {$catPid}")->asArray()->one()['name'];
             $product['catCidName'] = Category::find()->where("id = {$catCid}")->asArray()->one()['name'];
+            $product['image'] = unserialize($product['image']);
             Methods::jsonData(1,'上传成功',$product);
         }else{
             Methods::jsonData(0,'上传失败');
