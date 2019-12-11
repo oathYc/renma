@@ -1442,6 +1442,7 @@ class ApiController extends  Controller
         if($user['member'] ==1){
             //获取会员到期时间
             $endTime = MemberLog::find()->where("uid = $uid")->orderBy('endTime desc')->asArray()->one()['endTime'];
+            $endTime = date("Y-m-d H:i:s",(86399+$endTime));
             $member = 1;
         }else{
             $member = 0;

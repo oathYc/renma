@@ -55,7 +55,7 @@ class Member extends ActiveRecord
         }else{
             $memberLog = MemberLog::find()->where(" uid = $uid ")->orderBy('endTime desc')->asArray()->one();
             if($memberLog){
-                $endTime = strtotime($memberLog['endTime'] + 86399);//最新会员结束时间
+                $endTime = $memberLog['endTime'] + 86399;//最新会员结束时间
                 $todayTime = time();
                 if($endTime > $todayTime){//还在会员时间段内
                     Member::updateAll(['member'=>1]," id = $uid");
