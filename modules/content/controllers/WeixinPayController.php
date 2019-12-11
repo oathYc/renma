@@ -175,6 +175,8 @@ class WeixinPayController extends  Controller{
                     //判断会员状态
                     if($orderData['type'] == 1){//充值
                         $member = 1;
+                        //赠送优惠券
+                        Member::sendCoupon($orderData['uid']);
                         Methods::varDumpLog('weixin.txt','member-1','a');
                     }else{
                         $member = isset($member->member)?$member->member:0;

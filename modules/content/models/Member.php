@@ -68,5 +68,29 @@ class Member extends ActiveRecord
             return true;
         }
     }
+    /**
+     * 会员优惠券赠送
+     */
+    public static function sendCoupon($uid){
+        //赠送五元优惠券五张
+        $coupons = Coupon::find()->where("money = 5")->asArray()->all();
+        $count = 0;
+        foreach($coupons as $k => $v){
+            $had = UserCoupon::find()->where("uid = $uid and couponId = {$v['id']}")->one();
+            if(!$had){
+                if($count < 6){
+                    $model = new UserCoupon();
+                    $model->uid = $uid;
+                    $model->couponId = $v['id'];
+                    $model->createTime = time();
+                    $model->status = 0;
+                    $res = $model->save();
+                    if($res){
+                        $count += 1;
+                    }
+                }
+            }
+        }
+    }
 
 }
