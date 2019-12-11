@@ -175,10 +175,13 @@ class WeixinPayController extends  Controller{
                     //判断会员状态
                     if($orderData['type'] == 1){//充值
                         $member = 1;
+                        Methods::varDumpLog('weixin.txt','member-1','a');
                     }else{
                         $member = isset($member->member)?$member->member:0;
+                        Methods::varDumpLog('weixin.txt','member-0','a');
                     }
-                    Member::updateAll(['integral'=>$integral,'member'=>$member]," id = {$orderData['uid']}");
+                    $res = Member::updateAll(['integral'=>$integral,'member'=>$member]," id = {$orderData['uid']}");
+                    Methods::varDumpLog('weixin.txt',$res,'a');
                     Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
                     //优惠券判断
                     if($orderData['coupon'] > 0){
