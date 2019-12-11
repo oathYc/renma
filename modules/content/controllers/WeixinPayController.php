@@ -172,8 +172,15 @@ class WeixinPayController extends  Controller{
                     $member = Member::findOne($orderData['uid']);
                     $hadIntegral = isset($member->integral)?$member->integral:0;
                     $integral = $hadIntegral + 100;
-                    Member::updateAll(['integral'=>$integral]," id = {$orderData['uid']}");
+                    //判断会员状态
+                    if($orderData['type'] == 1){//充值
+                        $member = 1;
+                    }else{
+                        $member = isset($member->member)?$member->member:0;
+                    }
+                    Member::updateAll(['integral'=>$integral,'member'=>$member]," id = {$orderData['uid']}");
                     Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
+                    //优惠券判断
                     if($orderData['coupon'] > 0){
                         UserCoupon::updateAll(['status'=>1]," uid = {$orderData['uid']} and status = 0 and couponId = {$orderData['coupon']}");
                     }

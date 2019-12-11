@@ -1470,14 +1470,14 @@ class ApiController extends  Controller
             if($user->member ==1){//已经是会员  进行续费
                 $remark = '会员续费';
                 $firstTime = MemberLog::find()->where("uid = $uid ")->orderBy('endTime desc')->asArray()->one()['endTime'];
-            }else{//第一次开通会员
+            }else{//当前不是会员
                 $remark = '会员开通';
                 $firstTime =strtotime(date('Y-m-d'));//今天的起始时间
             }
             //生成订单
             $orderNumber = 'RM'.time().rand(123456,999999);
             $orderId = Order::createOrder($uid,$orderNumber,$money,$remark);
-            $endTime = 86400*30*$month + strtotime($firstTime);
+            $endTime = 86400*30*$month + $firstTime;
             $model = new MemberLog();
             $model->uid = $uid;
             $model->beginTime = $firstTime;
@@ -1506,7 +1506,7 @@ class ApiController extends  Controller
         }
         $page = Yii::$app->request->post('page',1);
         $limit = " limit ".(10*($page-1)).',10 ';
-        $sql = " select ml.* from {{%memebr_log}} ml inner join {{order}} o on o.id = ml.orderId order by ml.createTime desc ";
+        $sql = " select ml.* from {{%member_log}} ml inner join {{%order}} o on o.id = ml.orderId where o.status =1 order by ml.createTime desc ";
         $data = Yii::$app->db->createCommand($sql)->queryAll();
         $total = count($data);
         $sql .= $limit;
