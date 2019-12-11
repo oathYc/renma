@@ -687,9 +687,9 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户uid不存在');
         }
-        if(!$address){
-            Methods::jsonData(0,'请选择收货地址');
-        }
+//        if(!$address){
+//            Methods::jsonData(0,'请选择收货地址');
+//        }
         if(!$productId){
             Methods::jsonData(0,'商品Id不存在');
         }
@@ -804,9 +804,9 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户uid不存在');
         }
-        if(!$address){
-            Methods::jsonData(0,'请选择收货地址');
-        }
+//        if(!$address){
+//            Methods::jsonData(0,'请选择收货地址');
+//        }
         if(!$products){
             Methods::jsonData(0,'商品信息错误');
         }
