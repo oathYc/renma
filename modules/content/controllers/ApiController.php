@@ -523,7 +523,9 @@ class ApiController extends  Controller
         if(!$page)$page =1;
         $offset = 10*($page-1);
         $product = Product::find()->where($where)->asArray()->offset($offset)->limit(10)->all();
-        $product['image'] = unserialize($product['image']);
+        foreach($product as $k => $v){
+            $product[$k]['image'] = unserialize($v['image']);
+        }
         Methods::jsonData(1,'success',['total'=>$total,'product'=>$product]);
     }
     /**
