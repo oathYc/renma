@@ -2179,4 +2179,28 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单添加失败');
         }
     }
+    /**
+     * 申请退款
+     */
+    public function actionApplyReturn(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        $had = Order::find()->where("id = $orderId and uid = $uid")->one();
+        if(!$had){
+            Methods::jsonData(0,'没有该订单');
+        }elseif($had->status !=1){
+            Methods::jsonData(0,'订单状态不对，不可申请退款');
+        }else{
+            $had->status = -1;//退款中
+            $had->save();
+            Methods::jsonData(1,'申请退款成功');
+        }
+
+    }
 }

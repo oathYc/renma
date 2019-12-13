@@ -2,17 +2,17 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/order/index">订单模块</a> <span class="divider">/</span></li>
-        <li class="active">质保商品</li>
+        <li class="active">订单记录</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/order/quality-product" method="get" class="form-horizontal">
+    <form action="/content/order/order-list" method="get" class="form-horizontal">
         <table class="table">
             <tr>
             </tr>
         </table>
     </form>
-    <form action="/content/order/quality-product" method="get">
+    <form action="/content/order/order-list" method="get">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
@@ -48,8 +48,11 @@
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-<!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
-                            <a class="btn" href="JavaScript:if(confirm('确认删除质保商品？')){location.href='/content/order/quality-delete?id=<?php echo $v['id']; ?>'}">删除</a>
+                            <!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
+                            <?php if($v['status'] == -1){?>
+                                <a class="btn" href="JavaScript:if(confirm('确认退款？')){location.href='/content/order/order-sure-return?id=<?php echo $v['id']; ?>'}">确认退款</a>&nbsp;
+                            <?php }?>
+                            <a class="btn" href="JavaScript:if(confirm('确认删除质保商品？')){location.href='/content/order/order-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>
                 </tr>

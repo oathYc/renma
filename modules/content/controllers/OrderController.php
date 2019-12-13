@@ -74,6 +74,16 @@ class OrderController  extends AdminController
         foreach($data as $k => $v){
             $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
             $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
+            if($v['status']==1){
+                $status = '支付成功';
+            }elseif($v['status'] == -1){
+                $status = '退款申请中';
+            }elseif($v['status'] == -2){
+                $status = '已退款';
+            }else{
+                $status = '待支付';
+            }
+            $data[$k]['status'] = $status;
         }
         return $this->render('order-list',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
@@ -204,5 +214,17 @@ class OrderController  extends AdminController
             return $this->render('logistics-add',['data'=>$data]);
         }
 
+    }
+    /**
+     * 订单退款
+     */
+    public function actionOrderSureReturn(){
+        $id = Yii::$app->request->get('id');
+        $res = Order::updateAll(['status'=>-2],"id = $id");
+        if($res){
+            echo "<script>alert('确认成功');setTimeout(function(){location.href='order-list';},1000)</script>";die;
+        }else{
+            echo "<script>alert('确认失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
     }
 }
