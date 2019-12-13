@@ -20,6 +20,7 @@ use app\modules\content\models\MemberLog;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
+use app\modules\content\models\Search;
 use app\modules\content\models\Shop;
 use app\modules\content\models\ShopCart;
 use app\modules\content\models\ShopMessage;
@@ -27,6 +28,7 @@ use app\modules\content\models\User;
 use app\modules\content\models\UserCoupon;
 use app\modules\content\models\UserGroup;
 use app\modules\content\models\UserPush;
+use function GuzzleHttp\Psr7\str;
 use yii\web\Controller;
 use Yii;
 
@@ -383,6 +385,25 @@ class ApiController extends  Controller
         $number = $request->post('number',1);//数量
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
+        }else{
+            $user = Member::find()->where("id = $uid")->asArray()->one();
+            $member = isset($user['member'])?$user['member']:0;
+            if($member != 1){
+                Methods::jsonData(0,'会员才能发布商品');
+            }else{
+                $had = Product::find()->where("uid = $uid")->count();
+                $memberLevel = $user['memberLevel'];
+                if($memberLevel ==1){
+                    $total = 12;
+                }elseif($memberLevel ==2){
+                    $total = 6;
+                }else{
+                    $total = 3;
+                }
+                if($had >=$total){
+                    Methods::jsonData(0,"你当前的会员等级只能发布".$total."个商品");
+                }
+            }
         }
         if(!$title){
             Methods::jsonData(0,'商品名称不存在');
@@ -466,11 +487,13 @@ class ApiController extends  Controller
      */
     public function actionIndexSearch(){
         $search = Yii::$app->request->post('search','');
+        $where = " 1=1 ";
         if($search){
-            $where = " title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
-            $product = Product::find()->where($where)->limit(10)->asArray()->all();
-        }else{
-            $product = [];
+            $where .= " and title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
+        }
+        $product = Product::find()->where($where)->orderBy('flushTime desc')->limit(10)->asArray()->all();
+        foreach($product as $k => $v){
+            $product[$k]['image'] = unserialize($v['image']);
         }
         Methods::jsonData(1,'success',$product);
     }
@@ -486,10 +509,13 @@ class ApiController extends  Controller
         $priceMin = Yii::$app->request->post('priceMin');//最低价
         $priceMax = Yii::$app->request->post('priceMax');//最高价
         $brand = Yii::$app->request->post('brand');//品牌
-        $voltageMin = Yii::$app->request->post('voltageMin');//最低电压
-        $voltageMax = Yii::$app->request->post('voltageMax');//最高电压
-        $mileageMin = Yii::$app->request->post('mileageMin');//续航里程最小
-        $mileageMax = Yii::$app->request->post('mileageMax');//续航里程最大
+        $voltage = Yii::$app->request->post('voltage');//电压
+        $mileage = Yii::$app->request->post('mileage');//续航里程
+//        $voltageMin = Yii::$app->request->post('voltageMin');//最低电压
+//        $voltageMax = Yii::$app->request->post('voltageMax');//最高电压
+//        $mileageMin = Yii::$app->request->post('mileageMin');//续航里程最小
+//        $mileageMax = Yii::$app->request->post('mileageMax');//续航里程最大
+        $priceOrder = Yii::$app->request->post('order',1);//价格顺序 1-低到高 2-高到低
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $where = " type = $type ";
         if($search){
@@ -504,29 +530,48 @@ class ApiController extends  Controller
         if($brand){
             $where .= " and brand = $brand";
         }
-        if($voltageMin){
-            $where .= " and voltage >= $voltageMin";
+//        if($voltageMin){
+//            $where .= " and voltage >= $voltageMin";
+//        }
+//        if($voltageMax){
+//            $where .= " and voltage <= $voltageMax";
+//        }
+//        if($mileageMin){
+//            $where .= " and mileage >= $mileageMin";
+//        }
+//        if($mileageMax){
+//            $where .= " and mileage <= $mileageMax";
+//        }
+        if($voltage){
+            $where .= " and voltage = $voltage";
         }
-        if($voltageMax){
-            $where .= " and voltage <= $voltageMax";
-        }
-        if($mileageMin){
-            $where .= " and mileage >= $mileageMin";
-        }
-        if($mileageMax){
-            $where .= " and mileage <= $mileageMax";
+        if($mileage){
+            $where .= " and mileage = $mileage";
         }
         if($sex){
             $where .= " and sex = $sex";
         }
+        if($priceOrder ==1){
+            $order = " price asc ";
+        }elseif($priceOrder ==2){
+            $order = " price desc";
+        }else{
+            $order = " flushTime desc";
+        }
         $total = Product::find()->where($where)->count();
         if(!$page)$page =1;
         $offset = 10*($page-1);
-        $product = Product::find()->where($where)->asArray()->offset($offset)->limit(10)->all();
+        $product = Product::find()->where($where)->orderBy($order)->asArray()->offset($offset)->limit(10)->all();
         foreach($product as $k => $v){
             $product[$k]['image'] = unserialize($v['image']);
         }
-        Methods::jsonData(1,'success',['total'=>$total,'product'=>$product]);
+        //电压
+        $voltages = Search::find()->where('type =1')->orderBy('val asc')->asArray()->all();
+        //续航
+        $mileages = Search::find()->where('type =2')->orderBy('val asc')->asArray()->all();
+        //使用性别
+        $sexs = [['type'=>0,'name'=>'通用'],['type'=>1,'name'=>'男'],['type'=>2,'name'=>'女']];
+        Methods::jsonData(1,'success',['total'=>$total,'product'=>$product,'voltages'=>$voltages,'mileages'=>$mileages,'sexs'=>$sexs]);
     }
     /**
      * 商品详情
@@ -685,6 +730,7 @@ class ApiController extends  Controller
         $remark = Yii::$app->request->post('remark');//订单备注
         $extInfo  = Yii::$app->request->post('extInfo','');
         $address = Yii::$app->request->post('addressId',0);//收货地址Id
+        $serFee = Yii::$app->request->post('serFee',0);//服务费
         $time = time();
         $orderNumber = 'RM'.$time.rand(123456,999999);
         if(!$uid){
@@ -736,7 +782,8 @@ class ApiController extends  Controller
         //抵扣金额
         $reducePrice = $inteMoney+$couponMoney;
         //实际支付价格
-        $payPrice = $totalPrice - $reducePrice;
+        $serFee = $serFee?$serFee:0;
+        $payPrice = $totalPrice - $reducePrice + $serFee;
         if($payPrice <= 0){
             $payPrice = 0;
             $status = 1;//支付成功 不需调微信下单接口
@@ -772,6 +819,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->integral = $integral;
         $model->remark = $remark;
+        $model->serverFee = $serFee;
         $res = $model->save();
         if($res){
             //记录用户优惠券使用记录
@@ -802,6 +850,7 @@ class ApiController extends  Controller
         $extInfo  = Yii::$app->request->post('extInfo','');
         $remark = Yii::$app->request->post('remark');//订单备注
         $address = Yii::$app->request->post('addressId',0);//收货地址Id
+        $serFee = Yii::$app->request->post('serFee',0);//服务费
         $time = time();
         $orderNumber = 'RM'.$time.rand(123456,999999);
         if(!$uid){
@@ -830,6 +879,7 @@ class ApiController extends  Controller
             $productIds[] = $arr[0];
             ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}");
         }
+        $totalPrice = 100;
         $productIds = implode(',',$productIds);
         //积分抵扣
         if(!$integral){
@@ -863,7 +913,8 @@ class ApiController extends  Controller
         //抵扣金额
         $reducePrice = $inteMoney+$couponMoney;
         //实际支付价格
-        $payPrice = $totalPrice - $reducePrice;
+        $serFee = $serFee?$serFee:0;
+        $payPrice = $totalPrice - $reducePrice + $serFee;
         if($payPrice <= 0){
             $payPrice = 0;
             $status = 1;//支付成功 不需调微信下单接口
@@ -899,6 +950,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->integral = $integral;
         $model->remark = $remark;
+        $model->serverFee = $serFee;
         $res = $model->save();
         if($res){
             //记录用户优惠券使用记录
@@ -1219,6 +1271,12 @@ class ApiController extends  Controller
         }
         $coupons = Coupon::find()->asArray()->limit(8)->all();
         $user['coupons'] = $coupons;
+        //删除超过15分钟的代付款订单
+        $time = time() -15*3600;
+        Order::deleteAll("status = 0 and createTime < $time and uid = $uid");
+        //会员优惠说明
+        $memberDesc = ShopMessage::find()->where("type =5")->asArray()->one()['content'];
+        $user['memberDesc'] = $memberDesc;
         Methods::jsonData(1,'success',$user);
     }
     /**
@@ -1379,7 +1437,7 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        $where = " uid = $uid";
+        $where = " uid = $uid and type = 2";
         if($type !=99){
             $where .= " and typeStatus = $type";
         }
@@ -1398,7 +1456,7 @@ class ApiController extends  Controller
      * 人工客服
      */
     public function actionService(){
-        $service = ShopMessage::find()->where("type ==2")->asArray()->one();
+        $service = ShopMessage::find()->where("type =2")->asArray()->one();
         Methods::jsonData(1,'success',$service);
     }
     /**
@@ -1452,7 +1510,13 @@ class ApiController extends  Controller
             $member = 0;
             $endTime = '';
         }
-        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100];
+        //节省金额
+        $reduceMoney = Order::find()->where("uid = $uid and status = 1")->sum('reducePrice');
+        //优惠券数量
+        $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
+        //免单数量
+        $feeCount = Order::find()->where("uid = $uid and status = 1 and serverFee = 0")->count();
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount];
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -1464,6 +1528,7 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $month = Yii::$app->request->post('month',1);
         $money = Yii::$app->request->post('money',0);
+        $level = Yii::$app->request->post('level',3);//会员等级
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -1491,6 +1556,7 @@ class ApiController extends  Controller
             $model->createTime = time();
             $res = $model->save();
             if($res){
+                Member::updateAll(['memberLevel'=>$level],"uid = $uid");
                 $return  = WeixinPayController::WxOrder($orderNumber,$remark,$money,$orderId);
                 die(json_encode($return));
             }else{
@@ -1947,7 +2013,7 @@ class ApiController extends  Controller
         Methods::jsonData(1,'success',$comment);
     }
     /**
-     * 会员优惠价
+     * 会员优惠卷
      * 已领取
      */
     public function actionMemberCoupon(){
@@ -1959,5 +2025,158 @@ class ApiController extends  Controller
         $coupons = Yii::$app->db->createCommand($sql)->queryAll();
         $count = count($coupons);
         Methods::jsonData(1,'success',['total'=>$count,'coupons'=>$coupons]);
+    }
+    /**
+     * 电压值获取
+     */
+    public function actionVoltage(){
+        $voltage = Search::find()->where(" type =1")->asArray()->all();
+        Methods::jsonData(1,'success',$voltage);
+    }
+    /**
+     * 我的商品
+     */
+    public function actionMyProduct(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        //删除15天内未刷新的商品
+        $time = strtotime(date("Y-m-d"));
+        $begin = $time - 15*86400;
+        Product::deleteAll("uid = $uid and flushTime < $begin");
+        $product = Product::find()->where("uid = $uid")->orderBy('flushTime desc')->asArray()->all();
+        Methods::jsonData(1,'success',$product);
+    }
+    /**
+     * 商品刷新
+     */
+    public function actionProductFlush(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $today = strtotime(date('Y-m-d'));
+        $had = Product::find()->where("id = $productId and uid = $uid and flushTime >= $today")->one();
+        if($had){
+            Methods::jsonData(2,'当前支刷新需要支付一定的费用');
+        }
+        $had = Product::findOne($productId);
+        $had->flushTime = time();
+        $had->save();
+        Methods::jsonData(1,'刷新成功');
+    }
+    /**
+     * 商品删除
+     */
+    public function actionProductDelete(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $had = Product::find()->where("id = $productId and uid = $uid")->one();
+        if(!$had){
+            Methods::jsonData(0,'没有该商品');
+        }
+        $res = Product::deleteAll(" uid = $uid and id = $productId");
+        if($res){
+            Methods::jsonData(1,'删除成功');
+        }else{
+            Methods::jsonData(0,'删除失败，请重试');
+        }
+    }
+    /**
+     * 用户下单
+     * 商品刷新支付
+     */
+    public function actionProductFlushPay(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        $integral = Yii::$app->request->post('integral',0);//积分
+        $price = Yii::$app->request->post('price',1);//支付价格
+        $remark = Yii::$app->request->post('remark','商品刷新支付刷新费用');//订单备注
+        $time = time();
+        $orderNumber = 'RM'.$time.rand(123456,999999);
+        if(!$uid){
+            Methods::jsonData(0,'用户uid不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品Id不存在');
+        }
+        $product = Product::findOne($productId);
+        if(!$product){
+            Methods::jsonData(0,'没有该商品');
+        }
+        $totalPrice = $price;
+        //积分抵扣
+        if(!$integral){
+            $integral = 0;
+            $inteMoney = 0;
+        }else{
+            //判断用户积分是否足够
+            $user = Member::findOne($uid);
+            if($user->integral < $integral){
+                Methods::jsonData(0,'用户积分不足');
+            }
+            $inteMoney = $integral;//积分金钱比例换算
+        }
+        $couponId = 0;
+        $couponMoney = 0;//优惠券优惠价格
+        //抵扣金额
+        $reducePrice = $inteMoney+$couponMoney;
+        //实际支付价格
+        $payPrice = $totalPrice - $reducePrice;
+        if($payPrice <= 0){
+            $payPrice = 0;
+            $status = 1;//支付成功 不需调微信下单接口
+        }else{
+            $status = 0;
+        }
+        $model = new Order();
+        $model->orderNumber = $orderNumber;
+        $model->uid = $uid;
+        $model->productId = $productId;
+        $model->productTitle = $product->title;
+        $model->totalPrice = $totalPrice;
+        $model->reducePrice = $reducePrice;
+        $model->payPrice = $payPrice;
+        $model->coupon = $couponId;
+        $model->number = 1;
+        $model->extInfo = '';
+        $model->status = $status;
+        $model->extInfo = '';
+        $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $model->createTime = $time;
+        if($status == 1){
+            $model->finishTime = $time;
+        }
+        if(is_array($remark)){
+            $remark = json_encode($remark);
+        }
+        $model->payType = 1;
+        $model->type = 3; //1-充值 2-买商品 3-商品刷新
+        $model->address = '';
+        $model->integral = $integral;
+        $model->remark = $remark;
+        $model->serverFee = 0;
+        $res = $model->save();
+        if($res){
+            if($status ==0){//需要支付金额
+                $return  = WeixinPayController::WxOrder($orderNumber,$product->title,$payPrice,$model->id);
+                die(json_encode($return));
+            }else{//不需要支付金额
+                Methods::jsonData(1,'success',['status'=>1]);//支付成功
+            }
+        }else{
+            Methods::jsonData(0,'订单添加失败');
+        }
     }
 }

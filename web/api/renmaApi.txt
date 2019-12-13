@@ -85,11 +85,10 @@
                     priceMin    最低价
                     priceMax    最高价
                     brand       品牌
-                    voltageMin  最低电压
-                    voltageMax  最高电压
-                    mileageMin  最低续航里程
-                    mileageMax  最好续航里程
+                    voltage     电压
+                    mileage     续航里程
                     sex          使用性别   0-通用 1-男 2-女 默认0
+                    order        价格排序 1-低到高 2-高到底
 
     接口名称        商品详情
     接口地址        /content/api/product-detail
@@ -271,6 +270,7 @@
     接口参数        uid         用户id
                     month       月 默认1
                     money       充值金额
+                    level       会员等级 默认3
 
 
     接口名称        会员申请历史记录
@@ -386,13 +386,28 @@
                     remark      订单备注
                     addressId   收货地址id
                     extInfo      其它信息  传定位地址信息
+                    serFee      服务费  默认0
+
+    接口名称        我发布的商品
+    接口地址        /content/api/my-product
+    接口参数        uid              用户id
+
+    接口名称        商品刷新
+    接口地址        /content/api/product-flush
+    接口参数        uid              用户id
+                    productId         商品Id
 
 
+    接口名称        商品删除
+    接口地址        /content/api/product-delete
+    接口参数        uid              用户id
+                    productId         商品Id
 
-
-
-
-
-
+    接口名称        商品刷新支付
+    接口地址        /content/api/product-flush-pay
+    接口参数        uid              用户id
+                    productId         商品Id
+                    integral          抵扣积分 默认0
+                    price               支付费用
 
 

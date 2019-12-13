@@ -12,6 +12,7 @@ use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Product;
+use app\modules\content\models\Search;
 use app\modules\content\models\ShopMessage;
 use PHPUnit\Framework\Constraint\Count;
 use yii\data\Pagination;
@@ -289,7 +290,7 @@ class ContentController  extends AdminController
      * 优惠券删除
      */
     public function actionCouponDelete(){
-        $id = Yii::$app->request->post('id');
+        $id = Yii::$app->request->get('id');
         if(!$id){
             echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
@@ -440,8 +441,12 @@ class ContentController  extends AdminController
         if($_POST){
             $id = Yii::$app->request->post('id');
             $content = Yii::$app->request->post('content');
+            $image = Yii::$app->request->post('image');
             if(!$content){
                 echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$image){
+                echo "<script>alert('请上传图片');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if($id){
                 $model = ShopMessage::findOne($id);
@@ -451,6 +456,7 @@ class ContentController  extends AdminController
             $model->content = $content;
             $model->type = 2; // 1-关于我们 2-客服说明 3-会员充值说明
             $model->createTime = time();
+            $model->image = 'https://lck.hzlyzhenzhi.com'.$image;
             $res = $model->save();
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='service';},1000)</script>";die;
@@ -499,4 +505,92 @@ class ContentController  extends AdminController
         }
     }
 
+    /**
+     * 筛选设置
+     * 电压 续航里程
+     */
+    public function actionSearchSet(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Search::find()->asArray()->count();
+        $page =  new Pagination(['totalCount'=>$count]);
+        $data = Search::find()->asArray()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('search',['count'=>$count,'page'=>$page,'data'=>$data]);
+    }
+
+    /**
+     * 筛选编辑
+     * 新增
+     * 增加后不能修改
+     */
+    public function actionSearchAdd(){
+        if($_POST){
+            $type = Yii::$app->request->post('type',1);//1-电压 2-续航
+            $val = Yii::$app->request->post('val',0);
+            if($type ==1){
+                $name = '电压';
+            }else{
+                $name = '续航里程';
+            }
+            $model = new Search();
+            $model->name = $name;
+            $model->type = $type;
+            $model->val = $val;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('添加成功');setTimeout(function(){location.href='search-set';},1000)</script>";die;
+            }else{
+                echo "<script>alert('添加失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            return $this->render('search-add',[]);
+        }
+    }
+    /**
+     * 筛选删除
+     */
+    public function actionSearchDelete(){
+        $id = Yii::$app->request->get('id');
+        if(!$id){
+            echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $res = Search::deleteAll("id = $id");
+        if($res){
+            echo "<script>alert('删除成功');setTimeout(function(){location.href='search-set';},1000)</script>";die;
+        }else{
+            echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 会员优惠说明
+     */
+    public function actionMemberDesc(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 5;// 1-关于我们 2-客服说明 3-会员充值说明 4-积分规则 5-会员优惠说明
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='member-desc';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 5")->asArray()->one();
+            return $this->render('member-desc',['data'=>$about]);
+        }
+    }
 }

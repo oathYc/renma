@@ -11,6 +11,7 @@ namespace app\modules\content\controllers;
 use app\libs\Methods;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
+use app\modules\content\models\Product;
 use app\modules\content\models\User;
 use app\modules\content\models\UserCoupon;
 use yii;
@@ -171,19 +172,18 @@ class WeixinPayController extends  Controller{
                     //添加积分
                     $member = Member::findOne($orderData['uid']);
                     $hadIntegral = isset($member->integral)?$member->integral:0;
-                    $integral = $hadIntegral + 100;
+                    $integral = $hadIntegral + floor($amount);//一元得一个积分
                     //判断会员状态
                     if($orderData['type'] == 1){//充值
                         $member = 1;
                         //赠送优惠券
                         Member::sendCoupon($orderData['uid']);
-                        Methods::varDumpLog('weixin.txt','member-1','a');
+                    }elseif($orderData['type'] ==3){//商品刷新
+                        Product::updateAll(['flushTime'=>time()],"id = {$orderData['productId']}");
                     }else{
                         $member = isset($member->member)?$member->member:0;
-                        Methods::varDumpLog('weixin.txt','member-0','a');
                     }
-                    $res = Member::updateAll(['integral'=>$integral,'member'=>$member]," id = {$orderData['uid']}");
-                    Methods::varDumpLog('weixin.txt',$res,'a');
+                    Member::updateAll(['integral'=>$integral,'member'=>$member]," id = {$orderData['uid']}");
                     Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
                     //优惠券判断
                     if($orderData['coupon'] > 0){
