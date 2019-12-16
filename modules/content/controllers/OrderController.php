@@ -69,7 +69,7 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $count = Order::find()->count();
-        $page = new Pagination(['totalCount'=>$count]);
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
         $data = Order::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
@@ -225,6 +225,65 @@ class OrderController  extends AdminController
             echo "<script>alert('确认成功');setTimeout(function(){location.href='order-list';},1000)</script>";die;
         }else{
             echo "<script>alert('确认失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 订单售后
+     */
+    public function actionOrderAfter(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $where = " after = 1";//售后订单才能进行后续
+        $count = Quality::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $order = Quality::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($order as $k => $v){
+            if($v['afterUid']){
+                $after = Member::findOne($v['afterUid']);
+                $afterName = $after->name;
+                $afterPhone = $after->phone;
+            }else{
+                $afterName = '';
+                $afterPhone = '';
+            }
+            $order[$k]['afterName'] = $afterName;
+            $order[$k]['afterPhone'] = $afterPhone;
+        }
+        return $this->render('order-after',['data'=>$order,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 订单售后
+     * 职位维修师
+     */
+    public function actionOrderAfterAdd(){
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $repairId = Yii::$app->request->post('repair');
+            if(!$repairId){
+                echo "<script>alert('请选择维修师');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$id){
+                echo "<script>alert('id不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $res = Quality::updateAll(['afterUid'=>$repairId]," id = $id");
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='order-after';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $id = Yii::$app->request->get('id');
+            $data = Quality::find()->where(" id = $id")->asArray()->one();
+            if($data['afterUid']){
+                $user = Member::findOne($data['afterUid']);
+                $data['repairName'] = $user->name;
+                $data['repairPhone'] = $user->phone;
+            }else{
+                $data['repairName'] = '';
+                $data['repairPhone'] = '';
+            }
+            $repairs = Member::find()->select("id,name,phone")->where(" repair = 1")->asArray()->all();
+            return $this->render('order-after-add',['data'=>$data,'repairs'=>$repairs]);
         }
     }
 }

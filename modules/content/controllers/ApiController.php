@@ -1366,6 +1366,7 @@ class ApiController extends  Controller
         }
     }
     /**
+     * 质保商品
      * 申请售后
      */
     public function actionProductAfter(){
@@ -1419,14 +1420,25 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $where = " uid = $uid and type = 2";
-        if($type !=99){
-            $where .= " and typeStatus = $type";
-        }
         $page =Yii::$app->request->post('page',1);
         $offset = ($page -1)*10;
-        $total = Order::find()->where($where)->count();
-        $data = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
-        foreach($data as $k => $v){
+        if($type !=99 && $type != 4){
+            $where .= " and typeStatus = $type";
+            $total = Order::find()->where($where)->count();
+            $orders = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
+        }elseif($type ==4){
+            $total = Quality::find()->where(" uid = $uid and after = 1")->count();
+            $data = Quality::find()->where("uid = $uid and after =1")->offset($offset)->limit(10)->asArray()->all();
+            $orders = [];
+            foreach($data as $kk => $vk){
+                $order = Order::find()->where("id = {$vk['orderId']}")->asArray()->one();
+                $orders[]= $order;
+            }
+        }else{
+            $orders = [];
+            $total = 0;
+        }
+        foreach($orders as $k => $v){
             $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
             $data[$k]['productImage'] = $product['headMsg'];
             $data[$k]['productNumber'] = $product['number'];
@@ -1912,8 +1924,12 @@ class ApiController extends  Controller
             if(!$uid){
                 $data[] = ['type'=>$v,'number'=>0];
             }else{
-                $where = " uid = $uid  and typeStatus = $v";
-                $total = Order::find()->where($where)->count();
+                if($v == 4){
+                    $total = Quality::find()->where("uid = $uid and after = 1")->count();
+                }else{
+                    $where = " uid = $uid  and typeStatus = $v";
+                    $total = Order::find()->where($where)->count();
+                }
                 $data[] = ['type'=>$v,'number'=>$total];
             }
         }
