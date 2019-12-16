@@ -12,6 +12,7 @@ use app\modules\content\models\UserCoupon;
 use app\modules\content\models\UserGroup;
 use app\modules\content\models\UserPush;
 use app\modules\test\models\UserAudio;
+use function PHPSTORM_META\argumentsSet;
 use yii\data\Pagination;
 use yii;
 
@@ -114,6 +115,39 @@ class MemberController  extends AdminController
         $page = Yii::$app->request->get('page',1);
         $data = ShopCart::getUserShopCart($page);
         return $this->render('shop-cart',$data);
+    }
+    /**
+     * 维修师审核
+     */
+    public function actionRepairCheck(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Member::find()->where(" repair in(-1,1)")->count();
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $data = Member::find()->select("id,name,phone,repair")->orderBy('id desc')->where("repair in(-1,1)")->asArray()->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('repair-check',['page'=>$page,'count'=>$count,'data'=>$data]);
+    }
+    /*
+     * 维修师审核
+     * 同意 注销操作
+     */
+    public function actionCheckRepair(){
+        $type = Yii::$app->request->get('type',1);
+        $id = Yii::$app->request->get('id');
+        if(!$id){
+            echo "<script>alert('id不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        if($type == 1){
+            $update = ['repair'=>1];
+        }else{
+            $update = ['repair'=>0,'name'=>'','phone'=>''];
+        }
+        $res = Member::updateAll($update," id = $id");
+        if($res){
+            echo "<script>alert('编辑成功');setTimeout(function(){location.href='repair-check';},1000)</script>";die;
+        }else{
+            echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
     }
 
 }

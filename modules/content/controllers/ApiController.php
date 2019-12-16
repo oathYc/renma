@@ -2220,6 +2220,9 @@ class ApiController extends  Controller
         if(!$member){
             Methods::jsonData(0,'没有该用户');
         }
+        if($member->repair ==-1){
+            Methods::jsonData(0,'你的维修师申请以及申请了，等待平台审核中');
+        }
         if($member->repair ==1){
             Methods::jsonData(0,'你已经是维修师了，请勿重复申请');
         }
