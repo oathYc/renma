@@ -12,6 +12,7 @@ use app\libs\Methods;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
+use app\modules\content\models\Quality;
 use app\modules\content\models\User;
 use app\modules\content\models\UserCoupon;
 use yii;
@@ -188,6 +189,11 @@ class WeixinPayController extends  Controller{
                     //优惠券判断
                     if($orderData['coupon'] > 0){
                         UserCoupon::updateAll(['status'=>1]," uid = {$orderData['uid']} and status = 0 and couponId = {$orderData['coupon']}");
+                    }
+                    //质保商品判断
+                    $zhibao = Product::find()->where("id = {$orderData['productId']} and zhibao =1")->asArray()->one();
+                    if($zhibao){
+                        Quality::$orderData['uid']($orderData['uid'],$orderData['productId'],$orderData['id']);
                     }
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];

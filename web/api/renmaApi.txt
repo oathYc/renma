@@ -68,6 +68,8 @@
                     type        商品对象    1-维修 2-新车 3-二手车
                     introduce   商品详情介绍
                     number      商品库存
+                    zhibao      质保商品 0-不是 1-是 默认0
+                    remark      商品说明 7天无理由退款。。。
 
     接口名称        首页信息
     接口地址        /content/api/home-index
@@ -218,7 +220,7 @@
     接口名称        提交质保商品
     接口地址        /content/api/quality-add
     接口参数        uid         用户id
-                    orderNumber   订单id
+                    qualityId   质保id
                     gyTime      商品钢印日期
                     barCode     商品条形码
 
@@ -415,3 +417,38 @@
     接口地址        /content/api/apply-return
     接口参数        uid              用户id
                     orderId          订单Id
+
+    接口名称        订单退款申请
+    接口地址        /content/api/repair-apply
+    接口参数        uid              用户id
+                    name              姓名
+                    phone               电话
+
+    接口名称        维修师接单大厅
+    接口地址        /content/api/repair-hall
+    接口参数         uid              用户id
+                     page             页数 默认1
+
+    接口名称        我的接单（维修师）
+    接口地址        /content/api/repair-order
+    接口参数         uid              用户id
+                     page             页数 默认1
+
+    接口名称        维修师接单（维修师）
+    接口地址        /content/api/repair-receipt
+    接口参数         uid              用户id
+                     orderId          订单id
+
+    接口名称        维修师完成接单（维修师）
+    接口地址        /content/api/repair-success
+    接口参数         uid              用户id
+                     orderId          订单id
+                     repairImg         完成图片
+
+
+
+
+
+
+
+

@@ -45,7 +45,6 @@ class ApiController extends  Controller
         $data = $model->getAllCate($pid,$id);
         echo json_encode($data);
     }
-
     /**
      * 获取分类树包括一级分类
      * @Obelisk
@@ -185,7 +184,6 @@ class ApiController extends  Controller
     }
 
     //小程序接口
-
     /**
      * 用户登录
      * 微信授权
@@ -345,7 +343,6 @@ class ApiController extends  Controller
             Methods::jsonData(0,'上传失败，请重试');
         }
     }
-
     /**
      * 商品分类
      * 获取
@@ -381,6 +378,8 @@ class ApiController extends  Controller
         $type = $request->post('type',0);//商品特性  1-维修 2-新车 3-二手车
         $introduce = $request->post('introduce');//详细介绍
         $number = $request->post('number',1);//数量
+        $zhibao = Yii::$app->request->post('zhibao',0);//质保商品 0-不是 1-是
+        $remark = Yii::$app->request->post('remark','');//商品说明 7天无理由退款。。。
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }else{
@@ -433,6 +432,9 @@ class ApiController extends  Controller
         if(!$image){
             Methods::jsonData(0,'商品图片数据不存在');
         }
+        if(!$remark){
+            Methods::jsonData(0,'商品说明不存在');
+        }
         if(!$tradeAddress){
             Methods::jsonData(0,'商品交易地址不存在');
         }
@@ -453,6 +455,8 @@ class ApiController extends  Controller
         $model->type = $type;
         $model->number = $number;
         $model->createTime = time();
+        $model->zhibao = $zhibao;
+        $model->remark = $remark;
         $res = $model->save();
         if($res){
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();
@@ -464,7 +468,6 @@ class ApiController extends  Controller
             Methods::jsonData(0,'上传失败');
         }
     }
-
     /**
      * 首页信息
      */
@@ -1149,7 +1152,6 @@ class ApiController extends  Controller
             Methods::jsonData(1,'申请审核中',$shop);
         }
     }
-
     /**
      * 用户购物车
      * 加入购物车
@@ -1250,7 +1252,6 @@ class ApiController extends  Controller
             Methods::jsonData(0,'删除失败');
         }
     }
-
     /**
      * 个人中心
      * 数据获取
@@ -1336,15 +1337,14 @@ class ApiController extends  Controller
      */
     public function actionQualityAdd(){
         $uid = Yii::$app->request->post('uid');
-//        $productId = Yii::$app->request->post('productId');
-        $orderNumber = Yii::$app->request->post('orderNumber','');
+        $qualityId = Yii::$app->request->post('qualityId');
         $gyTime = Yii::$app->request->post('gyTime');
         $barCode = Yii::$app->request->post('barCode');
         if(!$uid){
             Methods::jsonData(0,'用户id不存咋');
         }
-        if(!$orderNumber){
-            Methods::jsonData(0,'订单号不存在');
+        if(!$qualityId){
+            Methods::jsonData(0,'质保id不存在');
         }
         if(!$gyTime){
             Methods::jsonData(0,'商品钢印日期不存在');
@@ -1352,29 +1352,12 @@ class ApiController extends  Controller
         if(!$barCode){
             Methods::jsonData(0,'商品条形码不存在');
         }
-        if(!$barCode){
-            Methods::jsonData(0,'商品条形码不存在');
+        $model = Quality::findOne($qualityId);
+        if(!$model){Methods::jsonData(0,'质保商品不存在');
         }
-        $order = Order::find()->where("orderNumber = '{$orderNumber}' and uid = $uid")->asArray()->one();
-        if(!$order){
-            Methods::jsonData(0,'没有该订单');
-        }
-        $productId = $order['productId'];
-        $product = Product::find()->where("id = $productId")->asArray()->one();
-        if(!$product){
-            Methods::jsonData(0,'商品已删除，请联系商家');
-        }
-        $model = new Quality();
-        $model->uid = $uid;
-        $model->productId = $productId;
-        $model->orderNumber = $orderNumber;
-        $model->catId = $product['catCid'];
-        $model->brand = $product['brand'];
-        $model->buyTime = $order['createTime'];
         $model->gyTime = $gyTime;
         $model->barCode = $barCode;
         $model->createTime = time();
-        $model->productName = $product['title'];
         $res = $model->save();
         if($res){
             Methods::jsonData(1,'提交成功');
@@ -1398,7 +1381,7 @@ class ApiController extends  Controller
         if($res){
             Methods::jsonData(1,'申请售后成功');
         }else{
-            Methods::jsonData(0,'申请事变');
+            Methods::jsonData(0,'申请失败');
         }
     }
     /**
@@ -2200,5 +2183,144 @@ class ApiController extends  Controller
             Methods::jsonData(1,'申请退款成功');
         }
 
+    }
+    /**
+     * 维修师申请
+     */
+    public function actionRepairApply(){
+        $uid = Yii::$app->request->post('uid');
+        $name = Yii::$app->request->post('name');
+        $phone = Yii::$app->request->post('phone');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$name){
+            Methods::jsonData(0,'姓名不存在');
+        }
+        if(!$phone){
+            Methods::jsonData(0,'电话号码不存在');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'没有该用户');
+        }
+        if($member->repair ==1){
+            Methods::jsonData(0,'你已经是维修师了，请勿重复申请');
+        }
+        $member->repair = 1;
+        $res = $member->save();
+        if($res){
+            Methods::jsonData(1,'申请成功');
+        }else{
+            Methods::jsonData(0,'申请失败，请重试');
+        }
+    }
+    /**
+     * 订单大厅
+     * 维修师身份
+     */
+    public function actionRepairHall(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $user = Member::find()->where("id = $uid and repair = 1")->one();
+        if(!$user){
+            Methods::jsonData(0,'身份错误');
+        }
+        //待接单的订单
+        $offset = ($page-1)*10;
+        $total = Order::find()->where("status = 1 and typStatus = 1 and type = 2")->count();
+        $order = Order::find()->where("status = 1 and typStatus = 1 and type = 2")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
+    }
+    /**
+     * 我的接单数据
+     * 维修师身份
+     */
+    public function actionRepairOrder(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $user = Member::find()->where("id = $uid and repair = 1")->one();
+        if(!$user){
+            Methods::jsonData(0,'身份错误');
+        }
+        //待接单的订单
+        $offset = ($page-1)*10;
+        $total = Order::find()->where("status = 1  and type = 2 and repairUid = $uid")->count();
+        $order = Order::find()->where("status = 1  and type = 2 and repairUid = $uid")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
+    }
+    /**
+     * 维修师接单
+     */
+    public function actionRepairReceipt(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        $user = Member::find()->where("id = $uid and repair = 1")->one();
+        if(!$user){
+            Methods::jsonData(0,'身份错误');
+        }
+        $order = Order::findOne($orderId);
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order->status != 1 || $order->typeStatus != 1){
+            Methods::jsonData(0,'订单状态有误');
+        }
+        $order->typeStatus = 2;
+        $order->repairUid = $uid;
+        $order->repairTime = time();
+        $res = $order->save();
+        if($res){
+            Methods::jsonData(1,'接单成功');
+        }else{
+            Methods::jsonData(0,'接单失败，请重试');
+        }
+    }
+    /**
+     * 维修师完成订单
+     */
+    public function actionRepairSuccess(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        $repairImg = Yii::$app->request->post('repairImg','');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        if(!$repairImg){
+            Methods::jsonData(0,'完成图片不存在');
+        }
+        $user = Member::find()->where("id = $uid and repair = 1")->one();
+        if(!$user){
+            Methods::jsonData(0,'身份错误');
+        }
+        $order = Order::findOne($orderId);
+        if(!$order){
+            Methods::jsonData(0,'订单不存在');
+        }
+        if($order->status != 1 || $order->typeStatus != 2 || $order->repairUid != $uid){
+            Methods::jsonData(0,'订单信息有误');
+        }
+        $order->typeStatus = 3;
+        $res = $order->save();
+        if($res){
+            Methods::jsonData(1,'操作成功');
+        }else{
+            Methods::jsonData(0,'操作失败，请重试');
+        }
     }
 }
