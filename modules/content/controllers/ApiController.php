@@ -24,11 +24,9 @@ use app\modules\content\models\Search;
 use app\modules\content\models\Shop;
 use app\modules\content\models\ShopCart;
 use app\modules\content\models\ShopMessage;
-use app\modules\content\models\User;
 use app\modules\content\models\UserCoupon;
 use app\modules\content\models\UserGroup;
 use app\modules\content\models\UserPush;
-use function GuzzleHttp\Psr7\str;
 use yii\web\Controller;
 use Yii;
 
