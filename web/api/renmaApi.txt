@@ -418,7 +418,7 @@
     接口参数        uid              用户id
                     orderId          订单Id
 
-    接口名称        订单退款申请
+    接口名称        维修师申请
     接口地址        /content/api/repair-apply
     接口参数        uid              用户id
                     name              姓名
