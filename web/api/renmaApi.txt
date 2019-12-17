@@ -141,6 +141,7 @@
                     remark      订单备注
                     addressId   收货地址id
                     extInfo      其它信息  传定位地址信息
+                    serFee        服务费 默认0
 
 
 
