@@ -80,7 +80,7 @@ class ProductController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $count = GroupProduct::find()->count();
-        $page = new Pagination(['totalCount'=>$count]);
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
         $data = GroupProduct::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $product = Product::findOne($v['productId']);
@@ -138,7 +138,7 @@ class ProductController  extends AdminController
             $model->rank = $rank;
             $res = $model->save();
             if($res){
-                echo "<script>alert('编辑成功');setTimeout(function(){location.href='group-product'},1000)</script>";die;
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-group'},1000)</script>";die;
             }else{
                 echo "<script>alert('编辑失败');history.go(-1);</script>";die;
             }

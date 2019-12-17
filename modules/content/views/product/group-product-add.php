@@ -87,7 +87,7 @@
         if(!number || number < 1){
             alert('请填写正确的组团人数');return false;
         }
-        if(!price || price < 1){
+        if(!price || price <= 0){
             alert('请填写正确的组团价格');return false;
         }
         if(!remark){

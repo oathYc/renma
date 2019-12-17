@@ -411,9 +411,6 @@ class ApiController extends  Controller
         if(!$catCid){
             Methods::jsonData(0,'商品分类不存在（二级）');
         }
-        if(!$catPid){
-            Methods::jsonData(0,'商品分类不存在（一级）');
-        }
         if(!$price){
             Methods::jsonData(0,'商品价格不存在');
         }
