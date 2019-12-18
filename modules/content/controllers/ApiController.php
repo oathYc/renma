@@ -1205,6 +1205,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $userCart = ShopCart::find()->where("uid = $uid")->asArray()->all();
+        $carts = [];
         foreach($userCart as $k => $v){
             $product = Product::findOne($v['productId']);
             if($product){
@@ -1214,8 +1215,7 @@ class ApiController extends  Controller
                 $userCart[$k]['productImage'] = $product->headMsg;
                 $userCart[$k]['productNumber'] = $product->number;
                 $userCart[$k]['tradeAddress'] = $product->tradeAddress;
-            }else{
-                unset($userCart[$k]);//商品已删除
+                $carts[] = $userCart[$k];
             }
         }
         Methods::jsonData(1,'加入成功',$userCart);
