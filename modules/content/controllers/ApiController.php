@@ -380,6 +380,7 @@ class ApiController extends  Controller
         $number = $request->post('number',1);//数量
         $zhibao = Yii::$app->request->post('zhibao',0);//质保商品 0-不是 1-是
         $remark = Yii::$app->request->post('remark','');//商品说明 7天无理由退款。。。
+        $phone = Yii::$app->request->post('phone');//联系电话
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }else{
@@ -405,12 +406,12 @@ class ApiController extends  Controller
         if(!$title){
             Methods::jsonData(0,'商品名称不存在');
         }
-        if(!$catPid){
-            Methods::jsonData(0,'商品分类不存在（一级）');
-        }
-        if(!$catCid){
-            Methods::jsonData(0,'商品分类不存在（二级）');
-        }
+//        if(!$catPid){
+//            Methods::jsonData(0,'商品分类不存在（一级）');
+//        }
+//        if(!$catCid){
+//            Methods::jsonData(0,'商品分类不存在（二级）');
+//        }
         if(!$price){
             Methods::jsonData(0,'商品价格不存在');
         }
@@ -431,6 +432,9 @@ class ApiController extends  Controller
         }
         if(!$remark){
             Methods::jsonData(0,'商品说明不存在');
+        }
+        if(!$phone){
+            Methods::jsonData(0,'联系电话不存在');
         }
         if(!$tradeAddress){
             Methods::jsonData(0,'商品交易地址不存在');
@@ -454,6 +458,7 @@ class ApiController extends  Controller
         $model->createTime = time();
         $model->zhibao = $zhibao;
         $model->remark = $remark;
+        $model->phone = $phone;
         $res = $model->save();
         if($res){
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();

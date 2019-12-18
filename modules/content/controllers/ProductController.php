@@ -34,9 +34,19 @@ class ProductController  extends AdminController
         $page = new Pagination(['totalCount'=>$count]);
         $data = Product::find()->asArray()->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
-            $parent = Category::findOne($v['catPid']);
-            $child = Category::findOne($v['catCid']);
-            $data[$k]['category'] = $parent->name.' '.$child->name;
+            if($v['catPid']){
+                $parent = Category::findOne($v['catPid']);
+                $catPname =$parent->name;
+            }else{
+                $catPname = '';
+            }
+            if($v['catCid']){
+                $child = Category::findOne($v['catCid']);
+                $catCname = $child->name;
+            }else{
+                $catCname = '';
+            }
+            $data[$k]['category'] = $catPname.' '.$catCname;
         }
         return $this->render('product-list',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
