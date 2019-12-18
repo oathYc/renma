@@ -1442,10 +1442,10 @@ class ApiController extends  Controller
         }
         foreach($orders as $k => $v){
             $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
-            $data[$k]['productImage'] = $product['headMsg'];
-            $data[$k]['productNumber'] = $product['number'];
+            $orders[$k]['productImage'] = $product['headMsg'];
+            $orders[$k]['productNumber'] = $product['number'];
         }
-        Methods::jsonData(1,'success',['total'=>$total,'order'=>$data]);
+        Methods::jsonData(1,'success',['total'=>$total,'order'=>$orders]);
     }
     /**
      * 人工客服
