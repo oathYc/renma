@@ -1992,6 +1992,8 @@ class ApiController extends  Controller
             $model->createTime = time();
             $model->status = 0;
             $model->save();
+            //记录积分消耗
+            Integral::saveRecord($uid,$integral,1,'积分兑换优惠卷');//1-减少 2-新增
             Methods::jsonData(0,'兑换成功');
         }else{
             Methods::jsonData(0,'兑换失败');

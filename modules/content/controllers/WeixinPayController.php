@@ -9,6 +9,7 @@
 namespace app\modules\content\controllers;
 
 use app\libs\Methods;
+use app\modules\content\models\Integral;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
@@ -172,7 +173,16 @@ class WeixinPayController extends  Controller{
                     //添加积分
                     $member = Member::findOne($orderData['uid']);
                     $hadIntegral = isset($member->integral)?$member->integral:0;
-                    $integral = $hadIntegral + floor($amount);//一元得一个积分
+                    $addIntegral = floor($amount);
+                    //积分判断
+                    if($orderData['integral'] >0){
+                        $reduceIntegral = $orderData['integral'];
+                        Integral::saveRecord($orderData['uid'],$reduceIntegral,1,'商品购买抵扣');//1-减少 2-新增
+                    }else{
+                        $reduceIntegral = 0;
+                    }
+                    $integral = $hadIntegral + $addIntegral - $reduceIntegral ;//一元得一个积分
+                    Integral::saveRecord($orderData['uid'],$addIntegral,2,'购买商品赠送');
                     //判断会员状态
                     if($orderData['type'] == 1){//充值
                         $member = 1;
