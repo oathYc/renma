@@ -279,7 +279,7 @@ class ApiController extends  Controller
         if($password){
             $model->password = md5($password);
         }
-        $model->username = $username;
+        $model->name = $username;
         $model->sex = $sex;
         $model->birthday = $birthday;
         $model->work = $work;
