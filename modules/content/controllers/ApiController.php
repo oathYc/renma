@@ -274,7 +274,9 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户uid不存在');
         }
         $model = Member::findOne($uid);
-        $model->avatar = $avatar;
+        if($avatar){
+            $model->avatar = $avatar;
+        }
         $model->phone = $phone;
         if($password){
             $model->password = md5($password);
