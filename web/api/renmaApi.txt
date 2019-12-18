@@ -391,6 +391,10 @@
                     extInfo      其它信息  传定位地址信息
                     serFee      服务费  默认0
 
+    接口名称        电压值获取
+    接口地址        /content/api/voltage
+    接口参数        
+
     接口名称        我发布的商品
     接口地址        /content/api/my-product
     接口参数        uid              用户id
