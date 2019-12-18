@@ -13,7 +13,6 @@ use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
-use app\modules\content\models\User;
 use app\modules\content\models\UserCoupon;
 use yii;
 use yii\web\Controller;

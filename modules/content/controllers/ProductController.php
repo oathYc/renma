@@ -8,7 +8,6 @@ use app\libs\AdminController;
 use app\modules\content\models\Category;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Product;
-use app\modules\content\models\Shop;
 use yii\data\Pagination;
 use yii;
 

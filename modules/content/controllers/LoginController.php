@@ -8,10 +8,8 @@
  */
 namespace app\modules\content\controllers;
 
-use app\modules\content\models\LoginLog;
 use app\modules\content\models\Member;
 use app\modules\content\models\Role;
-use app\modules\content\models\User;
 use yii;
 use yii\web\Controller;
 
