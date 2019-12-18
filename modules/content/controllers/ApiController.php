@@ -1218,7 +1218,7 @@ class ApiController extends  Controller
                 $carts[] = $userCart[$k];
             }
         }
-        Methods::jsonData(1,'加入成功',$userCart);
+        Methods::jsonData(1,'success',$carts);
 
     }
     /**
