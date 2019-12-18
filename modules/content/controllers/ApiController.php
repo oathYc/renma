@@ -1437,8 +1437,8 @@ class ApiController extends  Controller
                 $orders[]= $order;
             }
         }else{
-            $orders = [];
-            $total = 0;
+            $total = Order::find()->where($where)->count();
+            $orders = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
         }
         foreach($orders as $k => $v){
             $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
