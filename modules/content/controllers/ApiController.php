@@ -1409,7 +1409,7 @@ class ApiController extends  Controller
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
         $myShare = Member::find()->where("inviterCode = '{$shareCode}'")->asArray()->all();
-        $shareUrl = "http://lck.hzlyzhenzhi.com/api/getcode.php?uid=$uid";
+        $shareUrl = "https://lck.hzlyzhenzhi.com/api/getcode.php?uid=$uid";
         Methods::jsonData(1,'success',['shareUrl'=>$shareUrl,'inviteCode'=>$shareCode,'myShare'=>$myShare]);
     }
     /**

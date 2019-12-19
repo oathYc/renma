@@ -91,7 +91,7 @@ class ContentController  extends AdminController
             }
             $model->type = $type;
             $model->imageUrl = $imageUrl;
-            $model->url = 'https://lck.hzlyzhenzhi.com'.$url;
+            $model->url = Yii::$app->params['domain'].$url;
             $model->status = $status;
             $model->title = $title;
             $model->rank = $rank?$rank:0;
@@ -455,7 +455,7 @@ class ContentController  extends AdminController
             $model->content = $content;
             $model->type = 2; // 1-关于我们 2-客服说明 3-会员充值说明
             $model->createTime = time();
-            $model->image = 'https://lck.hzlyzhenzhi.com'.$image;
+            $model->image = Yii::$app->params['domain'].$image;
             $res = $model->save();
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='service';},1000)</script>";die;

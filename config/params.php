@@ -16,5 +16,5 @@ return [
     'wxNotify'=>'https://lck.hzlyzhenzhi.com/content/weixin-pay/wxpay-notify',
     'wxJSAPI'=>'JSAPI',//小程序支付
     'wxAttach'=>'微信小程序支付',//小程序支付
-    'domain'=>'http://lck.hzlyzhenzhi.com',
+    'domain'=>'https://lck.hzlyzhenzhi.com',
     ];
