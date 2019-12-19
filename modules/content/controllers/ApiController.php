@@ -2239,7 +2239,9 @@ class ApiController extends  Controller
         if($member->repair ==1){
             Methods::jsonData(0,'你已经是维修师了，请勿重复申请');
         }
-        $member->repair = 1;
+        $member->repair = -1;
+        $member->repairName = $name;
+        $member->repairPhone = $phone;
         $res = $member->save();
         if($res){
             Methods::jsonData(1,'申请成功');
