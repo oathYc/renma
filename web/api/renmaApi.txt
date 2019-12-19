@@ -451,6 +451,14 @@
                      orderId          订单id
                      repairImg         完成图片
 
+    接口名称        维修师个人资料
+    接口地址        /content/api/repair-msg
+    接口参数         uid              用户id
+
+    接口名称        我的收入（维修师）
+    接口地址        /content/api/repair-money
+    接口参数         uid              用户id
+
 
 
 

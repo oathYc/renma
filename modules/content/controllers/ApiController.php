@@ -2357,4 +2357,45 @@ class ApiController extends  Controller
             Methods::jsonData(0,'操作失败，请重试');
         }
     }
+    /**
+     * 维修室个人资料
+     */
+    public function actionRepairMsg(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $member = Member::findOne($uid);
+        if($member){
+            if($member->repair ==1){
+                $memberMsg = ['uid'=>$uid,'repairName'=>$member->repairName,'repairPhone'=>$member->repairPhone];
+                Methods::jsonData(1,'success',$memberMsg);
+            }else{
+                Methods::jsonData(0,'你还不是维修师身份');
+            }
+        }else{
+            Methods::jsonData(0,'没有该用户');
+        }
+    }
+    /**
+     * 维修室
+     * 我的收入
+     */
+    public function actionRepairMoney(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $member = Member::findOne($uid);
+        if($member){
+            if($member->repair ==1){
+                $money = Order::find()->where("status = 1 and repairUid = $uid and typeStatus > 2")->sum('money');
+                Methods::jsonData(1,'success',['money'=>$money?$money:0]);
+            }else{
+                Methods::jsonData(0,'你还不是维修师身份');
+            }
+        }else{
+            Methods::jsonData(0,'没有该用户');
+        }
+    }
 }
