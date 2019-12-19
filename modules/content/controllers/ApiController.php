@@ -1331,7 +1331,7 @@ class ApiController extends  Controller
         $data = Quality::find()->where(" uid = $uid")->asArray()->offset($offset)->limit(10)->all();
         foreach($data as $k => $v){
             $data[$k]['productImage'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
-            $data[$k]['productPrice'] = Order::find()->where("orderNumber = '{$v['orderNumber']}'")->asArray()->one()['payPrice'];
+            $data[$k]['productPrice'] = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['payPrice'];
         }
         Methods::jsonData(1,'success',['total'=>$total,'quality'=>$data]);
     }
