@@ -274,12 +274,14 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户uid不存在');
         }
         $model = Member::findOne($uid);
-        $model->avatar = $avatar;
+        if($avatar){
+            $model->avatar = $avatar;
+        }
         $model->phone = $phone;
         if($password){
             $model->password = md5($password);
         }
-        $model->username = $username;
+        $model->name = $username;
         $model->sex = $sex;
         $model->birthday = $birthday;
         $model->work = $work;
@@ -1205,6 +1207,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $userCart = ShopCart::find()->where("uid = $uid")->asArray()->all();
+        $carts = [];
         foreach($userCart as $k => $v){
             $product = Product::findOne($v['productId']);
             if($product){
@@ -1214,11 +1217,10 @@ class ApiController extends  Controller
                 $userCart[$k]['productImage'] = $product->headMsg;
                 $userCart[$k]['productNumber'] = $product->number;
                 $userCart[$k]['tradeAddress'] = $product->tradeAddress;
-            }else{
-                unset($userCart[$k]);//商品已删除
+                $carts[] = $userCart[$k];
             }
         }
-        Methods::jsonData(1,'加入成功',$userCart);
+        Methods::jsonData(1,'success',$carts);
 
     }
     /**
@@ -1511,7 +1513,9 @@ class ApiController extends  Controller
         $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
         //免单数量
         $feeCount = Order::find()->where("uid = $uid and status = 1 and serverFee = 0")->count();
-        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount];
+        //优惠卷兑换
+        $coupons = Coupon::find()->asArray()->all();
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons];
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -1992,6 +1996,8 @@ class ApiController extends  Controller
             $model->createTime = time();
             $model->status = 0;
             $model->save();
+            //记录积分消耗
+            Integral::saveRecord($uid,$integral,1,'积分兑换优惠卷');//1-减少 2-新增
             Methods::jsonData(0,'兑换成功');
         }else{
             Methods::jsonData(0,'兑换失败');
