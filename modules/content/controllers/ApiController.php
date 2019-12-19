@@ -2389,7 +2389,7 @@ class ApiController extends  Controller
         $member = Member::findOne($uid);
         if($member){
             if($member->repair ==1){
-                $money = Order::find()->where("status = 1 and repairUid = $uid and typeStatus > 2")->sum('money');
+                $money = Order::find()->where("status = 1 and repairUid = $uid and typeStatus > 2")->sum('payPrice');
                 Methods::jsonData(1,'success',['money'=>$money?$money:0]);
             }else{
                 Methods::jsonData(0,'你还不是维修师身份');
