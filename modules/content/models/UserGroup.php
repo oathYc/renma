@@ -23,25 +23,24 @@ class UserGroup extends ActiveRecord
         $data = [];
         if($ownGroup){
             $ownId = $ownGroup['id'];
-            $data[] = $ownGroup;
         }else{
             $ownId = 0;
         }
         //获取组团的组数及组团信息
-        $group = self::find()->where("groupId = $productId  and promoter = 1 and id != $ownId")->orderBy("status asc")->limit(10)->asArray()->all();
-        foreach($group as $k => $v){
-            $sql = " select ug.*,m.nickname,m.name,m.avatar from {{%user_group}} ug inner join {{%member}} m on m.id = ug.uid where ug.groupId = {$v['groupId']} and ug.promoter != 0 and ug.userGroupId = {$v['userGroupId']}";
-            $add = \Yii::$app->db->createCommand($sql)->queryAll();
-            $v['add'] =  $add;
-            //过期时间 默认一天
-            $expireTime = $v['createTime'] + 86400;
-            $expireTime = date('Y-m-d H:i:s',$expireTime);
-            $v['expireTime'] = $expireTime;
-            $user = Member::findOne($v['uid']);
-            $v['nickname'] = $user->nickname;
-            $v['name'] = $user->name;
-            $v['avatar'] = $user->avatar;
-            $data[] = $v;
+        $group = self::find()->where("groupId = $productId  and promoter = 1 and id = $ownId")->orderBy("status asc")->limit(10)->asArray()->one();
+        $sql = " select ug.*,m.nickname,m.name,m.avatar from {{%user_group}} ug inner join {{%member}} m on m.id = ug.uid where ug.groupId = {$group['groupId']} and ug.promoter = 0 and ug.userGroupId = {$group['userGroupId']}";
+        $add = \Yii::$app->db->createCommand($sql)->queryAll();
+        //过期时间 默认一天
+        $expireTime = $group['createTime'] + 86400;
+        $expireTime = date('Y-m-d H:i:s',$expireTime);
+        $v['expireTime'] = $expireTime;
+        $user = Member::findOne($group['uid']);
+        $group['nickname'] = $user->nickname;
+        $group['name'] = $user->name;
+        $group['avatar'] = $user->avatar;
+        $data[] = $group;
+        foreach($add as $k => $v){
+            $data[]=$v;
         }
         return $data;
     }
@@ -50,7 +49,7 @@ class UserGroup extends ActiveRecord
      */
     public static function getOwnGroup($uid,$productId){
         if($uid){
-            $own = UserGroup::find()->where("status = 0 and groupId = $productId and uid = $uid ")->one();
+            $own = UserGroup::find()->where("status = 0 and groupId = $productId and uid = $uid ")->asArray()->one();
             if($own){
                 if($own['promoter'] !=1){//不是发起人
                     $data = UserGroup::find()->where("promoter = 1 and groupId = $productId and userGroupId = {$own['userGroupId']}")->asArray()->one();
