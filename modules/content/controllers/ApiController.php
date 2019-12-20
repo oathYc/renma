@@ -1376,13 +1376,17 @@ class ApiController extends  Controller
     public function actionProductAfter(){
         $uid = Yii::$app->request->post('uid');
         $qualityId = Yii::$app->request->post('qualityId');
+        $msg = Yii::$app->request->post('msg');//故障信息 图片或视频
+        $address = Yii::$app->request->post('address');//地址信息
+        $name = Yii::$app->request->post('name');
+        $phone = Yii::$app->request->post('phone');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         if(!$qualityId){
             Methods::jsonData(0,'质保id不存在');
         }
-        $res = Quality::updateAll(['after'=>1],"uid = $uid and id = $qualityId");
+        $res = Quality::updateAll(['after'=>1,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone],"uid = $uid and id = $qualityId");
         if($res){
             Methods::jsonData(1,'申请售后成功');
         }else{

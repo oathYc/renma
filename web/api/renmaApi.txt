@@ -230,6 +230,10 @@
     接口地址        /content/api/product-after
     接口参数        uid         用户id
                     qualityId   质保内容id
+                    address     联系地址
+                    name        联系姓名
+                    phone       联系电话
+                    msg         故障图片或视频
 
 
     接口名称        我的邀请
