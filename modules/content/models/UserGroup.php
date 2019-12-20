@@ -28,7 +28,7 @@ class UserGroup extends ActiveRecord
             $ownId = 0;
         }
         //获取组团的组数及组团信息
-        $group = self::find()->where("groupId = $productId  and promoter = 1 and id != $ownId")->order("status asc")->limit(10)->asArray()->all();
+        $group = self::find()->where("groupId = $productId  and promoter = 1 and id != $ownId")->orderBy("status asc")->limit(10)->asArray()->all();
         foreach($group as $k => $v){
             $sql = " select ug.*,m.nickname,m.name,m.avatar from {{%user_group}} ug inner join {{%member}} m on m.id = ug.uid where ug.groupId = {$v['groupId']} and ug.promoter != 0 and ug.userGroupId = {$v['userGroupId']}";
             $add = \Yii::$app->db->createCommand($sql)->queryAll();
