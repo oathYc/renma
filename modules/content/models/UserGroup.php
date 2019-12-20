@@ -28,13 +28,19 @@ class UserGroup extends ActiveRecord
         }
         //获取组团的组数及组团信息
         $group = self::find()->where("groupId = $productId  and promoter = 1 and id = $ownId")->orderBy("status asc")->limit(10)->asArray()->one();
+        if(!$group){
+            return [];
+        }
         $sql = " select ug.*,m.nickname,m.name,m.avatar from {{%user_group}} ug inner join {{%member}} m on m.id = ug.uid where ug.groupId = {$group['groupId']} and ug.promoter = 0 and ug.userGroupId = {$group['userGroupId']}";
         $add = \Yii::$app->db->createCommand($sql)->queryAll();
         //过期时间 默认一天
         $expireTime = $group['createTime'] + 86400;
         $expireTime = date('Y-m-d H:i:s',$expireTime);
-        $v['expireTime'] = $expireTime;
+        $group['expireTime'] = $expireTime;
         $user = Member::findOne($group['uid']);
+        if(!$user){
+            return [];
+        }
         $group['nickname'] = $user->nickname;
         $group['name'] = $user->name;
         $group['avatar'] = $user->avatar;
