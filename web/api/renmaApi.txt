@@ -393,7 +393,6 @@
                     type        类型 1-充值 2-买商品
                     remark      订单备注
                     addressId   收货地址id
-                    extInfo      其它信息  传定位地址信息
                     serFee      服务费  默认0
 
     接口名称        电压值获取

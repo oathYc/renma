@@ -206,6 +206,9 @@ class WeixinPayController extends  Controller{
                     if($zhibao){
                         Quality::$orderData['uid']($orderData['uid'],$orderData['productId'],$orderData['id']);
                     }
+                    if($orderData['productType'] ==3){//购物车
+                        Order::updateCartOrder($orderData['id']);
+                    }
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{

@@ -938,13 +938,14 @@ class ApiController extends  Controller
         $model->uid = $uid;
         $model->productId = $productIds;
         $model->productTitle = '购物车购买';
+        $model->productType = 3;
         $model->totalPrice = $totalPrice;
         $model->extInfo = $extInfo;
         $model->reducePrice = $reducePrice;
         $model->payPrice = $payPrice;
         $model->coupon = $couponId;
         $model->number = $numbers;
-        $model->extInfo = '';
+        $model->extInfo = $products;
         $model->status = $status;
         $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $model->createTime = $time;
@@ -2402,5 +2403,9 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(0,'没有该用户');
         }
+    }
+    public function actionTest(){
+        $orderId = Yii::$app->request->post('id');
+        Order::updateCartOrder($orderId);
     }
 }
