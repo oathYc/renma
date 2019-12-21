@@ -849,7 +849,7 @@ class ApiController extends  Controller
      */
     public function actionCreateOrderByCart(){
         $uid = Yii::$app->request->post('uid');
-        $products = Yii::$app->request->post('products','');//1-2,2-2
+        $productstr = Yii::$app->request->post('products','');//1-2,2-2
         $integral = Yii::$app->request->post('integral',0);//积分
         $couponId = Yii::$app->request->post('couponId',0);//优惠券id
         $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
@@ -871,7 +871,7 @@ class ApiController extends  Controller
         $totalPrice = 0;
         $productIds = [];
         $numbers = 0;
-        $products = explode(',',$products);
+        $products = explode(',',$productstr);
         foreach($products as $k => $v){
             $arr = explode('-',$v);
             if(count($arr)!=2){
@@ -940,12 +940,11 @@ class ApiController extends  Controller
         $model->productTitle = '购物车购买';
         $model->productType = 3;
         $model->totalPrice = $totalPrice;
-        $model->extInfo = $extInfo;
         $model->reducePrice = $reducePrice;
         $model->payPrice = $payPrice;
         $model->coupon = $couponId;
         $model->number = $numbers;
-        $model->extInfo = $products;
+        $model->extInfo = $productstr;
         $model->status = $status;
         $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $model->createTime = $time;
