@@ -40,7 +40,7 @@ class Order extends ActiveRecord
         if(!$order){
             return true;
         }
-        $products = $orderId->extInfo;
+        $products = $order->extInfo;
         if(!$products){
             return true;
         }
