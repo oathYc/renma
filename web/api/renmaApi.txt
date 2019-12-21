@@ -390,7 +390,7 @@
                     products    商品信息 字符串 id-number,id-number
                     integral    使用积分 默认0 不使用
                     couponId    优惠券id  默认0 不使用
-                    type        类型 1-充值 -买商品
+                    type        类型 1-充值 2-买商品
                     remark      订单备注
                     addressId   收货地址id
                     extInfo      其它信息  传定位地址信息
