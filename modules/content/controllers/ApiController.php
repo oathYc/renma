@@ -886,7 +886,7 @@ class ApiController extends  Controller
             ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}");
         }
 //        $totalPrice = 100;
-        $productIds = implode(',',$productIds);echo $productIds;die;
+        $productIds = implode(',',$productIds);
         //积分抵扣
         if(!$integral){
             $integral = 0;
