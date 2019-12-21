@@ -154,8 +154,10 @@ class WeixinPayController extends  Controller{
     public function actionWxpayNotify(){
         //获取通知的数据
         $xml = file_get_contents("php://input");
+        Methods::varDumpLog('weixin.txt','222','a');
         Methods::varDumpLog('weixin.txt',$xml,'a');
         if(!$xml){
+            Methods::varDumpLog('weixin.txt','333','a');
             echo 'fail';die;
         }else{
             $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
