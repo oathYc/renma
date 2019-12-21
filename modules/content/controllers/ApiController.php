@@ -865,7 +865,7 @@ class ApiController extends  Controller
 //        if(!$address){
 //            Methods::jsonData(0,'请选择收货地址');
 //        }
-        if(!$products){
+        if(!$productstr){
             Methods::jsonData(0,'商品信息错误');
         }
         $totalPrice = 0;
