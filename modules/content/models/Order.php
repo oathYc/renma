@@ -49,7 +49,7 @@ class Order extends ActiveRecord
         if($count ==0){
             $serFee = 0;
         }else{
-            $serFee = floor($order->serFee/$count);
+            $serFee = floor(($order->serverFee)/$count);
         }
         foreach($array as $k =>$v){
             $arr = explode('-',$v);
