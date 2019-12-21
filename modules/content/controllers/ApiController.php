@@ -810,6 +810,7 @@ class ApiController extends  Controller
         $model->extInfo = $extInfo;
         $model->typeStatus = $status;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $model->createTime = $time;
+        $model->proType = $product->type;
         if($status == 1){
             $model->finishTime = $time;
         }
@@ -885,7 +886,7 @@ class ApiController extends  Controller
             ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}");
         }
 //        $totalPrice = 100;
-        $productIds = implode(',',$productIds);
+        $productIds = implode(',',$productIds);echo $productIds;die;
         //积分抵扣
         if(!$integral){
             $integral = 0;
@@ -2269,8 +2270,8 @@ class ApiController extends  Controller
         }
         //待接单的订单
         $offset = ($page-1)*10;
-        $total = Order::find()->where("status = 1 and typStatus = 1 and type = 2")->count();
-        $order = Order::find()->where("status = 1 and typStatus = 1 and type = 2")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        $total = Order::find()->where("status = 1 and typStatus = 1 and type = 2 and proType = 1")->count();
+        $order = Order::find()->where("status = 1 and typStatus = 1 and type = 2 and proType = 1")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }
     /**

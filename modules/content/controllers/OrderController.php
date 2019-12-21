@@ -125,7 +125,7 @@ class OrderController  extends AdminController
     public function actionOrderLogistics(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $where = " status = 1";//支付成功才有后续的物流信息
+        $where = " status = 1 and proType != 1";//支付成功才有后续的物流信息
         $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $order = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
