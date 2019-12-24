@@ -1564,7 +1564,7 @@ class ApiController extends  Controller
             $model->createTime = time();
             $res = $model->save();
             if($res){
-                Member::updateAll(['memberLevel'=>$level],"uid = $uid");
+                Member::updateAll(['memberLevel'=>$level],"id = $uid");
                 $return  = WeixinPayController::WxOrder($orderNumber,$remark,$money,$orderId);
                 die(json_encode($return));
             }else{
