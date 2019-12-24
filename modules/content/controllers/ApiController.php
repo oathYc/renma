@@ -2286,7 +2286,12 @@ class ApiController extends  Controller
      */
     public function actionRepairOrder(){
         $uid = Yii::$app->request->post('uid');
+        $type = Yii::$app->request->post('type',0);//状态 0-所有 2-接单中 3-已完成
         $page = Yii::$app->request->post('page',1);
+        $where = "status = 1  and type = 2 and repairUid = $uid ";
+        if($type){
+            $where .= " and typeStatus = $type";
+        }
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -2296,8 +2301,8 @@ class ApiController extends  Controller
         }
         //待接单的订单
         $offset = ($page-1)*10;
-        $total = Order::find()->where("status = 1  and type = 2 and repairUid = $uid")->count();
-        $order = Order::find()->where("status = 1  and type = 2 and repairUid = $uid")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        $total = Order::find()->where($where)->count();
+        $order = Order::find()->where($where)->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }
     /**
