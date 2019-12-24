@@ -68,7 +68,6 @@ class WeixinPayController extends  Controller{
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
 //            $return['paySign'] = $sign;
             unset($return['sign']);
-            $return['orderId'] = $orderId;
             //生成小程序调用签名
             $time = time();
             $package = 'prepay_id='.$return['prepay_id'];
@@ -81,6 +80,7 @@ class WeixinPayController extends  Controller{
             $ret['paySign'] = $jsapiSign;
             $ret['signType'] = $signType;
             $ret['status'] = 0;//0-待支付 1-已支付
+            $ret['orderId'] = $orderId;
             $data = ['code'=>1,'message'=>'success','data'=>$ret];//,'msg'=>'支付请求成功'
             //记录签名
             Order::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
