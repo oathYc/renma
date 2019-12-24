@@ -836,6 +836,8 @@ class ApiController extends  Controller
                 $return  = WeixinPayController::WxOrder($orderNumber,$product->title,$payPrice,$model->id);
                 die(json_encode($return));
             }else{//不需要支付金额
+                //赠送积分
+                Member::sendIntegral($uid,$totalPrice,$serFee);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
         }else{
@@ -967,6 +969,8 @@ class ApiController extends  Controller
                 $return  = WeixinPayController::WxOrder($orderNumber,'购物车购买',$payPrice,$model->id);
                 die(json_encode($return));
             }else{//不需要支付金额
+                //赠送积分
+                Member::sendIntegral($uid,$totalPrice,$serFee);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
         }else{
@@ -2188,6 +2192,8 @@ class ApiController extends  Controller
                 $return  = WeixinPayController::WxOrder($orderNumber,$product->title,$payPrice,$model->id);
                 die(json_encode($return));
             }else{//不需要支付金额
+                //赠送积分
+                Member::sendIntegral($uid,$totalPrice,0);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
         }else{

@@ -93,4 +93,29 @@ class Member extends ActiveRecord
         }
     }
 
+    /**
+     * 购买赠送等值积分
+     */
+    public static function sendIntegral($uid,$totalPrice,$serFee=0){
+        $price = $totalPrice + $serFee;
+        $integral = floor($price);
+        if(!$uid){
+            return true;
+        }
+        if($integral < 1){
+            return true;
+        }else{
+            $member = Member::findOne($uid);
+            if(!$member){
+                return true;
+            }else{
+                $userIntegral = $member->integral;
+                if(!$userIntegral){$userIntegral=0;}
+                $saveIntegral = $userIntegral + $integral;
+                $member->integral = $saveIntegral;
+                $member->save();
+                return true;
+            }
+        }
+    }
 }
