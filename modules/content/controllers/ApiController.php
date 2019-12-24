@@ -2365,7 +2365,7 @@ class ApiController extends  Controller
         if($order->status != 1 || $order->typeStatus != 2 || $order->repairUid != $uid){
             Methods::jsonData(0,'订单信息有误');
         }
-        $order->typeStatus = 3;
+        $order->repairImg = $repairImg;
         $res = $order->save();
         if($res){
             Methods::jsonData(1,'操作成功');
