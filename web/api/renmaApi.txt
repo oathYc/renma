@@ -469,7 +469,7 @@
     接口参数         uid              用户id
 
     接口名称        维修师提现
-    接口地址        /content/api/repair-return
+    接口地址        /content/api/repair-apply-return
     接口参数         uid              用户id
                     money            提现金额
 
