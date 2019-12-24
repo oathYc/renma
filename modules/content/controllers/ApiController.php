@@ -1896,6 +1896,19 @@ class ApiController extends  Controller
         $order->typeStatus = 3;
         $res = $order->save();
         if($res){
+            if($order->proType == 1 && $order->repairUid){
+                $repairId = $order->repairUid;
+                $money = $order->totalPrice;
+                $member = Member::find()->where("id = $repairId")->asArray()->one();
+                if($member){
+                    $totalMoney = $member['repairTotalMoney'];
+                    $currentMoney = $member['repairMoney'];
+                    $total = $totalMoney + $money;
+                    $current = $currentMoney + $money;
+                    Member::updateAll(['repairMoney'=>$current,'repairTotalMoney'=>$total],"id = $repairId");
+                }
+
+            }
             Logistics::updateAll(['status'=>1],"orderId = $orderId");
             Methods::jsonData(1,'确认收货成功');
         }else{
@@ -2366,6 +2379,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单信息有误');
         }
         $order->repairImg = $repairImg;
+        $order->repairSuccess = time();
         $res = $order->save();
         if($res){
             Methods::jsonData(1,'操作成功');
@@ -2394,19 +2408,31 @@ class ApiController extends  Controller
         }
     }
     /**
-     * 维修室
+     * 维修师
      * 我的收入
      */
     public function actionRepairMoney(){
         $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         $member = Member::findOne($uid);
         if($member){
             if($member->repair ==1){
-                $money = Order::find()->where("status = 1 and repairUid = $uid and typeStatus > 2")->sum('payPrice');
-                Methods::jsonData(1,'success',['money'=>$money?$money:0]);
+                $member = Member::findOne($uid);
+                $totalMoney = $member->repairTotalMoney;
+                $yue = $member->repairMoney;
+                $date = date('Y-m-d');
+                $begin = strtotime($date);
+                $end = $begin + 86399;
+                $where = " status = 1 and repairUid = $uid and typeStatus = 3 and repairSuccess between $begin and $end";
+                $todayMoney = Order::find()->where($where)->sum('payPrice');
+                $offset = 10*($page-1);
+                $record = Order::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
+                $total = Order::find()->where($where)->count();
+                $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$todayMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'record'=>$record,'total'=>$total];
+                Methods::jsonData(1,'success',$data);
             }else{
                 Methods::jsonData(0,'你还不是维修师身份');
             }
