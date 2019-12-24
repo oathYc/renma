@@ -2407,4 +2407,17 @@ class ApiController extends  Controller
         $orderId = Yii::$app->request->post('id');
         Order::updateCartOrder($orderId);
     }
+    /**
+     * 我的优惠券
+     */
+    public function actionMyCoupon(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            $coupon = [];
+        }else{
+            $sql = "select c.* from {{%user_coupon}} uc inner join {{%coupon}} c on c.id = uc.couponId where uc.status = 0";
+            $coupon = Yii::$app->db->createCommand($sql)->queryAll();
+        }
+        Methods::jsonData(1,'success',$coupon);
+    }
 }
