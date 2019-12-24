@@ -20,6 +20,7 @@ use app\modules\content\models\MemberLog;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
+use app\modules\content\models\RepairReturn;
 use app\modules\content\models\Search;
 use app\modules\content\models\Shop;
 use app\modules\content\models\ShopCart;
@@ -2427,7 +2428,7 @@ class ApiController extends  Controller
                 $begin = strtotime($date);
                 $end = $begin + 86399;
                 $where = " status = 1 and repairUid = $uid and typeStatus = 3 and repairSuccess between $begin and $end";
-                $todayMoney = Order::find()->where($where)->sum('payPrice');
+                $todayMoney = Order::find()->where($where)->sum('totalPrice');
                 $offset = 10*($page-1);
                 $record = Order::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
                 $total = Order::find()->where($where)->count();
@@ -2456,5 +2457,62 @@ class ApiController extends  Controller
             $coupon = Yii::$app->db->createCommand($sql)->queryAll();
         }
         Methods::jsonData(1,'success',$coupon);
+    }
+    /**
+     * 维修师月体现申请
+     */
+    public function actionRepairApplyReturn(){
+        $uid = Yii::$app->request->post('uid');
+        $money = Yii::$app->request->post('money',0);
+        if(!$uid){
+            Methods::jsonData(0,'用户ID不存在');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'用户不存在');
+        }
+        if($member->repair != 1){
+            Methods::jsonData(0,'你还不是维修师身份');
+        }
+        if(!$money){
+            Methods::jsonData(0,'请填写体现金额');
+        }
+        if($member->repairMoney < $money){
+            Methods::jsonData(0,'余额不足');
+        }
+        $model = new RepairReturn();
+        $model->uid = $uid;
+        $model->money = $money;
+        $model->status = 0;
+        $model->createTime = time();
+        $res = $model->save();
+        if($res){
+            Methods::jsonData(1,'提现申请成功，等待平台审核');
+        }else{
+            Methods::jsonData(0,'申请失败，请重试');
+        }
+
+    }
+    /**
+     * 维系师提现记录
+     */
+    public function actionRepairReturnHistory(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        if(!$uid){
+            Methods::jsonData(0,'用户ID不存在');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'用户不存在');
+        }
+        if($member->repair != 1){
+            Methods::jsonData(0,'你还不是维修师身份');
+        }
+        $total = RepairReturn::find()->where("uid = $uid and status = 1")->count();
+        $offset = 10*($page-1);
+        $data = RepairReturn::find()->where("uid = $uid and status = 1")->asArray()->offset($offset)->limit(10)->all();
+        $data = ['total'=>$total,'history'=>$data];
+        Methods::jsonData(1,'success',$data);
     }
 }

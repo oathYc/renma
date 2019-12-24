@@ -468,6 +468,16 @@
     接口地址        /content/api/my-coupon
     接口参数         uid              用户id
 
+    接口名称        维修师提现
+    接口地址        /content/api/repair-return
+    接口参数         uid              用户id
+                    money            提现金额
+
+    接口名称        维修师提现记录（历史记录）
+    接口地址        /content/api/repair-return-history
+    接口参数         uid              用户id
+                    page              页数 默认1  每页10条
+
 
 
 
