@@ -2431,7 +2431,7 @@ class ApiController extends  Controller
                 $offset = 10*($page-1);
                 $record = Order::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
                 $total = Order::find()->where($where)->count();
-                $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$todayMoney:0,'todayMoney'=>$totalMoney?$totalMoney:0,'record'=>$record,'total'=>$total];
+                $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'record'=>$record,'total'=>$total];
                 Methods::jsonData(1,'success',$data);
             }else{
                 Methods::jsonData(0,'你还不是维修师身份');
