@@ -2270,8 +2270,8 @@ class ApiController extends  Controller
         }
         //待接单的订单
         $offset = ($page-1)*10;
-        $total = Order::find()->where("status = 1 and typStatus = 1 and type = 2 and proType = 1")->count();
-        $order = Order::find()->where("status = 1 and typStatus = 1 and type = 2 and proType = 1")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        $total = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 and proType = 1")->count();
+        $order = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 and proType = 1")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }
     /**
