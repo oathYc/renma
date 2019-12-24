@@ -2415,7 +2415,7 @@ class ApiController extends  Controller
         if(!$uid){
             $coupon = [];
         }else{
-            $sql = "select c.* from {{%user_coupon}} uc inner join {{%coupon}} c on c.id = uc.couponId where uc.status = 0";
+            $sql = "select c.* from {{%user_coupon}} uc inner join {{%coupon}} c on c.id = uc.couponId where uc.status = 0 and uc.uid = $uid";
             $coupon = Yii::$app->db->createCommand($sql)->queryAll();
         }
         Methods::jsonData(1,'success',$coupon);
