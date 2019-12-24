@@ -2302,7 +2302,7 @@ class ApiController extends  Controller
         //待接单的订单
         $offset = ($page-1)*10;
         $total = Order::find()->where($where)->count();
-        $order = Order::find()->where($where)->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        $order = Order::find()->where($where)->orderBy('typeStatus asc,createTime desc')->offset($offset)->limit(10)->asArray()->all();
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }
     /**
