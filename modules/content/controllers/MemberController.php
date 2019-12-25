@@ -7,6 +7,7 @@ namespace app\modules\content\controllers;
 use app\libs\AdminController;
 use app\modules\content\models\Address;
 use app\modules\content\models\Member;
+use app\modules\content\models\RepairReturn;
 use app\modules\content\models\ShopCart;
 use app\modules\content\models\UserCoupon;
 use app\modules\content\models\UserGroup;
@@ -125,7 +126,7 @@ class MemberController  extends AdminController
         $data = Member::find()->select("id,name,phone,repair")->orderBy('id desc')->where("repair in(-1,1)")->asArray()->offset($page->offset)->limit($page->limit)->all();
         return $this->render('repair-check',['page'=>$page,'count'=>$count,'data'=>$data]);
     }
-    /*
+    /**
      * 维修师审核
      * 同意 注销操作
      */
@@ -143,6 +144,72 @@ class MemberController  extends AdminController
         $res = Member::updateAll($update," id = $id");
         if($res){
             echo "<script>alert('编辑成功');setTimeout(function(){location.href='repair-check';},1000)</script>";die;
+        }else{
+            echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 维修师提现
+     */
+    public function actionRepairReturn(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $type = Yii::$app->request->get('type',99);//99-所有 0-待审核 1-已提现
+        $uid = Yii::$app->request->get('uid',0);
+        $where = " 1 = 1";
+        if($uid){
+            $where .= " and uid = $uid ";
+        }
+        if($type != 99){
+            $where .= " and status = $type";
+        }
+        $count = RepairReturn::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $data = RepairReturn::find()->orderBy('id desc')->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $repair = Member::findOne($v['uid']);
+            if($repair){
+                $name = $repair->repairName;
+                $phone = $repair->repairPhone;
+            }else{
+                $name = '';
+                $phone = '';
+            }
+            $data[$k]['name'] = $name;
+            $data[$k]['phone'] = $phone;
+        }
+        return $this->render('repair-return',['page'=>$page,'count'=>$count,'data'=>$data]);
+    }
+    /**
+     * 维修师提现通过
+     */
+    public function actionCheckRepairReturn(){
+        $id = Yii::$app->request->get('id');
+        if(!$id){
+            echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $data = RepairReturn::findOne($id);
+        if(!$data){
+            echo "<script>alert('数据错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $uid = $data->uid;
+        $returnMoney = $data->money;//提现金额
+        $member = Member::find()->where("id = $uid and repair = 1")->one();
+        if(!$uid){
+            echo "<script>alert('用户错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $currentMoney = $member->repairMoney;
+        if($currentMoney < $returnMoney){
+            echo "<script>alert('提现失败（余额不足）');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $reduceMoney = $currentMoney - $returnMoney;
+        $member->repairMoney = $reduceMoney;
+        $res = $member->save();
+        if($res){
+            $data->checkTime = time();//记录平台通过时间
+            $data->status = 1;
+            $data->save();
+            echo "<script>alert('编辑成功');setTimeout(function(){location.href='repair-return';},1000)</script>";die;
         }else{
             echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }

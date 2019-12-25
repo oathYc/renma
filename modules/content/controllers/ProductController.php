@@ -5,9 +5,11 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\libs\Methods;
 use app\modules\content\models\Category;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Product;
+use app\modules\content\models\Search;
 use yii\data\Pagination;
 use yii;
 
@@ -30,22 +32,23 @@ class ProductController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $count = Product::find()->count();
-        $page = new Pagination(['totalCount'=>$count]);
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
         $data = Product::find()->asArray()->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
-            if($v['catPid']){
-                $parent = Category::findOne($v['catPid']);
-                $catPname =$parent->name;
-            }else{
-                $catPname = '';
-            }
-            if($v['catCid']){
-                $child = Category::findOne($v['catCid']);
-                $catCname = $child->name;
-            }else{
-                $catCname = '';
-            }
-            $data[$k]['category'] = $catPname.' '.$catCname;
+//            if($v['catPid']){
+//                $parent = Category::findOne($v['catPid']);
+//                $catPname =$parent->name;
+//            }else{
+//                $catPname = '';
+//            }
+//            if($v['catCid']){
+//                $child = Category::findOne($v['catCid']);
+//                $catCname = $child->name;
+//            }else{
+//                $catCname = '';
+//            }
+            $catName = $v['type']==1?'维修':($v['type']==2?'新车':($v['type'] ==3?'二手车':''));
+            $data[$k]['category'] = $catName;
         }
         return $this->render('product-list',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
@@ -56,6 +59,7 @@ class ProductController  extends AdminController
         $id = Yii::$app->request->get('id');
         if($id){
             $data = Product::find()->where("id = $id")->asArray()->one();
+            $data['catName'] = $data['type']==1?'维修':($data['type']==2?'新车':($data['type'] ==3?'二手车':''));
         }else{
             $data = [];
         }
@@ -93,9 +97,15 @@ class ProductController  extends AdminController
         $data = GroupProduct::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $product = Product::findOne($v['productId']);
-            $data[$k]['productName'] = $product->title;
-            $data[$k]['oldPrice'] = $product->price;
-            $data[$k]['brand'] = $product->brand;
+            if($product){
+                $data[$k]['productName'] = $product->title;
+                $data[$k]['oldPrice'] = $product->price;
+                $data[$k]['brand'] = $product->brand;
+            }else{
+                $data[$k]['productName'] = '';
+                $data[$k]['oldPrice'] = '';
+                $data[$k]['brand'] = '';
+            }
         }
         return $this->render('group-product',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
@@ -184,6 +194,84 @@ class ProductController  extends AdminController
             }
         }else{
             echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 商品添加
+     */
+    public function actionProductAdd(){
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $submit = Yii::$app->request->post('submit');
+            if($id){
+                $model = Product::findOne($id);
+            }else{
+                $model = new Product();
+                $model->uid = 999999;//后台添加
+                $model->createTime = time();
+            }
+            if(!$submit['title']){
+                Methods::jsonData(0,'商品名称不存在');
+            }
+            if(!$submit['price']){
+                Methods::jsonData(0,'商品价格不存在');
+            }
+            if(!$submit['brand']){
+                Methods::jsonData(0,'商品品牌不存在');
+            }
+            if(!$submit['headMsg']){
+                Methods::jsonData(0,'商品封面信息不存在');
+            }
+            if(!$submit['voltage']){
+                Methods::jsonData(0,'商品电压数据不存在');
+            }
+            if(!$submit['mileage']){
+                Methods::jsonData(0,'商品续航里程不存在');
+            }
+            if(!$submit['image']){
+                Methods::jsonData(0,'商品图片数据不存在');
+            }
+            if(!$submit['remark']){
+                Methods::jsonData(0,'商品说明不存在');
+            }
+            if(!$submit['phone']){
+                Methods::jsonData(0,'联系电话不存在');
+            }
+            if(!$submit['tradeAddress']){
+                Methods::jsonData(0,'商品交易地址不存在');
+            }
+            $model->title = $submit['title'];
+            $model->price = $submit['price'];
+            $model->voltage = $submit['voltage'];
+            $model->mileage = $submit['mileage'];
+            $model->sex = $submit['sex'];
+            $model->headMsg = $submit['headMsg'];
+            $model->image = serialize($submit['image']);
+            $model->tradeAddress = $submit['tradeAddress'];
+            $model->brand = $submit['brand'];
+            $model->introduce = $submit['introduce'];
+            $model->type = $submit['type'];
+            $model->number = $submit['number'];
+            $model->zhibao = $submit['zhibao'];
+            $model->remark = $submit['remark'];
+            $model->phone = $submit['phone'];
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-list';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $id = Yii::$app->request->get('id');
+            if($id){
+                $data = Product::find()->where("id = $id")->asArray()->one();
+                $data['catName'] = $data['type']==1?'维修':($data['type']==2?'新车':($data['type'] ==3?'二手车':''));
+            }else{
+                $data = [];
+            }
+            $voltage = Search::find()->where(" type =1")->asArray()->all();//1-电压
+            $mileage = Search::find()->where(" type =2")->asArray()->all();//2-续航
+            return $this->render('product-add',['data'=>$data,'voltage'=>$voltage,'mileage'=>$mileage]);
         }
     }
 }

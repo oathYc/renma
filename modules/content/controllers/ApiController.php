@@ -1956,7 +1956,7 @@ class ApiController extends  Controller
                 if($v == 4){
                     $total = Quality::find()->where("uid = $uid and after = 1")->count();
                 }else{
-                    $where = " uid = $uid  and typeStatus = $v";
+                    $where = " uid = $uid  and typeStatus = $v and type = 2";
                     $total = Order::find()->where($where)->count();
                 }
                 $data[] = ['type'=>$v,'number'=>$total];

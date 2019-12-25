@@ -6,7 +6,8 @@
     </ul>
     <ul class="nav">
         <li class="dropdown pull-right">
-
+            <a class="dropdown-toggle"
+               href="/content/product/product-add">添加商品</a>
         </li>
     </ul>
     <form action="/content/product/product-list" method="get" class="form-horizontal">

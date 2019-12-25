@@ -21,7 +21,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">商品分类</label>
                 <div class="controls">
-                    <input type="text" name="category" readonly id="category" value="<?php echo $data['category'];?>" />
+                    <input type="text" name="category" readonly id="category" value="<?php echo $data['catName'];?>" />
                 </div>
             </div>
             <div class="control-group">
