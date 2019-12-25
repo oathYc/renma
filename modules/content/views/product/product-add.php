@@ -50,11 +50,11 @@
                 <div class="controls">
                     <label for="yes" style="display:inline;">
                         是
-                        <input type="radio" id="yes" name="submit[zhibao]" value="1" <?php if(isset($data['sex']) && $data['sex'] ==1) echo 'checked';?> />
+                        <input type="radio" id="yes" name="submit[zhibao]" value="1" <?php if(isset($data['zhibao']) && $data['zhibao'] ==1) echo 'checked';?> />
                     </label>&nbsp;&nbsp;
                     <label for="nv" style="display:inline;">
                         否
-                        <input type="radio"  id='nv' name="submit[zhibao]" value="2" <?php if(isset($data['sex']) && $data['sex'] ==1) echo 'checked';?> />
+                        <input type="radio"  id='nv' name="submit[zhibao]" value="2" <?php if(isset($data['zhibao']) && $data['zhibao'] ==1) echo 'checked';?> />
                     </label>
 
                 </div>
@@ -101,7 +101,7 @@
                     <select name="submit[voltage]" id="voltage">
                         <option value="0">请选择</option>
                         <?php foreach($voltage as $k => $v){?>
-                            <option value="<?php echo $v['id']?>" <?php if(isset($data['voltage']) && $data['voltage'] == $v['id']) echo 'selected';?>><?php echo $v['val']?></option>
+                            <option value="<?php echo $v['val']?>" <?php if(isset($data['voltage']) && $data['voltage'] == $v['val']) echo 'selected';?>><?php echo $v['val']?></option>
                         <?php }?>
                     </select>
                 </div>
@@ -112,7 +112,7 @@
                     <select name="submit[mileage]" id="mileage">
                         <option value="0">请选择</option>
                         <?php foreach($mileage as $k => $v){?>
-                            <option value="<?php echo $v['id']?>" <?php if(isset($data['mileage']) && $data['mileage'] == $v['id']) echo 'selected';?>><?php echo $v['val']?></option>
+                            <option value="<?php echo $v['val']?>" <?php if(isset($data['mileage']) && $data['mileage'] == $v['val']) echo 'selected';?>><?php echo $v['val']?></option>
                         <?php }?>
                     </select>
                 </div>
