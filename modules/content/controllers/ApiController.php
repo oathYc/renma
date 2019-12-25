@@ -2459,7 +2459,7 @@ class ApiController extends  Controller
         Methods::jsonData(1,'success',$coupon);
     }
     /**
-     * 维修师月体现申请
+     * 维修师提现申请
      */
     public function actionRepairApplyReturn(){
         $uid = Yii::$app->request->post('uid');
@@ -2508,11 +2508,21 @@ class ApiController extends  Controller
         }
         if($member->repair != 1){
             Methods::jsonData(0,'你还不是维修师身份');
+        }else{
+            $member = Member::findOne($uid);
+            $totalMoney = $member->repairTotalMoney;
+            $yue = $member->repairMoney;
+            $date = date('Y-m-d');
+            $begin = strtotime($date);
+            $end = $begin + 86399;
+            $where = " status = 1 and repairUid = $uid and typeStatus = 3 and repairSuccess between $begin and $end";
+            $todayMoney = Order::find()->where($where)->sum('totalPrice');
+            //提现记录
+            $total = RepairReturn::find()->where("uid = $uid and status = 1")->count();
+            $offset = 10*($page-1);
+            $data = RepairReturn::find()->where("uid = $uid and status = 1")->asArray()->offset($offset)->limit(10)->all();
+            $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'total'=>$total,'history'=>$data];
+            Methods::jsonData(1,'success',$data);
         }
-        $total = RepairReturn::find()->where("uid = $uid and status = 1")->count();
-        $offset = 10*($page-1);
-        $data = RepairReturn::find()->where("uid = $uid and status = 1")->asArray()->offset($offset)->limit(10)->all();
-        $data = ['total'=>$total,'history'=>$data];
-        Methods::jsonData(1,'success',$data);
     }
 }
