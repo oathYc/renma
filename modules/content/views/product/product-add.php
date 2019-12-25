@@ -168,6 +168,17 @@
 </div>
 
 <script>
+
+    function imgDelete(_this){
+        //删除对应的图片值
+        var imgId = $(_this).attr('data-imgId');
+        $('#'+imgId).remove();
+        //img 数量减一
+        var imgNum = $('#imgDiv').attr('data-imgNum');
+        imgNum--;
+        $('#imgDiv').attr('data-imgNum',imgNum);
+        $(_this).remove();
+    }
     //实例化编辑器
     var o_ueditorupload = UE.getEditor('j_ueditorupload',
         {
