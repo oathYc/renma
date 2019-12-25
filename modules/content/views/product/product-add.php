@@ -54,7 +54,7 @@
                     </label>&nbsp;&nbsp;
                     <label for="nv" style="display:inline;">
                         否
-                        <input type="radio"  id='nv' name="submit[zhibao]" value="2" <?php if(isset($data['zhibao']) && $data['zhibao'] ==1) echo 'checked';?> />
+                        <input type="radio"  id='nv' name="submit[zhibao]" value="2" <?php if(isset($data['zhibao']) && $data['zhibao'] ==0) echo 'checked';?> />
                     </label>
 
                 </div>
