@@ -242,7 +242,7 @@ class ProductController  extends AdminController
             if(!$submit['headMsg']){
                 echo "<script>alert('商品封面信息不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
-                if(!preg_match("/$domain/",$submit['headMsg'])){
+                if(!preg_match("/http/",$submit['headMsg'])){
                     $submit['headMsg'] = $domain.$submit['headMsg'];
                 }
             }
@@ -250,7 +250,7 @@ class ProductController  extends AdminController
                 echo "<script>alert('商品图片数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
                 foreach($image as $k =>$v){
-                    if(!preg_match("/$domain/",$v)){
+                    if(!preg_match("/http/",$v)){
                         $image[$k] = $domain.$v;
                     }
                 }
