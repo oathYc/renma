@@ -40,7 +40,7 @@
                     </label>&nbsp;&nbsp;
                     <label for="nv" style="display:inline;">
                         女
-                        <input type="radio"  id='nv' name="submit[sex]" value="2" <?php if(isset($data['sex']) && $data['sex'] ==1) echo 'checked';?> />
+                        <input type="radio"  id='nv' name="submit[sex]" value="2" <?php if(isset($data['sex']) && $data['sex'] ==2) echo 'checked';?> />
                     </label>
 
                 </div>
@@ -54,7 +54,7 @@
                     </label>&nbsp;&nbsp;
                     <label for="nv" style="display:inline;">
                         否
-                        <input type="radio"  id='nv' name="submit[zhibao]" value="2" <?php if(isset($data['zhibao']) && $data['zhibao'] ==0) echo 'checked';?> />
+                        <input type="radio"  id='nv' name="submit[zhibao]" value="0" <?php if(isset($data['zhibao']) && $data['zhibao'] != 1) echo 'checked';?> />
                     </label>
 
                 </div>
@@ -68,7 +68,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">商品价格</label>
                 <div class="controls">
-                    <input type="text" name="submit[price]"  id="price" onkeyup="value = value.replace(/[^0-9]/g,'')" value="<?php echo isset($data['price'])?$data['price']:'';?>" " />
+                    <input type="text" name="submit[price]"  id="price" onkeyup="value = value.replace(/[^.0-9]/g,'')" value="<?php echo isset($data['price'])?$data['price']:'';?>" " />
                 </div>
             </div>
             <div class="control-group">
