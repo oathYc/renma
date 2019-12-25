@@ -238,15 +238,21 @@ class ProductController  extends AdminController
             if(!$submit['remark']){
                 echo "<script>alert('商品说明不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
+            $domain = Yii::$app->params['domain'];
             if(!$submit['headMsg']){
                 echo "<script>alert('商品封面信息不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if(!preg_match("/$domain/",$submit['headMsg'])){
+                    $submit['headMsg'] = $domain.$submit['headMsg'];
+                }
             }
-            $domain = Yii::$app->params['domain'];
             if(!$image || !is_array($image)){
                 echo "<script>alert('商品图片数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
                 foreach($image as $k =>$v){
-                    $image[$k] = $domain.$v;
+                    if(!preg_match("/$domain/",$v)){
+                        $image[$k] = $domain.$v;
+                    }
                 }
             }
             if(!$submit['introduce']){
@@ -257,7 +263,7 @@ class ProductController  extends AdminController
             $model->voltage = $submit['voltage'];
             $model->mileage = $submit['mileage'];
             $model->sex = $submit['sex'];
-            $model->headMsg = $domain.$submit['headMsg'];
+            $model->headMsg = $submit['headMsg'];
             $model->image = serialize($image);
             $model->tradeAddress = $submit['tradeAddress'];
             $model->brand = $submit['brand'];
