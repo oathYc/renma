@@ -49,7 +49,7 @@
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <a class="btn" href="/content/product/product-detail?id=<?php echo $v['id']; ?>">详情</a>
+                            <a class="btn" href="/content/product/product-add?id=<?php echo $v['id']; ?>">修改</a>
                             <a class="btn" href="JavaScript:if(confirm('确认删除该商品？')){location.href='/content/product/product-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>

@@ -33,7 +33,7 @@ class ProductController  extends AdminController
         parent::setActionId($action);
         $count = Product::find()->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = Product::find()->asArray()->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->all();
+        $data = Product::find()->asArray()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
 //            if($v['catPid']){
 //                $parent = Category::findOne($v['catPid']);
@@ -203,6 +203,7 @@ class ProductController  extends AdminController
         if($_POST){
             $id = Yii::$app->request->post('id');
             $submit = Yii::$app->request->post('submit');
+            $image = Yii::$app->request->post('imageFiles');
             if($id){
                 $model = Product::findOne($id);
             }else{
@@ -210,48 +211,59 @@ class ProductController  extends AdminController
                 $model->uid = 999999;//后台添加
                 $model->createTime = time();
             }
-            if(!$submit['title']){
-                Methods::jsonData(0,'商品名称不存在');
+            if(!isset($submit['type']) || !$submit['type']){
+                echo "<script>alert('商品分类不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!isset($submit['zhibao'])){
+                echo "<script>alert('请勾选商品质保选项');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if(!$submit['price']){
-                Methods::jsonData(0,'商品价格不存在');
-            }
-            if(!$submit['brand']){
-                Methods::jsonData(0,'商品品牌不存在');
-            }
-            if(!$submit['headMsg']){
-                Methods::jsonData(0,'商品封面信息不存在');
-            }
-            if(!$submit['voltage']){
-                Methods::jsonData(0,'商品电压数据不存在');
-            }
-            if(!$submit['mileage']){
-                Methods::jsonData(0,'商品续航里程不存在');
-            }
-            if(!$submit['image']){
-                Methods::jsonData(0,'商品图片数据不存在');
-            }
-            if(!$submit['remark']){
-                Methods::jsonData(0,'商品说明不存在');
+                echo "<script>alert('商品价格不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if(!$submit['phone']){
-                Methods::jsonData(0,'联系电话不存在');
+                echo "<script>alert('联系电话不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if(!$submit['tradeAddress']){
-                Methods::jsonData(0,'商品交易地址不存在');
+                echo "<script>alert('商品交易地址不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$submit['brand']){
+                echo "<script>alert('商品品牌不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$submit['voltage']){
+                echo "<script>alert('商品电压数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$submit['mileage']){
+                echo "<script>alert('商品续航里程不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$submit['remark']){
+                echo "<script>alert('商品说明不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$submit['headMsg']){
+                echo "<script>alert('商品封面信息不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $domain = Yii::$app->params['domain'];
+            if(!$image || !is_array($image)){
+                echo "<script>alert('商品图片数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                foreach($image as $k =>$v){
+                    $image[$k] = $domain.$v;
+                }
+            }
+            if(!$submit['introduce']){
+                echo "<script>alert('商品详情不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             $model->title = $submit['title'];
             $model->price = $submit['price'];
             $model->voltage = $submit['voltage'];
             $model->mileage = $submit['mileage'];
             $model->sex = $submit['sex'];
-            $model->headMsg = $submit['headMsg'];
-            $model->image = serialize($submit['image']);
+            $model->headMsg = $domain.$submit['headMsg'];
+            $model->image = serialize($image);
             $model->tradeAddress = $submit['tradeAddress'];
             $model->brand = $submit['brand'];
             $model->introduce = $submit['introduce'];
             $model->type = $submit['type'];
-            $model->number = $submit['number'];
+            $model->number = isset($submit['number'])?$submit['number']:1;
             $model->zhibao = $submit['zhibao'];
             $model->remark = $submit['remark'];
             $model->phone = $submit['phone'];
@@ -266,6 +278,7 @@ class ProductController  extends AdminController
             if($id){
                 $data = Product::find()->where("id = $id")->asArray()->one();
                 $data['catName'] = $data['type']==1?'维修':($data['type']==2?'新车':($data['type'] ==3?'二手车':''));
+                $data['image'] = unserialize($data['image']);
             }else{
                 $data = [];
             }
