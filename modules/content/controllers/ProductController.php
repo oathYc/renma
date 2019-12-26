@@ -118,8 +118,10 @@ class ProductController  extends AdminController
             $id = Yii::$app->request->post('id');
             $productId = Yii::$app->request->post('productId');
 //            $number = Yii::$app->request->post('number');
+            $return = Yii::$app->request->post('return');
             $price = Yii::$app->request->post('price');
             $remark = Yii::$app->request->post('remark');
+            $groupTime = Yii::$app->request->post('groupTime',1);
             $rank = Yii::$app->request->post('rank',0);
             if(!$productId){
                 echo "<script>alert('请填写商品id');history.go(-1);</script>";die;
@@ -156,9 +158,11 @@ class ProductController  extends AdminController
             $model->productId = $productId;
 //            $model->number = $number;
             $model->price = $price;
+            $model->return = $return?$return:0;
             $model->remark = $remark;
             $model->createTime = time();
             $model->rank = $rank;
+            $model->groupTime = $groupTime;
             $res = $model->save();
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-group'},1000)</script>";die;

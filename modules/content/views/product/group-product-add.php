@@ -49,6 +49,12 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">有效时间</label>
+                <div class="controls">
+                    <input type="text" name="groupTime"  id="groupTime" onkeyup="value = value.replace(/[^0-9.]/g,'')" value="<?php echo isset($data['groupTime'])?$data['groupTime']:'';?>" placeholder="单位天" />
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">组团排序</label>
                 <div class="controls">
                     <input type="text" name="rank"  id="rank" onkeyup="value = value.replace(/[^0-9]/g,'')" value="<?php echo isset($data['rank'])?$data['rank']:'';?>" />
