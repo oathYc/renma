@@ -117,7 +117,7 @@ class ProductController  extends AdminController
         if($_POST){
             $id = Yii::$app->request->post('id');
             $productId = Yii::$app->request->post('productId');
-            $number = Yii::$app->request->post('number');
+//            $number = Yii::$app->request->post('number');
             $price = Yii::$app->request->post('price');
             $remark = Yii::$app->request->post('remark');
             $rank = Yii::$app->request->post('rank',0);
@@ -135,9 +135,9 @@ class ProductController  extends AdminController
                     echo "<script>alert('该商品已组团，请勿重复添加');history.go(-1);</script>";die;
                 }
             }
-            if(!$number || $number < 2){
-                echo "<script>alert('请填写争取的组团人数');history.go(-1);</script>";die;
-            }
+//            if(!$number || $number < 2){
+//                echo "<script>alert('请填写争取的组团人数');history.go(-1);</script>";die;
+//            }
             if(!$price || $price < 0){
                 echo "<script>alert('请填写正确的组团价格');history.go(-1);</script>";die;
             }
@@ -150,7 +150,7 @@ class ProductController  extends AdminController
                 $model = new GroupProduct();
             }
             $model->productId = $productId;
-            $model->number = $number;
+//            $model->number = $number;
             $model->price = $price;
             $model->remark = $remark;
             $model->createTime = time();

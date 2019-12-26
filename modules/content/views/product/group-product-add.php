@@ -84,15 +84,15 @@
     }
     function dataCheck(){
         var productId = $('#productId').val();
-        var number = $('#number').val();
+        // var number = $('#number').val();
         var price = $('#price').val();
         var remark = $('#remark').val();
         if(!productId || productId < 1){
             alert('请填写参与组团的商品id');return false;
         }
-        if(!number || number < 1){
-            alert('请填写正确的组团人数');return false;
-        }
+        // if(!number || number < 1){
+        //     alert('请填写正确的组团人数');return false;
+        // }
         if(!price || price <= 0){
             alert('请填写正确的组团价格');return false;
         }
