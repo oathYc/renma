@@ -175,7 +175,7 @@ class WeixinPayController extends  Controller{
                     //添加积分
                     $member = Member::findOne($orderData['uid']);
                     $hadIntegral = isset($member->integral)?$member->integral:0;
-                    $addIntegral = floor($orderData['totalPrice'] + $orderData['serverFee']);
+                    $addIntegral = floor($orderData['PayPrice'] + $orderData['serverFee']);
                     //积分判断
                     if($orderData['integral'] >0){
                         $reduceIntegral = $orderData['integral'];
