@@ -78,7 +78,7 @@ class Member extends ActiveRecord
         foreach($coupons as $k => $v){
             $had = UserCoupon::find()->where("uid = $uid and couponId = {$v['id']}")->one();
             if(!$had){
-                if($count < 6){
+                if($count < 5){
                     $model = new UserCoupon();
                     $model->uid = $uid;
                     $model->couponId = $v['id'];

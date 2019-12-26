@@ -233,11 +233,12 @@ class ApiController extends  Controller
             Member::inviteCode($model->id);
             //会员赠送
             $orderNumber = 'RM'.time().rand(123456,999999);
-            $orderId = Order::createOrder($model->id,$orderNumber,0,'注册小程序赠送会员',1);
+            $uid = $model->id;
+            $orderId = Order::createOrder($uid,$orderNumber,0,'注册小程序赠送会员',1);
             $beginTime = time();
             $endTime = $beginTime + 86400*365;
             $model = new MemberLog();
-            $model->uid = $model->id;
+            $model->uid = $uid;
             $model->beginTime = $beginTime;
             $model->endTime = $endTime;
             $model->orderId = $orderId;
