@@ -2220,8 +2220,12 @@ class ApiController extends  Controller
     public function actionApplyReturn(){
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
+        $remark = Yii::$app->request->post('remark');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$remark){
+            Methods::jsonData(0,'请填写退款说明');
         }
         if(!$orderId){
             Methods::jsonData(0,'订单id不存在');
@@ -2233,6 +2237,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单状态不对，不可申请退款');
         }else{
             $had->status = -1;//退款中
+            $had->returnRemark = $remark;
             $had->save();
             Methods::jsonData(1,'申请退款成功');
         }

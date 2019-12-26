@@ -426,6 +426,7 @@
     接口地址        /content/api/apply-return
     接口参数        uid              用户id
                     orderId          订单Id
+                    remark            退款说明
 
     接口名称        维修师申请
     接口地址        /content/api/repair-apply

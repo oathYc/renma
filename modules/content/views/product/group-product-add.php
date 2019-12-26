@@ -63,6 +63,7 @@
             <br/>
             <div class="control-group">
                 <div class="controls">
+                    <input type="hidden" name="id" value="<?php echo isset($data['id'])?$data['id']:'';?>" />
                     <input type="submit" class="btn " value="提交">&nbsp;&nbsp;&nbsp;
                 </div>
             </div>

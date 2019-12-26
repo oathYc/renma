@@ -130,7 +130,11 @@ class ProductController  extends AdminController
                     echo "<script>alert('没有该商品');history.go(-1);</script>";die;
                 }
                 //是否已经组团
-                $had = GroupProduct::find()->where("productId = $productId")->one();
+                if($id){
+                    $had = GroupProduct::find()->where("productId = $productId and id !=$id")->one();
+                }else{
+                    $had = GroupProduct::find()->where("productId = $productId ")->one();
+                }
                 if($had){
                     echo "<script>alert('该商品已组团，请勿重复添加');history.go(-1);</script>";die;
                 }
