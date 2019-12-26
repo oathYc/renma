@@ -2233,15 +2233,56 @@ class ApiController extends  Controller
         $had = Order::find()->where("id = $orderId and uid = $uid")->one();
         if(!$had){
             Methods::jsonData(0,'没有该订单');
-        }elseif($had->status !=1){
-            Methods::jsonData(0,'订单状态不对，不可申请退款');
-        }else{
+        }elseif($had->status ==1 || $had->status = -3 ){//支付成功 或者退款失败
             $had->status = -1;//退款中
             $had->returnRemark = $remark;
+            $had->returnTime = time();
             $had->save();
             Methods::jsonData(1,'申请退款成功');
+        }else{
+            Methods::jsonData(0,'订单状态不对，不可申请退款');
         }
 
+    }
+    /**
+     * 退款详情
+     */
+    public function actionReturnDetail(){
+        $orderId = Yii::$app->request->post('orderId');
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        $data = Order::find()->asArray()->select("id,payPrice,returnTime,status,typeStatus,returnRemark")->where("uid = $uid and id = $orderId and status < 0")->one();
+        Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 取消退款
+     */
+    public function actionReturnReturn(){
+        $uid = Yii::$app->request->post('uid');
+        $orderId = Yii::$app->request->post('orderId');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$orderId){
+            Methods::jsonData(0,'订单id不存在');
+        }
+        $order = Order::find()->where("id = $orderId and uid = $uid and status = -1")->one();
+        if(!$order){
+            Methods::jsonData(0,'订单信息有误');
+        }else{
+            $order->status = 1;
+            $res = $order->save();
+            if($res){
+                Methods::jsonData(1,'取消成功');
+            }else{
+                Methods::jsonData(0,'取消失败，请重试');
+            }
+        }
     }
     /**
      * 维修师申请
