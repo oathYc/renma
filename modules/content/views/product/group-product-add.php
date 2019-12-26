@@ -30,12 +30,12 @@
                     <input type="text" name="productId"  id="productId" value="<?php echo isset($data['productId'])?$data['productId']:'';?>" onchange="getProduceMsg()"/>
                 </div>
             </div>
-<!--            <div class="control-group">-->
-<!--                <label for="modulename" class="control-label">组团人数</label>-->
-<!--                <div class="controls">-->
-<!--                    <input type="text" name="number"  id="number" onkeyup="value = value.replace(/[^0-9]/g,'')" value="--><?php //echo isset($data['number'])?$data['number']:'';?><!--" />-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="control-group">
+                <label for="modulename" class="control-label">组团人数</label>
+                <div class="controls">
+                    <input type="text" name="number"  id="number" onkeyup="value = value.replace(/[^0-9]/g,'')" value="<?php echo isset($data['number'])?$data['number']:'';?>" />
+                </div>
+            </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">返现金额</label>
                 <div class="controls">
@@ -97,9 +97,9 @@
         if(!productId || productId < 1){
             alert('请填写参与组团的商品id');return false;
         }
-        // if(!number || number < 1){
-        //     alert('请填写正确的组团人数');return false;
-        // }
+        if(!number || number < 1){
+            alert('请填写正确的组团人数');return false;
+        }
         if(!price || price <= 0){
             alert('请填写正确的组团价格');return false;
         }

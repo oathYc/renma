@@ -26,6 +26,7 @@
                 <th>商品品牌</th>
                 <th>商品原价</th>
                 <th>组团价格</th>
+                <th>组团人数</th>
                 <th>返现金额</th>
                 <th>有效时间(天)</th>
                 <th>组团说明</th>
@@ -45,6 +46,7 @@
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['oldPrice']?></span></td>
                     <td ><span><?php echo $v['price']?></span></td>
+                    <td ><span><?php echo $v['number']?></span></td>
                     <td ><span><?php echo $v['return']?></span></td>
                     <td ><span><?php echo $v['groupTime']?></span></td>
                     <td ><span><?php echo $v['remark']?></span></td>
