@@ -14,7 +14,7 @@ class Order extends ActiveRecord
     /**
      * 会员充值
      */
-    public static function createOrder($uid,$orderNumber,$money,$remark){
+    public static function createOrder($uid,$orderNumber,$money,$remark,$status = 0){
         $model = new self();
         $model->orderNumber = $orderNumber;
         $model->uid = $uid;
@@ -22,7 +22,7 @@ class Order extends ActiveRecord
         $model->productTitle = $remark;
         $model->payPrice = $money;
         $model->totalPrice = $money;
-        $model->status = 0;
+        $model->status = $status;
         $model->createTime = time();
         $model->type = 1;//1-充值 2-买商品
         $model->save();
@@ -88,6 +88,45 @@ class Order extends ActiveRecord
             }
         }
         Order::updateAll(['status'=>2]," id = $orderId");
+        return true;
+    }
+    /**
+     * 判断用户组团商品数据
+     * 赠送返现
+     */
+    public static  function checkUserGroup($orderId){
+        if($orderId){
+            $order = Order::findOne($orderId);
+            if(!$order){
+                return false;
+            }
+            $userGroup = UserGroup::find()->where("orderId = {$orderId} and uid = {$order['uid']}")->one();
+            if(!$userGroup){
+                return false;
+            }
+            $userGroupId = $userGroup->userGroupId;
+            if($userGroup->promoter != 1 && $userGroup->id = $userGroupId){//不是组团发起人 给发起人返现
+                $pid = $userGroup->promoterUid;
+                $group = GroupProduct::findOne($userGroup->groupId);
+                if($group){
+                    $return = $group->return;//返现金额
+                    $number = $group->number;//组团人数
+                    $groupTime = $group->groupTime;//有效时间
+                    if($return){
+                        $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and promoter != 1 and status = 1")->count();
+                        //过期时间
+                        $createTime = UserGroup::find()->where("userGroupId = $userGroupId and status = 1 and promoter = 1")->asArray()->one()['createTime'];//发起组团时间
+                        $expirTime = $groupTime*86400 + $createTime;
+                        $now = time();
+                        if($hadNumber < $number && $now < $expirTime){//人数未满且在有效期内
+                            $money = Member::find()->where(" id = $pid")->asArray()->one()['memberMoney'];
+                            $add = $money + $return;
+                            Member::updateAll(['memberMoney'=>$add]);
+                        }
+                    }
+                }
+            }
+        }
         return true;
     }
 }

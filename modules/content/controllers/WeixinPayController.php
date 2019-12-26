@@ -15,6 +15,7 @@ use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
 use app\modules\content\models\UserCoupon;
+use app\modules\content\models\UserGroup;
 use yii;
 use yii\web\Controller;
 
@@ -172,10 +173,47 @@ class WeixinPayController extends  Controller{
                 $amount = $amount/100;//换成元
                 $orderData = Order::find()->where("orderNumber = '{$orderNo}' and payPrice = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
-                    //添加积分
                     $member = Member::findOne($orderData['uid']);
+                    //判断会员状态
+                    if($orderData['type'] == 1){//充值
+                        $isMember = 1;
+                        //赠送优惠券
+                        Member::sendCoupon($orderData['uid']);
+                        Member::updateAll(['member'=>$isMember]," id = {$orderData['uid']}");
+                    }elseif($orderData['type'] ==3){//商品刷新
+                        Product::updateAll(['flushTime'=>time()],"id = {$orderData['productId']}");
+                    }
+                    //添加积分
+                    $isMember = isset($member->member)?$member->member:0;
                     $hadIntegral = isset($member->integral)?$member->integral:0;
-                    $addIntegral = floor($orderData['PayPrice'] + $orderData['serverFee']);
+                    if($orderData['productType'] == 2){//组团商品不参与积分赠送
+                        $addIntegral = 0;
+                        //更新组团订单状态
+                        UserGroup::updateAll(['status'=>1,'finishTime'=>time()],"orderId = {$orderData['id']}");
+                    }else{
+                        if($isMember){//会员才有积分赠送功能
+                            $addIntegral = floor($orderData['PayPrice'] + $orderData['serverFee']);
+                            Integral::saveRecord($orderData['uid'],$addIntegral,2,'会员特权：购买商品赠送');
+                        }else{
+                            $addIntegral = 0;
+                        }
+                    }
+                    //邀请人判断
+                    if($orderData['inviterCode']){//一年时间内邀请人获得比例兑换积分
+                        $now = time();//当前时间
+                        $registerTime = isset($member->createTime)?$member->createTime:0;;//注册时间
+                        $expirTime = $registerTime + 86400+365;//一年后
+                        if($expirTime > $now){
+                            $inviter = Member::find()->where("inviteCode = '{$orderData['inviterCode']}'")->asArray()->one();
+                            if($inviter){
+                                $getIntegral = floor($orderData['PayPrice'] + $orderData['serverFee']);
+                                $inviterIntegral = $inviter['integral'];
+                                $endIntegral = $inviterIntegral + $getIntegral;
+                                Member::updateAll(['integral'=>$endIntegral]," id = {$inviter['id']}");
+                                Integral::saveRecord($inviter['id'],$getIntegral,2,'邀请奖励：对方购买商品你获取比例积分');
+                            }
+                        }
+                    }
                     //积分判断
                     if($orderData['integral'] >0){
                         $reduceIntegral = $orderData['integral'];
@@ -184,18 +222,7 @@ class WeixinPayController extends  Controller{
                         $reduceIntegral = 0;
                     }
                     $integral = $hadIntegral + $addIntegral - $reduceIntegral ;//一元得一个积分
-                    Integral::saveRecord($orderData['uid'],$addIntegral,2,'购买商品赠送');
-                    //判断会员状态
-                    if($orderData['type'] == 1){//充值
-                        $member = 1;
-                        //赠送优惠券
-                        Member::sendCoupon($orderData['uid']);
-                    }elseif($orderData['type'] ==3){//商品刷新
-                        Product::updateAll(['flushTime'=>time()],"id = {$orderData['productId']}");
-                    }else{
-                        $member = isset($member->member)?$member->member:0;
-                    }
-                    Member::updateAll(['integral'=>$integral,'member'=>$member]," id = {$orderData['uid']}");
+                    Member::updateAll(['integral'=>$integral]," id = {$orderData['uid']}");
                     Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>time()],"orderNumber='{$orderNo}'");//修改订单状态
                     //优惠券判断
                     if($orderData['coupon'] > 0){
@@ -206,7 +233,8 @@ class WeixinPayController extends  Controller{
                     if($zhibao){
                         Quality::$orderData['uid']($orderData['uid'],$orderData['productId'],$orderData['id']);
                     }
-                    if($orderData['productType'] ==3){//购物车
+                    //购物车
+                    if($orderData['productType'] ==3){
                         Order::updateCartOrder($orderData['id']);
                     }
                 }

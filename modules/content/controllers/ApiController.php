@@ -216,6 +216,9 @@ class ApiController extends  Controller
                 $model = new Member();
                 $model->createTime = time();
                 $model->openId = $openId;
+                //第一次授权登录 赠送一级会员
+                $model->member = 1;//会员
+                $model->memberLevel = 1;//会员等级 1-12个月
             }
             $model->nickname = $nickname;
             $model->avatar = $avatar;
@@ -228,6 +231,20 @@ class ApiController extends  Controller
             $member = Member::find()->where("id = {$model->id}")->asArray()->one();
             //判断用户邀请码
             Member::inviteCode($model->id);
+            //会员赠送
+            $orderNumber = 'RM'.time().rand(123456,999999);
+            $orderId = Order::createOrder($model->id,$orderNumber,0,'注册小程序赠送会员',1);
+            $beginTime = time();
+            $endTime = $beginTime + 86400*365;
+            $model = new MemberLog();
+            $model->uid = $model->id;
+            $model->beginTime = $beginTime;
+            $model->endTime = $endTime;
+            $model->orderId = $orderId;
+            $model->createTime = time();
+            $model->save();
+            //赠送优惠券
+            Member::sendCoupon($model->id);
             Methods::jsonData(1,'登录成功',$member);
         }else{
             Methods::jsonData(0,'请求错误',$return);
@@ -1947,6 +1964,7 @@ class ApiController extends  Controller
         $order->typeStatus = 3;
         $res = $order->save();
         if($res){
+            //维修商品判断
             if($order->proType == 1 && $order->repairUid){
                 $repairId = $order->repairUid;
                 $money = $order->totalPrice;
@@ -1958,7 +1976,10 @@ class ApiController extends  Controller
                     $current = $currentMoney + $money;
                     Member::updateAll(['repairMoney'=>$current,'repairTotalMoney'=>$total],"id = $repairId");
                 }
-
+            }
+            //组团商品判断
+            if($order->productType ==2){
+                Order::checkUserGroup($orderId);
             }
             Logistics::updateAll(['status'=>1],"orderId = $orderId");
             Methods::jsonData(1,'确认收货成功');
