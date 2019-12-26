@@ -146,4 +146,47 @@ class UserGroup extends ActiveRecord
         $data = \Yii::$app->db->createCommand($sql)->queryAll();
         return ['count'=>$count,'page'=>$pages,'data'=>$data];
     }
+
+    /**
+     * 判断组团有效时间
+     */
+    public static function checkGroupTime($userGroupId){
+        $time = time();
+        if(!$userGroupId){
+            $data = ['code'=>0,'message'=>'用户组团id不存在'];
+            return $data;
+        }
+        //用户组团数据
+        $userGroup = UserGroup::findOne($userGroupId);
+        if(!$userGroup){
+            $data = ['code'=>0,'message'=>'用户组团不存在'];
+            return $data;
+        }
+        if($userGroup->promoter != 1){//不是发起人
+            $data = ['code'=>0,'message'=>'用户组团发起人不存在'];
+            return $data;
+        }
+        if($userGroup->status != 1){//发起人还未完成支付 不能进行分享购买
+            $data = ['code'=>0,'message'=>'分享人组团未成功（未购买）'];
+            return $data;
+        }
+        $beginTime = $userGroup->createTime;//发起组团时间
+        //组团数据
+        $group = GroupProduct::findOne($userGroup->groupId);
+        if(!$group){
+            $data = ['code'=>0,'message'=>'组团商品不存在'];
+            return $data;
+        }
+        //组团有效时间
+        $groupTime = $group->groupTime;
+        $endTime = $groupTime*86400 + $beginTime;
+        //当前时间判断
+        if($time > $endTime){//已超过有效时间
+            $data = ['code'=>0,'message'=>'组团时间已过'];
+            return $data;
+        }
+        $data = ['code'=>1,'message'=>''];
+        return $data;
+    }
+
 }

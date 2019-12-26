@@ -138,11 +138,12 @@
                     number      数量 默认1
                     integral    使用积分 默认0 不使用
                     couponId    优惠券id  默认0 不使用
-                    type        类型 1-充值 -买商品
+                    type        类型 1-充值 2-买商品
                     remark      订单备注
                     addressId   收货地址id
                     extInfo      其它信息  传定位地址信息
                     serFee        服务费 默认0
+                    productType   购买类型 1-商品购买 2-组团购买 3-购物车
 
 
 
@@ -300,22 +301,21 @@
     接口名称        组团详情
     接口地址        /content/api/group-product-detail
     接口参数        uid         用户id 传时获取自己是否参与组团 可不传
-                    productId   组团商品id
+                    groupId     组团商品表id
 
 
-    接口名称        组团参与
+    接口名称        发起组团
     接口地址        /content/api/add-group
     接口参数        uid         用户id
-                    productId   商品Id
-                    groupId     组团id（发起组团不传 参与已存在的时候必传）
+                    addressId   收货地址Id
+                    groupId     组团商品表id
 
 
-    接口名称        组团成功支付购买
-    接口地址        /content/api/group-buy
-    接口参数        uid         用户id
-                    groupId     组团的id
-
-
+    接口名称        参与组团
+    接口地址        /content/api/join-group
+    接口参数        uid             用户id
+                    addressId       收货地址Id
+                    userGroupId     发起人组团的组团id
 
 
     接口名称        商品分类（所有）

@@ -220,7 +220,7 @@ class OrderController  extends AdminController
      */
     public function actionOrderSureReturn(){
         $id = Yii::$app->request->get('id');
-        $res = Order::updateAll(['status'=>-2],"id = $id");
+        $res = Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"id = $id");
         if($res){
             echo "<script>alert('确认成功');setTimeout(function(){location.href='order-list';},1000)</script>";die;
         }else{

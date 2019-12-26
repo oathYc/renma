@@ -1400,17 +1400,6 @@ class ApiController extends  Controller
         }
     }
     /**
-     * 组团首页
-     */
-    public function actionGroupIndex(){
-        $page = Yii::$app->request->post('page',1);
-        $offset = ($page-1)*10;
-        $groupProduct = GroupProduct::find()->orderBy("rank desc")->offset($offset)->limit(10)->asArray()->all();
-        //检查用户组团状态
-        UserGroup::checkUserGroups();
-        Methods::jsonData(1,'success',$groupProduct);
-    }
-    /**
      * 我的邀请
      * 邀请有奖
      */
@@ -1597,18 +1586,29 @@ class ApiController extends  Controller
         $data = ['total'=>$total,'data'=>$data];
         Methods::jsonData(1,'success',$data);
     }
+
     /**
-     * 组团购买
+     * 组团
      * 组团首页
      */
     public function actionGroupProduct(){
         //组团商品数据
         $page = Yii::$app->request->post('page',1);
         $offset = 10*($page-1);
-        //检查用户组团状态
-        UserGroup::checkUserGroups();
         $total = GroupProduct::find()->count();
         $data = GroupProduct::find()->asArray()->orderBy('rank desc')->offset($offset)->limit(10)->all();
+        foreach($data as $k => $v){
+            $product = Product::findOne($v['productId']);
+            if($product){
+                $data[$k]['headMsg'] = $product->headMsg;
+                $data[$k]['title'] = $product->title;
+                $data[$k]['status'] = 1;
+            }else{
+                $data[$k]['headMsg'] = '';
+                $data[$k]['title'] = '失效商品';
+                $data[$k]['status'] = 0;//0-商品失效 1-有效
+            }
+        }
         $data = ['total'=>$total,'data'=>$data] ;
         Methods::jsonData(1,'success',$data);
     }
@@ -1625,10 +1625,27 @@ class ApiController extends  Controller
             $where .= " and status = $type";
         }
         $offset = ($page-1)*10;
-        //检查用户组团状态
-        UserGroup::checkUserGroups($uid);
         $total = UserGroup::find()->where($where)->count();
         $data = UserGroup::find()->where($where)->orderBy(" status asc")->asArray()->offset($offset)->limit(10)->all();
+        foreach($data as $k => $v){
+            $group = GroupProduct::findOne($v['groupId']);
+            if($group){
+                $product = Product::findOne($group->productId);
+                if($product){
+                    $data[$k]['headMsg'] = $product->headMsg;
+                    $data[$k]['title'] = $product->title;
+                    $data[$k]['status'] = 1;
+                }else{
+                    $data[$k]['headMsg'] = '';
+                    $data[$k]['title'] = '失效商品';
+                    $data[$k]['status'] = 0;//0-商品失效 1-有效
+                }
+            }else{
+                $data[$k]['headMsg'] = '';
+                $data[$k]['title'] = '失效商品';
+                $data[$k]['status'] = 0;//0-商品失效 1-有效
+            }
+        }
         $data = ['total'=>$total,'data'=>$data];
         die(json_encode($data));
     }
@@ -1636,131 +1653,164 @@ class ApiController extends  Controller
      * 组团商品详情
      */
     public function actionGroupProductDetail(){
-        $productId = Yii::$app->request->post('productId');
+        $groupId = Yii::$app->request->post('groupId');
         $uid = Yii::$app->request->post('uid');
-        if(!$productId){
-            Methods::jsonData(0,'商品id不存在');
-        }
-        if($uid){//查看自己是否参与组团中
-            $ownGroup = UserGroup::getOwnGroup($uid,$productId);
-        }else{
-            $ownGroup = [];
-        }
-        //获取组团的其他组团用户数据信息
-        $hadGroup = UserGroup::getCurrentGroup($productId,$ownGroup);
-        $product = GroupProduct::find()->where("productId = $productId")->asArray()->one();
-        Methods::jsonData(1,'success',['product'=>$product,'hadGroup'=>$hadGroup]);
-    }
-    /**
-     * 发起组团
-     * 发起或者参与
-     */
-    public function actionAddGroup(){
-        $uid = Yii::$app->request->post('uid');
-        $productId = Yii::$app->request->post('productId');
-        $groupId = Yii::$app->request->post('groupId',0);//组团id(发起人发起的)  存在未加入组团 不存在为发起组团
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        if(!$productId){
-            Methods::jsonData(0,'商品id不存在');
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
         }
-        //查看用户是否已经参与组团
-        $hadGroup = UserGroup::find()->where("status = 0 and uid = $uid and groupId = $productId")->asArray->one();
-        if($hadGroup){
-            Methods::jsonData(0,'你已经参与组团中了，不可重复参与');
+        $group = GroupProduct::find()->where("id = $groupId")->asArray()->one();
+        if(!$group){
+            Methods::jsonData(0,'该组团商品已下架');
+        }
+        $product = Product::findOne($group['productId']);
+        if(!$product){
+            Methods::jsonData(0,'该组团商品已下架');
+        }
+        $group['headMsg'] = $product->headMsg;
+        $group['title'] = $product->title;
+        Methods::jsonData(1,'success',$group);
+    }
+    /**
+     * 组团
+     * 发起组团
+     */
+    public function actionAddGroup(){
+        $uid = Yii::$app->request->post('uid');
+        $groupId = Yii::$app->request->post('groupId',0);//组团id
+        $addressId = Yii::$app->request->post('addressId');//收货地址id
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        if(!$addressId){
+            Methods::jsonData(0,'收货地址不存在');
+        }
+        $group = GroupProduct::findOne($groupId);
+        if(!$group){
+            Methods::jsonData(0,'该组团商品已下架');
+        }
+        $product = Product::findOne($group->productId);
+        if(!$product){
+            Methods::jsonData(0,'该组团商品已下架');
         }
         $time =  time();
-        if($groupId){
-            $promoter = UserGroup::find()->where("id =$groupId and groupId = $productId and status = 0 and promoter = 1")->asArray()->one();
-            if(!$promoter){
-                Methods::jsonData(0,'组团商品有误');
-            }
-            $promoter = 0;//1-发起人
-            $promoterUid = $promoter['promoterUid'];
-            $remark = '参与';
-        }else{
-            $promoter = 1;
-            $promoterUid = $uid;
-            $remark = '发起';
-        }
         $model = new UserGroup();
         $model->uid = $uid;
-        $model->groupId = $productId;
-        $model->promoter = $promoter;
-        $model->promoterUid = $promoterUid;
+        $model->groupId = $groupId;
+        $model->promoter = 1;
+        $model->promoterUid = $uid;
         $model->status = 0;//0 组团中 1-组团成功 2-组团失败
         $model->createTime = $time;
         $res = $model->save();
         if($res){
             //记录同一组团标识
-            if($groupId){
-                $userGroupId = $promoter['id'];
-            }else{
-                $userGroupId = $model->id;
-            }
-            UserGroup::updateAll(['userGroupId'=>$userGroupId],"id = {$model->id}");
-            //判断参与组团时是否是最后一个
-            if(!$groupId){
-                UserGroup::checkUserGroup($groupId);
-            }
-            Methods::jsonData(1,$remark.'组团成功');
+            UserGroup::updateAll(['userGroupId'=>$model->id],"id = {$model->id}");
+            $data = self::GroupBuy($model->id,$addressId,1);
+            die(json_encode($data));
         }else{
-            Methods::jsonData(0,$remark.'组团失败');
+            Methods::jsonData(0,'发起组团失败');
         }
     }
     /**
-     * 发起组团
+     * 组团
      * 组团成功
      * 进行支付
+     * first 1-发起组团 0 参与组团
      */
-    public function actionGroupBuy(){
-        $uid = Yii::$app->request->post('uid');
-        $groupId = Yii::$app->request->post('groupId');
-        if(!$uid){
-            Methods::jsonData(0,'用户ic不存在');
-        }
+    public static function GroupBuy($groupId,$addressId,$first=1){
         if(!$groupId){
-            Methods::jsonData(0,'组团id不存在');
-        }
-        $group = UserGroup::findOne($groupId);
-        if(!$group){
-            Methods::jsonData(0,'没有该组团信息');
-        }
-        $groupProduct = GroupProduct::findOne($group->groupId);
-        if($group->status != 1){
-            Methods::jsonData(0,'该组团状态有误');
-        }
-        $code = 1;
-        if($group->orderId){
-            $order = Order::findOne($group->orderId);
-            if($order){
-                $data = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->money,$order->id);
-            }else{
-                $code = 0;
-            }
+            $data = ['code'=>0,'message'=>'参数错误'];
+            return $data;
         }else{
-            $code = 0;
-        }
-        if($code ==0){//生成订单
+            $group = UserGroup::findOne($groupId);
+            if(!$group){
+                $data = ['code'=>0,'message'=>'用户没有参与组团'];
+                return $data;
+            }
+            $groupProduct = GroupProduct::findOne($group->groupId);
+            if(!$groupProduct){
+                $data = ['code'=>0,'message'=>'没有该组团数据'];
+                return $data;
+            }
+            $product = Product::findOne($groupProduct['productId']);
+            if(!$product){
+                $data = ['code'=>0,'message'=>'商品已下架'];
+                return $data;
+            }
+            if($first ==1){//发起者
+                $price = $product->price;//商品原价
+            }else{//参与者
+                $price = $groupProduct->price;//商品组团价格
+            }
             $model = new Order();
-            $model->orderNumber = 'RMZT'.time();
+            $model->orderNumber = 'RMZT'.time().rand(11111,99999);
             $model->uid = $group->uid;
-            $model->productId = $group->groupId;
-            $model->productTitle = '';
-            $model->totalPrice = $groupProduct->price;
-            $model->payPrice = $groupProduct->price;
+            $model->productId = $groupProduct->productId;
+            $model->productTitle = $product->title;
+            $model->totalPrice = $price;
+            $model->payPrice = $price;
             $model->status = 0;
             $model->createTime = time();
             $model->payType = 1;
             $model->type = 2;
+            $model->address = $addressId;
             $model->remark = '用户组团购买商品';
             $model->productType = 2;
+            $model->proType = $product->type;
             $model->save();
             $order = Order::findOne($model->id);
-            $data = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->money,$order->id);
+            $data = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->payPrice,$order->id);
+            //记录组团对应的订单id
+            UserGroup::updateAll(['orderId'=>$model->id],"id = $groupId");
+            return $data;
         }
-        die(json_encode($data));
+    }
+    /**
+     * 组团
+     * 参与组团
+     */
+    public function actionJoinGroup(){
+        $uid = Yii::$app->request->post('uid');
+        $groupId = Yii::$app->request->post('userGroupId');//组团人发起的的组团id
+        $addressId = Yii::$app->request->post('addressId');//收货地址id
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        if(!$addressId){
+            Methods::jsonData(0,'收货地址不存在');
+        }
+        $userGroup = UserGroup::findOne($groupId);
+        if(!$userGroup){
+            Methods::jsonData(0,'还没有人发起组团');
+        }
+        //判断组团有效时间
+        $expire = UserGroup::checkGroupTime($groupId);
+        if($expire['code'] != 1){
+            Methods::jsonData(0,$expire['message']);
+        }
+        $model = new UserGroup();
+        $model->uid = $uid;
+        $model->groupId = $userGroup->groupId;
+        $model->promoter = 0;
+        $model->promoterUid = $userGroup->uid;
+        $model->status = 0;//0 组团中 1-组团成功 2-组团失败
+        $model->userGroupId = $userGroup->userGroupId;
+        $model->createTime = time();
+        $res = $model->save();
+        if($res){
+            $data = self::GroupBuy($model->id,$addressId,0);
+            die(json_encode($data));
+        }else{
+            Methods::jsonData(0,'参与组团失败');
+        }
     }
     /**
      * 组团商品
