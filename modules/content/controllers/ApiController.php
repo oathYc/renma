@@ -245,7 +245,7 @@ class ApiController extends  Controller
             $model->createTime = time();
             $model->save();
             //赠送优惠券
-            Member::sendCoupon($model->id);
+            Member::sendCoupon($uid);
             Methods::jsonData(1,'登录成功',$member);
         }else{
             Methods::jsonData(0,'请求错误',$return);
