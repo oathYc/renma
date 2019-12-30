@@ -1693,6 +1693,10 @@ class ApiController extends  Controller
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
+        }else{
+            $user = Member::findOne($uid);
+            $nickname = isset($user->nickname)?$user->nickname:'';
+            $avatar = isset($user->avatar)?$user->avatar:'';
         }
         if(!$groupId){
             Methods::jsonData(0,'组团id不存在');
@@ -1710,6 +1714,8 @@ class ApiController extends  Controller
         $group['image'] = unserialize($product->image);
         $group['type'] = $product->type;
         $group['brand'] = $product->brand;
+        $group['nickname'] = $nickname;
+        $group['avatar'] = $avatar;
 //        $group['ztPrice'] = $product->price;
         $comment = Product::getComment($group['productId'],$page);
         $group['comment'] = $comment;
