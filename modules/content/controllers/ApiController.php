@@ -1644,7 +1644,7 @@ class ApiController extends  Controller
         }
         $offset = ($page-1)*10;
         $total = UserGroup::find()->where($where)->count();
-        $data = UserGroup::find()->where($where)->orderBy(" status asc")->asArray()->offset($offset)->limit(10)->all();
+        $data = UserGroup::find()->where($where)->orderBy(" id desc")->asArray()->offset($offset)->limit(10)->all();
         foreach($data as $k => $v){
             $group = GroupProduct::findOne($v['groupId']);
             if($group){
