@@ -1652,14 +1652,14 @@ class ApiController extends  Controller
                 if($product){
                     $data[$k]['headMsg'] = $product->headMsg;
                     $data[$k]['title'] = $product->title;
-//                    $data[$k]['ztPrice'] = $product->price;
+                    $data[$k]['price'] = $product->price;
                     $data[$k]['groupTime'] = $group->groupTime;//有效时间
                     $totalNumber = $group->number;
                 }else{
                     $data[$k]['headMsg'] = '';
                     $data[$k]['title'] = '失效商品';
                     $data[$k]['status'] = 2;// 0 组团中 1-成功 2 失败
-//                    $data[$k]['ztPrice'] = 0;
+                    $data[$k]['price'] = 0;
                     $data[$k]['groupTime'] = 0;//有效时间
                     $totalNumber = '';
                 }
@@ -1667,7 +1667,7 @@ class ApiController extends  Controller
                 $data[$k]['headMsg'] = '';
                 $data[$k]['title'] = '失效商品';
                 $data[$k]['status'] = 2;//0-商品失效 1-有效
-//                $data[$k]['ztPrice'] = 0;
+                $data[$k]['price'] = 0;
                 $data[$k]['groupTime'] = 0;//有效时间
                 $totalNumber = '';
             }
