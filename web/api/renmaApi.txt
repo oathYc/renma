@@ -318,6 +318,11 @@
                     addressId       收货地址Id
                     userGroupId     发起人组团的组团id
 
+    接口名称        组团分享
+    接口地址        /content/api/group-product-share
+    接口参数        uid             用户id
+                    userGroupId     发起人组团的组团id
+
 
     接口名称        商品分类（所有）
     接口地址        /content/api/product-all-cate

@@ -1757,6 +1757,7 @@ class ApiController extends  Controller
         $group['brand'] = $product->brand;
         $group['nickname'] = $nickname;
         $group['avatar'] = $avatar;
+        $group['userGroupId'] = $userGroupId;
         $group['finishTime'] = $had['finishTime'];
         $group['endTime'] = $had['finishTime'] + 86400*($group['groupTime']);
 //        $group['ztPrice'] = $product->price;
