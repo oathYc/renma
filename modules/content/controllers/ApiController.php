@@ -1652,16 +1652,21 @@ class ApiController extends  Controller
                 if($product){
                     $data[$k]['headMsg'] = $product->headMsg;
                     $data[$k]['title'] = $product->title;
-                    $data[$k]['status'] = 1;
+                    $data[$k]['ztPrice'] = $product->price;
+                    $data[$k]['groupTime'] = $group->groupTime;//有效时间
                 }else{
                     $data[$k]['headMsg'] = '';
                     $data[$k]['title'] = '失效商品';
-                    $data[$k]['status'] = 0;//0-商品失效 1-有效
+                    $data[$k]['status'] = -2;//0-商品失效 1-有效
+                    $data[$k]['ztPrice'] = 0;
+                    $data[$k]['groupTime'] = 0;//有效时间
                 }
             }else{
                 $data[$k]['headMsg'] = '';
                 $data[$k]['title'] = '失效商品';
-                $data[$k]['status'] = 0;//0-商品失效 1-有效
+                $data[$k]['status'] = -2;//0-商品失效 1-有效
+                $data[$k]['ztPrice'] = 0;
+                $data[$k]['groupTime'] = 0;//有效时间
             }
         }
         $data = ['total'=>$total,'data'=>$data];
