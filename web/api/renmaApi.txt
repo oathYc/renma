@@ -490,9 +490,21 @@
     接口参数         uid              用户id
                      orderId           订单id
 
+    接口名称        我的收入（会员 组团）
+    接口地址        /content/api/member-money
+    接口参数         uid              用户id
+                    page              页数 默认1  每页10条
 
+    接口名称        提现申请（会员 收入）
+    接口地址        /content/api/member-apply-return
+    接口参数         uid              用户id
+                    money             提现金额
+                     phone              提现账号（微信电话）
 
-
+    接口名称        提现记录（会员）
+    接口地址        /content/api/member-return-history
+    接口参数         uid              用户id
+                    page              页数 默认1  每页10条
 
 
 

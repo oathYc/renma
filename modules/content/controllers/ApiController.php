@@ -2618,7 +2618,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'你还不是维修师身份');
         }
         if(!$money){
-            Methods::jsonData(0,'请填写体现金额');
+            Methods::jsonData(0,'请填写提现金额');
         }
         if($member->repairMoney < $money){
             Methods::jsonData(0,'余额不足');
@@ -2628,6 +2628,7 @@ class ApiController extends  Controller
         $model->money = $money;
         $model->status = 0;
         $model->createTime = time();
+        $model->type = 1;//1-维修师 2-会员
         $res = $model->save();
         if($res){
             Methods::jsonData(1,'提现申请成功，等待平台审核');
@@ -2661,9 +2662,9 @@ class ApiController extends  Controller
             $where = " status = 1 and repairUid = $uid and typeStatus = 3 and repairSuccess between $begin and $end";
             $todayMoney = Order::find()->where($where)->sum('totalPrice');
             //提现记录
-            $total = RepairReturn::find()->where("uid = $uid and status = 1")->count();
+            $total = RepairReturn::find()->where("uid = $uid and status = 1 and type =1")->count();
             $offset = 10*($page-1);
-            $data = RepairReturn::find()->where("uid = $uid and status = 1")->asArray()->offset($offset)->limit(10)->all();
+            $data = RepairReturn::find()->where("uid = $uid and status = 1  and type =1")->asArray()->offset($offset)->limit(10)->all();
             $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'total'=>$total,'history'=>$data];
             Methods::jsonData(1,'success',$data);
         }
@@ -2686,15 +2687,80 @@ class ApiController extends  Controller
             $begin = strtotime($date);
             $end = $begin + 86399;
             $where = " type = 1 and uid = $uid  and createTime between $begin and $end";
-            $todayMoney = MoneyRecord::find()->where($where)->sum('totalPrice');
+            $todayMoney = MoneyRecord::find()->where($where)->sum('money');
             $offset = 10*($page-1);
-            $record = MoneyRecord::find()->where($where)->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
-            $total = MoneyRecord::find()->where($where)->count();
+            $record = MoneyRecord::find()->where(" type = 1 and uid = $uid ")->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
+            $total = MoneyRecord::find()->where(" type = 1 and uid = $uid ")->count();
             $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'record'=>$record,'total'=>$total];
             Methods::jsonData(1,'success',$data);
 
         }else{
             Methods::jsonData(0,'没有该用户');
         }
+    }
+    /**
+     * 会员提现申请
+     */
+    public function actionMemberApplyReturn(){
+        $uid = Yii::$app->request->post('uid');
+        $money = Yii::$app->request->post('money',0);
+        $phone = Yii::$app->request->post('phone');//微信提现账号
+        if(!$uid){
+            Methods::jsonData(0,'用户ID不存在');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'用户不存在');
+        }
+        if(!$money){
+            Methods::jsonData(0,'请填写提现金额');
+        }
+        if($member->memberMoney < $money){
+            Methods::jsonData(0,'余额不足');
+        }
+        if(!$phone){
+            Methods::jsonData(0,'请填写提现账号');
+        }
+        $model = new RepairReturn();
+        $model->uid = $uid;
+        $model->money = $money;
+        $model->status = 0;
+        $model->createTime = time();
+        $model->phone = $phone;
+        $model->type = 2;//1-维修师提现 1-会员提现
+        $res = $model->save();
+        if($res){
+            Methods::jsonData(1,'提现申请成功，等待平台审核');
+        }else{
+            Methods::jsonData(0,'申请失败，请重试');
+        }
+    }
+    /**
+     * 会员提现记录
+     */
+    public function actionMemberReturnHistory(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        if(!$uid){
+            Methods::jsonData(0,'用户ID不存在');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'用户不存在');
+        }
+        $member = Member::findOne($uid);
+        $totalMoney = MoneyRecord::find()->where("uid = $uid and type = 1")->sum('money');
+        $yue = $member->memberMoney;
+        $date = date('Y-m-d');
+        $begin = strtotime($date);
+        $end = $begin + 86399;
+        $where = " type = 1 and uid = $uid  and createTime between $begin and $end";
+        $todayMoney = MoneyRecord::find()->where($where)->sum('money');
+        //提现记录
+        $total = RepairReturn::find()->where("uid = $uid and status = 1 and type = 2")->count();
+        $offset = 10*($page-1);
+        $data = RepairReturn::find()->where("uid = $uid and status = 1  and type = 2")->asArray()->offset($offset)->limit(10)->all();
+        $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'total'=>$total,'history'=>$data];
+        Methods::jsonData(1,'success',$data);
     }
 }
