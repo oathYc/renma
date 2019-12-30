@@ -1693,6 +1693,7 @@ class ApiController extends  Controller
         $group['image'] = unserialize($product->image);
         $group['type'] = $product->type;
         $group['brand'] = $product->brand;
+        $group['ztPrice'] = $product->price;
         $comment = Product::getComment($group['productId'],$page);
         $group['comment'] = $comment;
         Methods::jsonData(1,'success',$group);
