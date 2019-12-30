@@ -121,7 +121,9 @@ class Order extends ActiveRecord
                         if($hadNumber < $number && $now < $expirTime){//人数未满且在有效期内
                             $money = Member::find()->where(" id = $pid")->asArray()->one()['memberMoney'];
                             $add = $money + $return;
-                            Member::updateAll(['memberMoney'=>$add]);
+                            Member::updateAll(['memberMoney'=>$add],"id = $pid");
+                            //记录金额收入记录
+                            MoneyRecord::saveRecord($pid,$orderId,$return,1,1);
                         }
                     }
                 }

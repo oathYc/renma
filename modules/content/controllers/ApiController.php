@@ -17,6 +17,7 @@ use app\modules\content\models\Logistics;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberLog;
+use app\modules\content\models\MoneyRecord;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
@@ -1654,6 +1655,7 @@ class ApiController extends  Controller
                     $data[$k]['title'] = $product->title;
                     $data[$k]['price'] = $group->price;
                     $data[$k]['groupTime'] = $group->groupTime;//有效时间
+                    $data[$k]['return'] = $group->return;//奖励
                     $totalNumber = $group->number;
                 }else{
                     $data[$k]['headMsg'] = '';
@@ -1661,6 +1663,7 @@ class ApiController extends  Controller
                     $data[$k]['status'] = 2;// 0 组团中 1-成功 2 失败
                     $data[$k]['price'] = 0;
                     $data[$k]['groupTime'] = 0;//有效时间
+                    $data[$k]['return'] = 0;//奖励
                     $totalNumber = '';
                 }
             }else{
@@ -1669,6 +1672,7 @@ class ApiController extends  Controller
                 $data[$k]['status'] = 2;//0-商品失效 1-有效
                 $data[$k]['price'] = 0;
                 $data[$k]['groupTime'] = 0;//有效时间
+                $data[$k]['return'] = 0;//奖励
                 $totalNumber = '';
             }
             //购买好友
@@ -2662,6 +2666,35 @@ class ApiController extends  Controller
             $data = RepairReturn::find()->where("uid = $uid and status = 1")->asArray()->offset($offset)->limit(10)->all();
             $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'total'=>$total,'history'=>$data];
             Methods::jsonData(1,'success',$data);
+        }
+    }
+    /**
+     * 我的收入
+     * 会员组团
+     */
+    public function actionMemberMoney(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $member = Member::findOne($uid);
+        if($member){
+            $totalMoney = MoneyRecord::find()->where("uid = $uid and type = 1")->sum('money');
+            $yue = $member->memberMoney;
+            $date = date('Y-m-d');
+            $begin = strtotime($date);
+            $end = $begin + 86399;
+            $where = " type = 1 and uid = $uid  and createTime between $begin and $end";
+            $todayMoney = MoneyRecord::find()->where($where)->sum('totalPrice');
+            $offset = 10*($page-1);
+            $record = MoneyRecord::find()->where($where)->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
+            $total = MoneyRecord::find()->where($where)->count();
+            $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'record'=>$record,'total'=>$total];
+            Methods::jsonData(1,'success',$data);
+
+        }else{
+            Methods::jsonData(0,'没有该用户');
         }
     }
 }
