@@ -302,6 +302,7 @@
     接口地址        /content/api/group-product-detail
     接口参数        uid         用户id 传时获取自己是否参与组团 可不传
                     groupId     组团商品表id
+                    page        页数  默认1  获取评论
 
 
     接口名称        发起组团

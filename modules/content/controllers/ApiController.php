@@ -1673,6 +1673,7 @@ class ApiController extends  Controller
     public function actionGroupProductDetail(){
         $groupId = Yii::$app->request->post('groupId');
         $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -1689,6 +1690,11 @@ class ApiController extends  Controller
         }
         $group['headMsg'] = $product->headMsg;
         $group['title'] = $product->title;
+        $group['image'] = unserialize($product->image);
+        $group['type'] = $product->type;
+        $group['brand'] = $product->brand;
+        $comment = Product::getComment($group['productId'],$page);
+        $group['comment'] = $comment;
         Methods::jsonData(1,'success',$group);
     }
     /**
