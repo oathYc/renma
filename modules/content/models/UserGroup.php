@@ -188,5 +188,34 @@ class UserGroup extends ActiveRecord
         $data = ['code'=>1,'message'=>''];
         return $data;
     }
+    /**
+     * 获取组团购买数据
+     */
+    public static function getBuyData($userGroupId){
+        $buyNumber = 0;
+        $data = [];
+        $groupStatus = '未开始' ;
+        if($userGroupId){
+            $userGroup = UserGroup::findOne($userGroupId);
+            if($userGroup){
+                if($userGroup->status ==1){//组团购买成功
+                    $now = time();
+                    $finishTime = $userGroup->finishTime;
+                    $groupTime = GroupProduct::find()->where(" id = {$userGroup->groupId}")->asArray()->one()['groupTime'];
+                    $endTime = $finishTime + (86400*$groupTime);
+                    if($now <= $endTime){
+                        $groupStatus = '进行中';
+                    }else{
+                        $groupStatus = '已结束';
+                    }
+                    $sql = " select ug.*,m.avatar,m.nickname,o.payPrice from {{%user_group}} ug inner join {{%order}} o on o.id = ug.orderId left join {{%member}} m on m.id = o.uid where o.status = 1 and ug.status = 1 and ug.userGroupId = $userGroupId and ug.id != $userGroupId and o.typeStatus >= 3";//订单已完成  用户确认收货  同一组团
+                    $data = \Yii::$app->db->createCommand($sql)->queryAll();
+                    $buyNumber = count($data);
+                }
+            }
+        }
+        $return = ['buyNumber'=>$buyNumber,'groupStatus'=>$groupStatus,'data'=>$data];
+        return $return;
+    }
 
 }

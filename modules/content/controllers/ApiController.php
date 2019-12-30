@@ -1654,12 +1654,14 @@ class ApiController extends  Controller
                     $data[$k]['title'] = $product->title;
                     $data[$k]['ztPrice'] = $product->price;
                     $data[$k]['groupTime'] = $group->groupTime;//有效时间
+                    $totalNumber = $group->number;
                 }else{
                     $data[$k]['headMsg'] = '';
                     $data[$k]['title'] = '失效商品';
                     $data[$k]['status'] = 2;// 0 组团中 1-成功 2 失败
                     $data[$k]['ztPrice'] = 0;
                     $data[$k]['groupTime'] = 0;//有效时间
+                    $totalNumber = '';
                 }
             }else{
                 $data[$k]['headMsg'] = '';
@@ -1667,7 +1669,13 @@ class ApiController extends  Controller
                 $data[$k]['status'] = 2;//0-商品失效 1-有效
                 $data[$k]['ztPrice'] = 0;
                 $data[$k]['groupTime'] = 0;//有效时间
+                $totalNumber = '';
             }
+            //购买好友
+            //已购买人数  购买成功并确认收货才算
+            $buyData = UserGroup::getBuyData($v['id']);
+            $buyData['totalNumber'] = $totalNumber;
+            $data[$k]['buyData'] = $buyData;
         }
         $data = ['total'=>$total,'data'=>$data];
         die(json_encode($data));
