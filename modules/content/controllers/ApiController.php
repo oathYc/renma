@@ -1652,14 +1652,14 @@ class ApiController extends  Controller
                 if($product){
                     $data[$k]['headMsg'] = $product->headMsg;
                     $data[$k]['title'] = $product->title;
-                    $data[$k]['ztPrice'] = $product->price;
+//                    $data[$k]['ztPrice'] = $product->price;
                     $data[$k]['groupTime'] = $group->groupTime;//有效时间
                     $totalNumber = $group->number;
                 }else{
                     $data[$k]['headMsg'] = '';
                     $data[$k]['title'] = '失效商品';
                     $data[$k]['status'] = 2;// 0 组团中 1-成功 2 失败
-                    $data[$k]['ztPrice'] = 0;
+//                    $data[$k]['ztPrice'] = 0;
                     $data[$k]['groupTime'] = 0;//有效时间
                     $totalNumber = '';
                 }
@@ -1667,7 +1667,7 @@ class ApiController extends  Controller
                 $data[$k]['headMsg'] = '';
                 $data[$k]['title'] = '失效商品';
                 $data[$k]['status'] = 2;//0-商品失效 1-有效
-                $data[$k]['ztPrice'] = 0;
+//                $data[$k]['ztPrice'] = 0;
                 $data[$k]['groupTime'] = 0;//有效时间
                 $totalNumber = '';
             }
@@ -1706,7 +1706,7 @@ class ApiController extends  Controller
         $group['image'] = unserialize($product->image);
         $group['type'] = $product->type;
         $group['brand'] = $product->brand;
-        $group['ztPrice'] = $product->price;
+//        $group['ztPrice'] = $product->price;
         $comment = Product::getComment($group['productId'],$page);
         $group['comment'] = $comment;
         Methods::jsonData(1,'success',$group);
@@ -1780,11 +1780,12 @@ class ApiController extends  Controller
                 $data = ['code'=>0,'message'=>'商品已下架'];
                 return $data;
             }
-            if($first ==1){//发起者
-                $price = $product->price;//商品原价
-            }else{//参与者
-                $price = $groupProduct->price;//商品组团价格
-            }
+//            if($first ==1){//发起者
+//                $price = $product->price;//商品原价
+//            }else{//参与者
+//                $price = $groupProduct->price;//商品组团价格
+//            }
+            $price = $groupProduct->price;//商品组团价格
             $model = new Order();
             $model->orderNumber = 'RMZT'.time().rand(11111,99999);
             $model->uid = $group->uid;
