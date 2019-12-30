@@ -1652,7 +1652,7 @@ class ApiController extends  Controller
                 if($product){
                     $data[$k]['headMsg'] = $product->headMsg;
                     $data[$k]['title'] = $product->title;
-                    $data[$k]['price'] = $product->price;
+                    $data[$k]['price'] = $group->price;
                     $data[$k]['groupTime'] = $group->groupTime;//有效时间
                     $totalNumber = $group->number;
                 }else{
