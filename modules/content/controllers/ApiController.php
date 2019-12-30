@@ -1722,6 +1722,47 @@ class ApiController extends  Controller
         Methods::jsonData(1,'success',$group);
     }
     /**
+     * 组团商品
+     * 分享接口
+     */
+    public function actionGroupProductShare(){
+        $userGroupId = Yii::$app->request->post('userGroupId');
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }else{
+            $user = Member::findOne($uid);
+            $nickname = isset($user->nickname)?$user->nickname:'';
+            $avatar = isset($user->avatar)?$user->avatar:'';
+        }
+        if(!$userGroupId){
+            Methods::jsonData(0,'用户组团id不存在');
+        }
+        $had = UserGroup::find()->where("promoterUid = $uid and status =1 and id = $userGroupId and promoter = 1")->asArray()->one();
+        if(!$had){
+            Methods::jsonData(0,'你还没有发起组团');
+        }
+        $group = GroupProduct::find()->where("id = {$had['groupId']}")->asArray()->one();
+        if(!$group){
+            Methods::jsonData(0,'该组团商品已下架');
+        }
+        $product = Product::findOne($group['productId']);
+        if(!$product){
+            Methods::jsonData(0,'该组团商品已下架');
+        }
+        $group['headMsg'] = $product->headMsg;
+        $group['title'] = $product->title;
+        $group['image'] = unserialize($product->image);
+        $group['type'] = $product->type;
+        $group['brand'] = $product->brand;
+        $group['nickname'] = $nickname;
+        $group['avatar'] = $avatar;
+        $group['finishTime'] = $had['finishTime'];
+        $group['endTime'] = $had['finishTime'] + 86400*($group['groupTime']);
+//        $group['ztPrice'] = $product->price;
+        Methods::jsonData(1,'success',$group);
+    }
+    /**
      * 组团
      * 发起组团
      */
