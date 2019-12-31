@@ -297,9 +297,9 @@ class OrderController  extends AdminController
     public function actionRepairOrder(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = Order::find()->where("proType = 1")->count();
+        $count = Order::find()->where("proType = 1 and status =1")->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = Order::find()->where("proType = 1")->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $data = Order::find()->where("proType = 1 and status =1")->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
             $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
