@@ -145,6 +145,7 @@
                     extInfo      其它信息  传定位地址信息
                     serFee        服务费 默认0
                     productType   购买类型 1-商品购买 2-组团购买 3-购物车
+                    catPriceId      分类价格id  不传为默认价格
 
 
 
@@ -189,6 +190,7 @@
     接口参数        uid         用户id
                     productId   商品id
                     number      商品数量 默认1
+                    catPriceId   分类价格id 不传为默认价格
 
 
     接口名称        用户购物车商品

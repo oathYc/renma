@@ -547,7 +547,8 @@ class ApiController extends  Controller
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $where = " type = $type ";
         if($search){
-            $where .= " and ( title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ) ";
+//            $where .= " and ( title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ) ";
+            $where .= " and  title like '%{$search}%'   ";
         }
         if($priceMin){
             $where .= " and price >= $priceMin";
@@ -1201,6 +1202,7 @@ class ApiController extends  Controller
     public function actionCartAdd(){
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
+        $catPriceId = Yii::$app->request->post('catPriceId',0);
         $number = Yii::$app->request->post('number',1);
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1215,6 +1217,7 @@ class ApiController extends  Controller
             $model->productId = $productId;
             $model->createTime = time();
             $model->number = $number?$number:1;
+            $model->catPriceId = $$catPriceId;
             $res = $model->save();
             if(!$res){
                 Methods::jsonData(0,'加入失败');
