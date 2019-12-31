@@ -286,4 +286,43 @@ class OrderController  extends AdminController
             return $this->render('order-after-add',['data'=>$data,'repairs'=>$repairs]);
         }
     }
+    /**
+     * 维修订单
+     */
+    public function actionRepairOrder(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Order::find()->where("proType = 1")->count();
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $data = Order::find()->where("proType = 1")->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
+            $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
+            if($v['status']==1){
+                $status = '支付成功';
+            }elseif($v['status'] == -1){
+                $status = '退款申请中';
+            }elseif($v['status'] == -2){
+                $status = '已退款';
+            }else{
+                $status = '待支付';
+            }
+            $data[$k]['status'] = $status;
+            $repairUid = $v['repairUid'];
+            if($repairUid){
+                $repair = Member::findOne($repairUid);
+                $data[$k]['repairName'] = $repair->repairName;
+                $data[$k]['repairPhone'] = $repair->repairPhone;
+            }else{
+                $data[$k]['repairName'] = '';
+                $data[$k]['repairPhone'] = '';
+            }
+        }
+        return $this->render('repair-order',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 维修订单详情
+     * 指派维修师
+     */
+
 }

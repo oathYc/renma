@@ -2572,8 +2572,18 @@ class ApiController extends  Controller
         }
         $order->repairImg = $repairImg;
         $order->repairSuccess = time();
+        $order->status = 3;//待评价
         $res = $order->save();
         if($res){
+            $money = $order->totalPrice;
+            $member = Member::find()->where("id = $uid")->asArray()->one();
+            if($member){
+                $totalMoney = $member['repairTotalMoney'];
+                $currentMoney = $member['repairMoney'];
+                $total = $totalMoney + $money;
+                $current = $currentMoney + $money;
+                Member::updateAll(['repairMoney'=>$current,'repairTotalMoney'=>$total],"id = $uid");
+            }
             Methods::jsonData(1,'操作成功');
         }else{
             Methods::jsonData(0,'操作失败，请重试');
