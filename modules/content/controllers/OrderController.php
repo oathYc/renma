@@ -88,7 +88,7 @@ class OrderController  extends AdminController
             }else{
                 $status = '待支付';
             }
-            $data[$k]['status'] = $status;
+            $data[$k]['statusStr'] = $status;
         }
         return $this->render('order-list',['data'=>$data,'page'=>$page,'count'=>$count]);
     }

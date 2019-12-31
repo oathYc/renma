@@ -58,7 +58,7 @@
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['payPrice']?></span></td>
                     <td ><span><?php echo $v['integral']?></span></td>
-                    <td ><span><?php echo $v['status']?></span></td>
+                    <td ><span><?php echo $v['statusStr']?></span></td>
                     <td ><span><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
                     <td  class="notSLH" style="width: 247px;">
