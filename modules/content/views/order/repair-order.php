@@ -61,7 +61,7 @@
         </table>
     </form>
     <div id="imgDiv" ondblclick="minPic();"  style="width: 360px;height: 270px;display: none;z-index: 999;position: fixed;top: 21%;left: 42%;">
-        <img id="imgSrc" src="https://lck.hzlyzhenzhi.com/files/attach/file5e033e9fc394d.jpg" />
+        <img id="imgSrc" title="双击隐藏" src="https://lck.hzlyzhenzhi.com/files/attach/file5e033e9fc394d.jpg" />
     </div>
     <div class="pagination pagination-right">
         <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>

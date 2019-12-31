@@ -83,8 +83,13 @@ class ContentController  extends AdminController
             $title = \Yii::$app->request->post('title');
             $id = \Yii::$app->request->post('id');
             $rank = \Yii::$app->request->post('rank');
+            $domain = Yii::$app->params['domain'];
             if(!$url){
                 echo "<script>alert('文件地址出错，请重新上传');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if(!preg_match("/http/",$url)){
+                    $url = $domain.$url;
+                }
             }
 //            if($type ==1 && !$imageUrl){
 //                echo "<script>alert('图片广告时，商品id必须存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -113,7 +118,7 @@ class ContentController  extends AdminController
             }
             $model->type = $type;
             $model->imageUrl = $turnUrl;
-            $model->url = Yii::$app->params['domain'].$url;
+            $model->url = $url;
             $model->status = $status;
             $model->title = $title;
             $model->rank = $rank?$rank:0;
