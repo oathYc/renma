@@ -68,9 +68,14 @@ class OrderController  extends AdminController
     public function actionOrderList(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = Order::find()->count();
+        $status = Yii::$app->request->get('status',0);
+        $where = " type = 2 ";
+        if($status){
+            $where .= " and status = $status";
+        }
+        $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = Order::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
             $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];

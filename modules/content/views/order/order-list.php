@@ -9,6 +9,21 @@
     <form action="/content/order/order-list" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+                <td>
+                订单：
+                </td>
+                <td>
+                    <select name="status">
+                        <option value="0">请选择</option>
+                        <option value="1" <?php if(isset($_GET['status']) && $_GET['status'] ==1) echo 'selected'?>>支付成功</option>
+                        <option value="-1" <?php if(isset($_GET['status']) && $_GET['status'] ==-1) echo 'selected'?>>退款中</option>
+                        <option value="-2" <?php if(isset($_GET['status']) && $_GET['status'] ==-2) echo 'selected'?>>退款成功</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
+                <td></td>
             </tr>
         </table>
     </form>

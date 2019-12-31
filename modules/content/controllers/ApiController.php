@@ -621,9 +621,13 @@ class ApiController extends  Controller
             $userAddress = [];
             $userCoupon = [];
         }else{
-            $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
-            $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+//            $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
+//            $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+            $product['catPidName'] = '';
+            $product['catCidName'] = '';
             $product['image'] = unserialize($product['image']);
+            //商品分类价格
+            $product['catPrice'] = ProductCategory::find()->where("productId = $productId")->asArray()->all();
             if($uid){
                 //用户积分
                 $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
