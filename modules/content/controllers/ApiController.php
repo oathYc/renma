@@ -565,7 +565,7 @@ class ApiController extends  Controller
             $where .= " and price <= $priceMax";
         }
         if($brand){
-            $where .= " and brand = $brand";
+            $where .= " and brand = '{$brand}'";
         }
 //        if($voltageMin){
 //            $where .= " and voltage >= $voltageMin";
@@ -580,10 +580,10 @@ class ApiController extends  Controller
 //            $where .= " and mileage <= $mileageMax";
 //        }
         if($voltage){
-            $where .= " and voltage = $voltage";
+            $where .= " and voltage = '{$voltage}'";
         }
         if($mileage){
-            $where .= " and mileage = $mileage";
+            $where .= " and mileage = '{$mileage}'";
         }
         if($sex){
             $where .= " and sex = $sex";
