@@ -303,6 +303,7 @@ class ProductController  extends AdminController
                 $data = Product::find()->where("id = $id")->asArray()->one();
                 $data['catName'] = $data['type']==1?'维修':($data['type']==2?'新车':($data['type'] ==3?'二手车':''));
                 $data['image'] = unserialize($data['image']);
+                $data['priceCat'] = ProductCategory::find()->where("productId = $id")->asArray()->all();
             }else{
                 $data = [];
             }

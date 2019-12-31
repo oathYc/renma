@@ -20,6 +20,7 @@ use app\modules\content\models\MemberLog;
 use app\modules\content\models\MoneyRecord;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
+use app\modules\content\models\ProductCategory;
 use app\modules\content\models\Quality;
 use app\modules\content\models\RepairReturn;
 use app\modules\content\models\Search;
@@ -546,7 +547,7 @@ class ApiController extends  Controller
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $where = " type = $type ";
         if($search){
-            $where .= " and title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ";
+            $where .= " and ( title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ) ";
         }
         if($priceMin){
             $where .= " and price >= $priceMin";
@@ -758,6 +759,7 @@ class ApiController extends  Controller
         $extInfo  = Yii::$app->request->post('extInfo','');
         $address = Yii::$app->request->post('addressId',0);//收货地址Id
         $serFee = Yii::$app->request->post('serFee',0);//服务费
+        $catPriceId = Yii::$app->request->post('catPriceId',0);//分类价格id
         $time = time();
         $orderNumber = 'RM'.$time.rand(123456,999999);
         if(!$uid){
@@ -776,7 +778,16 @@ class ApiController extends  Controller
         if(!$product){
             Methods::jsonData(0,'没有该商品');
         }
-        $totalPrice = $number*$product->price;
+        if($catPriceId){
+            $catPrice = ProductCategory::findOne($catPriceId);
+            if($catPrice){
+                $totalPrice = $number*$catPrice->price;
+            }else{
+                $totalPrice = $number*$product->price;
+            }
+        }else{
+            $totalPrice = $number*$product->price;
+        }
         //积分抵扣
         if(!$integral){
             $integral = 0;

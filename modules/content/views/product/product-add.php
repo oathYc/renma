@@ -2,6 +2,12 @@
 <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
 <!-- 编辑器源码文件-->
 <script type="text/javascript" src="/ueditor/ueditor.all.min.js"></script>
+<style>
+    #catPriceDiv tr td{
+        border:2px solid #eeeeee;
+        min-width: 100px;
+    }
+</style>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/product/index">商品模块</a> <span class="divider">/</span></li>
@@ -68,7 +74,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">商品价格</label>
                 <div class="controls">
-                    <input type="text" name="submit[price]"  id="price" onkeyup="value = value.replace(/[^.0-9]/g,'')" value="<?php echo isset($data['price'])?$data['price']:'';?>"  />
+                    <input type="text" name="submit[price]"  id="price" onkeyup="value = value.replace(/[^.0-9]/g,'')" value="<?php echo isset($data['price'])?$data['price']:'';?>"  placeholder="商品封面价格"/>
                 </div>
             </div>
             <div class="control-group">
@@ -80,22 +86,21 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                 </div><br/>
                 <div class="controls">
-                    <ul  class="nav " id="catPriceDiv" >
+                    <table  class="nav " id="catPriceDiv" >
                         <?php if(isset($data['priceCat'])){
                             foreach($data['priceCat'] as $k => $v) {
                                 ?>
-                                <li>
-                                    <span><?php echo $v['cateDesc']?>：<?php echo $v['price']?>元</span>
-                                    <input type="hidden" value="<?php echo $v['id'].'='.$v['cateDesc'].'-'.$v['price']?>" name="submit[priceCat][]"/>
-                                </li>
+                                <tr>
+                                    <td>
+                                        <?php echo $v['cateDesc']?>：<?php echo $v['price']?>元
+                                        <input type="hidden" value="<?php echo $v['id'].'='.$v['cateDesc'].'-'.$v['price']?>" name="submit[priceCat][]"/>&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td>
+                                </tr>
                                 <?php
                             }
                         }?>
-                        <li>
-                            <span>222</span>
-                            <input type="hidden" value="222-100" name="submit[priceCat][]" />
-                        </li>
-                    </ul>
+                    </table>
                 </div>
             </div>
             <div class="control-group">
@@ -223,10 +228,12 @@
         if(!price){
             alert('请填写分类价格');return false;
         }
-        var str = '<li><span>'+desc+'：'+price+'元'+'</span>';
-        str += '<input type="hidden" value="0-'+desc+'-'+price+'" name="submit[priceCat][]" />';
-        str += '</li>';
+        var str = '<tr><td>'+desc+'：'+price+'元'+'<input type="hidden" value="0-'+desc+'-'+price+'" name="submit[priceCat][]" /></td>';
+        str += '<td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td></tr>';
         $('#catPriceDiv').append(str);
+    }
+    function deleteCont(_this){
+        $(_this).parents('tr').remove();
     }
 </script>
 <script>
