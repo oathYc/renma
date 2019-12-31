@@ -487,8 +487,16 @@ class ApiController extends  Controller
         $res = $model->save();
         if($res){
             $product = Product::find()->where("id = {$model->id}")->asArray()->one();
-            $product['catPidName'] = Category::find()->where("id = {$catPid}")->asArray()->one()['name'];
-            $product['catCidName'] = Category::find()->where("id = {$catCid}")->asArray()->one()['name'];
+            if($catPid){
+                $product['catPidName'] = Category::find()->where("id = {$catPid}")->asArray()->one()['name'];
+            }else{
+                $product['catPidName'] = '';
+            }
+            if($catCid){
+                $product['catCidName'] = Category::find()->where("id = {$catCid}")->asArray()->one()['name'];
+            }else{
+                $product['catCidName'] = '';
+            }
             $product['image'] = unserialize($product['image']);
             Methods::jsonData(1,'上传成功',$product);
         }else{
@@ -621,10 +629,16 @@ class ApiController extends  Controller
             $userAddress = [];
             $userCoupon = [];
         }else{
-//            $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
-//            $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
-            $product['catPidName'] = '';
-            $product['catCidName'] = '';
+            if($product['catPid']){
+                $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
+            }else{
+                $product['catPidName'] = '';
+            }
+            if($product['catCid']){
+                $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+            }else{
+                $product['catCidName'] = '';
+            }
             $product['image'] = unserialize($product['image']);
             //商品分类价格
             $product['catPrice'] = ProductCategory::find()->where("productId = $productId")->asArray()->all();
