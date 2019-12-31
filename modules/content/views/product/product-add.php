@@ -132,6 +132,15 @@
                     </div>
                 </div>
             </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">商品视频</label>
+                <div class="controls">
+                    <div style="margin-bottom: 10px" >
+                        <input type="text" name="submit[video]" id="video" value="<?php echo isset($data['video'])?$data['video']:''?>" readonly />&nbsp;&nbsp;
+                        <a href="#" class="btn btn-info" onclick="upFiles2();">上传视频</a>
+                    </div>
+                </div>
+            </div>
 
             <div class="control-group">
                 <label for="modulename" class="control-label">商品图片</label>
@@ -167,7 +176,6 @@
         </fieldset>
     </form>
 </div>
-
 <script>
 
     function imgDelete(_this){
@@ -180,6 +188,9 @@
         $('#imgDiv').attr('data-imgNum',imgNum);
         $(_this).remove();
     }
+</script>
+<script>
+
     //实例化编辑器
     var o_ueditorupload = UE.getEditor('j_ueditorupload',
         {
@@ -234,3 +245,50 @@
 
 </script>
 <script type="text/plain" id="j_ueditorupload"></script>
+
+<script>
+
+    //实例化编辑器
+    var o_ueditorupload2 = UE.getEditor('j_ueditorupload2',
+        {
+            autoHeightEnabled:false
+        });
+    o_ueditorupload2.ready(function ()
+    {
+
+        o_ueditorupload2.hide();//隐藏编辑器
+
+        //监听图片上传
+        // o_ueditorupload2.addListener('beforeInsertImage', function (t,arg)
+        // {
+        //     $('#headMsg').val(arg[0].src);
+        //
+        // });
+
+        /* 文件上传监听
+         * 需要在ueditor.all.min.js文件中找到
+         * d.execCommand("insertHtml",l)
+         * 之后插入d.fireEvent('afterUpfile',b)
+         */
+        o_ueditorupload2.addListener('afterUpfile', function (t, arg)
+        {
+            var url = arg[0].url;
+            $('#video').val(url);
+        });
+    });
+
+    //弹出图片上传的对话框
+    // function upImage2()
+    // {
+    //     var myImage2 = o_ueditorupload2.getDialog("insertimage");
+    //     myImage2.open();
+    // }
+    //弹出文件上传的对话框
+    function upFiles2()
+    {
+        var myFiles2 = o_ueditorupload2.getDialog("attachment");
+        myFiles2.open();
+    }
+
+</script>
+<script type="text/plain" id="j_ueditorupload2"></script>

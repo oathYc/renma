@@ -391,7 +391,8 @@ class ApiController extends  Controller
         $catCid = $request->post('catCid');//二级分类;
         $price = $request->post('price');//价格
         $brand = $request->post('brand');//品牌
-        $headMsg = $request->post('headMsg');//封面信息
+        $headMsg = $request->post('headMsg');//封面信息 图片
+        $video = $request->post('video');//商品视频
         $voltage = $request->post('voltage');//电压
         $mileage = $request->post('mileage');//续航里程
         $sex = $request->post('sex',0);//使用性别 0-通用 1-男 2-女
@@ -471,6 +472,7 @@ class ApiController extends  Controller
         $model->mileage = $mileage;
         $model->sex = $sex;
         $model->headMsg = $headMsg;
+        $model->video = $video;
         $model->image = serialize($image);
         $model->tradeAddress = $tradeAddress;
         $model->brand = $brand;
@@ -1464,6 +1466,14 @@ class ApiController extends  Controller
             $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
             $orders[$k]['productImage'] = $product['headMsg'];
             $orders[$k]['productNumber'] = $product['number'];
+            if($v['proType'] ==1 && $v['repairUid']){
+                $repair = Member::findOne($v['repairUid']);
+                $order[$k]['repairName'] = isset($repair->repairName)?$repair->repairName:'';
+                $order[$k]['repairPhone'] = isset($repair->repairPhone)?$repair->repairPhone:'';
+            }else{
+                $order[$k]['repairName'] = '';
+                $order[$k]['repairPhone'] = '';
+            }
         }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$orders]);
     }
@@ -1716,6 +1726,7 @@ class ApiController extends  Controller
         $group['brand'] = $product->brand;
         $group['nickname'] = $nickname;
         $group['avatar'] = $avatar;
+        $group['introduce'] = $product->introduce;
 //        $group['ztPrice'] = $product->price;
         $comment = Product::getComment($group['productId'],$page);
         $group['comment'] = $comment;

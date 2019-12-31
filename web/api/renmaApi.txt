@@ -71,6 +71,7 @@
                     zhibao      质保商品 0-不是 1-是 默认0
                     remark      商品说明 7天无理由退款。。。
                     phone       联系电话
+                    video       商品视频
 
     接口名称        首页信息
     接口地址        /content/api/home-index

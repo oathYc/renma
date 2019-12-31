@@ -254,6 +254,11 @@ class ProductController  extends AdminController
                     $submit['headMsg'] = $domain.$submit['headMsg'];
                 }
             }
+            if(isset($submit['video'])){
+                if(!preg_match("/http/",$submit['video'])){
+                    $submit['video'] = $domain.$submit['video'];
+                }
+            }
             if(!$image || !is_array($image)){
                 echo "<script>alert('商品图片数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
@@ -281,6 +286,7 @@ class ProductController  extends AdminController
             $model->zhibao = $submit['zhibao'];
             $model->remark = $submit['remark'];
             $model->phone = $submit['phone'];
+            $model->video = $submit['video'];
             $res = $model->save();
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-list';},1000)</script>";die;
