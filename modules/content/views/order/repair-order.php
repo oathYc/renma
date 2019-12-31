@@ -16,6 +16,7 @@
         <table class="table table-hover add_defined">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>订单号</th>
                 <th>维修师uid</th>
                 <th>维修师姓名</th>
@@ -35,6 +36,7 @@
             foreach( $data as $kss => $v) {
                 ?>
                 <tr>
+                    <td style="width: 80px;"><span><?php echo $v['id']?></span></td>
                     <td ><span><?php echo $v['orderNumber']?></span></td>
                     <td ><span ><?php echo $v['repairUid']?></span></td>
                     <td ><span ><?php echo $v['repairName']?></span></td>
