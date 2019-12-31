@@ -46,7 +46,7 @@
                     <td ><span><?php echo $v['payPrice']?></span></td>
 <!--                    <td ><span>--><?php //echo $v['status']?><!--</span></td>-->
 <!--                    <td ><span>--><?php //echo $v['remark']?><!--</span></td>-->
-                    <td ><span><img width="120px"   height="90px" src="<?php echo $v['repairImg']?>" />></span></td>
+                    <td ><span><img width="120px"   height="90px" src="<?php echo $v['repairImg']?>" title="单击放大"  onclick="maxPic(this)"  /></span></td>
                     <td ><span><?php echo $v['repairSuccess']?date('Y-m-d H:i:s',$v['repairSuccess']):'';?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
@@ -60,6 +60,9 @@
             </tbody>
         </table>
     </form>
+    <div id="imgDiv" ondblclick="minPic();"  style="width: 360px;height: 270px;display: none;z-index: 999;position: fixed;top: 21%;left: 42%;">
+        <img src="https://lck.hzlyzhenzhi.com/files/attach/file5e033e9fc394d.jpg" />
+    </div>
     <div class="pagination pagination-right">
         <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
 <!--        --><?php //if($count > 200){?>
@@ -82,5 +85,15 @@
             return false;
         }
         location.href = '/content/rule/role?page='+page;
+    }
+    function maxPic(_this){
+        $('#imgDiv').css('display','block');
+        var src = $(_this).attr('src');
+        $('#imgSrc').attr('src',src)
+    }
+    // 双击缩小照片
+    function minPic(){
+        $('#imgDiv').css('display','none');
+        $('#imgSrc').attr('src','')
     }
 </script>
