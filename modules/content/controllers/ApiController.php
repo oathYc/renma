@@ -889,7 +889,8 @@ class ApiController extends  Controller
                 die(json_encode($return));
             }else{//不需要支付金额
                 //赠送积分
-                Member::sendIntegral($uid,$totalPrice,$serFee);
+//                Member::sendIntegral($uid,$totalPrice,$serFee);
+                Member::reduceIntegral($uid,$integral);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
         }else{
@@ -1022,7 +1023,8 @@ class ApiController extends  Controller
                 die(json_encode($return));
             }else{//不需要支付金额
                 //赠送积分
-                Member::sendIntegral($uid,$totalPrice,$serFee);
+//                Member::addIntegral($uid,$totalPrice,$serFee);
+                Member::reduceIntegral($uid,$integral);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
         }else{
@@ -2395,7 +2397,8 @@ class ApiController extends  Controller
                 die(json_encode($return));
             }else{//不需要支付金额
                 //赠送积分
-                Member::sendIntegral($uid,$totalPrice,0);
+//                Member::sendIntegral($uid,$totalPrice,0);
+                Member::reduceIntegral($uid,$integral);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
         }else{

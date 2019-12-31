@@ -118,4 +118,27 @@ class Member extends ActiveRecord
             }
         }
     }
+    /**
+     * 积分抵扣
+     */
+    public static function reduceIntegral($uid,$integral=0){
+        if(!$uid){
+            return true;
+        }
+        if($integral < 1){
+            return true;
+        }else{
+            $member = Member::findOne($uid);
+            if(!$member){
+                return true;
+            }else{
+                $userIntegral = $member->integral;
+                if(!$userIntegral){$userIntegral=0;}
+                $reduceIntegral = $userIntegral - $integral;
+                $member->integral = $reduceIntegral;
+                $member->save();
+                return true;
+            }
+        }
+    }
 }
