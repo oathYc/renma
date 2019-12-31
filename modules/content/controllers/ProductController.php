@@ -229,21 +229,21 @@ class ProductController  extends AdminController
             if(!$submit['price']){
                 echo "<script>alert('商品价格不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            if(!$submit['phone']){
-                echo "<script>alert('联系电话不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            if(!$submit['tradeAddress']){
-                echo "<script>alert('商品交易地址不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
+//            if(!$submit['phone']){
+//                echo "<script>alert('联系电话不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+//            if(!$submit['tradeAddress']){
+//                echo "<script>alert('商品交易地址不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
             if(!$submit['brand']){
                 echo "<script>alert('商品品牌不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            if(!$submit['voltage']){
-                echo "<script>alert('商品电压数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            if(!$submit['mileage']){
-                echo "<script>alert('商品续航里程不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
+//            if(!$submit['voltage']){
+//                echo "<script>alert('商品电压数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+//            if(!$submit['mileage']){
+//                echo "<script>alert('商品续航里程不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
             if(!$submit['remark']){
                 echo "<script>alert('商品说明不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
