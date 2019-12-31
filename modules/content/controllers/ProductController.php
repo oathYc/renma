@@ -284,6 +284,8 @@ class ProductController  extends AdminController
             $model->introduce = $submit['introduce'];
             $model->type = $submit['type'];
             $model->number = isset($submit['number'])?$submit['number']:1;
+            $model->catPid = isset($submit['catPid'])?$submit['catPid']:1;
+            $model->catCid = isset($submit['catCid'])?$submit['catCid']:1;
             $model->zhibao = $submit['zhibao'];
             $model->remark = $submit['remark'];
             $model->phone = $submit['phone'];
@@ -307,9 +309,11 @@ class ProductController  extends AdminController
             }else{
                 $data = [];
             }
+            $catPid = Category::find()->where("pid = 0")->asArray()->all();
+            $catCid = Category::find()->where("pid != 0")->asArray()->all();
             $voltage = Search::find()->where(" type =1")->asArray()->all();//1-电压
             $mileage = Search::find()->where(" type =2")->asArray()->all();//2-续航
-            return $this->render('product-add',['data'=>$data,'voltage'=>$voltage,'mileage'=>$mileage]);
+            return $this->render('product-add',['data'=>$data,'voltage'=>$voltage,'mileage'=>$mileage,'catPid'=>$catPid,'catCid'=>$catCid]);
         }
     }
 }

@@ -16,7 +16,7 @@
     <form action="/content/product/product-add" method="post"  class="form-horizontal" >
         <fieldset>
             <div class="control-group">
-                <label for="modulename" class="control-label">商品分类</label>
+                <label for="modulename" class="control-label">商品类型</label>
                 <div class="controls">
                     <label for="wx" style="display:inline;">
                         维修
@@ -30,7 +30,6 @@
                         二手车
                         <input type="radio"  id='esc' name="submit[type]" value="3" <?php if(isset($data['type']) && $data['type'] ==3) echo 'checked';?> />
                     </label>
-
                 </div>
             </div>
             <div class="control-group">
@@ -65,6 +64,31 @@
 
                 </div>
             </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">一级分类</label>
+                <div class="controls">
+                    <select name="submit[catPid]">
+                        <option value="0">请选择</option>
+                        <?php foreach($catPid as $k => $v){?>
+                            <option value="<?php echo $v['id']?>" <?php if(isset($data['catPid']) && $data['catPid'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>
+                        <?php }?>
+                    </select>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">二级分类</label>
+                <div class="controls">
+                    <select name="submit[catCid]">
+                        <option value="0">请选择</option>
+                        <?php foreach($catCid as $k => $v){?>
+                            <option value="<?php echo $v['id']?>" <?php if(isset($data['catCid']) && $data['catCid'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>
+                        <?php }?>
+                    </select>
+
+                </div>
+            </div>
+
             <div class="control-group">
                 <label for="modulename" class="control-label">商品名称</label>
                 <div class="controls">

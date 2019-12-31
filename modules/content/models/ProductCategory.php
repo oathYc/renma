@@ -37,7 +37,9 @@ class ProductCategory extends ActiveRecord
                 }
             }
             $ids = trim($ids,',');
-            self::deleteAll(" id not in ({$ids})");
+            if($ids){
+                self::deleteAll(" id not in ({$ids})");
+            }
         }
     }
 }
