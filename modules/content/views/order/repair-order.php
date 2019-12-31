@@ -24,8 +24,8 @@
                 <th>商品id</th>
                 <th>商品名</th>
                 <th>订单价格</th>
-                <th>订单状态</th>
-                <th>订单说明</th>
+<!--                <th>订单状态</th>-->
+<!--                <th>订单说明</th>-->
                 <th>完成图片</th>
                 <th>完成时间</th>
 <!--                <th >操作</th>-->
@@ -44,9 +44,9 @@
                     <td ><span><?php echo $v['productId']?></span></td>
                     <td ><span><?php echo $v['productTitle']?></span></td>
                     <td ><span><?php echo $v['payPrice']?></span></td>
-                    <td ><span><?php echo $v['status']?></span></td>
-                    <td ><span><?php echo $v['remark']?></span></td>
-                    <td ><span><?php echo $v['repairImg']?></span></td>
+<!--                    <td ><span>--><?php //echo $v['status']?><!--</span></td>-->
+<!--                    <td ><span>--><?php //echo $v['remark']?><!--</span></td>-->
+                    <td ><span><img width="120px"  title="双击删除" height="90px" src="<?php echo $v['repairImg']?>" />></span></td>
                     <td ><span><?php echo $v['repairSuccess']?date('Y-m-d H:i:s',$v['repairSuccess']):'';?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
