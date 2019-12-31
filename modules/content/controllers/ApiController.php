@@ -1500,11 +1500,11 @@ class ApiController extends  Controller
             $orders[$k]['productNumber'] = $product['number'];
             if($v['proType'] ==1 && $v['repairUid']){
                 $repair = Member::findOne($v['repairUid']);
-                $order[$k]['repairName'] = isset($repair->repairName)?$repair->repairName:'';
-                $order[$k]['repairPhone'] = isset($repair->repairPhone)?$repair->repairPhone:'';
+                $orders[$k]['repairName'] = isset($repair->repairName)?$repair->repairName:'';
+                $orders[$k]['repairPhone'] = isset($repair->repairPhone)?$repair->repairPhone:'';
             }else{
-                $order[$k]['repairName'] = '';
-                $order[$k]['repairPhone'] = '';
+                $orders[$k]['repairName'] = '';
+                $orders[$k]['repairPhone'] = '';
             }
         }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$orders]);
