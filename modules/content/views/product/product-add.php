@@ -68,7 +68,34 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">商品价格</label>
                 <div class="controls">
-                    <input type="text" name="submit[price]"  id="price" onkeyup="value = value.replace(/[^.0-9]/g,'')" value="<?php echo isset($data['price'])?$data['price']:'';?>" " />
+                    <input type="text" name="submit[price]"  id="price" onkeyup="value = value.replace(/[^.0-9]/g,'')" value="<?php echo isset($data['price'])?$data['price']:'';?>"  />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">商品分类价格</label>
+                <div class="controls">
+                    分类描述：<input type="text"  name="condition" id='catDesc' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    分类价格：<input type="text" style="width:120px" name="propId" id='catPrice' onkeyup="value = value.replace(/[^0-9]/g,'')" autocomplete="off" value="" />
+                    &nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addPrice(this)">添加</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </div><br/>
+                <div class="controls">
+                    <ul  class="nav " id="catPriceDiv" >
+                        <?php if(isset($data['priceCat'])){
+                            foreach($data['priceCat'] as $k => $v) {
+                                ?>
+                                <li>
+                                    <span><?php echo $v['cateDesc']?>：<?php echo $v['price']?>元</span>
+                                    <input type="hidden" value="<?php echo $v['id'].'='.$v['cateDesc'].'-'.$v['price']?>" name="submit[priceCat][]"/>
+                                </li>
+                                <?php
+                            }
+                        }?>
+                        <li>
+                            <span>222</span>
+                            <input type="hidden" value="222-100" name="submit[priceCat][]" />
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="control-group">
@@ -141,7 +168,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="control-group">
                 <label for="modulename" class="control-label">商品图片</label>
                 <div class="controls">
@@ -187,6 +213,20 @@
         imgNum--;
         $('#imgDiv').attr('data-imgNum',imgNum);
         $(_this).remove();
+    }
+    function addPrice(){
+        var desc = $('#catDesc').val();
+        var price = $('#catPrice').val();
+        if(!desc){
+            alert('请填写分类描述');return false;
+        }
+        if(!price){
+            alert('请填写分类价格');return false;
+        }
+        var str = '<li><span>'+desc+'：'+price+'元'+'</span>';
+        str += '<input type="hidden" value="0-'+desc+'-'+price+'" name="submit[priceCat][]" />';
+        str += '</li>';
+        $('#catPriceDiv').append(str);
     }
 </script>
 <script>

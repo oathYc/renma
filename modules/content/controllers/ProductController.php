@@ -9,6 +9,7 @@ use app\libs\Methods;
 use app\modules\content\models\Category;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Product;
+use app\modules\content\models\ProductCategory;
 use app\modules\content\models\Search;
 use yii\data\Pagination;
 use yii;
@@ -289,6 +290,9 @@ class ProductController  extends AdminController
             $model->video = $submit['video'];
             $res = $model->save();
             if($res){
+                $priceCat = isset($submit['priceCat'])?$submit['priceCat']:[];
+                //保存商品分类价格数据
+                ProductCategory::saveProductCategory($model->id,$priceCat);
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-list';},1000)</script>";die;
             }else{
                 echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;

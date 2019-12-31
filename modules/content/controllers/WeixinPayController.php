@@ -192,21 +192,21 @@ class WeixinPayController extends  Controller{
                         UserGroup::updateAll(['status'=>1,'finishTime'=>time()],"orderId = {$orderData['id']}");
                     }else{
                         if($isMember){//会员才有积分赠送功能
-                            $addIntegral = floor($orderData['PayPrice'] + $orderData['serverFee']);
+                            $addIntegral = floor($orderData['payPrice'] + $orderData['serverFee']);
                             Integral::saveRecord($orderData['uid'],$addIntegral,2,'会员特权：购买商品赠送');
                         }else{
                             $addIntegral = 0;
                         }
                     }
                     //邀请人判断
-                    if($orderData['inviterCode']){//一年时间内邀请人获得比例兑换积分
+                    if(isset($member->inviterCode)){//一年时间内邀请人获得比例兑换积分
                         $now = time();//当前时间
                         $registerTime = isset($member->createTime)?$member->createTime:0;;//注册时间
                         $expirTime = $registerTime + 86400+365;//一年后
                         if($expirTime > $now){
                             $inviter = Member::find()->where("inviteCode = '{$orderData['inviterCode']}'")->asArray()->one();
                             if($inviter){
-                                $getIntegral = floor($orderData['PayPrice'] + $orderData['serverFee']);
+                                $getIntegral = floor($orderData['payPrice'] + $orderData['serverFee']);
                                 $inviterIntegral = $inviter['integral'];
                                 $endIntegral = $inviterIntegral + $getIntegral;
                                 Member::updateAll(['integral'=>$endIntegral]," id = {$inviter['id']}");
