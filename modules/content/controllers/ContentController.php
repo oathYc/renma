@@ -10,6 +10,7 @@ use app\modules\content\models\Advert;
 use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
+use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Product;
 use app\modules\content\models\Search;
@@ -75,6 +76,7 @@ class ContentController  extends AdminController
     public function actionAdvertAdd(){
         if($_POST){
             $type = \Yii::$app->request->post('fileType',1);//1-图片 2-视频
+            $imageType = \Yii::$app->request->post('imageType',0);//0-其他 1-商品 2-组团
             $imageUrl = \Yii::$app->request->post('imageUrl');
             $url = \Yii::$app->request->post('url');
             $status = \Yii::$app->request->post('status',0);//1-启用
@@ -84,18 +86,39 @@ class ContentController  extends AdminController
             if(!$url){
                 echo "<script>alert('文件地址出错，请重新上传');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
+//            if($type ==1 && !$imageUrl){
+//                echo "<script>alert('图片广告时，商品id必须存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+            $turnUrl = $imageUrl;//图片跳转地址
+            if($imageType ==1){//商品
+                $pro = Product::findOne($imageUrl);
+                if(!$pro){
+                    echo "<script>alert('没有该商品，请填写正确的商品id');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }else{
+                    $turnUrl = '/pages/goodsinfo/index?id='.$imageUrl;
+                }
+            }
+            if($imageType ==2){//组团
+                $gro = GroupProduct::findOne($imageUrl);
+                if(!$gro){
+                    echo "<script>alert('没有该商品，请填写正确的组团商品id');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }else{
+                    $turnUrl = '/pages/pintuan/goodsinfo/index?id='.$imageUrl;;
+                }
+            }
             if($id){
                 $model = Advert::findOne($id);
             }else{
                 $model = new Advert();
             }
             $model->type = $type;
-            $model->imageUrl = $imageUrl;
+            $model->imageUrl = $turnUrl;
             $model->url = Yii::$app->params['domain'].$url;
             $model->status = $status;
             $model->title = $title;
             $model->rank = $rank?$rank:0;
             $model->createTime = time();
+            $model->imageType = $imageType;
             $res = $model->save();
             if($res){
                 echo "<script>alert('添加成功');setTimeout(function(){location.href='advert';},1000)</script>";die;

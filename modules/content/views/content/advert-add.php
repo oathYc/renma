@@ -21,6 +21,14 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">内容分类</label>
+                <div class="controls">
+                    <label for="img0" style="display: inline;"><input type="radio" name="imageType" id="img0" value="0"  />&nbsp;&nbsp;其他</label>&nbsp;&nbsp;
+                    <label for="img1" style="display: inline;"><input type="radio" name="imageType" id="img1" value="1" <?php if(isset($advert['imageType']) && $advert['imageType'] ==1) echo 'checked';?> />&nbsp;&nbsp;商品</label>&nbsp;&nbsp;
+                    <label for="img2" style="display: inline;"><input type="radio" name="imageType" id="img2" value="2" <?php if(isset($advert['imageType']) && $advert['imageType'] ==2) echo 'checked';?> />&nbsp;&nbsp;组团</label>
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">广告状态</label>
                 <div class="controls">
                     <label for="st" style="display: inline;"><input type="radio" name="status" id="st" value="1"  <?php if(isset($advert['status']) && $advert['status'] ==1) echo 'checked';?> />&nbsp;&nbsp;启用</label>&nbsp;&nbsp;
@@ -36,7 +44,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">跳转地址</label>
                 <div class="controls">
-                    <input type="text" name="imageUrl" id="imageUrl" value="<?php echo isset($advert['imageUrl'])?$advert['imageUrl']:''?>" placeholder="图片广告必填" />
+                    <input type="text" name="imageUrl" id="imageUrl"  value="<?php echo isset($advert['imageUrl'])?$advert['imageUrl']:''?>" placeholder="商品组团时填对应id" />
                 </div>
             </div>
             <div class="control-group">
