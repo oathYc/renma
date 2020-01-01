@@ -1286,6 +1286,7 @@ class ApiController extends  Controller
             if($product){
                 if($catPriceId){
                     $price = ProductCategory::find()->where("id = $catPriceId and productId = {$v['productId']}")->asArray()->one()['price'];
+                    $userCart[$k]['pricew'] = $price;
                     if(!$price){
                         $price = $product->price;;
                     }
