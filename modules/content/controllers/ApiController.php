@@ -2100,6 +2100,34 @@ class ApiController extends  Controller
             if($order->productType ==2){
                 Order::checkUserGroup($orderId);
             }
+            //会员判断
+            $member = Member::find()->where("id = $uid")->one();
+            $isMember = isset($member->member)?$member->member:0;
+            if($isMember){//会员才有积分赠送功能
+                $addIntegral = floor($order->payPrice);
+                if($addIntegral){
+                    Integral::saveRecord($uid,$addIntegral,2,'会员特权：购买商品赠送');//1-减少 2-新增
+                    $userIntegral = $member->integral;
+                    $add = $userIntegral + $addIntegral;
+                    Member::updateAll(['integral'=>$add],"id = $uid");//赠送会员积分
+                }
+            }
+            //邀请人判断
+            if(isset($member->inviterCode)){//一年时间内邀请人获得比例兑换积分
+                $now = time();//当前时间
+                $registerTime = isset($member->createTime)?$member->createTime:0;;//注册时间
+                $expirTime = $registerTime + 86400+365;//一年后
+                if($expirTime > $now){
+                    $inviter = Member::find()->where("inviteCode = '{$member->inviterCode}'")->asArray()->one();
+                    if($inviter){
+                        $getIntegral = floor($order->payPrice);
+                        $inviterIntegral = $inviter['integral'];
+                        $endIntegral = $inviterIntegral + $getIntegral;
+                        Member::updateAll(['integral'=>$endIntegral]," id = {$inviter['id']}");
+                        Integral::saveRecord($inviter['id'],$getIntegral,2,'邀请奖励：对方购买商品你获取比例积分');
+                    }
+                }
+            }
             Logistics::updateAll(['status'=>1],"orderId = $orderId");
             Methods::jsonData(1,'确认收货成功');
         }else{
