@@ -945,7 +945,6 @@ class ApiController extends  Controller
                 $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
                 if(!$price)$price=0;
             }
-            var_dump($catPriceId,$price);die;
             $numbers += $arr[1];
             $price = $arr[1]*$price;
             $totalPrice += $price;
