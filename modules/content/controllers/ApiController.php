@@ -1237,7 +1237,7 @@ class ApiController extends  Controller
             $model->productId = $productId;
             $model->createTime = time();
             $model->number = $number?$number:1;
-            $model->catPriceId = $$catPriceId;
+            $model->catPriceId = $catPriceId;
             $res = $model->save();
             if(!$res){
                 Methods::jsonData(0,'加入失败');
