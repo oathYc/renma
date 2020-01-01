@@ -16,6 +16,12 @@
                     <textarea name="content"><?php echo isset($data['content'])?$data['content']:''?></textarea>
                 </div>
             </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">联系电话</label>
+                <div class="controls">
+                    <input type="text" name="phone" id="phone" value="<?php echo isset($data['phone'])?$data['phone']:''?>" />
+                </div>
+            </div>
             <br/>
             <div class="control-group">
                 <div class="controls">
