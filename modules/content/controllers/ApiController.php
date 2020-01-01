@@ -945,6 +945,7 @@ class ApiController extends  Controller
                 $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
                 if(!$price)$price=0;
             }
+            var_dump($catPriceId,$price);die;
             $numbers += $arr[1];
             $price = $arr[1]*$price;
             $totalPrice += $price;
@@ -1286,7 +1287,6 @@ class ApiController extends  Controller
             if($product){
                 if($catPriceId){
                     $price = ProductCategory::find()->where("id = $catPriceId and productId = {$v['productId']}")->asArray()->one()['price'];
-                    $userCart[$k]['pricew'] = $price;
                     if(!$price){
                         $price = $product->price;;
                     }
