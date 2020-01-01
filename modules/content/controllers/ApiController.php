@@ -934,8 +934,17 @@ class ApiController extends  Controller
             if(count($arr)!=2){
                 continue;
             }
-            $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
-            if(!$price)$price=0;
+            $catPriceId = ShopCart::find()->where("uid = $uid and productId = {$arr[0]}")->asArray()->one()['catPriceId'];
+            if($catPriceId){//加入购物车勾选的分类id
+                $price = ProductCategory::find()->where("id = $catPriceId and productId = {$arr[0]}")->asArray()->one()['price'];
+                if(!$price){
+                    $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
+                    if(!$price)$price=0;
+                }
+            }else{
+                $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
+                if(!$price)$price=0;
+            }
             $numbers += $arr[1];
             $price = $arr[1]*$price;
             $totalPrice += $price;
@@ -1273,10 +1282,19 @@ class ApiController extends  Controller
         $carts = [];
         foreach($userCart as $k => $v){
             $product = Product::findOne($v['productId']);
+            $catPriceId = $v['catPriceId'];
             if($product){
+                if($catPriceId){
+                    $price = ProductCategory::find()->where("id = $catPriceId and productId = {$v['productId']}")->asArray()->one()['price'];
+                    if(!$price){
+                        $price = $product->price;;
+                    }
+                }else{
+                    $price = $product->price;;
+                }
+                $userCart[$k]['price'] = $price;
                 $userCart[$k]['title'] = $product->title;
                 $userCart[$k]['brand'] = $product->brand;
-                $userCart[$k]['price'] = $product->price;
                 $userCart[$k]['productImage'] = $product->headMsg;
                 $userCart[$k]['productNumber'] = $product->number;
                 $userCart[$k]['tradeAddress'] = $product->tradeAddress;
