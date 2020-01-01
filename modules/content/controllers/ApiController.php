@@ -223,7 +223,9 @@ class ApiController extends  Controller
                 $model->memberLevel = 1;//会员等级 1-12个月
             }
             $model->nickname = $nickname;
-            $model->avatar = $avatar;
+            if($avatar){
+                $model->avatar = $avatar;
+            }
             $model->province = $province;
             $model->city = $city;
             $model->area = $area;
