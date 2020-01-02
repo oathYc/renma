@@ -2666,7 +2666,7 @@ class ApiController extends  Controller
         }
         $order->repairImg = $repairImg;
         $order->repairSuccess = time();
-        $order->status = 3;//待评价
+        $order->typeStatus = 3;//待评价
         $res = $order->save();
         if($res){
             $money = $order->totalPrice;
