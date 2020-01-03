@@ -4,7 +4,7 @@
         <li><a href="/content/content/index">内容模块</a> <span class="divider">/</span></li>
         <li class="active">优选商品编辑</li>
     </ul>
-    <form action="/content/content/good-product-add" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确认提交该内容？')){return true}else{
+    <form action="/content/product/good-product-add" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确认提交该内容？')){return true}else{
         return false;
     }">
         <fieldset>

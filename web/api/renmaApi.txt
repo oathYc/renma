@@ -169,7 +169,6 @@
                     phone       联系电话
                     shopTime    营业时间 08:00-17:00
                     video       店铺视频介绍 可不传
-                    image       店铺图片信息 可不传
                     address     店铺地址
                     introduce   详细信息
                     headImage   店铺封面图

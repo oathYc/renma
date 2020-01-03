@@ -13,7 +13,7 @@
         <li class="active">添加分类</li>
     </ul>
 
-    <form action="/content/content/category-add" method="post" class="form-horizontal" onsubmit="return dataSubmit()">
+    <form action="/content/product/category-add" method="post" class="form-horizontal" onsubmit="return dataSubmit()">
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">父级分类</label>

@@ -13,7 +13,7 @@
         <li><a href="/content/product/index">商品模块</a> <span class="divider">/</span></li>
         <li class="active">商品编辑</li>
     </ul>
-    <form action="/content/product/product-add" method="post"  class="form-horizontal" >
+    <form action="/content/product/product-add" method="post"  class="form-horizontal"  onsubmit="javascript:if(confirm('确定进行该操作？')){return true;}else{return false;}" >
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">商品类型</label>

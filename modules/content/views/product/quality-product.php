@@ -1,36 +1,28 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/product/index">商品模块</a> <span class="divider">/</span></li>
-        <li class="active">商品组团</li>
+        <li><a href="/content/order/index">订单模块</a> <span class="divider">/</span></li>
+        <li class="active">质保商品</li>
     </ul>
     <ul class="nav">
-        <li class="dropdown pull-right">
-            <a class="dropdown-toggle"
-               href="/content/product/group-product-add">添加组团</a>
-        </li>
     </ul>
-    <form action="/content/product/group-product" method="get" class="form-horizontal">
+    <form action="/content/product/quality-product" method="get" class="form-horizontal">
         <table class="table">
             <tr>
             </tr>
         </table>
     </form>
-    <form action="/content/product/group-product" method="post">
+    <form action="/content/product/quality-product" method="get">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
-                <th>组团ID</th>
+                <th>ID</th>
+                <th>用户名</th>
                 <th>商品名</th>
-                <th>商品ID</th>
-                <th>商品品牌</th>
-                <th>商品原价</th>
-                <th>组团价格</th>
-                <th>组团人数</th>
-                <th>返现金额</th>
-                <th>有效时间(天)</th>
-                <th>组团说明</th>
-                <th>组团排序</th>
+                <th>品牌</th>
+                <th>购买时间</th>
+                <th>商品钢印时间</th>
+                <th>商品条形码</th>
                 <th>上传时间</th>
                 <th >操作</th>
             </tr>
@@ -41,22 +33,18 @@
                 ?>
                 <tr>
                     <td ><span><?php echo $v['id']?></span></td>
-                    <td ><span ><?php echo $v['productName']?></span></td>
-                    <td ><span><?php echo $v['productId']?></span></td>
+                    <td ><span ><?php echo $v['name']?></span></td>
+                    <td ><span><?php echo $v['productName']?></span></td>
                     <td ><span><?php echo $v['brand']?></span></td>
-                    <td ><span><?php echo $v['oldPrice']?></span></td>
-                    <td ><span><?php echo $v['price']?></span></td>
-                    <td ><span><?php echo $v['number']?></span></td>
-                    <td ><span><?php echo $v['return']?></span></td>
-                    <td ><span><?php echo $v['groupTime']?></span></td>
-                    <td ><span><?php echo $v['remark']?></span></td>
-                    <td ><span><?php echo $v['rank']?></span></td>
+                    <td ><span><?php echo date('Y-m-d H:i:s',$v['buyTime']);?></span></td>
+                    <td ><span><?php echo date('Y-m-d H:i:s',$v['gyTime']);?></span></td>
+                    <td ><span><?php echo $v['barCode'];?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <a class="btn" href="/content/product/group-product-add?id=<?php echo $v['id']; ?>">详情</a>
-                            <a class="btn" href="JavaScript:if(confirm('确认删除该组团商品？')){location.href='/content/product/group-product-delete?id=<?php echo $v['id']; ?>'}">删除</a>
+<!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
+                            <a class="btn" href="JavaScript:if(confirm('确认删除质保商品？')){location.href='/content/product/quality-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>
                 </tr>

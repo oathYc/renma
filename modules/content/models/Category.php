@@ -28,9 +28,9 @@ class Category extends ActiveRecord
             $data[$k] = $v->attributes;
             $str = "";
             $str .= ' <a onclick="checkDelete('.$v->id.')" class="categoryDelete" href="javascript:;">删除</a> ';
-            $str .=' <a href="'.'/content/content/category-update?id='.$v->id.'">修改</a> ';
+            $str .=' <a href="'.'/content/product/category-update?id='.$v->id.'">修改</a> ';
             if($v['pid'] ==0){
-                $str .=' <a href="'.'/content/content/category-add?pid='.$v->id.'" >添加子分类</a> ';
+                $str .=' <a href="'.'/content/product/category-add?pid='.$v->id.'" >添加子分类</a> ';
             }
             $data[$k]['action'] = $str;
             $data[$k]['rank'] = '<input type="text" value="'.$v->rank.'" id="index'.$v->id.'"  style="width:30px;position:relative;margin-top:4px;" onkeyup="setRank('.$v->id.',this)"/>';

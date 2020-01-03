@@ -1,10 +1,10 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/product/index">商品模块</a> <span class="divider">/</span></li>
+        <li><a href="/content/group/index">拼团设置</a> <span class="divider">/</span></li>
         <li class="active">组团商品详情</li>
     </ul>
-    <form action="/content/product/group-product-add" method="post" class="form-horizontal" onsubmit=" return dataCheck()" >
+    <form action="/content/group/group-product-add" method="post" class="form-horizontal" onsubmit=" return dataCheck()" >
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">商品名称</label>

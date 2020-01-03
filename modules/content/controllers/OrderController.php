@@ -26,42 +26,7 @@ class OrderController  extends AdminController
         return $this->redirect('/content/index/index');
     }
 
-    /**
-     * 质保商品
-     */
-    public function actionQualityProduct(){
-        $action = Yii::$app->controller->action->id;
-        parent::setActionId($action);
-        $count = Quality::find()->count();
-        $page = new Pagination(['totalCount'=>$count]);
-        $data = Quality::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
-        foreach($data as $k => $v){
-            $user  = Member::find()->select('name,nickname')->where("id = {$v['uid']}")->asArray()->one();
-            $data[$k]['productName'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['title'];
-            $data[$k]['name']  = $user['name']?$user['name']:$user['nickname'];
-        }
-        return $this->render('quality-product',['data'=>$data,'page'=>$page,'count'=>$count]);
-    }
-    /**
-     * 删除质保商品
-     */
-    public function actionQualityDelete(){
-        $id = \Yii::$app->request->get('id');
-        if($id){
-            $shop = Quality::findOne($id);
-            if(!$shop){
-                echo "<script>alert('没有该信息');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            $res = Quality::deleteAll("id = $id");
-            if($res){
-                echo "<script>alert('删除成功');setTimeout(function(){location.href='quality-product';},1000)</script>";die;
-            }else{
-                echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-        }else{
-            echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
-        }
-    }
+
     /**
      * 订单信息
      */
@@ -291,43 +256,6 @@ class OrderController  extends AdminController
             return $this->render('order-after-add',['data'=>$data,'repairs'=>$repairs]);
         }
     }
-    /**
-     * 维修订单
-     */
-    public function actionRepairOrder(){
-        $action = Yii::$app->controller->action->id;
-        parent::setActionId($action);
-        $count = Order::find()->where("proType = 1 and status =1")->count();
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = Order::find()->where("proType = 1 and status =1")->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
-        foreach($data as $k => $v){
-            $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
-            $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
-//            if($v['status']==1){
-//                $status = '支付成功';
-//            }elseif($v['status'] == -1){
-//                $status = '退款申请中';
-//            }elseif($v['status'] == -2){
-//                $status = '已退款';
-//            }else{
-//                $status = '待支付';
-//            }
-//            $data[$k]['status'] = $status;
-            $repairUid = $v['repairUid'];
-            if($repairUid){
-                $repair = Member::findOne($repairUid);
-                $data[$k]['repairName'] = $repair->repairName;
-                $data[$k]['repairPhone'] = $repair->repairPhone;
-            }else{
-                $data[$k]['repairName'] = '';
-                $data[$k]['repairPhone'] = '';
-            }
-        }
-        return $this->render('repair-order',['data'=>$data,'page'=>$page,'count'=>$count]);
-    }
-    /**
-     * 维修订单详情
-     * 指派维修师
-     */
+
 
 }

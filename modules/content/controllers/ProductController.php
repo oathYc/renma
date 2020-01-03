@@ -7,9 +7,12 @@ namespace app\modules\content\controllers;
 use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\Category;
+use app\modules\content\models\GoodProduct;
 use app\modules\content\models\GroupProduct;
+use app\modules\content\models\Member;
 use app\modules\content\models\Product;
 use app\modules\content\models\ProductCategory;
+use app\modules\content\models\Quality;
 use app\modules\content\models\Search;
 use yii\data\Pagination;
 use yii;
@@ -88,124 +91,6 @@ class ProductController  extends AdminController
     }
 
     /**
-     * 商品组团
-     */
-    public function actionProductGroup(){
-        $action = Yii::$app->controller->action->id;
-        parent::setActionId($action);
-        $count = GroupProduct::find()->count();
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = GroupProduct::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
-        foreach($data as $k => $v){
-            $product = Product::findOne($v['productId']);
-            if($product){
-                $data[$k]['productName'] = $product->title;
-                $data[$k]['oldPrice'] = $product->price;
-                $data[$k]['brand'] = $product->brand;
-            }else{
-                $data[$k]['productName'] = '';
-                $data[$k]['oldPrice'] = '';
-                $data[$k]['brand'] = '';
-            }
-        }
-        return $this->render('group-product',['count'=>$count,'page'=>$page,'data'=>$data]);
-    }
-    /**
-     * 组团商品
-     * 添加商品
-     */
-    public function actionGroupProductAdd(){
-        if($_POST){
-            $id = Yii::$app->request->post('id');
-            $productId = Yii::$app->request->post('productId');
-            $number = Yii::$app->request->post('number');
-            $return = Yii::$app->request->post('return');
-            $price = Yii::$app->request->post('price');
-            $remark = Yii::$app->request->post('remark');
-            $groupTime = Yii::$app->request->post('groupTime',1);
-            $rank = Yii::$app->request->post('rank',0);
-            if(!$productId){
-                echo "<script>alert('请填写商品id');history.go(-1);</script>";die;
-            }else{
-                //有无该商品
-                $product = Product::findOne($productId);
-                if(!$product){
-                    echo "<script>alert('没有该商品');history.go(-1);</script>";die;
-                }
-                //是否已经组团
-                if($id){
-                    $had = GroupProduct::find()->where("productId = $productId and id !=$id")->one();
-                }else{
-                    $had = GroupProduct::find()->where("productId = $productId ")->one();
-                }
-                if($had){
-                    echo "<script>alert('该商品已组团，请勿重复添加');history.go(-1);</script>";die;
-                }
-            }
-            if(!$number || $number < 1){
-                echo "<script>alert('请填写正确的组团人数');history.go(-1);</script>";die;
-            }
-            if(!$price || $price < 0){
-                echo "<script>alert('请填写正确的组团价格');history.go(-1);</script>";die;
-            }
-            if(!$remark){
-                echo "<script>alert('请填写组团说明');history.go(-1);</script>";die;
-            }
-            if($id){
-                $model = GroupProduct::findOne($id);
-            }else{
-                $model = new GroupProduct();
-            }
-            $model->productId = $productId;
-            $model->number = $number;
-            $model->price = $price;
-            $model->return = $return?$return:0;
-            $model->remark = $remark;
-            $model->createTime = time();
-            $model->rank = $rank;
-            $model->groupTime = $groupTime;
-            $res = $model->save();
-            if($res){
-                echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-group'},1000)</script>";die;
-            }else{
-                echo "<script>alert('编辑失败');history.go(-1);</script>";die;
-            }
-        }else{
-            $id = Yii::$app->request->get('id');
-            if($id){
-                $data = GroupProduct::find()->where("id = $id")->asArray()->one();
-                $product = Product::findOne($data['productId']);
-                $data['productName'] = $product->title;
-                $data['oldPrice'] = $product->price;
-                $data['brand'] = $product->brand;
-            }else{
-                $data = [];
-            }
-            return $this->render('group-product-add',['data'=>$data]);
-        }
-    }
-    /**
-     * 组团商品
-     * 商品删除
-     */
-    public function actionGroupProductDelete(){
-        $id = \Yii::$app->request->get('id');
-        if($id){
-            $advert = GroupProduct::findOne($id);
-            if(!$advert){
-                echo "<script>alert('没有该内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            $res = GroupProduct::deleteAll("id = $id");
-            if($res){
-                echo "<script>alert('删除成功');setTimeout(function(){location.href='group-product';},1000)</script>";die;
-            }else{
-                echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-        }else{
-            echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
-        }
-    }
-    /**
      * 商品添加
      */
     public function actionProductAdd(){
@@ -221,7 +106,7 @@ class ProductController  extends AdminController
                 $model->createTime = time();
             }
             if(!isset($submit['type']) || !$submit['type']){
-                echo "<script>alert('商品分类不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                echo "<script>alert('商品类型不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if(!isset($submit['zhibao'])){
                 echo "<script>alert('请勾选商品质保选项');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -314,6 +199,191 @@ class ProductController  extends AdminController
             $voltage = Search::find()->where(" type =1")->asArray()->all();//1-电压
             $mileage = Search::find()->where(" type =2")->asArray()->all();//2-续航
             return $this->render('product-add',['data'=>$data,'voltage'=>$voltage,'mileage'=>$mileage,'catPid'=>$catPid,'catCid'=>$catCid]);
+        }
+    }
+    /**
+     * 目录结构
+     *商品分类
+     */
+    public function actionCategory(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        return $this->render('category');
+    }
+    /**
+     * 添加分类与其基本信息
+     * @return string
+     */
+    public function actionCategoryAdd(){
+        if($_POST){
+            $model = new Category();
+            $categoryData = Yii::$app->request->post('category');
+            $id = Yii::$app->request->post('id');
+            if(empty($categoryData['name'])){
+                die('<script>alert("请添加分类名称");history.go(-1);</script>');
+            }
+            $where = '';
+            if($id){
+                $where .= " and id != $id";
+            }
+            $hadName = Category::find()->where("name='{$categoryData['name']}' $where")->one();
+            if($hadName){
+                die('<script>alert("已有该分类，请勿重复添加");history.go(-1);</script>');
+            }
+            if(empty($categoryData['pid'])){
+                $categoryData['pid'] = 0;
+            }
+            if(empty($categoryData['rank'])){
+                $categoryData['rank'] = 0;
+            }
+            if($id){
+                $re = $model->updateAll($categoryData,'id = :id',[':id' => $id]);
+            }else{
+                $categoryData['createTime'] = time();
+                $re = Yii::$app->db->createCommand()->insert("{{%category}}",$categoryData)->execute();
+            }
+            if($re){
+                echo '<script>alert("成功")</script>';
+                $this->redirect('/content/product/category');
+            }else{
+                echo '<script>alert("失败，请重试");history.go(-1);</script>';
+                die;
+            }
+        } else{
+            $pid = Yii::$app->request->get('pid');
+            return $this->render('category-add',['pid' => $pid]);
+        }
+    }
+    /**
+     * 修改分类
+     * @return string
+     * @Obelisk
+     */
+    public function actionCategoryUpdate(){
+        $id = Yii::$app->request->get('id');
+        $model = new Category();
+        $cate = $model->find()->asArray()->all();
+        $result = $model->find()->where("id= $id")->asArray()->one();
+        return $this->render('category-add',array('data'=> $result,'pid' => $result['pid'],'id' => $id,'category'=>$cate));
+    }
+    /**
+     * 删除分类
+     * @return string
+     */
+    public function actionCategoryDelete(){
+        $id = Yii::$app->request->get('id');
+        $model = new Category();
+        if($model->findOne($id)->delete()){
+            Category::deleteAll("id = $id");//删除对应的用户目录权限
+            $this->redirect('/content/product/category');
+        }else{
+            echo '<script>alert("失败，请重试");history.go(-1);</script>';
+            die;
+        }
+    }
+    /**
+     * 优选商品
+     */
+    public function actionGoodProduct(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = GoodProduct::find()->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = GoodProduct::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $product = Product::findOne($v['productId']);
+            $data[$k]['productName'] = $product->title;
+            $data[$k]['brand'] = $product->brand;
+            $data[$k]['tradeAddress'] = $product->tradeAddress;
+        }
+        return $this->render('good-product',['count'=>$count,'page'=>$page,'data'=>$data]);
+    }
+    /**
+     * 优选商品
+     * 商品添加
+     */
+    public function actionGoodProductAdd(){
+        if($_POST){
+            $productId = Yii::$app->request->post('productId');
+            $rank = Yii::$app->request->post('rank');
+            //商品是否存在
+            $product = Product::findOne($productId);
+            if(!$productId){
+                echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$product){
+                echo "<script>alert('没有该商品');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            //是否已经是优选商品
+            $had = GoodProduct::find()->where("productId = $productId")->one();
+            if($had){
+                echo "<script>alert('该商品已是优选商品，请勿重复添加');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                $model = new GoodProduct();
+                $model->productId = $productId;
+                $model->rank = $rank?$rank:0;
+                $model->createTime = time();
+                $res = $model->save();
+                if($res){
+                    echo "<script>alert('添加成功');setTimeout(function(){location.href='good-product';},1000)</script>";die;
+                }else{
+                    echo "<script>alert('添加失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }
+        }else{
+            return $this->render('good-product-add');
+        }
+    }
+    /**
+     * 优选商品
+     * 商品删除
+     */
+    public function actionGoodProductDelete(){
+        $id = Yii::$app->request->get('id');
+        if(!$id){
+            echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $res = GoodProduct::deleteAll("id = $id");
+        if($res){
+            echo "<script>alert('删除成功');setTimeout(function(){location.href='good-product';},1000)</script>";die;
+        }else{
+            echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 质保商品
+     */
+    public function actionQualityProduct(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Quality::find()->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = Quality::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $user  = Member::find()->select('name,nickname')->where("id = {$v['uid']}")->asArray()->one();
+            $data[$k]['productName'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['title'];
+            $data[$k]['name']  = $user['name']?$user['name']:$user['nickname'];
+        }
+        return $this->render('quality-product',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 删除质保商品
+     */
+    public function actionQualityDelete(){
+        $id = \Yii::$app->request->get('id');
+        if($id){
+            $shop = Quality::findOne($id);
+            if(!$shop){
+                echo "<script>alert('没有该信息');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $res = Quality::deleteAll("id = $id");
+            if($res){
+                echo "<script>alert('删除成功');setTimeout(function(){location.href='quality-product';},1000)</script>";die;
+            }else{
+                echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
 }

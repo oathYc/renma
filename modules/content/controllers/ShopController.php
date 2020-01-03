@@ -94,5 +94,70 @@ class ShopController  extends AdminController
             echo "<script>alert('操作失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
+    /**
+     * 店铺添加
+     */
+    public function actionShopAdd(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $name = Yii::$app->request->post('name');
+            $phone = Yii::$app->request->post('phone');
+            $shopTime = Yii::$app->request->post('shopTime');
+            $video = Yii::$app->request->post('video');
+            $image = Yii::$app->request->post('image');
+            $address = Yii::$app->request->post('address');
+            $introduce = Yii::$app->request->post('introduce');
+            $headImage = Yii::$app->request->post('headImage');
+            $province = Yii::$app->request->post('province');
+            $city = Yii::$app->request->post('city');
+            $area = Yii::$app->request->post('area');
+            $uid = 999999;//后台添加
+
+            $domain = Yii::$app->params['domain'];
+            if(!$headImage){
+                echo "<script>alert('商品封面信息不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if(!preg_match("/http/",$headImage)){
+                    $headImage = $domain.$headImage;
+                }
+            }
+            if(isset($video)){
+                if(!preg_match("/http/",$video)){
+                    $video = $domain.$video;
+                }
+            }
+            if(is_array($image)){
+                foreach($image as $k =>$v){
+                    if(!preg_match("/http/",$v)){
+                        $image[$k] = $domain.$v;
+                    }
+                }
+            }
+            $model = new Shop();
+            $model->status = 1;//后台添加直接通过
+            $model->uid = $uid;
+            $model->createTime = time();
+            $model->name = $name;
+            $model->phone = $phone;
+            $model->shopTime = $shopTime;
+            $model->video = $video;
+            $model->image = unserialize($image);
+            $model->address = $address;
+            $model->introduce = $introduce;
+            $model->headImage = $headImage;
+            $model->province = $province;
+            $model->city = $city;
+            $model->area = $area;
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='shop-success';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            return $this->render('shop-add');
+        }
+    }
 
 }

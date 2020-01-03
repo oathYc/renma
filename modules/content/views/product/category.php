@@ -29,7 +29,7 @@
     <ul class="nav nav-tabs">
 
         <li class="dropdown pull-right">
-            <a href="/content/content/category-add">添加分类</a>
+            <a href="/content/product/category-add">添加分类</a>
         </li>
     </ul>
     <table width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
@@ -66,7 +66,7 @@
         $.post('/content/api/check-product-delete',{id:id},function(re){
             if(re.code == 1){
                 if(confirm("确定删除该内容吗")){
-                    location.href = "/content/content/category-delete?id="+id;
+                    location.href = "/content/product/category-delete?id="+id;
                 }
             }else{
                 alert("请先删除子类");

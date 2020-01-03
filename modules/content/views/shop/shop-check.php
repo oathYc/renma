@@ -1,7 +1,7 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/shop/index">店铺模块</a> <span class="divider">/</span></li>
+        <li><a href="/content/shop/index">店铺管理</a> <span class="divider">/</span></li>
         <li class="active">店铺审核</li>
     </ul>
     <ul class="nav">

@@ -1,12 +1,12 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/member/index">用户模块</a> <span class="divider">/</span></li>
+        <li><a href="/content/repair/index">维修师栏目</a> <span class="divider">/</span></li>
         <li class="active">维修师提现</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/member/repair-return" method="get" class="form-horizontal">
+    <form action="/content/repair/repair-return" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
@@ -32,7 +32,7 @@
             </tr>
         </table>
     </form>
-    <form action="/content/member/repair-return" method="get">
+    <form action="/content/repair/repair-return" method="get">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
@@ -61,7 +61,7 @@
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <?php if($v['status'] == 0){?>
-                                <a class="btn" href="Javascript:if(confirm('确定进行该操作吗？')){location.href='/content/member/check-repair-return?id=<?php echo $v['id']; ?>';}">提现通过</a>
+                                <a class="btn" href="Javascript:if(confirm('确定进行该操作吗？')){location.href='/content/repair/check-repair-return?id=<?php echo $v['id']; ?>';}">提现通过</a>
                            <?php  }?>
                         </div>
                     </td>

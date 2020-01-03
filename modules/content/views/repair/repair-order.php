@@ -1,18 +1,18 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/order/index">订单模块</a> <span class="divider">/</span></li>
+        <li><a href="/content/repair/index">维修师栏目</a> <span class="divider">/</span></li>
         <li class="active">维修订单</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/order/repair-order" method="get" class="form-horizontal">
+    <form action="/content/repair/repair-order" method="get" class="form-horizontal">
         <table class="table">
             <tr>
             </tr>
         </table>
     </form>
-    <form action="/content/order/repair-order" method="get">
+    <form action="/content/repair/repair-order" method="get">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
