@@ -2677,7 +2677,21 @@ class ApiController extends  Controller
                 $total = $totalMoney + $money;
                 $current = $currentMoney + $money;
                 Member::updateAll(['repairMoney'=>$current,'repairTotalMoney'=>$total],"id = $uid");
+                //购买者会员判断
+                $buyUid = $order->uid;
+                $buyMember = Member::find()->where("id = {$buyUid}")->one();
+                $isMember = isset($buyMember->member)?$buyMember->member:0;
+                if($isMember){//会员才有积分赠送功能
+                    $addIntegral = floor($order->payPrice);
+                    if($addIntegral){
+                        Integral::saveRecord($buyUid,$addIntegral,2,'会员特权：购买商品赠送');//1-减少 2-新增
+                        $userIntegral = $buyMember->integral;
+                        $add = $userIntegral + $addIntegral;
+                        Member::updateAll(['integral'=>$add],"id = $buyUid");//赠送会员积分
+                    }
+                }
             }
+
             Methods::jsonData(1,'操作成功');
         }else{
             Methods::jsonData(0,'操作失败，请重试');

@@ -2,35 +2,22 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/order/index">订单管理</a> <span class="divider">/</span></li>
-        <li class="active">订单记录</li>
+        <li class="active">已发货订单</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/order/order-list" method="get" class="form-horizontal">
+    <form action="/content/order/had-send" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-                <td>
-                订单：
-                </td>
-                <td>
-                    <select name="status">
-                        <option value="0">请选择</option>
-                        <option value="1" <?php if(isset($_GET['status']) && $_GET['status'] ==1) echo 'selected'?>>支付成功</option>
-                        <option value="-1" <?php if(isset($_GET['status']) && $_GET['status'] ==-1) echo 'selected'?>>退款中</option>
-                        <option value="-2" <?php if(isset($_GET['status']) && $_GET['status'] ==-2) echo 'selected'?>>退款成功</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn btn-primary" type="submit">查询</button>
-                </td>
                 <td></td>
             </tr>
         </table>
     </form>
-    <form action="/content/order/order-list" method="get">
+    <form action="/content/order/had-send" method="get">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
+                <th>订单ID</th>
                 <th>订单号</th>
                 <th>用户uid</th>
                 <th>用户名</th>
@@ -39,9 +26,10 @@
                 <th>品牌</th>
                 <th>订单价格</th>
                 <th>使用积分</th>
-                <th>订单状态</th>
                 <th>订单说明</th>
-                <th>购买时间</th>
+                <th>物流类型</th>
+                <th>物流号</th>
+                <th>物流状态</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -50,6 +38,7 @@
             foreach( $data as $kss => $v) {
                 ?>
                 <tr>
+                    <td ><span><?php echo $v['id']?></span></td>
                     <td ><span><?php echo $v['orderNumber']?></span></td>
                     <td ><span ><?php echo $v['uid']?></span></td>
                     <td ><span ><?php echo $v['name']?></span></td>
@@ -58,15 +47,12 @@
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['payPrice']?></span></td>
                     <td ><span><?php echo $v['integral']?></span></td>
-                    <td ><span><?php echo $v['statusStr']?></span></td>
                     <td ><span><?php echo $v['remark']?></span></td>
-                    <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
+                    <td ><span><?php echo $v['logisticsName']?></span></td>
+                    <td ><span><?php echo $v['logisticsType']?></span></td>
+                    <td ><span><?php echo $v['logisticsStr']?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
-                            <?php if($v['status'] == -1){?>
-                                <a class="btn" href="JavaScript:if(confirm('确认退款？')){location.href='/content/order/order-sure-return?id=<?php echo $v['id']; ?>'}">确认退款</a>&nbsp;
-                            <?php }?>
                             <a class="btn" href="JavaScript:if(confirm('确认删除？')){location.href='/content/order/order-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>

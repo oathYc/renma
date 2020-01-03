@@ -2,32 +2,18 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/order/index">订单管理</a> <span class="divider">/</span></li>
-        <li class="active">订单记录</li>
+        <li class="active">已付款订单</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/order/order-list" method="get" class="form-horizontal">
+    <form action="/content/order/had-buy" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-                <td>
-                订单：
-                </td>
-                <td>
-                    <select name="status">
-                        <option value="0">请选择</option>
-                        <option value="1" <?php if(isset($_GET['status']) && $_GET['status'] ==1) echo 'selected'?>>支付成功</option>
-                        <option value="-1" <?php if(isset($_GET['status']) && $_GET['status'] ==-1) echo 'selected'?>>退款中</option>
-                        <option value="-2" <?php if(isset($_GET['status']) && $_GET['status'] ==-2) echo 'selected'?>>退款成功</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn btn-primary" type="submit">查询</button>
-                </td>
                 <td></td>
             </tr>
         </table>
     </form>
-    <form action="/content/order/order-list" method="get">
+    <form action="/content/order/had-buy" method="get">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
@@ -42,6 +28,7 @@
                 <th>订单状态</th>
                 <th>订单说明</th>
                 <th>购买时间</th>
+                <th>付款时间</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -61,12 +48,9 @@
                     <td ><span><?php echo $v['statusStr']?></span></td>
                     <td ><span><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
+                    <td ><span><?php echo date('Y-m-d H:i:s',$v['finishTime']);?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
-                            <?php if($v['status'] == -1){?>
-                                <a class="btn" href="JavaScript:if(confirm('确认退款？')){location.href='/content/order/order-sure-return?id=<?php echo $v['id']; ?>'}">确认退款</a>&nbsp;
-                            <?php }?>
                             <a class="btn" href="JavaScript:if(confirm('确认删除？')){location.href='/content/order/order-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
                     </td>

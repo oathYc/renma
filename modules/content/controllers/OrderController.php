@@ -256,6 +256,79 @@ class OrderController  extends AdminController
             return $this->render('order-after-add',['data'=>$data,'repairs'=>$repairs]);
         }
     }
+    /**
+     * 已付款订单
+     */
+    public function actionHadBuy(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $where = " type = 2 and status = 1";//售后订单才能进行后续
+        $count = Order::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
+            $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
+            if($v['status']==1){
+                $status = '支付成功';
+            }elseif($v['status'] == -1){
+                $status = '退款申请中';
+            }elseif($v['status'] == -2){
+                $status = '已退款';
+            }else{
+                $status = '待支付';
+            }
+            $data[$k]['statusStr'] = $status;
+        }
+        return $this->render('had-buy',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 待付款订单
+     */
+    public function actionNeedBuy(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $where = " type = 2 and status = 0";//售后订单才能进行后续
+        $count = Order::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
+            $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
+            if($v['status']==1){
+                $status = '支付成功';
+            }elseif($v['status'] == -1){
+                $status = '退款申请中';
+            }elseif($v['status'] == -2){
+                $status = '已退款';
+            }else{
+                $status = '待支付';
+            }
+            $data[$k]['statusStr'] = $status;
+        }
+        return $this->render('need-buy',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 已发货订单
+     */
+    public function actionHadSend(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $where = " type = 2 and status = 1 and typeStatus =  2 and proType in (2,3)";//售后订单才能进行后续
+        $count = Order::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $data[$k]['name'] = Member::find()->where(" id = {$v['uid']}")->asArray()->one()['nickname'];
+            $data[$k]['brand'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['brand'];
+            //物流信息
+            $logistics = Logistics::find()->where("orderId = {$v['id']}")->asArray()->one();
+            $data[$k]['logisticsName'] = isset($logistics['name'])?$logistics['name']:'';
+            $data[$k]['logisticsType'] = isset($logistics['logistics'])?$logistics['logistics']:'';
+            $data[$k]['logisticsStr'] = isset($logistics['status'])?$logistics['status']:'';
+        }
+        return $this->render('had-send',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
 
 
 }
