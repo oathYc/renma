@@ -2014,6 +2014,9 @@ class ApiController extends  Controller
         $total = Product::find()->where($where)->count();
         $offset = ($page-1)*10;
         $data = Product::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['image'] = unserialize($v['image']);
+        }
         Methods::jsonData(1,'success',['total'=>$total,'data'=>$data]);
     }
     /**
