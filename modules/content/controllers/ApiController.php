@@ -199,6 +199,7 @@ class ApiController extends  Controller
         $city = $request->post('city');
         $area = $request->post('area');
         $nickname = $request->post('nickname');
+        var_dump($nickname);die;
 //        $phone = $request->post('phone');
 //        $password = $request->post('password');
         $appId = Yii::$app->params['appId'];
