@@ -199,7 +199,6 @@ class ApiController extends  Controller
         $city = $request->post('city');
         $area = $request->post('area');
         $nickname = $request->post('nickname');
-        var_dump($nickname);die;
 //        $phone = $request->post('phone');
 //        $password = $request->post('password');
         $appId = Yii::$app->params['appId'];
@@ -223,7 +222,7 @@ class ApiController extends  Controller
                 $model->member = 1;//会员
                 $model->memberLevel = 1;//会员等级 1-12个月
             }
-            $model->nickname = strval($nickname);
+            $model->nickname = $nickname;
             if($avatar){
                 $model->avatar = $avatar;
             }
