@@ -222,7 +222,7 @@ class ApiController extends  Controller
                 $model->member = 1;//会员
                 $model->memberLevel = 1;//会员等级 1-12个月
             }
-            $model->nickname = $nickname;
+            $model->nickname = strval($nickname);
             if($avatar){
                 $model->avatar = $avatar;
             }
