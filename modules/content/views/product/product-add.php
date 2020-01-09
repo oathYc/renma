@@ -117,7 +117,7 @@
                                 <tr>
                                     <td>
                                         <?php echo $v['cateDesc']?>：<?php echo $v['price']?>元
-                                        <input type="hidden" value="<?php echo $v['id'].'='.$v['cateDesc'].'-'.$v['price']?>" name="submit[priceCat][]"/>&nbsp;&nbsp;&nbsp;
+                                        <input type="hidden" value="<?php echo $v['id'].'-'.$v['cateDesc'].'-'.$v['price']?>" name="submit[priceCat][]"/>&nbsp;&nbsp;&nbsp;
                                     </td>
                                     <td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td>
                                 </tr>

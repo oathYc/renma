@@ -6,6 +6,7 @@ namespace app\modules\content\controllers;
 
 use app\libs\AdminController;
 use app\modules\content\models\Address;
+use app\modules\content\models\GroupCategory;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Logistics;
 use app\modules\content\models\Member;
@@ -65,6 +66,7 @@ class GroupController  extends AdminController
             $remark = Yii::$app->request->post('remark');
             $groupTime = Yii::$app->request->post('groupTime',1);
             $rank = Yii::$app->request->post('rank',0);
+            $priceCat = Yii::$app->request->post('priceCat');
             if(!$productId){
                 echo "<script>alert('请填写商品id');history.go(-1);</script>";die;
             }else{
@@ -107,6 +109,9 @@ class GroupController  extends AdminController
             $model->groupTime = $groupTime;
             $res = $model->save();
             if($res){
+                $priceCat = is_array($priceCat)?$priceCat:[];
+                //保存商品分类价格数据
+                GroupCategory::saveProductCategory($model->id,$priceCat);
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='product-group'},1000)</script>";die;
             }else{
                 echo "<script>alert('编辑失败');history.go(-1);</script>";die;
@@ -119,6 +124,7 @@ class GroupController  extends AdminController
                 $data['productName'] = $product->title;
                 $data['oldPrice'] = $product->price;
                 $data['brand'] = $product->brand;
+                $data['priceCat'] = GroupCategory::find()->where("groupId = $id")->asArray()->all();
             }else{
                 $data = [];
             }

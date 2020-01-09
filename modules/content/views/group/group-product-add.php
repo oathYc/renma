@@ -31,6 +31,32 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">商品分类价格</label>
+                <div class="controls">
+                    分类描述：<input type="text"  name="condition" id='catDesc' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    分类价格：<input type="text" style="width:120px" name="propId" id='catPrice' onkeyup="value = value.replace(/[^0-9]/g,'')" autocomplete="off" value="" />
+                    &nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addPrice(this)">添加</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </div><br/>
+                <div class="controls">
+                    <table  class="nav " id="catPriceDiv" >
+                        <?php if(isset($data['priceCat'])){
+                            foreach($data['priceCat'] as $k => $v) {
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $v['cateDesc']?>：<?php echo $v['price']?>元
+                                        <input type="hidden" value="<?php echo $v['id'].'-'.$v['cateDesc'].'-'.$v['price']?>" name="priceCat[]"/>&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td>
+                                </tr>
+                                <?php
+                            }
+                        }?>
+                    </table>
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">组团人数</label>
                 <div class="controls">
                     <input type="text" name="number"  id="number" onkeyup="value = value.replace(/[^0-9]/g,'')" value="<?php echo isset($data['number'])?$data['number']:'';?>" />
@@ -106,6 +132,22 @@
         if(!remark){
             alert('请填写组团说明');return false;
         }
+    }
+    function addPrice(){
+        var desc = $('#catDesc').val();
+        var price = $('#catPrice').val();
+        if(!desc){
+            alert('请填写分类描述');return false;
+        }
+        if(!price){
+            alert('请填写分类价格');return false;
+        }
+        var str = '<tr><td>'+desc+'：'+price+'元'+'<input type="hidden" value="0-'+desc+'-'+price+'" name="priceCat[]" /></td>';
+        str += '<td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td></tr>';
+        $('#catPriceDiv').append(str);
+    }
+    function deleteCont(_this){
+        $(_this).parents('tr').remove();
     }
 </script>
 

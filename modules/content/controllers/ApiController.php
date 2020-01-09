@@ -11,6 +11,7 @@ use app\modules\content\models\Catalog;
 use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
+use app\modules\content\models\GroupCategory;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Integral;
 use app\modules\content\models\Logistics;
@@ -175,7 +176,7 @@ class ApiController extends  Controller
     public function actionGetProduct(){
         $id = Yii::$app->request->post('id');
         if($id){
-            $product = Product::find()->select("id,title,price,brand")->asArray()->one();
+            $product = Product::find()->where("id = $id")->select("id,title,price,brand")->asArray()->one();
             if($product){
                 Methods::jsonData(1,'success',$product);
             }else{
@@ -1686,10 +1687,13 @@ class ApiController extends  Controller
                 $data[$k]['headMsg'] = $product->headMsg;
                 $data[$k]['title'] = $product->title;
                 $data[$k]['status'] = 1;
+                //获取规格分类
+                $data[$k]['catPrice'] = GroupCategory::find()->where("groupId = {$v['id']}")->asArray()->all();
             }else{
                 $data[$k]['headMsg'] = '';
                 $data[$k]['title'] = '失效商品';
                 $data[$k]['status'] = 0;//0-商品失效 1-有效
+                $data[$k]['catPrice'] = [];
             }
         }
         $data = ['total'=>$total,'data'=>$data] ;
@@ -1781,6 +1785,8 @@ class ApiController extends  Controller
         $group['nickname'] = $nickname;
         $group['avatar'] = $avatar;
         $group['introduce'] = $product->introduce;
+        //获取规格分类
+        $group['catPrice'] = GroupCategory::find()->where("groupId = {$groupId}")->asArray()->all();
 //        $group['ztPrice'] = $product->price;
         $comment = Product::getComment($group['productId'],$page);
         $group['comment'] = $comment;
@@ -1836,6 +1842,7 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $groupId = Yii::$app->request->post('groupId',0);//组团id
         $addressId = Yii::$app->request->post('addressId');//收货地址id
+        $catPriceId = Yii::$app->request->post('catPriceId',0);//分类价格id
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -1861,6 +1868,7 @@ class ApiController extends  Controller
         $model->promoterUid = $uid;
         $model->status = 0;//0 组团中 1-组团成功 2-组团失败
         $model->createTime = $time;
+        $model->catPriceId = $catPriceId;
         $res = $model->save();
         if($res){
             //记录同一组团标识
@@ -1897,12 +1905,20 @@ class ApiController extends  Controller
                 $data = ['code'=>0,'message'=>'商品已下架'];
                 return $data;
             }
+            $catPriceId = $group->catPriceId;
+            $price = 0;
+            if($catPriceId){
+                $price = GroupCategory::find()->where("id = $catPriceId")->asArray()->one()['price'];//分类价格
+                $price = $price?$price:0;
+            }
+            if(!$price){
+                $price = $groupProduct->price;//商品组团默认价格
+            }
 //            if($first ==1){//发起者
 //                $price = $product->price;//商品原价
 //            }else{//参与者
 //                $price = $groupProduct->price;//商品组团价格
 //            }
-            $price = $groupProduct->price;//商品组团价格
             $model = new Order();
             $model->orderNumber = 'RMZT'.time().rand(11111,99999);
             $model->uid = $group->uid;
@@ -1934,6 +1950,7 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $groupId = Yii::$app->request->post('userGroupId');//组团人发起的的组团id
         $addressId = Yii::$app->request->post('addressId');//收货地址id
+        $catPriceId = Yii::$app->request->post('catPriceId',0);//分类价格id
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -1960,6 +1977,7 @@ class ApiController extends  Controller
         $model->status = 0;//0 组团中 1-组团成功 2-组团失败
         $model->userGroupId = $userGroup->userGroupId;
         $model->createTime = time();
+        $model->catPriceId = $catPriceId;
         $res = $model->save();
         if($res){
             $data = self::GroupBuy($model->id,$addressId,0);
