@@ -1785,6 +1785,7 @@ class ApiController extends  Controller
         $group['nickname'] = $nickname;
         $group['avatar'] = $avatar;
         $group['introduce'] = $product->introduce;
+        $group['video'] = $product->video;
         //获取规格分类
         $group['catPrice'] = GroupCategory::find()->where("groupId = {$groupId}")->asArray()->all();
 //        $group['ztPrice'] = $product->price;
