@@ -1834,7 +1834,8 @@ class ApiController extends  Controller
         $group['avatar'] = $avatar;
         $group['userGroupId'] = $userGroupId;
         $group['finishTime'] = $had['finishTime'];
-        $group['endTime'] = $had['finishTime'] + 86400*($group['groupTime']);
+        $group['endTime'] = $had['finishTime'] + 86400*($group['groupTime']); //获取规格分类
+        $group['catPrice'] = GroupCategory::find()->where("groupId = {$group['id']}")->asArray()->all();
 //        $group['ztPrice'] = $product->price;
         Methods::jsonData(1,'success',$group);
     }

@@ -83,6 +83,7 @@ class Order extends ActiveRecord
                 $model->remark = '购物车购买';
                 $model->serverFee = $serFee;
                 $res = $model->save();
+                Quality::addProduct($order->uid,$productId,$model->id);
             }else{
                 continue;
             }
