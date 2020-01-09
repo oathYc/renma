@@ -1771,7 +1771,7 @@ class ApiController extends  Controller
         }
         $group = GroupProduct::find()->where("id = $groupId")->asArray()->one();
         if(!$group){
-            Methods::jsonData(0,'该组团商品已下架');
+            Methods::jsonData(0,'该组团商品不存在');
         }
         $product = Product::findOne($group['productId']);
         if(!$product){

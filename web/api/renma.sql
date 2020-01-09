@@ -1,1153 +1,2721 @@
 /*
-Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50553
-Source Host           : localhost:3306
-Source Database       : renma
+ Source Server         : locahost
+ Source Server Type    : MySQL
+ Source Server Version : 50553
+ Source Host           : 127.0.0.1:3306
+ Source Schema         : renma
 
-Target Server Type    : MYSQL
-Target Server Version : 50553
-File Encoding         : 65001
+ Target Server Type    : MySQL
+ Target Server Version : 50553
+ File Encoding         : 65001
 
-Date: 2019-12-25 14:53:57
+ Date: 09/01/2020 15:01:23
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for cy_advert
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_advert`;
-CREATE TABLE `cy_advert` (
+CREATE TABLE `cy_advert`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) DEFAULT '1' COMMENT '1-图片 2-视频',
-  `imageUrl` varchar(255) DEFAULT NULL COMMENT '图片对应的链接地址',
-  `url` varchar(255) DEFAULT NULL COMMENT '文件地址',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 0-未使用 1-使用中',
-  `createTime` int(11) DEFAULT NULL COMMENT '创建时间',
-  `title` text COMMENT '标题',
-  `rank` int(4) DEFAULT NULL COMMENT '排序',
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '1-图片 2-视频',
+  `imageUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片对应的链接地址',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件地址',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '状态 0-未使用 1-使用中',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '创建时间',
+  `title` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '标题',
+  `rank` int(4) NULL DEFAULT NULL COMMENT '排序',
+  `imageType` tinyint(1) NULL DEFAULT 0 COMMENT '1-商品 2-组团 0-其他',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='广告内容';
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '广告内容' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_advert
 -- ----------------------------
-INSERT INTO `cy_advert` VALUES ('2', '2', '/pages/goodsinfo/index?id=1', 'https://lck.hzlyzhenzhi.com/files/attach/file/20191217/1576549399123049.mp4', '1', '1576549404', '三生三世', '8');
-INSERT INTO `cy_advert` VALUES ('3', '1', '/pages/goodsinfo/index?id=1', 'https://lck.hzlyzhenzhi.com/files/attach/file/20191211/1576073586892436.png', '1', '1576073594', '三生三世2', '9');
+INSERT INTO `cy_advert` VALUES (2, 2, '/pages/goodsinfo/index?id=1', 'https://lck.hzlyzhenzhi.com/files/attach/file/20191217/1576549399123049.mp4', 1, 1576549404, '三生三世', 8, 0);
+INSERT INTO `cy_advert` VALUES (3, 1, '/pages/goodsinfo/index?id=15', 'https://lck.hzlyzhenzhi.comhttps://lck.hzlyzhenzhi.com/files/attach/file/20191211/1576073586892436.png', 1, 1577700889, '三生三世2', 9, 0);
 
 -- ----------------------------
 -- Table structure for cy_catalog
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_catalog`;
-CREATE TABLE `cy_catalog` (
+CREATE TABLE `cy_catalog`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `pid` int(4) DEFAULT '0' COMMENT '父级id 0-一级目录',
-  `createTime` int(11) DEFAULT NULL,
-  `rule` varchar(255) NOT NULL COMMENT '规则 所在控制器、方法',
-  `rank` int(4) DEFAULT '0' COMMENT '排序 大到小',
-  `showed` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-显示',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `pid` int(4) NULL DEFAULT 0 COMMENT '父级id 0-一级目录',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `rule` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则 所在控制器、方法',
+  `rank` int(4) NULL DEFAULT 0 COMMENT '排序 大到小',
+  `showed` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1-显示',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='目录结构表';
+) ENGINE = MyISAM AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '目录结构表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_catalog
 -- ----------------------------
-INSERT INTO `cy_catalog` VALUES ('1', '权限功能', '0', '1561365326', 'rule', '9', '1');
-INSERT INTO `cy_catalog` VALUES ('2', '角色', '1', '1561365326', 'role', '7', '1');
-INSERT INTO `cy_catalog` VALUES ('3', '目录功能', '1', '1561365326', 'catalog', '4', '1');
-INSERT INTO `cy_catalog` VALUES ('4', '用户模块', '0', '2019', 'member', '4', '1');
-INSERT INTO `cy_catalog` VALUES ('5', '订单模块', '0', '1561445961', 'order', '3', '1');
-INSERT INTO `cy_catalog` VALUES ('6', '商品模块', '0', '1561446136', 'product', '3', '1');
-INSERT INTO `cy_catalog` VALUES ('13', '店铺模块', '0', '1561452444', 'shop', '2', '1');
-INSERT INTO `cy_catalog` VALUES ('19', '优惠券', '15', '1572834451', 'coupon', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('15', '内容模块', '0', '1572588811', 'content', '8', '1');
-INSERT INTO `cy_catalog` VALUES ('16', '首页logo', '15', '1572588862', 'logo-content', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('17', '广告内容', '15', '1572588922', 'advert', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('18', '商品分类', '15', '1572589268', 'category', '9', '1');
-INSERT INTO `cy_catalog` VALUES ('20', '店铺信息', '13', '1572837153', 'shop-success', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('21', '店铺审核', '13', '1572837178', 'shop-check', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('22', '优选商品', '15', '1572855506', 'good-product', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('23', '商品信息', '6', '1572867332', 'product-list', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('24', '商品组团', '6', '1572868884', 'product-group', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('25', '订单信息', '5', '1572868910', 'order-list', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('26', '组团信息', '4', '1572868997', 'group-list', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('27', '用户信息', '4', '1572869020', 'user-list', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('28', '优惠券使用', '4', '1572869050', 'coupon-use', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('29', '用户地址', '4', '1572869097', 'user-address', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('30', '订单物流', '5', '1572869144', 'order-logistics', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('31', '用户分享', '4', '1572869185', 'user-share', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('32', '质保商品', '5', '1572869254', 'quality-product', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('33', '关于我们', '15', '1572869306', 'about-us', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('34', '用户反馈', '4', '1572869334', 'user-feedback', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('35', '用户购物车', '4', '1572869476', 'user-shop-cart', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('36', '客服联系', '15', '1574151575', 'service', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('37', '会员充值', '15', '1574151614', 'member-remark', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('38', '积分规则', '15', '1575534323', 'integral-rule', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('39', '会员优惠说明', '15', '1576658036', 'member-desc', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('40', '维修师审核', '4', '1576658251', 'repair-check', '0', '1');
-INSERT INTO `cy_catalog` VALUES ('42', '订单售后', '5', '1576916677', 'order-after', '0', '1');
+INSERT INTO `cy_catalog` VALUES (1, '权限功能', 0, 1561365326, 'rule', 11, 1);
+INSERT INTO `cy_catalog` VALUES (2, '角色', 1, 1561365326, 'role', 7, 1);
+INSERT INTO `cy_catalog` VALUES (3, '目录功能', 1, 1561365326, 'catalog', 4, 1);
+INSERT INTO `cy_catalog` VALUES (4, '会员管理', 0, 2019, 'member', 8, 1);
+INSERT INTO `cy_catalog` VALUES (5, '订单管理', 0, 1561445961, 'order', 4, 1);
+INSERT INTO `cy_catalog` VALUES (6, '商品管理', 0, 1561446136, 'product', 7, 1);
+INSERT INTO `cy_catalog` VALUES (13, '店铺管理', 0, 1561452444, 'shop', 3, 1);
+INSERT INTO `cy_catalog` VALUES (19, '优惠券设置', 15, 1572834451, 'coupon', 4, 1);
+INSERT INTO `cy_catalog` VALUES (15, '基本设置', 0, 1572588811, 'content', 9, 1);
+INSERT INTO `cy_catalog` VALUES (16, '首页logo', 15, 1572588862, 'logo-content', 10, 1);
+INSERT INTO `cy_catalog` VALUES (17, '广告内容', 15, 1572588922, 'advert', 9, 1);
+INSERT INTO `cy_catalog` VALUES (18, '商品分类', 6, 1572589268, 'category', 9, 1);
+INSERT INTO `cy_catalog` VALUES (20, '已添加店铺', 13, 1572837153, 'shop-success', 8, 1);
+INSERT INTO `cy_catalog` VALUES (21, '店铺审核', 13, 1572837178, 'shop-check', 7, 1);
+INSERT INTO `cy_catalog` VALUES (22, '优选商品', 6, 1572855506, 'good-product', 7, 1);
+INSERT INTO `cy_catalog` VALUES (23, '商品信息', 6, 1572867332, 'product-list', 8, 1);
+INSERT INTO `cy_catalog` VALUES (24, '组团商品', 45, 1572868884, 'product-group', 0, 1);
+INSERT INTO `cy_catalog` VALUES (25, '订单信息', 5, 1572868910, 'order-list', 9, 1);
+INSERT INTO `cy_catalog` VALUES (26, '组团信息', 45, 1572868997, 'group-list', 0, 1);
+INSERT INTO `cy_catalog` VALUES (27, '用户信息', 4, 1572869020, 'user-list', 9, 1);
+INSERT INTO `cy_catalog` VALUES (28, '优惠券使用', 4, 1572869050, 'coupon-use', 0, 1);
+INSERT INTO `cy_catalog` VALUES (29, '用户地址', 4, 1572869097, 'user-address', 8, 1);
+INSERT INTO `cy_catalog` VALUES (30, '订单物流', 5, 1572869144, 'order-logistics', 8, 1);
+INSERT INTO `cy_catalog` VALUES (31, '用户分享', 4, 1572869185, 'user-share', 6, 1);
+INSERT INTO `cy_catalog` VALUES (32, '质保商品', 6, 1572869254, 'quality-product', 6, 1);
+INSERT INTO `cy_catalog` VALUES (33, '关于我们', 15, 1572869306, 'about-us', 8, 1);
+INSERT INTO `cy_catalog` VALUES (34, '用户反馈', 4, 1572869334, 'user-feedback', 7, 1);
+INSERT INTO `cy_catalog` VALUES (35, '用户购物车', 4, 1572869476, 'user-shop-cart', 5, 1);
+INSERT INTO `cy_catalog` VALUES (36, '客服联系', 15, 1574151575, 'service', 6, 1);
+INSERT INTO `cy_catalog` VALUES (37, '会员充值', 15, 1574151614, 'member-remark', 3, 1);
+INSERT INTO `cy_catalog` VALUES (38, '积分规则', 15, 1575534323, 'integral-rule', 7, 1);
+INSERT INTO `cy_catalog` VALUES (39, '会员优惠说明', 15, 1576658036, 'member-desc', 5, 1);
+INSERT INTO `cy_catalog` VALUES (40, '维修师审核', 46, 1576658251, 'repair-check', 9, 1);
+INSERT INTO `cy_catalog` VALUES (43, '维修师订单', 46, 1577764530, 'repair-order', 7, 1);
+INSERT INTO `cy_catalog` VALUES (42, '待售后订单', 5, 1576916677, 'order-after', 7, 1);
+INSERT INTO `cy_catalog` VALUES (44, '店铺添加', 13, 1578031645, 'shop-add', 9, 1);
+INSERT INTO `cy_catalog` VALUES (45, '拼团设置', 0, 1578031707, 'group', 6, 1);
+INSERT INTO `cy_catalog` VALUES (46, '维修师栏目', 0, 1578031732, 'repair', 5, 1);
+INSERT INTO `cy_catalog` VALUES (47, '已付款订单', 5, 1578032422, 'had-buy', 0, 1);
+INSERT INTO `cy_catalog` VALUES (48, '已发货订单', 5, 1578032447, 'had-send', 0, 1);
+INSERT INTO `cy_catalog` VALUES (49, '代付款订单', 5, 1578032473, 'need-buy', 0, 1);
+INSERT INTO `cy_catalog` VALUES (50, '维修师提现', 46, 1578034185, 'repair-return', 8, 1);
 
 -- ----------------------------
 -- Table structure for cy_category
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_category`;
-CREATE TABLE `cy_category` (
+CREATE TABLE `cy_category`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pid` int(4) DEFAULT '0' COMMENT '父级id',
-  `name` varchar(50) DEFAULT NULL COMMENT '分类名称',
-  `rank` int(4) DEFAULT '0' COMMENT '排序',
-  `createTime` int(11) DEFAULT NULL,
+  `pid` int(4) NULL DEFAULT 0 COMMENT '父级id',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类名称',
+  `rank` int(4) NULL DEFAULT 0 COMMENT '排序',
+  `createTime` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='问题类型分类  两级';
+) ENGINE = MyISAM AUTO_INCREMENT = 59 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '问题类型分类  两级' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_category
 -- ----------------------------
-INSERT INTO `cy_category` VALUES ('50', '0', '零件', '3', '1572598507');
-INSERT INTO `cy_category` VALUES ('52', '50', '千斤顶', '2', '1572598706');
+INSERT INTO `cy_category` VALUES (50, 0, '零件', 3, 1572598507);
+INSERT INTO `cy_category` VALUES (52, 50, '千斤顶', 2, 1572598706);
+INSERT INTO `cy_category` VALUES (53, 50, '可乐', 10, 1577699637);
+INSERT INTO `cy_category` VALUES (54, 0, '喷涂我', 0, 1578032703);
+INSERT INTO `cy_category` VALUES (56, 0, '测试', 0, 1578032843);
+INSERT INTO `cy_category` VALUES (57, 0, '喷', 0, 1578032910);
 
 -- ----------------------------
 -- Table structure for cy_coupon
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_coupon`;
-CREATE TABLE `cy_coupon` (
+CREATE TABLE `cy_coupon`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `money` int(10) DEFAULT NULL COMMENT '优惠金额',
-  `least` int(10) DEFAULT '0' COMMENT '起步价',
-  `integral` int(11) DEFAULT NULL COMMENT '数量',
-  `createTime` int(11) DEFAULT NULL,
-  `remark` text COMMENT '优惠券描述',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `money` int(10) NULL DEFAULT NULL COMMENT '优惠金额',
+  `least` int(10) NULL DEFAULT 0 COMMENT '起步价',
+  `integral` int(11) NULL DEFAULT NULL COMMENT '数量',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '优惠券描述',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='优惠券';
+) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_coupon
 -- ----------------------------
-INSERT INTO `cy_coupon` VALUES ('1', 'fefed', '30', '60', '1000', '1572836975', '');
-INSERT INTO `cy_coupon` VALUES ('2', '测试', '100', '180', '1000', '1572837032', '优惠券 消费金额慢180才能使用');
-INSERT INTO `cy_coupon` VALUES ('3', '优惠', '5', '25', '500', '1573892354', null);
-INSERT INTO `cy_coupon` VALUES ('4', '优惠2', '12', '50', '700', '1578765123', null);
-INSERT INTO `cy_coupon` VALUES ('5', '减5', '5', '10', '300', '2147483647', '满10减5');
-INSERT INTO `cy_coupon` VALUES ('6', '减5q', '5', '10', '300', '2147483647', '满10减5');
-INSERT INTO `cy_coupon` VALUES ('7', '减5w', '5', '10', '300', '2147483647', '满10减5');
-INSERT INTO `cy_coupon` VALUES ('8', '减5e', '5', '10', '300', '2147483647', '满10减5');
-INSERT INTO `cy_coupon` VALUES ('9', '减5r', '5', '10', '300', '2147483647', '满10减5');
-INSERT INTO `cy_coupon` VALUES ('10', '减5t', '5', '10', '300', '2147483647', '满10减5');
-INSERT INTO `cy_coupon` VALUES ('11', '减5y', '5', '10', '300', '2147483647', '满10减5');
+INSERT INTO `cy_coupon` VALUES (1, 'fefed', 30, 60, 1000, 1572836975, '');
+INSERT INTO `cy_coupon` VALUES (2, '测试', 100, 180, 1000, 1572837032, '优惠券 消费金额慢180才能使用');
+INSERT INTO `cy_coupon` VALUES (3, '优惠', 5, 25, 500, 1573892354, NULL);
+INSERT INTO `cy_coupon` VALUES (4, '优惠2', 12, 50, 700, 1578765123, NULL);
+INSERT INTO `cy_coupon` VALUES (5, '减5', 5, 10, 300, 2147483647, '满10减5');
+INSERT INTO `cy_coupon` VALUES (6, '减5q', 5, 10, 300, 2147483647, '满10减5');
+INSERT INTO `cy_coupon` VALUES (7, '减5w', 5, 10, 300, 2147483647, '满10减5');
+INSERT INTO `cy_coupon` VALUES (8, '减5e', 5, 10, 300, 2147483647, '满10减5');
+INSERT INTO `cy_coupon` VALUES (9, '减5r', 5, 10, 300, 2147483647, '满10减5');
+INSERT INTO `cy_coupon` VALUES (10, '减5t', 5, 10, 300, 2147483647, '满10减5');
+INSERT INTO `cy_coupon` VALUES (11, '减5y', 5, 10, 300, 2147483647, '满10减5');
 
 -- ----------------------------
 -- Table structure for cy_good_product
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_good_product`;
-CREATE TABLE `cy_good_product` (
+CREATE TABLE `cy_good_product`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `productId` int(11) DEFAULT NULL COMMENT '商品id',
-  `rank` int(4) DEFAULT '0' COMMENT '排序',
-  `createTime` int(11) DEFAULT NULL COMMENT '时间',
+  `productId` int(11) NULL DEFAULT NULL COMMENT '商品id',
+  `rank` int(4) NULL DEFAULT 0 COMMENT '排序',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='优选商品';
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优选商品' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_good_product
 -- ----------------------------
-INSERT INTO `cy_good_product` VALUES ('1', '3', '8', '1587654321');
-INSERT INTO `cy_good_product` VALUES ('2', '2', '5', '1587654321');
-INSERT INTO `cy_good_product` VALUES ('3', '4', '9', '1587654321');
+INSERT INTO `cy_good_product` VALUES (1, 3, 8, 1587654321);
+INSERT INTO `cy_good_product` VALUES (4, 2, 2, 1578033140);
+INSERT INTO `cy_good_product` VALUES (3, 4, 9, 1587654321);
+
+-- ----------------------------
+-- Table structure for cy_group_category
+-- ----------------------------
+DROP TABLE IF EXISTS `cy_group_category`;
+CREATE TABLE `cy_group_category`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `groupId` int(11) NULL DEFAULT NULL COMMENT '组团商品表id',
+  `cateDesc` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类描述',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '价格',
+  `createTime` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '组团商品规则分类' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cy_group_category
+-- ----------------------------
+INSERT INTO `cy_group_category` VALUES (17, 5, '零件23', 33.00, 1578551706);
+INSERT INTO `cy_group_category` VALUES (14, 6, '零件2', 12.00, 1578551437);
+INSERT INTO `cy_group_category` VALUES (16, 5, '零件22', 222.00, 1578551687);
+INSERT INTO `cy_group_category` VALUES (18, 3, '12', 12.00, 1578551736);
+INSERT INTO `cy_group_category` VALUES (19, 3, '122', 122.00, 1578551736);
+INSERT INTO `cy_group_category` VALUES (20, 8, '231', 21.00, 1578551776);
 
 -- ----------------------------
 -- Table structure for cy_group_product
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_group_product`;
-CREATE TABLE `cy_group_product` (
+CREATE TABLE `cy_group_product`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `productId` int(5) DEFAULT NULL COMMENT '商品id',
-  `number` int(2) DEFAULT NULL COMMENT '组团人数',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '组团价格',
-  `remark` text COMMENT '组团说明',
-  `createTime` int(11) DEFAULT NULL COMMENT '添加时间',
-  `rank` int(4) DEFAULT NULL COMMENT '排序',
-  `groupTime` int(2) NOT NULL DEFAULT '1' COMMENT '组团有效时间 天',
+  `productId` int(5) NULL DEFAULT NULL COMMENT '商品id',
+  `number` int(2) NULL DEFAULT NULL COMMENT '组团人数',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '组团价格',
+  `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '组团说明',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '添加时间',
+  `rank` int(4) NULL DEFAULT NULL COMMENT '排序',
+  `groupTime` int(2) NOT NULL DEFAULT 1 COMMENT '组团有效时间 天',
+  `return` int(11) NULL DEFAULT NULL COMMENT '返现金额',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='组团商品';
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '组团商品' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_group_product
 -- ----------------------------
-INSERT INTO `cy_group_product` VALUES ('1', '1', '4', '1.00', '四人组团 优惠多多', '1576549049', '9', '1');
-INSERT INTO `cy_group_product` VALUES ('2', '2', '4', '1.00', '组团更多优惠', '1576549219', '12', '1');
-INSERT INTO `cy_group_product` VALUES ('3', '3', '4', '0.01', '组团购买 优惠大', '1576549265', '13', '1');
+INSERT INTO `cy_group_product` VALUES (5, 2, 4, 122.00, '组团测试 分类价格', 1578551706, 9, 3, 6);
+INSERT INTO `cy_group_product` VALUES (3, 3, 4, 0.01, '组团购买 优惠大', 1578551736, 13, 1, 1);
+INSERT INTO `cy_group_product` VALUES (8, 27, 4, 0.01, '发DVD从', 1578551793, 8, 3, 1);
 
 -- ----------------------------
 -- Table structure for cy_logo
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_logo`;
-CREATE TABLE `cy_logo` (
+CREATE TABLE `cy_logo`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text,
-  `createTime` int(11) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT '0' COMMENT '状态 1-当前使用',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `createTime` int(11) NULL DEFAULT NULL,
+  `status` tinyint(1) NULL DEFAULT 0 COMMENT '状态 1-当前使用',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='logo滚动内容';
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'logo滚动内容' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_logo
 -- ----------------------------
-INSERT INTO `cy_logo` VALUES ('1', 'ffff', '1572590265', '0');
-INSERT INTO `cy_logo` VALUES ('2', 'fsdfdsfdscsxcc是否第三十', '1572590323', '0');
-INSERT INTO `cy_logo` VALUES ('3', '是才呈现出', '1572590389', '0');
-INSERT INTO `cy_logo` VALUES ('4', '是才呈现出', '1572590445', '0');
-INSERT INTO `cy_logo` VALUES ('5', '是才呈现出的', '1572590537', '1');
+INSERT INTO `cy_logo` VALUES (1, 'ffff', 1572590265, 0);
+INSERT INTO `cy_logo` VALUES (2, 'fsdfdsfdscsxcc是否第三十', 1572590323, 0);
+INSERT INTO `cy_logo` VALUES (3, '是才呈现出', 1572590389, 0);
+INSERT INTO `cy_logo` VALUES (4, '是才呈现出', 1572590445, 0);
+INSERT INTO `cy_logo` VALUES (5, '是才呈现出的', 1572590537, 1);
 
 -- ----------------------------
 -- Table structure for cy_member
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_member`;
-CREATE TABLE `cy_member` (
+CREATE TABLE `cy_member`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nickname` varchar(40) DEFAULT NULL COMMENT '昵称',
-  `name` varchar(40) DEFAULT NULL COMMENT '姓名',
-  `avatar` varchar(70) DEFAULT NULL COMMENT '头像地址',
-  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '性别 1-男 2-女',
-  `birthday` char(12) DEFAULT NULL COMMENT '生日',
-  `work` char(20) DEFAULT NULL COMMENT '职业',
-  `phone` char(12) DEFAULT NULL COMMENT '电话',
-  `identity` char(19) DEFAULT NULL COMMENT '身份证',
-  `integral` int(6) DEFAULT NULL COMMENT '积分',
-  `member` tinyint(1) DEFAULT '0' COMMENT '会员状态 1-是 0-不是',
-  `memberTime` int(11) DEFAULT NULL COMMENT '成为会员的时间',
-  `inviteCode` char(8) DEFAULT NULL COMMENT '邀请码',
-  `inviterCode` char(8) DEFAULT NULL COMMENT '邀请人的邀请码',
-  `createTime` int(11) DEFAULT NULL COMMENT '创建时间',
-  `openId` varchar(50) DEFAULT NULL COMMENT '用户微信账号的openId',
-  `province` varchar(40) DEFAULT NULL COMMENT '省',
-  `city` varchar(40) DEFAULT NULL COMMENT '市',
-  `area` varchar(50) DEFAULT NULL COMMENT '地区',
-  `password` varchar(80) DEFAULT NULL COMMENT '密码',
-  `memberLevel` tinyint(1) DEFAULT NULL,
-  `repair` tinyint(1) DEFAULT '0' COMMENT '维修师身份  0-不是 1-是 -1 审核中',
-  `repairName` varchar(255) DEFAULT NULL COMMENT '维修师姓名',
-  `repairPhone` char(12) DEFAULT NULL COMMENT '维修师电话',
-  `repairMoney` decimal(10,2) DEFAULT '0.00' COMMENT '会员维修师金额',
-  `repairTotalMoney` decimal(10,2) DEFAULT '0.00' COMMENT '总金额',
+  `nickname` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
+  `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `avatar` varchar(70) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像地址',
+  `sex` tinyint(1) NOT NULL DEFAULT 0 COMMENT '性别 1-男 2-女',
+  `birthday` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生日',
+  `work` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职业',
+  `phone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
+  `identity` char(19) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证',
+  `integral` int(6) NULL DEFAULT NULL COMMENT '积分',
+  `member` tinyint(1) NULL DEFAULT 0 COMMENT '会员状态 1-是 0-不是',
+  `memberTime` int(11) NULL DEFAULT NULL COMMENT '成为会员的时间',
+  `inviteCode` char(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邀请码',
+  `inviterCode` char(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邀请人的邀请码',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '创建时间',
+  `openId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户微信账号的openId',
+  `province` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
+  `city` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
+  `area` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区',
+  `password` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
+  `memberLevel` tinyint(1) NULL DEFAULT NULL,
+  `repair` tinyint(1) NULL DEFAULT 0 COMMENT '维修师身份  0-不是 1-是 -1 审核中',
+  `repairName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '维修师姓名',
+  `repairPhone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '维修师电话',
+  `repairMoney` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '会员维修师金额',
+  `repairTotalMoney` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '总金额',
+  `memberMoney` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '会员钱包',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户信息';
+) ENGINE = MyISAM AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_member
 -- ----------------------------
-INSERT INTO `cy_member` VALUES ('1', 'oathYc', '1111', '50', '0', null, null, null, null, '24', '1', null, 'ddDCSDF5', null, null, null, null, null, null, 'e10adc3949ba59abbe56e057f20f883e', null, '1', '去去去', '15828043607', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('2', 'oathYc2', 'cy2', '', '1', '', '', '12345678987', '', null, '0', null, 'ddDCSDFT', 'ddDCSDF5', null, '', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', null, '0', null, null, '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('32', '谨严', null, 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqSCmBAfiaH7zgG69aPRaCIicTqi', '0', null, null, null, null, null, '0', null, 'L76GEI5O', null, '1576136839', 'oAi5t5V4uqDkEHzsfpnDLOq2H65o', 'Shanghai', 'Baoshan', 'China', null, null, '0', null, null, '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('31', '刘海威', null, 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIhdUPEzoVqBTFvcQOp8Ricr6BLI', '0', null, null, null, null, '100', '1', null, 'WXO9D3IN', null, '1575650915', 'oAi5t5YhsSSLaPXNWar9WGhjxIZQ', 'Sichuan', 'Yaan', 'China', null, null, '0', null, null, '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('30', 'zoz', null, 'https://wx.qlogo.cn/mmopen/vi_32/qvGwCZSz78T0hUben8dNlAD5QISX943jqYmqd', '0', null, null, null, null, '300', '1', null, 'EZMCZRBK', null, '1575648439', 'oAi5t5fPyFny93R7iP44EDYCBZ8I', 'Sichuan', 'Nanchong', 'China', null, null, '0', null, null, '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('28', '曹二振宇车行', null, 'https://wx.qlogo.cn/mmopen/vi_32/6ddU5Tfuu4bZLx7XfJKDY2GR3LA6mmOCXZCwt', '0', null, null, null, null, null, '1', null, '4MMLK9L2', null, '1575434837', 'oAi5t5Rb9TSFmCmm51D-v2XSBkdQ', '', '', '', null, null, '-1', '122388383838', '122388383838', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('27', '镜月圆', null, 'https://wx.qlogo.cn/mmopen/vi_32/QQicqq0Cy6pIKFibIZRDclCS4KfDCnWfmxCx0', '0', null, null, null, null, null, '0', null, 'J8IPHG1A', null, '1575355153', 'oAi5t5YwP2QSKNan4bK1c4EoGyi8', 'Sichuan', 'Chengdu', 'China', null, null, '0', null, null, '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('29', 'A     团子', '', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJ07KNR7tkiadeqoUYYBTAUibeQ5', '0', '', '', '', '', '400', '1', null, '7UVO875O', null, '1575609233', 'oAi5t5baGu0TZ5n0UWglpJEthmS0', 'Shanghai', 'Baoshan', 'China', null, null, '-1', '13262862846', '13262862846', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('26', 'just', '10', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKgJqcLv9icYYQkAX9Kx01icCgc6', '0', '19', '', '', '', '102', '1', null, 'KOO9SK7O', null, '1575347823', 'oAi5t5YLgo6T9Wu6lCLJ3Y8da-Zs', 'Sichuan', 'Chengdu', 'China', null, null, '1', '1', '1', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('25', 'い烬', null, 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLq8ERSl7Z2EsIVpEe69xY7fr0ic', '0', null, null, null, null, '998600', '1', null, 'OQQ8GMYT', null, '1575268587', 'oAi5t5bJ9pwX_Nc7C5skWtVJkygg', 'Sichuan', 'Nanchong', 'China', null, null, '0', null, null, '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('33', 'Jeckson李', '1111111', 'https://wx.qlogo.cn/mmopen/vi_32/fCtPKN2Xxv483FNS6wqib9HbwdcmbkJWI8R8U', '0', '4444', '学生', '111111111111', '1111111111111', '0', '1', null, 'RN5NZKBT', null, '1576555091', 'oAi5t5Q6XIESpq8wypzG5sVZOAG0', '', '', 'Ecuador', null, null, '-1', '1111111', '1111111', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('34', '爱吃小鱼干', 'xx', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKFoeclhwwzMAcDFwB2QZH18fMLg', '0', 'xxxxxx', 'ddadw', '13698744789', '510251125514752', null, '1', null, 'OPPSQCSH', null, '1576562472', 'oAi5t5U5Im-gDD6Hs1gm7Pmnzu48', '', '', 'Andorra', null, null, '-1', '13667899876', '13667899876', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('35', '有成', null, 'https://wx.qlogo.cn/mmopen/vi_32/RuMqzS6wUjNiaODN5QeicdFaLVC0uPt0AGdM1', '0', null, null, null, null, '0', '1', null, 'SLO72CKO', null, '1576583138', 'oAi5t5dS8_IWd6LhV-CC1FTovA18', 'Chongqing', 'Jiulongpo', 'China', null, null, '-1', '18723470002', '18723470002', '0.00', '0.00');
-INSERT INTO `cy_member` VALUES ('36', '', null, 'https://wx.qlogo.cn/mmopen/vi_32/1ZWialr0ic85ewZ32mmYicGedjYhbB9ricKrx', '0', null, null, null, null, '76002', '1', null, '3R1086EO', null, '1577111340', 'oAi5t5VCSbUdJDYTubOiAULhwiEg', 'Guangdong', 'Jieyang', 'China', null, '3', '1', '18666556566', '18666556566', '55.00', '100.00');
+INSERT INTO `cy_member` VALUES (1, 'oathYc', '1111', '50', 0, NULL, NULL, NULL, NULL, 24, 1, NULL, 'ddDCSDF5', NULL, NULL, NULL, NULL, NULL, NULL, 'e10adc3949ba59abbe56e057f20f883e', NULL, 1, '去去去', '15828043607', 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (2, 'oathYc2', 'cy2', '', 1, '', '', '12345678987', '', NULL, 0, NULL, 'ddDCSDFT', 'ddDCSDF5', NULL, '', '', '', '', 'e10adc3949ba59abbe56e057f20f883e', NULL, 0, NULL, NULL, 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (32, '谨严', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqSCmBAfiaH7zgG69aPRaCIicTqi', 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, 'L76GEI5O', NULL, 1576136839, 'oAi5t5V4uqDkEHzsfpnDLOq2H65o', 'Shanghai', 'Baoshan', 'China', NULL, NULL, 0, NULL, NULL, 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (31, '刘海威', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIhdUPEzoVqBTFvcQOp8Ricr6BLI', 0, NULL, NULL, NULL, NULL, 100, 1, NULL, 'WXO9D3IN', NULL, 1575650915, 'oAi5t5YhsSSLaPXNWar9WGhjxIZQ', '四川', '雅安', '中国', NULL, NULL, 0, NULL, NULL, 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (30, 'zoz', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/qvGwCZSz78T0hUben8dNlAD5QISX943jqYmqd', 0, NULL, NULL, NULL, NULL, 300, 1, NULL, 'EZMCZRBK', NULL, 1575648439, 'oAi5t5fPyFny93R7iP44EDYCBZ8I', 'Sichuan', 'Nanchong', 'China', NULL, NULL, 0, NULL, NULL, 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (28, '曹二振宇车行', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/6ddU5Tfuu4bZLx7XfJKDY2GR3LA6mmOCXZCwt', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, '4MMLK9L2', NULL, 1575434837, 'oAi5t5Rb9TSFmCmm51D-v2XSBkdQ', '', '', '', NULL, NULL, 1, '122388383838', '122388383838', 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (27, '镜月圆', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/QQicqq0Cy6pIKFibIZRDclCS4KfDCnWfmxCx0', 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, 'J8IPHG1A', NULL, 1575355153, 'oAi5t5YwP2QSKNan4bK1c4EoGyi8', 'Sichuan', 'Chengdu', 'China', NULL, NULL, 0, NULL, NULL, 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (29, 'A     团子', '', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJ07KNR7tkiadeqoUYYBTAUibeQ5', 0, '', '', '', '', 402, 1, NULL, '7UVO875O', NULL, 1575609233, 'oAi5t5baGu0TZ5n0UWglpJEthmS0', 'Shanghai', 'Baoshan', 'China', NULL, NULL, 1, '13262862846', '13262862846', 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (26, 'just', '', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKgJqcLv9icYYQkAX9Kx01icCgc6', 0, '19', '', '', '', 102, 1, NULL, 'KOO9SK7O', NULL, 1575347823, 'oAi5t5YLgo6T9Wu6lCLJ3Y8da-Zs', 'Sichuan', 'Chengdu', 'China', NULL, 3, 0, '1', '1', 0.00, 0.00, 100.00);
+INSERT INTO `cy_member` VALUES (25, 'い烬', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLq8ERSl7Z2EsIVpEe69xY7fr0ic', 0, NULL, NULL, NULL, NULL, 998600, 1, NULL, 'OQQ8GMYT', NULL, 1575268587, 'oAi5t5bJ9pwX_Nc7C5skWtVJkygg', 'Sichuan', 'Nanchong', 'China', NULL, NULL, 0, NULL, NULL, 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (33, 'Jeckson李', '', 'https://wx.qlogo.cn/mmopen/vi_32/fCtPKN2Xxv483FNS6wqib9HbwdcmbkJWI8R8U', 0, '4444', '学生', '', '1111111111111', 0, 1, NULL, 'RN5NZKBT', NULL, 1576555091, 'oAi5t5Q6XIESpq8wypzG5sVZOAG0', '', '', 'Ecuador', NULL, NULL, 0, '1111111', '1111111', 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (34, '爱吃小鱼干', 'xx', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKFoeclhwwzMAcDFwB2QZH18fMLg', 0, 'xxxxxx', 'ddadw', '13698744789', '510251125514752', NULL, 1, NULL, 'OPPSQCSH', NULL, 1576562472, 'oAi5t5U5Im-gDD6Hs1gm7Pmnzu48', '', '', 'Andorra', NULL, NULL, 1, '13667899876', '13667899876', 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (35, '有成', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/RuMqzS6wUjNiaODN5QeicdFaLVC0uPt0AGdM1', 0, NULL, NULL, NULL, NULL, 0, 1, NULL, 'SLO72CKO', NULL, 1576583138, 'oAi5t5dS8_IWd6LhV-CC1FTovA18', 'Chongqing', 'Jiulongpo', 'China', NULL, NULL, -1, '18723470002', '18723470002', 0.00, 0.00, 0.00);
+INSERT INTO `cy_member` VALUES (36, '', NULL, 'https://wx.qlogo.cn/mmopen/vi_32/1ZWialr0ic85ewZ32mmYicGedjYhbB9ricKrx', 0, NULL, NULL, NULL, NULL, 76003, 1, NULL, '3R1086EO', NULL, 1577111340, 'oAi5t5VCSbUdJDYTubOiAULhwiEg', 'Guangdong', 'Jieyang', 'China', NULL, 3, 1, '18666556566', '18666556566', 54.00, 100.00, 0.00);
 
 -- ----------------------------
 -- Table structure for cy_member_log
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_member_log`;
-CREATE TABLE `cy_member_log` (
+CREATE TABLE `cy_member_log`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL,
-  `beginTime` int(11) DEFAULT NULL COMMENT '开始时间',
-  `endTime` int(11) DEFAULT NULL COMMENT '结束时间',
-  `createTime` int(11) DEFAULT NULL,
-  `orderId` int(11) DEFAULT NULL,
+  `uid` int(11) NULL DEFAULT NULL,
+  `beginTime` int(11) NULL DEFAULT NULL COMMENT '开始时间',
+  `endTime` int(11) NULL DEFAULT NULL COMMENT '结束时间',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `orderId` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=109 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='成员开通会员记录';
+) ENGINE = MyISAM AUTO_INCREMENT = 817 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '成员开通会员记录' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_member_log
 -- ----------------------------
-INSERT INTO `cy_member_log` VALUES ('1', '25', '1575216000', '31104000', '1575285649', '30');
-INSERT INTO `cy_member_log` VALUES ('2', '25', '1575302400', '31104000', '1575347563', '64');
-INSERT INTO `cy_member_log` VALUES ('3', '25', '1575302400', '31104000', '1575349466', '65');
-INSERT INTO `cy_member_log` VALUES ('4', '25', '1575302400', '31104000', '1575354261', '69');
-INSERT INTO `cy_member_log` VALUES ('5', '25', '1575302400', '31104000', '1575355062', '70');
-INSERT INTO `cy_member_log` VALUES ('6', '25', '1575302400', '31104000', '1575355069', '71');
-INSERT INTO `cy_member_log` VALUES ('7', '26', '1575302400', '31104000', '1575378180', '72');
-INSERT INTO `cy_member_log` VALUES ('8', '26', '1575302400', '31104000', '1575378189', '73');
-INSERT INTO `cy_member_log` VALUES ('9', '26', '1575302400', '31104000', '1575378848', '74');
-INSERT INTO `cy_member_log` VALUES ('10', '26', '1575302400', '31104000', '1575381473', '76');
-INSERT INTO `cy_member_log` VALUES ('11', '26', '1575302400', '31104000', '1575381475', '77');
-INSERT INTO `cy_member_log` VALUES ('12', '28', '1575388800', '31104000', '1575434857', '78');
-INSERT INTO `cy_member_log` VALUES ('13', '28', '1575388800', '31104000', '1575434858', '79');
-INSERT INTO `cy_member_log` VALUES ('14', '28', '1575388800', '31104000', '1575434868', '80');
-INSERT INTO `cy_member_log` VALUES ('15', '28', '1575388800', '31104000', '1575434881', '81');
-INSERT INTO `cy_member_log` VALUES ('16', '28', '1575388800', '31104000', '1575434998', '82');
-INSERT INTO `cy_member_log` VALUES ('17', '28', '1575388800', '31104000', '1575438429', '83');
-INSERT INTO `cy_member_log` VALUES ('18', '28', '1575388800', '31104000', '1575438475', '84');
-INSERT INTO `cy_member_log` VALUES ('19', '26', '1575388800', '31104000', '1575445888', '85');
-INSERT INTO `cy_member_log` VALUES ('20', '26', '1575388800', '31104000', '1575445890', '86');
-INSERT INTO `cy_member_log` VALUES ('21', '26', '1575388800', '31104000', '1575445890', '87');
-INSERT INTO `cy_member_log` VALUES ('22', '26', '1575388800', '31104000', '1575445920', '88');
-INSERT INTO `cy_member_log` VALUES ('23', '25', '1575388800', '31104000', '1575454230', '89');
-INSERT INTO `cy_member_log` VALUES ('24', '25', '1575388800', '31104000', '1575454231', '90');
-INSERT INTO `cy_member_log` VALUES ('25', '25', '1575475200', '31104000', '1575550106', '92');
-INSERT INTO `cy_member_log` VALUES ('26', '25', '1575475200', '31104000', '1575550636', '93');
-INSERT INTO `cy_member_log` VALUES ('27', '25', '1575475200', '2592000', '1575553288', '94');
-INSERT INTO `cy_member_log` VALUES ('28', '29', '1575561600', '31104000', '1575609372', '102');
-INSERT INTO `cy_member_log` VALUES ('29', '29', '1575561600', '31104000', '1575609374', '103');
-INSERT INTO `cy_member_log` VALUES ('30', '29', '1575561600', '7776000', '1575609378', '104');
-INSERT INTO `cy_member_log` VALUES ('31', '25', '1575590400', '31104000', '1575637016', '107');
-INSERT INTO `cy_member_log` VALUES ('32', '29', '1575590400', '28512000', '1575653500', '108');
-INSERT INTO `cy_member_log` VALUES ('33', '29', '1575590400', '28512000', '1575653501', '109');
-INSERT INTO `cy_member_log` VALUES ('34', '29', '1575590400', '28512000', '1575653506', '110');
-INSERT INTO `cy_member_log` VALUES ('35', '29', '1575590400', '28512000', '1575655396', '111');
-INSERT INTO `cy_member_log` VALUES ('36', '25', '1575676800', '31104000', '1575691182', '121');
-INSERT INTO `cy_member_log` VALUES ('37', '25', '1575648000', '28512000', '1575708920', '125');
-INSERT INTO `cy_member_log` VALUES ('38', '30', '1575648000', '28512000', '1575714294', '126');
-INSERT INTO `cy_member_log` VALUES ('39', '30', '1575648000', '28512000', '1575714296', '127');
-INSERT INTO `cy_member_log` VALUES ('40', '30', '1575648000', '28512000', '1575714297', '128');
-INSERT INTO `cy_member_log` VALUES ('41', '30', '1575648000', '28512000', '1575714298', '129');
-INSERT INTO `cy_member_log` VALUES ('42', '29', '1575734400', '7776000', '1575817925', '132');
-INSERT INTO `cy_member_log` VALUES ('43', '31', '1575820800', '7776000', '1575872636', '133');
-INSERT INTO `cy_member_log` VALUES ('44', '31', '1575820800', '31104000', '1575872638', '134');
-INSERT INTO `cy_member_log` VALUES ('45', '31', '1575820800', '7776000', '1575872642', '135');
-INSERT INTO `cy_member_log` VALUES ('46', '31', '1575820800', '28512000', '1575872647', '136');
-INSERT INTO `cy_member_log` VALUES ('47', '30', '1575907200', '28512000', '1575959170', '147');
-INSERT INTO `cy_member_log` VALUES ('48', '25', '1575993600', '31104000', '1576030133', '148');
-INSERT INTO `cy_member_log` VALUES ('49', '25', '1575993600', '31104000', '1576030140', '149');
-INSERT INTO `cy_member_log` VALUES ('50', '25', '1575993600', '31104000', '1576030141', '150');
-INSERT INTO `cy_member_log` VALUES ('51', '25', '1575993600', '31104000', '1576030432', '151');
-INSERT INTO `cy_member_log` VALUES ('52', '25', '1575993600', '31104000', '1576030432', '152');
-INSERT INTO `cy_member_log` VALUES ('53', '25', '1575993600', '31104000', '1576030690', '153');
-INSERT INTO `cy_member_log` VALUES ('54', '25', '1575993600', '31104000', '1576030740', '154');
-INSERT INTO `cy_member_log` VALUES ('55', '33', '1575993600', '1607097600', '1576034007', '155');
-INSERT INTO `cy_member_log` VALUES ('56', '34', '1575993600', '1604505600', '1576034060', '156');
-INSERT INTO `cy_member_log` VALUES ('57', '35', '1575993600', '1607097600', '1576034081', '157');
-INSERT INTO `cy_member_log` VALUES ('58', '25', '1575993600', '1607097600', '1576034132', '158');
-INSERT INTO `cy_member_log` VALUES ('59', '31', '1575993600', '1604505600', '1576042985', '159');
-INSERT INTO `cy_member_log` VALUES ('60', '25', '1607097600', '1638201600', '1576075531', '163');
-INSERT INTO `cy_member_log` VALUES ('61', '1', '1576080000', '1607184000', '1576136528', '174');
-INSERT INTO `cy_member_log` VALUES ('62', '28', '1576080000', '1583856000', '1576136924', '176');
-INSERT INTO `cy_member_log` VALUES ('63', '28', '1576080000', '1604592000', '1576136930', '177');
-INSERT INTO `cy_member_log` VALUES ('64', '26', '1576080000', '1604592000', '1576138553', '179');
-INSERT INTO `cy_member_log` VALUES ('65', '26', '1576080000', '1583856000', '1576138553', '180');
-INSERT INTO `cy_member_log` VALUES ('66', '26', '1576080000', '1583856000', '1576138553', '181');
-INSERT INTO `cy_member_log` VALUES ('67', '26', '1604592000', '1612368000', '1576138577', '182');
-INSERT INTO `cy_member_log` VALUES ('68', '28', '1604592000', '1612368000', '1576139553', '183');
-INSERT INTO `cy_member_log` VALUES ('69', '28', '1612368000', '1643472000', '1576139560', '184');
-INSERT INTO `cy_member_log` VALUES ('70', '28', '1643472000', '1671984000', '1576139564', '185');
-INSERT INTO `cy_member_log` VALUES ('71', '29', '1576080000', '1607184000', '1576139794', '187');
-INSERT INTO `cy_member_log` VALUES ('72', '29', '1607184000', '1638288000', '1576147404', '202');
-INSERT INTO `cy_member_log` VALUES ('73', '29', '1638288000', '1669392000', '1576147407', '203');
-INSERT INTO `cy_member_log` VALUES ('74', '29', '1669392000', '1700496000', '1576202198', '220');
-INSERT INTO `cy_member_log` VALUES ('75', '29', '1700496000', '1731600000', '1576202200', '221');
-INSERT INTO `cy_member_log` VALUES ('76', '25', '1638201600', '1669305600', '1576460548', '222');
-INSERT INTO `cy_member_log` VALUES ('77', '25', '1669305600', '1700409600', '1576460548', '223');
-INSERT INTO `cy_member_log` VALUES ('78', '25', '1700409600', '1731513600', '1576460553', '224');
-INSERT INTO `cy_member_log` VALUES ('79', '25', '1731513600', '1762617600', '1576460556', '225');
-INSERT INTO `cy_member_log` VALUES ('80', '25', '1762617600', '1793721600', '1576460556', '226');
-INSERT INTO `cy_member_log` VALUES ('81', '25', '1793721600', '1824825600', '1576460556', '227');
-INSERT INTO `cy_member_log` VALUES ('82', '25', '1824825600', '1832601600', '1576460561', '228');
-INSERT INTO `cy_member_log` VALUES ('83', '25', '1832601600', '1840377600', '1576460561', '229');
-INSERT INTO `cy_member_log` VALUES ('84', '25', '1840377600', '1848153600', '1576460561', '230');
-INSERT INTO `cy_member_log` VALUES ('85', '25', '1848153600', '1855929600', '1576460562', '231');
-INSERT INTO `cy_member_log` VALUES ('86', '25', '1855929600', '1863705600', '1576460562', '232');
-INSERT INTO `cy_member_log` VALUES ('87', '25', '1863705600', '1871481600', '1576460562', '233');
-INSERT INTO `cy_member_log` VALUES ('88', '25', '1871481600', '1879257600', '1576460562', '234');
-INSERT INTO `cy_member_log` VALUES ('89', '25', '1879257600', '1887033600', '1576460562', '235');
-INSERT INTO `cy_member_log` VALUES ('90', '25', '1887033600', '1915545600', '1576460563', '236');
-INSERT INTO `cy_member_log` VALUES ('91', '25', '1915545600', '1944057600', '1576460563', '237');
-INSERT INTO `cy_member_log` VALUES ('92', '25', '1944057600', '1972569600', '1576460563', '238');
-INSERT INTO `cy_member_log` VALUES ('93', '25', '1972569600', '2001081600', '1576460563', '239');
-INSERT INTO `cy_member_log` VALUES ('94', '25', '2001081600', '2029593600', '1576460564', '240');
-INSERT INTO `cy_member_log` VALUES ('95', '25', '2029593600', '2058105600', '1576460564', '241');
-INSERT INTO `cy_member_log` VALUES ('96', '25', '2058105600', '2065881600', '1576460564', '242');
-INSERT INTO `cy_member_log` VALUES ('97', '25', '2065881600', '2096985600', '1576460564', '243');
-INSERT INTO `cy_member_log` VALUES ('98', '25', '2096985600', '2128089600', '1576460566', '244');
-INSERT INTO `cy_member_log` VALUES ('99', '25', '2128089600', '-2135773696', '1576460567', '245');
-INSERT INTO `cy_member_log` VALUES ('100', '36', '1577145600', '1605657600', '1577194807', '398');
-INSERT INTO `cy_member_log` VALUES ('101', '36', '1577145600', '1605657600', '1577194811', '399');
-INSERT INTO `cy_member_log` VALUES ('102', '36', '1577145600', '1605657600', '1577194812', '400');
-INSERT INTO `cy_member_log` VALUES ('103', '36', '1577145600', '1605657600', '1577194821', '401');
-INSERT INTO `cy_member_log` VALUES ('104', '36', '1605657600', '1634169600', '1577195924', '402');
-INSERT INTO `cy_member_log` VALUES ('105', '36', '1634169600', '1641945600', '1577196092', '403');
-INSERT INTO `cy_member_log` VALUES ('106', '36', '1641945600', '1670457600', '1577196123', '404');
-INSERT INTO `cy_member_log` VALUES ('107', '36', '1670457600', '1673049600', '1577196130', '405');
-INSERT INTO `cy_member_log` VALUES ('108', '36', '1673049600', '1680825600', '1577196288', '406');
+INSERT INTO `cy_member_log` VALUES (1, 25, 1575216000, 31104000, 1575285649, 30);
+INSERT INTO `cy_member_log` VALUES (2, 25, 1575302400, 31104000, 1575347563, 64);
+INSERT INTO `cy_member_log` VALUES (3, 25, 1575302400, 31104000, 1575349466, 65);
+INSERT INTO `cy_member_log` VALUES (4, 25, 1575302400, 31104000, 1575354261, 69);
+INSERT INTO `cy_member_log` VALUES (5, 25, 1575302400, 31104000, 1575355062, 70);
+INSERT INTO `cy_member_log` VALUES (6, 25, 1575302400, 31104000, 1575355069, 71);
+INSERT INTO `cy_member_log` VALUES (7, 26, 1575302400, 31104000, 1575378180, 72);
+INSERT INTO `cy_member_log` VALUES (8, 26, 1575302400, 31104000, 1575378189, 73);
+INSERT INTO `cy_member_log` VALUES (9, 26, 1575302400, 31104000, 1575378848, 74);
+INSERT INTO `cy_member_log` VALUES (10, 26, 1575302400, 31104000, 1575381473, 76);
+INSERT INTO `cy_member_log` VALUES (11, 26, 1575302400, 31104000, 1575381475, 77);
+INSERT INTO `cy_member_log` VALUES (12, 28, 1575388800, 31104000, 1575434857, 78);
+INSERT INTO `cy_member_log` VALUES (13, 28, 1575388800, 31104000, 1575434858, 79);
+INSERT INTO `cy_member_log` VALUES (14, 28, 1575388800, 31104000, 1575434868, 80);
+INSERT INTO `cy_member_log` VALUES (15, 28, 1575388800, 31104000, 1575434881, 81);
+INSERT INTO `cy_member_log` VALUES (16, 28, 1575388800, 31104000, 1575434998, 82);
+INSERT INTO `cy_member_log` VALUES (17, 28, 1575388800, 31104000, 1575438429, 83);
+INSERT INTO `cy_member_log` VALUES (18, 28, 1575388800, 31104000, 1575438475, 84);
+INSERT INTO `cy_member_log` VALUES (19, 26, 1575388800, 31104000, 1575445888, 85);
+INSERT INTO `cy_member_log` VALUES (20, 26, 1575388800, 31104000, 1575445890, 86);
+INSERT INTO `cy_member_log` VALUES (21, 26, 1575388800, 31104000, 1575445890, 87);
+INSERT INTO `cy_member_log` VALUES (22, 26, 1575388800, 31104000, 1575445920, 88);
+INSERT INTO `cy_member_log` VALUES (23, 25, 1575388800, 31104000, 1575454230, 89);
+INSERT INTO `cy_member_log` VALUES (24, 25, 1575388800, 31104000, 1575454231, 90);
+INSERT INTO `cy_member_log` VALUES (25, 25, 1575475200, 31104000, 1575550106, 92);
+INSERT INTO `cy_member_log` VALUES (26, 25, 1575475200, 31104000, 1575550636, 93);
+INSERT INTO `cy_member_log` VALUES (27, 25, 1575475200, 2592000, 1575553288, 94);
+INSERT INTO `cy_member_log` VALUES (28, 29, 1575561600, 31104000, 1575609372, 102);
+INSERT INTO `cy_member_log` VALUES (29, 29, 1575561600, 31104000, 1575609374, 103);
+INSERT INTO `cy_member_log` VALUES (30, 29, 1575561600, 7776000, 1575609378, 104);
+INSERT INTO `cy_member_log` VALUES (31, 25, 1575590400, 31104000, 1575637016, 107);
+INSERT INTO `cy_member_log` VALUES (32, 29, 1575590400, 28512000, 1575653500, 108);
+INSERT INTO `cy_member_log` VALUES (33, 29, 1575590400, 28512000, 1575653501, 109);
+INSERT INTO `cy_member_log` VALUES (34, 29, 1575590400, 28512000, 1575653506, 110);
+INSERT INTO `cy_member_log` VALUES (35, 29, 1575590400, 28512000, 1575655396, 111);
+INSERT INTO `cy_member_log` VALUES (36, 25, 1575676800, 31104000, 1575691182, 121);
+INSERT INTO `cy_member_log` VALUES (37, 25, 1575648000, 28512000, 1575708920, 125);
+INSERT INTO `cy_member_log` VALUES (38, 30, 1575648000, 28512000, 1575714294, 126);
+INSERT INTO `cy_member_log` VALUES (39, 30, 1575648000, 28512000, 1575714296, 127);
+INSERT INTO `cy_member_log` VALUES (40, 30, 1575648000, 28512000, 1575714297, 128);
+INSERT INTO `cy_member_log` VALUES (41, 30, 1575648000, 28512000, 1575714298, 129);
+INSERT INTO `cy_member_log` VALUES (42, 29, 1575734400, 7776000, 1575817925, 132);
+INSERT INTO `cy_member_log` VALUES (43, 31, 1575820800, 7776000, 1575872636, 133);
+INSERT INTO `cy_member_log` VALUES (44, 31, 1575820800, 31104000, 1575872638, 134);
+INSERT INTO `cy_member_log` VALUES (45, 31, 1575820800, 7776000, 1575872642, 135);
+INSERT INTO `cy_member_log` VALUES (46, 31, 1575820800, 28512000, 1575872647, 136);
+INSERT INTO `cy_member_log` VALUES (47, 30, 1575907200, 28512000, 1575959170, 147);
+INSERT INTO `cy_member_log` VALUES (48, 25, 1575993600, 31104000, 1576030133, 148);
+INSERT INTO `cy_member_log` VALUES (49, 25, 1575993600, 31104000, 1576030140, 149);
+INSERT INTO `cy_member_log` VALUES (50, 25, 1575993600, 31104000, 1576030141, 150);
+INSERT INTO `cy_member_log` VALUES (51, 25, 1575993600, 31104000, 1576030432, 151);
+INSERT INTO `cy_member_log` VALUES (52, 25, 1575993600, 31104000, 1576030432, 152);
+INSERT INTO `cy_member_log` VALUES (53, 25, 1575993600, 31104000, 1576030690, 153);
+INSERT INTO `cy_member_log` VALUES (54, 25, 1575993600, 31104000, 1576030740, 154);
+INSERT INTO `cy_member_log` VALUES (55, 33, 1575993600, 1607097600, 1576034007, 155);
+INSERT INTO `cy_member_log` VALUES (56, 34, 1575993600, 1604505600, 1576034060, 156);
+INSERT INTO `cy_member_log` VALUES (57, 35, 1575993600, 1607097600, 1576034081, 157);
+INSERT INTO `cy_member_log` VALUES (58, 25, 1575993600, 1607097600, 1576034132, 158);
+INSERT INTO `cy_member_log` VALUES (59, 31, 1575993600, 1604505600, 1576042985, 159);
+INSERT INTO `cy_member_log` VALUES (60, 25, 1607097600, 1638201600, 1576075531, 163);
+INSERT INTO `cy_member_log` VALUES (61, 1, 1576080000, 1607184000, 1576136528, 174);
+INSERT INTO `cy_member_log` VALUES (62, 28, 1576080000, 1583856000, 1576136924, 176);
+INSERT INTO `cy_member_log` VALUES (63, 28, 1576080000, 1604592000, 1576136930, 177);
+INSERT INTO `cy_member_log` VALUES (64, 26, 1576080000, 1604592000, 1576138553, 179);
+INSERT INTO `cy_member_log` VALUES (65, 26, 1576080000, 1583856000, 1576138553, 180);
+INSERT INTO `cy_member_log` VALUES (66, 26, 1576080000, 1583856000, 1576138553, 181);
+INSERT INTO `cy_member_log` VALUES (67, 26, 1604592000, 1612368000, 1576138577, 182);
+INSERT INTO `cy_member_log` VALUES (68, 28, 1604592000, 1612368000, 1576139553, 183);
+INSERT INTO `cy_member_log` VALUES (69, 28, 1612368000, 1643472000, 1576139560, 184);
+INSERT INTO `cy_member_log` VALUES (70, 28, 1643472000, 1671984000, 1576139564, 185);
+INSERT INTO `cy_member_log` VALUES (71, 29, 1576080000, 1607184000, 1576139794, 187);
+INSERT INTO `cy_member_log` VALUES (72, 29, 1607184000, 1638288000, 1576147404, 202);
+INSERT INTO `cy_member_log` VALUES (73, 29, 1638288000, 1669392000, 1576147407, 203);
+INSERT INTO `cy_member_log` VALUES (74, 29, 1669392000, 1700496000, 1576202198, 220);
+INSERT INTO `cy_member_log` VALUES (75, 29, 1700496000, 1731600000, 1576202200, 221);
+INSERT INTO `cy_member_log` VALUES (76, 25, 1638201600, 1669305600, 1576460548, 222);
+INSERT INTO `cy_member_log` VALUES (77, 25, 1669305600, 1700409600, 1576460548, 223);
+INSERT INTO `cy_member_log` VALUES (78, 25, 1700409600, 1731513600, 1576460553, 224);
+INSERT INTO `cy_member_log` VALUES (79, 25, 1731513600, 1762617600, 1576460556, 225);
+INSERT INTO `cy_member_log` VALUES (80, 25, 1762617600, 1793721600, 1576460556, 226);
+INSERT INTO `cy_member_log` VALUES (81, 25, 1793721600, 1824825600, 1576460556, 227);
+INSERT INTO `cy_member_log` VALUES (82, 25, 1824825600, 1832601600, 1576460561, 228);
+INSERT INTO `cy_member_log` VALUES (83, 25, 1832601600, 1840377600, 1576460561, 229);
+INSERT INTO `cy_member_log` VALUES (84, 25, 1840377600, 1848153600, 1576460561, 230);
+INSERT INTO `cy_member_log` VALUES (85, 25, 1848153600, 1855929600, 1576460562, 231);
+INSERT INTO `cy_member_log` VALUES (86, 25, 1855929600, 1863705600, 1576460562, 232);
+INSERT INTO `cy_member_log` VALUES (87, 25, 1863705600, 1871481600, 1576460562, 233);
+INSERT INTO `cy_member_log` VALUES (88, 25, 1871481600, 1879257600, 1576460562, 234);
+INSERT INTO `cy_member_log` VALUES (89, 25, 1879257600, 1887033600, 1576460562, 235);
+INSERT INTO `cy_member_log` VALUES (90, 25, 1887033600, 1915545600, 1576460563, 236);
+INSERT INTO `cy_member_log` VALUES (91, 25, 1915545600, 1944057600, 1576460563, 237);
+INSERT INTO `cy_member_log` VALUES (92, 25, 1944057600, 1972569600, 1576460563, 238);
+INSERT INTO `cy_member_log` VALUES (93, 25, 1972569600, 2001081600, 1576460563, 239);
+INSERT INTO `cy_member_log` VALUES (94, 25, 2001081600, 2029593600, 1576460564, 240);
+INSERT INTO `cy_member_log` VALUES (95, 25, 2029593600, 2058105600, 1576460564, 241);
+INSERT INTO `cy_member_log` VALUES (96, 25, 2058105600, 2065881600, 1576460564, 242);
+INSERT INTO `cy_member_log` VALUES (97, 25, 2065881600, 2096985600, 1576460564, 243);
+INSERT INTO `cy_member_log` VALUES (98, 25, 2096985600, 2128089600, 1576460566, 244);
+INSERT INTO `cy_member_log` VALUES (99, 25, 2128089600, -2135773696, 1576460567, 245);
+INSERT INTO `cy_member_log` VALUES (100, 36, 1577145600, 1605657600, 1577194807, 398);
+INSERT INTO `cy_member_log` VALUES (101, 36, 1577145600, 1605657600, 1577194811, 399);
+INSERT INTO `cy_member_log` VALUES (102, 36, 1577145600, 1605657600, 1577194812, 400);
+INSERT INTO `cy_member_log` VALUES (103, 36, 1577145600, 1605657600, 1577194821, 401);
+INSERT INTO `cy_member_log` VALUES (104, 36, 1605657600, 1634169600, 1577195924, 402);
+INSERT INTO `cy_member_log` VALUES (105, 36, 1634169600, 1641945600, 1577196092, 403);
+INSERT INTO `cy_member_log` VALUES (106, 36, 1641945600, 1670457600, 1577196123, 404);
+INSERT INTO `cy_member_log` VALUES (107, 36, 1670457600, 1673049600, 1577196130, 405);
+INSERT INTO `cy_member_log` VALUES (108, 36, 1673049600, 1680825600, 1577196288, 406);
+INSERT INTO `cy_member_log` VALUES (109, 26, 1612368000, 1620144000, 1577292417, 408);
+INSERT INTO `cy_member_log` VALUES (110, 29, 1577354493, 1608890493, 1577354493, 410);
+INSERT INTO `cy_member_log` VALUES (111, 36, 1577363494, 1608899494, 1577363494, 411);
+INSERT INTO `cy_member_log` VALUES (112, 36, 1577363755, 1608899755, 1577363755, 412);
+INSERT INTO `cy_member_log` VALUES (113, 36, 1577363958, 1608899958, 1577363958, 413);
+INSERT INTO `cy_member_log` VALUES (114, 36, 1577364039, 1608900039, 1577364039, 414);
+INSERT INTO `cy_member_log` VALUES (115, 36, 1577364069, 1608900069, 1577364069, 415);
+INSERT INTO `cy_member_log` VALUES (116, 36, 1577364136, 1608900136, 1577364136, 416);
+INSERT INTO `cy_member_log` VALUES (117, 36, 1577364450, 1608900450, 1577364450, 417);
+INSERT INTO `cy_member_log` VALUES (118, 36, 1577364589, 1608900589, 1577364589, 418);
+INSERT INTO `cy_member_log` VALUES (119, 36, 1577364661, 1608900661, 1577364661, 419);
+INSERT INTO `cy_member_log` VALUES (120, 36, 1577364797, 1608900797, 1577364797, 420);
+INSERT INTO `cy_member_log` VALUES (121, 36, 1577364816, 1608900816, 1577364816, 421);
+INSERT INTO `cy_member_log` VALUES (122, 36, 1577364945, 1608900945, 1577364945, 422);
+INSERT INTO `cy_member_log` VALUES (123, 36, 1577365004, 1608901004, 1577365004, 423);
+INSERT INTO `cy_member_log` VALUES (124, 36, 1577365105, 1608901105, 1577365105, 424);
+INSERT INTO `cy_member_log` VALUES (125, 36, 1577365156, 1608901156, 1577365156, 425);
+INSERT INTO `cy_member_log` VALUES (126, 36, 1577365919, 1608901919, 1577365919, 426);
+INSERT INTO `cy_member_log` VALUES (127, 36, 1577366049, 1608902049, 1577366049, 427);
+INSERT INTO `cy_member_log` VALUES (128, 36, 1577366063, 1608902063, 1577366063, 428);
+INSERT INTO `cy_member_log` VALUES (129, 36, 1577366542, 1608902542, 1577366542, 429);
+INSERT INTO `cy_member_log` VALUES (130, 36, 1577366578, 1608902578, 1577366578, 430);
+INSERT INTO `cy_member_log` VALUES (131, 36, 1577366601, 1608902601, 1577366601, 431);
+INSERT INTO `cy_member_log` VALUES (132, 36, 1577366785, 1608902785, 1577366785, 432);
+INSERT INTO `cy_member_log` VALUES (133, 36, 1577366799, 1608902799, 1577366799, 433);
+INSERT INTO `cy_member_log` VALUES (134, 36, 1577367185, 1608903185, 1577367185, 434);
+INSERT INTO `cy_member_log` VALUES (135, 36, 1577367203, 1608903203, 1577367203, 435);
+INSERT INTO `cy_member_log` VALUES (136, 36, 1577367227, 1608903227, 1577367227, 436);
+INSERT INTO `cy_member_log` VALUES (137, 36, 1577367424, 1608903424, 1577367424, 437);
+INSERT INTO `cy_member_log` VALUES (138, 36, 1577367434, 1608903434, 1577367434, 438);
+INSERT INTO `cy_member_log` VALUES (139, 36, 1577367478, 1608903478, 1577367478, 439);
+INSERT INTO `cy_member_log` VALUES (140, 36, 1577367569, 1608903569, 1577367569, 440);
+INSERT INTO `cy_member_log` VALUES (141, 29, 1577401972, 1608937972, 1577401972, 441);
+INSERT INTO `cy_member_log` VALUES (142, 29, 1577410661, 1608946661, 1577410661, 442);
+INSERT INTO `cy_member_log` VALUES (143, 29, 1577429490, 1608965490, 1577429490, 443);
+INSERT INTO `cy_member_log` VALUES (144, 29, 1577444850, 1608980850, 1577444850, 444);
+INSERT INTO `cy_member_log` VALUES (145, 29, 1577444863, 1608980863, 1577444863, 445);
+INSERT INTO `cy_member_log` VALUES (146, 29, 1577520835, 1609056835, 1577520836, 446);
+INSERT INTO `cy_member_log` VALUES (147, 29, 1577520839, 1609056839, 1577520839, 447);
+INSERT INTO `cy_member_log` VALUES (148, 29, 1577539823, 1609075823, 1577539823, 448);
+INSERT INTO `cy_member_log` VALUES (149, 28, 1577568591, 1609104591, 1577568591, 449);
+INSERT INTO `cy_member_log` VALUES (150, 29, 1577579768, 1609115768, 1577579768, 450);
+INSERT INTO `cy_member_log` VALUES (151, 29, 1577586728, 1609122728, 1577586728, 451);
+INSERT INTO `cy_member_log` VALUES (152, 29, 1577612372, 1609148372, 1577612372, 452);
+INSERT INTO `cy_member_log` VALUES (153, 29, 1577612382, 1609148382, 1577612382, 453);
+INSERT INTO `cy_member_log` VALUES (154, 26, 1577625750, 1609161750, 1577625750, 454);
+INSERT INTO `cy_member_log` VALUES (155, 26, 1577625755, 1609161755, 1577625755, 455);
+INSERT INTO `cy_member_log` VALUES (156, 26, 1577625775, 1609161775, 1577625775, 456);
+INSERT INTO `cy_member_log` VALUES (157, 26, 1577625786, 1609161786, 1577625786, 457);
+INSERT INTO `cy_member_log` VALUES (158, 26, 1577625844, 1609161844, 1577625844, 458);
+INSERT INTO `cy_member_log` VALUES (159, 26, 1577625855, 1609161855, 1577625855, 459);
+INSERT INTO `cy_member_log` VALUES (160, 26, 1577625877, 1609161877, 1577625877, 460);
+INSERT INTO `cy_member_log` VALUES (161, 26, 1577625956, 1609161956, 1577625956, 461);
+INSERT INTO `cy_member_log` VALUES (162, 26, 1577625978, 1609161978, 1577625978, 462);
+INSERT INTO `cy_member_log` VALUES (163, 26, 1577626034, 1609162034, 1577626034, 463);
+INSERT INTO `cy_member_log` VALUES (164, 26, 1577626061, 1609162061, 1577626061, 464);
+INSERT INTO `cy_member_log` VALUES (165, 26, 1577626069, 1609162069, 1577626069, 465);
+INSERT INTO `cy_member_log` VALUES (166, 26, 1577626074, 1609162074, 1577626074, 466);
+INSERT INTO `cy_member_log` VALUES (167, 26, 1577626208, 1609162208, 1577626208, 467);
+INSERT INTO `cy_member_log` VALUES (168, 26, 1577626215, 1609162215, 1577626215, 468);
+INSERT INTO `cy_member_log` VALUES (169, 26, 1577626264, 1609162264, 1577626264, 469);
+INSERT INTO `cy_member_log` VALUES (170, 26, 1577626274, 1609162274, 1577626274, 470);
+INSERT INTO `cy_member_log` VALUES (171, 26, 1577626422, 1609162422, 1577626422, 471);
+INSERT INTO `cy_member_log` VALUES (172, 26, 1577626441, 1609162441, 1577626441, 472);
+INSERT INTO `cy_member_log` VALUES (173, 26, 1577626472, 1609162472, 1577626472, 473);
+INSERT INTO `cy_member_log` VALUES (174, 26, 1577626568, 1609162568, 1577626568, 474);
+INSERT INTO `cy_member_log` VALUES (175, 26, 1577626638, 1609162638, 1577626638, 475);
+INSERT INTO `cy_member_log` VALUES (176, 26, 1577626869, 1609162869, 1577626869, 476);
+INSERT INTO `cy_member_log` VALUES (177, 26, 1577627470, 1609163470, 1577627470, 477);
+INSERT INTO `cy_member_log` VALUES (178, 26, 1577627698, 1609163698, 1577627698, 478);
+INSERT INTO `cy_member_log` VALUES (179, 26, 1577627989, 1609163989, 1577627989, 479);
+INSERT INTO `cy_member_log` VALUES (180, 26, 1577628081, 1609164081, 1577628081, 480);
+INSERT INTO `cy_member_log` VALUES (181, 26, 1577628104, 1609164104, 1577628104, 481);
+INSERT INTO `cy_member_log` VALUES (182, 26, 1577628165, 1609164165, 1577628165, 483);
+INSERT INTO `cy_member_log` VALUES (183, 26, 1577628172, 1609164172, 1577628172, 484);
+INSERT INTO `cy_member_log` VALUES (184, 26, 1577628196, 1609164196, 1577628196, 485);
+INSERT INTO `cy_member_log` VALUES (185, 26, 1577628203, 1609164203, 1577628203, 486);
+INSERT INTO `cy_member_log` VALUES (186, 26, 1577628395, 1609164395, 1577628395, 487);
+INSERT INTO `cy_member_log` VALUES (187, 26, 1577628411, 1609164411, 1577628411, 488);
+INSERT INTO `cy_member_log` VALUES (188, 26, 1577628528, 1609164528, 1577628528, 489);
+INSERT INTO `cy_member_log` VALUES (189, 26, 1577628634, 1609164634, 1577628634, 490);
+INSERT INTO `cy_member_log` VALUES (190, 26, 1577628673, 1609164673, 1577628673, 491);
+INSERT INTO `cy_member_log` VALUES (191, 26, 1577628677, 1609164677, 1577628677, 492);
+INSERT INTO `cy_member_log` VALUES (192, 26, 1577628693, 1609164693, 1577628693, 493);
+INSERT INTO `cy_member_log` VALUES (193, 26, 1577628827, 1609164827, 1577628827, 494);
+INSERT INTO `cy_member_log` VALUES (194, 26, 1577628964, 1609164964, 1577628964, 495);
+INSERT INTO `cy_member_log` VALUES (195, 26, 1577629210, 1609165210, 1577629210, 496);
+INSERT INTO `cy_member_log` VALUES (196, 26, 1577629222, 1609165222, 1577629222, 497);
+INSERT INTO `cy_member_log` VALUES (197, 26, 1577629284, 1609165284, 1577629284, 498);
+INSERT INTO `cy_member_log` VALUES (198, 26, 1577629290, 1609165290, 1577629290, 499);
+INSERT INTO `cy_member_log` VALUES (199, 26, 1577629313, 1609165313, 1577629313, 500);
+INSERT INTO `cy_member_log` VALUES (200, 26, 1577629325, 1609165325, 1577629325, 501);
+INSERT INTO `cy_member_log` VALUES (201, 26, 1577629368, 1609165368, 1577629368, 502);
+INSERT INTO `cy_member_log` VALUES (202, 26, 1577629373, 1609165373, 1577629373, 503);
+INSERT INTO `cy_member_log` VALUES (203, 26, 1577629479, 1609165479, 1577629479, 504);
+INSERT INTO `cy_member_log` VALUES (204, 26, 1577629518, 1609165518, 1577629518, 505);
+INSERT INTO `cy_member_log` VALUES (205, 26, 1577629588, 1609165588, 1577629588, 506);
+INSERT INTO `cy_member_log` VALUES (206, 26, 1577629710, 1609165710, 1577629710, 507);
+INSERT INTO `cy_member_log` VALUES (207, 26, 1577629820, 1609165820, 1577629820, 508);
+INSERT INTO `cy_member_log` VALUES (208, 26, 1577629846, 1609165846, 1577629846, 509);
+INSERT INTO `cy_member_log` VALUES (209, 26, 1577629864, 1609165864, 1577629864, 510);
+INSERT INTO `cy_member_log` VALUES (210, 26, 1577630774, 1609166774, 1577630774, 511);
+INSERT INTO `cy_member_log` VALUES (211, 26, 1577630784, 1609166784, 1577630784, 512);
+INSERT INTO `cy_member_log` VALUES (212, 26, 1577630856, 1609166856, 1577630856, 513);
+INSERT INTO `cy_member_log` VALUES (213, 26, 1577631043, 1609167043, 1577631043, 514);
+INSERT INTO `cy_member_log` VALUES (214, 26, 1577631070, 1609167070, 1577631070, 515);
+INSERT INTO `cy_member_log` VALUES (215, 26, 1577631581, 1609167581, 1577631581, 516);
+INSERT INTO `cy_member_log` VALUES (216, 26, 1577631604, 1609167604, 1577631604, 517);
+INSERT INTO `cy_member_log` VALUES (217, 26, 1577631669, 1609167669, 1577631669, 518);
+INSERT INTO `cy_member_log` VALUES (218, 26, 1577631703, 1609167703, 1577631703, 519);
+INSERT INTO `cy_member_log` VALUES (219, 26, 1577631824, 1609167824, 1577631824, 520);
+INSERT INTO `cy_member_log` VALUES (220, 26, 1577631929, 1609167929, 1577631929, 521);
+INSERT INTO `cy_member_log` VALUES (221, 26, 1577631946, 1609167946, 1577631946, 522);
+INSERT INTO `cy_member_log` VALUES (222, 26, 1577632020, 1609168020, 1577632020, 523);
+INSERT INTO `cy_member_log` VALUES (223, 26, 1577632037, 1609168037, 1577632037, 524);
+INSERT INTO `cy_member_log` VALUES (224, 26, 1577632063, 1609168063, 1577632063, 525);
+INSERT INTO `cy_member_log` VALUES (225, 26, 1577632073, 1609168073, 1577632073, 526);
+INSERT INTO `cy_member_log` VALUES (226, 26, 1577632100, 1609168100, 1577632100, 527);
+INSERT INTO `cy_member_log` VALUES (227, 26, 1577632142, 1609168142, 1577632142, 528);
+INSERT INTO `cy_member_log` VALUES (228, 26, 1577632277, 1609168277, 1577632277, 529);
+INSERT INTO `cy_member_log` VALUES (229, 26, 1577632281, 1609168281, 1577632281, 530);
+INSERT INTO `cy_member_log` VALUES (230, 26, 1577632347, 1609168347, 1577632347, 531);
+INSERT INTO `cy_member_log` VALUES (231, 26, 1577632413, 1609168413, 1577632413, 532);
+INSERT INTO `cy_member_log` VALUES (232, 26, 1577632475, 1609168475, 1577632475, 533);
+INSERT INTO `cy_member_log` VALUES (233, 26, 1577632583, 1609168583, 1577632583, 534);
+INSERT INTO `cy_member_log` VALUES (234, 26, 1577632616, 1609168616, 1577632616, 535);
+INSERT INTO `cy_member_log` VALUES (235, 26, 1577632635, 1609168635, 1577632635, 536);
+INSERT INTO `cy_member_log` VALUES (236, 26, 1577632640, 1609168640, 1577632640, 537);
+INSERT INTO `cy_member_log` VALUES (237, 26, 1577632672, 1609168672, 1577632672, 538);
+INSERT INTO `cy_member_log` VALUES (238, 26, 1577632695, 1609168695, 1577632695, 539);
+INSERT INTO `cy_member_log` VALUES (239, 26, 1577632714, 1609168714, 1577632714, 540);
+INSERT INTO `cy_member_log` VALUES (240, 26, 1577632734, 1609168734, 1577632734, 541);
+INSERT INTO `cy_member_log` VALUES (241, 26, 1577632751, 1609168751, 1577632751, 542);
+INSERT INTO `cy_member_log` VALUES (242, 26, 1577632773, 1609168773, 1577632773, 543);
+INSERT INTO `cy_member_log` VALUES (243, 26, 1577632785, 1609168785, 1577632785, 544);
+INSERT INTO `cy_member_log` VALUES (244, 26, 1577632811, 1609168811, 1577632811, 545);
+INSERT INTO `cy_member_log` VALUES (245, 26, 1577632882, 1609168882, 1577632882, 546);
+INSERT INTO `cy_member_log` VALUES (246, 26, 1577632903, 1609168903, 1577632903, 547);
+INSERT INTO `cy_member_log` VALUES (247, 26, 1577633027, 1609169027, 1577633027, 548);
+INSERT INTO `cy_member_log` VALUES (248, 26, 1577633345, 1609169345, 1577633345, 549);
+INSERT INTO `cy_member_log` VALUES (249, 26, 1577633358, 1609169358, 1577633358, 550);
+INSERT INTO `cy_member_log` VALUES (250, 26, 1577633371, 1609169371, 1577633371, 551);
+INSERT INTO `cy_member_log` VALUES (251, 26, 1577633391, 1609169391, 1577633391, 552);
+INSERT INTO `cy_member_log` VALUES (252, 26, 1577633434, 1609169434, 1577633434, 553);
+INSERT INTO `cy_member_log` VALUES (253, 26, 1577633478, 1609169478, 1577633478, 554);
+INSERT INTO `cy_member_log` VALUES (254, 26, 1577633511, 1609169511, 1577633511, 555);
+INSERT INTO `cy_member_log` VALUES (255, 26, 1577633530, 1609169530, 1577633530, 556);
+INSERT INTO `cy_member_log` VALUES (256, 26, 1577633603, 1609169603, 1577633603, 557);
+INSERT INTO `cy_member_log` VALUES (257, 26, 1577633700, 1609169700, 1577633700, 558);
+INSERT INTO `cy_member_log` VALUES (258, 26, 1577633724, 1609169724, 1577633724, 559);
+INSERT INTO `cy_member_log` VALUES (259, 26, 1577633748, 1609169748, 1577633748, 560);
+INSERT INTO `cy_member_log` VALUES (260, 26, 1577633782, 1609169782, 1577633782, 561);
+INSERT INTO `cy_member_log` VALUES (261, 26, 1577633804, 1609169804, 1577633804, 562);
+INSERT INTO `cy_member_log` VALUES (262, 26, 1577633994, 1609169994, 1577633994, 563);
+INSERT INTO `cy_member_log` VALUES (263, 26, 1577634003, 1609170003, 1577634003, 564);
+INSERT INTO `cy_member_log` VALUES (264, 26, 1577634048, 1609170048, 1577634048, 565);
+INSERT INTO `cy_member_log` VALUES (265, 26, 1577634119, 1609170119, 1577634119, 568);
+INSERT INTO `cy_member_log` VALUES (266, 26, 1577634155, 1609170155, 1577634155, 569);
+INSERT INTO `cy_member_log` VALUES (267, 26, 1577634178, 1609170178, 1577634178, 570);
+INSERT INTO `cy_member_log` VALUES (268, 26, 1577634220, 1609170220, 1577634220, 571);
+INSERT INTO `cy_member_log` VALUES (269, 26, 1577634231, 1609170231, 1577634231, 572);
+INSERT INTO `cy_member_log` VALUES (270, 26, 1577634281, 1609170281, 1577634281, 573);
+INSERT INTO `cy_member_log` VALUES (271, 26, 1577634733, 1609170733, 1577634733, 574);
+INSERT INTO `cy_member_log` VALUES (272, 26, 1577634976, 1609170976, 1577634976, 575);
+INSERT INTO `cy_member_log` VALUES (273, 26, 1577635078, 1609171078, 1577635078, 576);
+INSERT INTO `cy_member_log` VALUES (274, 26, 1577635151, 1609171151, 1577635151, 577);
+INSERT INTO `cy_member_log` VALUES (275, 26, 1577635217, 1609171217, 1577635217, 578);
+INSERT INTO `cy_member_log` VALUES (276, 26, 1577635229, 1609171229, 1577635229, 579);
+INSERT INTO `cy_member_log` VALUES (277, 26, 1577635247, 1609171247, 1577635247, 580);
+INSERT INTO `cy_member_log` VALUES (278, 26, 1577635284, 1609171284, 1577635284, 581);
+INSERT INTO `cy_member_log` VALUES (279, 26, 1577635295, 1609171295, 1577635295, 582);
+INSERT INTO `cy_member_log` VALUES (280, 26, 1577635305, 1609171305, 1577635305, 583);
+INSERT INTO `cy_member_log` VALUES (281, 26, 1577635317, 1609171317, 1577635317, 584);
+INSERT INTO `cy_member_log` VALUES (282, 26, 1577635341, 1609171341, 1577635341, 585);
+INSERT INTO `cy_member_log` VALUES (283, 26, 1577635358, 1609171358, 1577635358, 586);
+INSERT INTO `cy_member_log` VALUES (284, 26, 1577635391, 1609171391, 1577635391, 587);
+INSERT INTO `cy_member_log` VALUES (285, 26, 1577635397, 1609171397, 1577635397, 588);
+INSERT INTO `cy_member_log` VALUES (286, 26, 1577635459, 1609171459, 1577635459, 589);
+INSERT INTO `cy_member_log` VALUES (287, 26, 1577635562, 1609171562, 1577635562, 590);
+INSERT INTO `cy_member_log` VALUES (288, 26, 1577635597, 1609171597, 1577635597, 591);
+INSERT INTO `cy_member_log` VALUES (289, 26, 1577635646, 1609171646, 1577635646, 592);
+INSERT INTO `cy_member_log` VALUES (290, 26, 1577635679, 1609171679, 1577635679, 593);
+INSERT INTO `cy_member_log` VALUES (291, 26, 1577636021, 1609172021, 1577636021, 594);
+INSERT INTO `cy_member_log` VALUES (292, 26, 1577636107, 1609172107, 1577636107, 595);
+INSERT INTO `cy_member_log` VALUES (293, 26, 1577636214, 1609172214, 1577636214, 596);
+INSERT INTO `cy_member_log` VALUES (294, 26, 1577636219, 1609172219, 1577636219, 597);
+INSERT INTO `cy_member_log` VALUES (295, 26, 1577636594, 1609172594, 1577636594, 598);
+INSERT INTO `cy_member_log` VALUES (296, 26, 1577636653, 1609172653, 1577636653, 599);
+INSERT INTO `cy_member_log` VALUES (297, 26, 1577637849, 1609173849, 1577637849, 600);
+INSERT INTO `cy_member_log` VALUES (298, 26, 1577669327, 1609205327, 1577669327, 601);
+INSERT INTO `cy_member_log` VALUES (299, 26, 1577670020, 1609206020, 1577670020, 602);
+INSERT INTO `cy_member_log` VALUES (300, 26, 1577670865, 1609206865, 1577670865, 603);
+INSERT INTO `cy_member_log` VALUES (301, 26, 1577670964, 1609206964, 1577670964, 604);
+INSERT INTO `cy_member_log` VALUES (302, 26, 1577671238, 1609207238, 1577671238, 605);
+INSERT INTO `cy_member_log` VALUES (303, 26, 1577671257, 1609207257, 1577671257, 606);
+INSERT INTO `cy_member_log` VALUES (304, 26, 1577671316, 1609207316, 1577671316, 607);
+INSERT INTO `cy_member_log` VALUES (305, 26, 1577671811, 1609207811, 1577671811, 608);
+INSERT INTO `cy_member_log` VALUES (306, 26, 1577672241, 1609208241, 1577672241, 609);
+INSERT INTO `cy_member_log` VALUES (307, 26, 1577672342, 1609208342, 1577672342, 610);
+INSERT INTO `cy_member_log` VALUES (308, 26, 1577672446, 1609208446, 1577672446, 611);
+INSERT INTO `cy_member_log` VALUES (309, 26, 1577672516, 1609208516, 1577672516, 612);
+INSERT INTO `cy_member_log` VALUES (310, 26, 1577672568, 1609208568, 1577672568, 613);
+INSERT INTO `cy_member_log` VALUES (311, 26, 1577672615, 1609208615, 1577672615, 614);
+INSERT INTO `cy_member_log` VALUES (312, 26, 1577672790, 1609208790, 1577672790, 615);
+INSERT INTO `cy_member_log` VALUES (313, 26, 1577672965, 1609208965, 1577672965, 616);
+INSERT INTO `cy_member_log` VALUES (314, 26, 1577673063, 1609209063, 1577673063, 617);
+INSERT INTO `cy_member_log` VALUES (315, 26, 1577673088, 1609209088, 1577673088, 618);
+INSERT INTO `cy_member_log` VALUES (316, 26, 1577673283, 1609209283, 1577673283, 619);
+INSERT INTO `cy_member_log` VALUES (317, 26, 1577673289, 1609209289, 1577673289, 620);
+INSERT INTO `cy_member_log` VALUES (318, 26, 1577673347, 1609209347, 1577673347, 621);
+INSERT INTO `cy_member_log` VALUES (319, 26, 1577673405, 1609209405, 1577673405, 622);
+INSERT INTO `cy_member_log` VALUES (320, 26, 1577673413, 1609209413, 1577673413, 623);
+INSERT INTO `cy_member_log` VALUES (321, 26, 1577673420, 1609209420, 1577673420, 624);
+INSERT INTO `cy_member_log` VALUES (322, 26, 1577673475, 1609209475, 1577673475, 625);
+INSERT INTO `cy_member_log` VALUES (323, 26, 1577673572, 1609209572, 1577673572, 626);
+INSERT INTO `cy_member_log` VALUES (324, 26, 1577673701, 1609209701, 1577673701, 627);
+INSERT INTO `cy_member_log` VALUES (325, 26, 1577673824, 1609209824, 1577673824, 628);
+INSERT INTO `cy_member_log` VALUES (326, 26, 1577673861, 1609209861, 1577673861, 629);
+INSERT INTO `cy_member_log` VALUES (327, 26, 1577673914, 1609209914, 1577673914, 630);
+INSERT INTO `cy_member_log` VALUES (328, 26, 1577674102, 1609210102, 1577674102, 631);
+INSERT INTO `cy_member_log` VALUES (329, 26, 1577674743, 1609210743, 1577674743, 632);
+INSERT INTO `cy_member_log` VALUES (330, 26, 1577674763, 1609210763, 1577674763, 633);
+INSERT INTO `cy_member_log` VALUES (331, 26, 1577674799, 1609210799, 1577674799, 634);
+INSERT INTO `cy_member_log` VALUES (332, 26, 1577674922, 1609210922, 1577674922, 635);
+INSERT INTO `cy_member_log` VALUES (333, 26, 1577674945, 1609210945, 1577674945, 636);
+INSERT INTO `cy_member_log` VALUES (334, 26, 1577675402, 1609211402, 1577675402, 637);
+INSERT INTO `cy_member_log` VALUES (335, 26, 1577675418, 1609211418, 1577675418, 638);
+INSERT INTO `cy_member_log` VALUES (336, 26, 1577675539, 1609211539, 1577675539, 639);
+INSERT INTO `cy_member_log` VALUES (337, 26, 1577675611, 1609211611, 1577675611, 640);
+INSERT INTO `cy_member_log` VALUES (338, 31, 1577675891, 1609211891, 1577675891, 641);
+INSERT INTO `cy_member_log` VALUES (339, 31, 1577675923, 1609211923, 1577675923, 642);
+INSERT INTO `cy_member_log` VALUES (340, 26, 1577676294, 1609212294, 1577676294, 643);
+INSERT INTO `cy_member_log` VALUES (341, 26, 1577676324, 1609212324, 1577676324, 644);
+INSERT INTO `cy_member_log` VALUES (342, 26, 1577676395, 1609212395, 1577676395, 645);
+INSERT INTO `cy_member_log` VALUES (343, 26, 1577676622, 1609212622, 1577676622, 646);
+INSERT INTO `cy_member_log` VALUES (344, 26, 1577676677, 1609212677, 1577676677, 647);
+INSERT INTO `cy_member_log` VALUES (345, 26, 1577676761, 1609212761, 1577676761, 648);
+INSERT INTO `cy_member_log` VALUES (346, 26, 1577676766, 1609212766, 1577676766, 649);
+INSERT INTO `cy_member_log` VALUES (347, 26, 1577676817, 1609212817, 1577676817, 650);
+INSERT INTO `cy_member_log` VALUES (348, 31, 1577678769, 1609214769, 1577678769, 651);
+INSERT INTO `cy_member_log` VALUES (349, 31, 1577678786, 1609214786, 1577678786, 652);
+INSERT INTO `cy_member_log` VALUES (350, 26, 1577679694, 1609215694, 1577679694, 653);
+INSERT INTO `cy_member_log` VALUES (351, 26, 1577679841, 1609215841, 1577679841, 654);
+INSERT INTO `cy_member_log` VALUES (352, 26, 1577679896, 1609215896, 1577679896, 655);
+INSERT INTO `cy_member_log` VALUES (353, 26, 1577679939, 1609215939, 1577679939, 656);
+INSERT INTO `cy_member_log` VALUES (354, 26, 1577680099, 1609216099, 1577680099, 657);
+INSERT INTO `cy_member_log` VALUES (355, 26, 1577680149, 1609216149, 1577680149, 658);
+INSERT INTO `cy_member_log` VALUES (356, 26, 1577681172, 1609217172, 1577681172, 659);
+INSERT INTO `cy_member_log` VALUES (357, 26, 1577681250, 1609217250, 1577681250, 660);
+INSERT INTO `cy_member_log` VALUES (358, 26, 1577681340, 1609217340, 1577681340, 661);
+INSERT INTO `cy_member_log` VALUES (359, 26, 1577681459, 1609217459, 1577681459, 662);
+INSERT INTO `cy_member_log` VALUES (360, 26, 1577681678, 1609217678, 1577681678, 663);
+INSERT INTO `cy_member_log` VALUES (361, 26, 1577681690, 1609217690, 1577681690, 664);
+INSERT INTO `cy_member_log` VALUES (362, 26, 1577681773, 1609217773, 1577681773, 665);
+INSERT INTO `cy_member_log` VALUES (363, 26, 1577681956, 1609217956, 1577681956, 666);
+INSERT INTO `cy_member_log` VALUES (364, 26, 1577681971, 1609217971, 1577681971, 667);
+INSERT INTO `cy_member_log` VALUES (365, 26, 1577682352, 1609218352, 1577682352, 669);
+INSERT INTO `cy_member_log` VALUES (366, 26, 1577682377, 1609218377, 1577682377, 670);
+INSERT INTO `cy_member_log` VALUES (367, 26, 1577682458, 1609218458, 1577682458, 671);
+INSERT INTO `cy_member_log` VALUES (368, 26, 1577682740, 1609218740, 1577682740, 672);
+INSERT INTO `cy_member_log` VALUES (369, 26, 1577682927, 1609218927, 1577682927, 673);
+INSERT INTO `cy_member_log` VALUES (370, 26, 1577682990, 1609218990, 1577682990, 674);
+INSERT INTO `cy_member_log` VALUES (371, 26, 1577683079, 1609219079, 1577683079, 675);
+INSERT INTO `cy_member_log` VALUES (372, 26, 1577683258, 1609219258, 1577683258, 676);
+INSERT INTO `cy_member_log` VALUES (373, 26, 1577683451, 1609219451, 1577683451, 677);
+INSERT INTO `cy_member_log` VALUES (374, 26, 1577683672, 1609219672, 1577683672, 678);
+INSERT INTO `cy_member_log` VALUES (375, 29, 1577683713, 1609219713, 1577683713, 679);
+INSERT INTO `cy_member_log` VALUES (376, 26, 1577683714, 1609219714, 1577683714, 680);
+INSERT INTO `cy_member_log` VALUES (377, 26, 1577683890, 1609219890, 1577683890, 681);
+INSERT INTO `cy_member_log` VALUES (378, 26, 1577684264, 1609220264, 1577684264, 682);
+INSERT INTO `cy_member_log` VALUES (379, 26, 1577684316, 1609220316, 1577684316, 683);
+INSERT INTO `cy_member_log` VALUES (380, 26, 1577686873, 1609222873, 1577686873, 689);
+INSERT INTO `cy_member_log` VALUES (381, 26, 1577686913, 1609222913, 1577686913, 690);
+INSERT INTO `cy_member_log` VALUES (382, 26, 1577687449, 1609223449, 1577687449, 691);
+INSERT INTO `cy_member_log` VALUES (383, 26, 1577687482, 1609223482, 1577687482, 692);
+INSERT INTO `cy_member_log` VALUES (384, 26, 1577688422, 1609224422, 1577688422, 693);
+INSERT INTO `cy_member_log` VALUES (385, 26, 1577688446, 1609224446, 1577688446, 694);
+INSERT INTO `cy_member_log` VALUES (386, 26, 1577688594, 1609224594, 1577688594, 695);
+INSERT INTO `cy_member_log` VALUES (387, 26, 1577689487, 1609225487, 1577689487, 696);
+INSERT INTO `cy_member_log` VALUES (388, 26, 1577689842, 1609225842, 1577689842, 697);
+INSERT INTO `cy_member_log` VALUES (389, 26, 1577691118, 1609227118, 1577691118, 698);
+INSERT INTO `cy_member_log` VALUES (390, 26, 1577691392, 1609227392, 1577691392, 699);
+INSERT INTO `cy_member_log` VALUES (391, 26, 1577691455, 1609227455, 1577691455, 700);
+INSERT INTO `cy_member_log` VALUES (392, 26, 1577691580, 1609227580, 1577691580, 701);
+INSERT INTO `cy_member_log` VALUES (393, 26, 1577691894, 1609227894, 1577691894, 702);
+INSERT INTO `cy_member_log` VALUES (394, 26, 1577693426, 1609229426, 1577693426, 703);
+INSERT INTO `cy_member_log` VALUES (395, 26, 1577693833, 1609229833, 1577693833, 704);
+INSERT INTO `cy_member_log` VALUES (396, 26, 1577693855, 1609229855, 1577693855, 705);
+INSERT INTO `cy_member_log` VALUES (397, 26, 1577694236, 1609230236, 1577694236, 706);
+INSERT INTO `cy_member_log` VALUES (398, 26, 1577694399, 1609230399, 1577694399, 707);
+INSERT INTO `cy_member_log` VALUES (399, 26, 1577694428, 1609230428, 1577694428, 708);
+INSERT INTO `cy_member_log` VALUES (400, 26, 1577694471, 1609230471, 1577694471, 709);
+INSERT INTO `cy_member_log` VALUES (401, 26, 1577694522, 1609230522, 1577694522, 710);
+INSERT INTO `cy_member_log` VALUES (402, 26, 1577694643, 1609230643, 1577694643, 711);
+INSERT INTO `cy_member_log` VALUES (403, 26, 1577694864, 1609230864, 1577694864, 712);
+INSERT INTO `cy_member_log` VALUES (404, 26, 1577694877, 1609230877, 1577694877, 713);
+INSERT INTO `cy_member_log` VALUES (405, 26, 1577695212, 1609231212, 1577695212, 714);
+INSERT INTO `cy_member_log` VALUES (406, 26, 1577695254, 1609231254, 1577695254, 715);
+INSERT INTO `cy_member_log` VALUES (407, 26, 1577695332, 1609231332, 1577695332, 716);
+INSERT INTO `cy_member_log` VALUES (408, 26, 1577695343, 1609231343, 1577695343, 717);
+INSERT INTO `cy_member_log` VALUES (409, 26, 1577695391, 1609231391, 1577695391, 718);
+INSERT INTO `cy_member_log` VALUES (410, 26, 1577695578, 1609231578, 1577695578, 719);
+INSERT INTO `cy_member_log` VALUES (411, 26, 1577695625, 1609231625, 1577695625, 720);
+INSERT INTO `cy_member_log` VALUES (412, 26, 1577695676, 1609231676, 1577695676, 721);
+INSERT INTO `cy_member_log` VALUES (413, 26, 1577695703, 1609231703, 1577695703, 722);
+INSERT INTO `cy_member_log` VALUES (414, 26, 1577695908, 1609231908, 1577695908, 723);
+INSERT INTO `cy_member_log` VALUES (415, 26, 1577696054, 1609232054, 1577696054, 724);
+INSERT INTO `cy_member_log` VALUES (416, 26, 1577696114, 1609232114, 1577696114, 725);
+INSERT INTO `cy_member_log` VALUES (417, 26, 1577696123, 1609232123, 1577696123, 726);
+INSERT INTO `cy_member_log` VALUES (418, 26, 1577696160, 1609232160, 1577696160, 727);
+INSERT INTO `cy_member_log` VALUES (419, 26, 1577696213, 1609232213, 1577696213, 728);
+INSERT INTO `cy_member_log` VALUES (420, 26, 1577696304, 1609232304, 1577696304, 729);
+INSERT INTO `cy_member_log` VALUES (421, 26, 1577696340, 1609232340, 1577696340, 730);
+INSERT INTO `cy_member_log` VALUES (422, 26, 1577696378, 1609232378, 1577696378, 731);
+INSERT INTO `cy_member_log` VALUES (423, 26, 1577696411, 1609232411, 1577696411, 732);
+INSERT INTO `cy_member_log` VALUES (424, 26, 1577696561, 1609232561, 1577696561, 733);
+INSERT INTO `cy_member_log` VALUES (425, 26, 1577696617, 1609232617, 1577696617, 734);
+INSERT INTO `cy_member_log` VALUES (426, 26, 1577696687, 1609232687, 1577696687, 735);
+INSERT INTO `cy_member_log` VALUES (427, 26, 1577696806, 1609232806, 1577696806, 736);
+INSERT INTO `cy_member_log` VALUES (428, 26, 1577696837, 1609232837, 1577696837, 737);
+INSERT INTO `cy_member_log` VALUES (429, 26, 1577696866, 1609232866, 1577696866, 738);
+INSERT INTO `cy_member_log` VALUES (430, 26, 1577696943, 1609232943, 1577696943, 739);
+INSERT INTO `cy_member_log` VALUES (431, 26, 1577696961, 1609232961, 1577696961, 740);
+INSERT INTO `cy_member_log` VALUES (432, 26, 1577697069, 1609233069, 1577697069, 741);
+INSERT INTO `cy_member_log` VALUES (433, 26, 1577697202, 1609233202, 1577697202, 742);
+INSERT INTO `cy_member_log` VALUES (434, 26, 1577697340, 1609233340, 1577697340, 743);
+INSERT INTO `cy_member_log` VALUES (435, 26, 1577697346, 1609233346, 1577697346, 744);
+INSERT INTO `cy_member_log` VALUES (436, 26, 1577697366, 1609233366, 1577697366, 745);
+INSERT INTO `cy_member_log` VALUES (437, 26, 1577697387, 1609233387, 1577697387, 746);
+INSERT INTO `cy_member_log` VALUES (438, 26, 1577697467, 1609233467, 1577697467, 747);
+INSERT INTO `cy_member_log` VALUES (439, 26, 1577697505, 1609233505, 1577697505, 748);
+INSERT INTO `cy_member_log` VALUES (440, 26, 1577697531, 1609233531, 1577697531, 749);
+INSERT INTO `cy_member_log` VALUES (441, 26, 1577697549, 1609233549, 1577697549, 750);
+INSERT INTO `cy_member_log` VALUES (442, 26, 1577697764, 1609233764, 1577697764, 751);
+INSERT INTO `cy_member_log` VALUES (443, 26, 1577697794, 1609233794, 1577697794, 752);
+INSERT INTO `cy_member_log` VALUES (444, 26, 1577697837, 1609233837, 1577697837, 753);
+INSERT INTO `cy_member_log` VALUES (445, 26, 1577697988, 1609233988, 1577697988, 754);
+INSERT INTO `cy_member_log` VALUES (446, 26, 1577697998, 1609233998, 1577697998, 755);
+INSERT INTO `cy_member_log` VALUES (447, 26, 1577698048, 1609234048, 1577698048, 756);
+INSERT INTO `cy_member_log` VALUES (448, 26, 1577698085, 1609234085, 1577698085, 757);
+INSERT INTO `cy_member_log` VALUES (449, 26, 1577698129, 1609234129, 1577698129, 758);
+INSERT INTO `cy_member_log` VALUES (450, 26, 1577698182, 1609234182, 1577698182, 759);
+INSERT INTO `cy_member_log` VALUES (451, 26, 1577698218, 1609234218, 1577698218, 760);
+INSERT INTO `cy_member_log` VALUES (452, 26, 1577698252, 1609234252, 1577698252, 761);
+INSERT INTO `cy_member_log` VALUES (453, 26, 1577698283, 1609234283, 1577698283, 762);
+INSERT INTO `cy_member_log` VALUES (454, 26, 1577698351, 1609234351, 1577698351, 763);
+INSERT INTO `cy_member_log` VALUES (455, 26, 1577698393, 1609234393, 1577698393, 764);
+INSERT INTO `cy_member_log` VALUES (456, 26, 1577698405, 1609234405, 1577698405, 765);
+INSERT INTO `cy_member_log` VALUES (457, 26, 1577698436, 1609234436, 1577698436, 766);
+INSERT INTO `cy_member_log` VALUES (458, 26, 1577698458, 1609234458, 1577698458, 767);
+INSERT INTO `cy_member_log` VALUES (459, 26, 1577698463, 1609234463, 1577698463, 768);
+INSERT INTO `cy_member_log` VALUES (460, 26, 1577698608, 1609234608, 1577698608, 769);
+INSERT INTO `cy_member_log` VALUES (461, 26, 1577698623, 1609234623, 1577698623, 770);
+INSERT INTO `cy_member_log` VALUES (462, 26, 1577698636, 1609234636, 1577698636, 771);
+INSERT INTO `cy_member_log` VALUES (463, 26, 1577698732, 1609234732, 1577698732, 772);
+INSERT INTO `cy_member_log` VALUES (464, 26, 1577698787, 1609234787, 1577698787, 773);
+INSERT INTO `cy_member_log` VALUES (465, 29, 1577698793, 1609234793, 1577698793, 774);
+INSERT INTO `cy_member_log` VALUES (466, 26, 1577698867, 1609234867, 1577698867, 775);
+INSERT INTO `cy_member_log` VALUES (467, 26, 1577698889, 1609234889, 1577698889, 776);
+INSERT INTO `cy_member_log` VALUES (468, 26, 1577698895, 1609234895, 1577698895, 777);
+INSERT INTO `cy_member_log` VALUES (469, 29, 1577698908, 1609234908, 1577698908, 778);
+INSERT INTO `cy_member_log` VALUES (470, 26, 1577699302, 1609235302, 1577699302, 779);
+INSERT INTO `cy_member_log` VALUES (471, 26, 1577699311, 1609235311, 1577699311, 780);
+INSERT INTO `cy_member_log` VALUES (472, 26, 1577699369, 1609235369, 1577699369, 781);
+INSERT INTO `cy_member_log` VALUES (473, 26, 1577699431, 1609235431, 1577699431, 782);
+INSERT INTO `cy_member_log` VALUES (474, 26, 1577699478, 1609235478, 1577699478, 783);
+INSERT INTO `cy_member_log` VALUES (475, 26, 1577699677, 1609235677, 1577699677, 784);
+INSERT INTO `cy_member_log` VALUES (476, 26, 1577700165, 1609236165, 1577700165, 785);
+INSERT INTO `cy_member_log` VALUES (477, 26, 1577700257, 1609236257, 1577700257, 787);
+INSERT INTO `cy_member_log` VALUES (478, 26, 1577700264, 1609236264, 1577700264, 788);
+INSERT INTO `cy_member_log` VALUES (479, 26, 1577700283, 1609236283, 1577700283, 789);
+INSERT INTO `cy_member_log` VALUES (480, 26, 1577700292, 1609236292, 1577700292, 790);
+INSERT INTO `cy_member_log` VALUES (481, 26, 1577700306, 1609236306, 1577700306, 791);
+INSERT INTO `cy_member_log` VALUES (482, 26, 1577700469, 1609236469, 1577700469, 792);
+INSERT INTO `cy_member_log` VALUES (483, 26, 1577700481, 1609236481, 1577700481, 793);
+INSERT INTO `cy_member_log` VALUES (484, 26, 1577700504, 1609236504, 1577700504, 794);
+INSERT INTO `cy_member_log` VALUES (485, 26, 1577700584, 1609236584, 1577700584, 795);
+INSERT INTO `cy_member_log` VALUES (486, 29, 1577700800, 1609236800, 1577700800, 796);
+INSERT INTO `cy_member_log` VALUES (487, 29, 1577701523, 1609237523, 1577701523, 797);
+INSERT INTO `cy_member_log` VALUES (488, 26, 1577701953, 1609237953, 1577701953, 798);
+INSERT INTO `cy_member_log` VALUES (489, 26, 1577702234, 1609238234, 1577702234, 799);
+INSERT INTO `cy_member_log` VALUES (490, 26, 1577702311, 1609238311, 1577702311, 800);
+INSERT INTO `cy_member_log` VALUES (491, 26, 1577702346, 1609238346, 1577702346, 801);
+INSERT INTO `cy_member_log` VALUES (492, 26, 1577702395, 1609238395, 1577702395, 802);
+INSERT INTO `cy_member_log` VALUES (493, 26, 1577702426, 1609238426, 1577702426, 803);
+INSERT INTO `cy_member_log` VALUES (494, 26, 1577702430, 1609238430, 1577702430, 804);
+INSERT INTO `cy_member_log` VALUES (495, 26, 1577702490, 1609238490, 1577702490, 805);
+INSERT INTO `cy_member_log` VALUES (496, 26, 1577702650, 1609238650, 1577702650, 806);
+INSERT INTO `cy_member_log` VALUES (497, 26, 1577702824, 1609238824, 1577702824, 807);
+INSERT INTO `cy_member_log` VALUES (498, 26, 1577702865, 1609238865, 1577702865, 808);
+INSERT INTO `cy_member_log` VALUES (499, 26, 1577702963, 1609238963, 1577702963, 809);
+INSERT INTO `cy_member_log` VALUES (500, 26, 1577703061, 1609239061, 1577703061, 810);
+INSERT INTO `cy_member_log` VALUES (501, 26, 1577703134, 1609239134, 1577703134, 811);
+INSERT INTO `cy_member_log` VALUES (502, 26, 1577703155, 1609239155, 1577703155, 812);
+INSERT INTO `cy_member_log` VALUES (503, 26, 1577703232, 1609239232, 1577703232, 813);
+INSERT INTO `cy_member_log` VALUES (504, 36, 1577703239, 1609239239, 1577703239, 814);
+INSERT INTO `cy_member_log` VALUES (505, 26, 1577703276, 1609239276, 1577703276, 815);
+INSERT INTO `cy_member_log` VALUES (506, 26, 1577703299, 1609239299, 1577703299, 816);
+INSERT INTO `cy_member_log` VALUES (507, 26, 1577703379, 1609239379, 1577703379, 817);
+INSERT INTO `cy_member_log` VALUES (508, 29, 1577703437, 1609239437, 1577703437, 818);
+INSERT INTO `cy_member_log` VALUES (509, 29, 1577703451, 1609239451, 1577703451, 819);
+INSERT INTO `cy_member_log` VALUES (510, 26, 1577703458, 1609239458, 1577703458, 820);
+INSERT INTO `cy_member_log` VALUES (511, 26, 1577703478, 1609239478, 1577703478, 821);
+INSERT INTO `cy_member_log` VALUES (512, 26, 1577703479, 1609239479, 1577703479, 822);
+INSERT INTO `cy_member_log` VALUES (513, 26, 1577703499, 1609239499, 1577703499, 823);
+INSERT INTO `cy_member_log` VALUES (514, 26, 1577703629, 1609239629, 1577703629, 824);
+INSERT INTO `cy_member_log` VALUES (515, 26, 1577703670, 1609239670, 1577703670, 825);
+INSERT INTO `cy_member_log` VALUES (516, 26, 1577703704, 1609239704, 1577703704, 826);
+INSERT INTO `cy_member_log` VALUES (517, 26, 1577703708, 1609239708, 1577703708, 827);
+INSERT INTO `cy_member_log` VALUES (518, 26, 1577705063, 1609241063, 1577705063, 830);
+INSERT INTO `cy_member_log` VALUES (519, 26, 1577706187, 1609242187, 1577706187, 831);
+INSERT INTO `cy_member_log` VALUES (520, 26, 1577706512, 1609242512, 1577706512, 832);
+INSERT INTO `cy_member_log` VALUES (521, 26, 1577706675, 1609242675, 1577706675, 833);
+INSERT INTO `cy_member_log` VALUES (522, 26, 1577706979, 1609242979, 1577706979, 834);
+INSERT INTO `cy_member_log` VALUES (523, 26, 1577707006, 1609243006, 1577707006, 835);
+INSERT INTO `cy_member_log` VALUES (524, 26, 1577707015, 1609243015, 1577707015, 836);
+INSERT INTO `cy_member_log` VALUES (525, 29, 1577708868, 1609244868, 1577708868, 837);
+INSERT INTO `cy_member_log` VALUES (526, 26, 1577710383, 1609246383, 1577710383, 838);
+INSERT INTO `cy_member_log` VALUES (527, 36, 1577710606, 1609246606, 1577710606, 839);
+INSERT INTO `cy_member_log` VALUES (528, 36, 1577710735, 1609246735, 1577710735, 840);
+INSERT INTO `cy_member_log` VALUES (529, 36, 1577710795, 1609246795, 1577710795, 841);
+INSERT INTO `cy_member_log` VALUES (530, 36, 1577710826, 1609246826, 1577710826, 842);
+INSERT INTO `cy_member_log` VALUES (531, 36, 1577710916, 1609246916, 1577710916, 843);
+INSERT INTO `cy_member_log` VALUES (532, 36, 1577710961, 1609246961, 1577710961, 844);
+INSERT INTO `cy_member_log` VALUES (533, 36, 1577711243, 1609247243, 1577711243, 845);
+INSERT INTO `cy_member_log` VALUES (534, 36, 1577711334, 1609247334, 1577711334, 846);
+INSERT INTO `cy_member_log` VALUES (535, 36, 1577711553, 1609247553, 1577711553, 847);
+INSERT INTO `cy_member_log` VALUES (536, 36, 1577711628, 1609247628, 1577711628, 848);
+INSERT INTO `cy_member_log` VALUES (537, 36, 1577711746, 1609247746, 1577711746, 849);
+INSERT INTO `cy_member_log` VALUES (538, 36, 1577711760, 1609247760, 1577711760, 850);
+INSERT INTO `cy_member_log` VALUES (539, 36, 1577711792, 1609247792, 1577711792, 851);
+INSERT INTO `cy_member_log` VALUES (540, 36, 1577711808, 1609247808, 1577711808, 852);
+INSERT INTO `cy_member_log` VALUES (541, 36, 1577711934, 1609247934, 1577711934, 853);
+INSERT INTO `cy_member_log` VALUES (542, 36, 1577711961, 1609247961, 1577711961, 854);
+INSERT INTO `cy_member_log` VALUES (543, 36, 1577712013, 1609248013, 1577712013, 855);
+INSERT INTO `cy_member_log` VALUES (544, 36, 1577712024, 1609248024, 1577712024, 856);
+INSERT INTO `cy_member_log` VALUES (545, 36, 1577712044, 1609248044, 1577712044, 857);
+INSERT INTO `cy_member_log` VALUES (546, 36, 1577712063, 1609248063, 1577712063, 858);
+INSERT INTO `cy_member_log` VALUES (547, 36, 1577712085, 1609248085, 1577712085, 859);
+INSERT INTO `cy_member_log` VALUES (548, 36, 1577712108, 1609248108, 1577712108, 860);
+INSERT INTO `cy_member_log` VALUES (549, 36, 1577712116, 1609248116, 1577712116, 861);
+INSERT INTO `cy_member_log` VALUES (550, 36, 1577712152, 1609248152, 1577712152, 862);
+INSERT INTO `cy_member_log` VALUES (551, 36, 1577712182, 1609248182, 1577712182, 863);
+INSERT INTO `cy_member_log` VALUES (552, 36, 1577712217, 1609248217, 1577712217, 864);
+INSERT INTO `cy_member_log` VALUES (553, 36, 1577712251, 1609248251, 1577712251, 865);
+INSERT INTO `cy_member_log` VALUES (554, 36, 1577712274, 1609248274, 1577712274, 866);
+INSERT INTO `cy_member_log` VALUES (555, 36, 1577712294, 1609248294, 1577712294, 867);
+INSERT INTO `cy_member_log` VALUES (556, 36, 1577712309, 1609248309, 1577712309, 868);
+INSERT INTO `cy_member_log` VALUES (557, 36, 1577712370, 1609248370, 1577712370, 869);
+INSERT INTO `cy_member_log` VALUES (558, 36, 1577712396, 1609248396, 1577712396, 870);
+INSERT INTO `cy_member_log` VALUES (559, 36, 1577712442, 1609248442, 1577712442, 871);
+INSERT INTO `cy_member_log` VALUES (560, 36, 1577712501, 1609248501, 1577712501, 872);
+INSERT INTO `cy_member_log` VALUES (561, 36, 1577712521, 1609248521, 1577712521, 873);
+INSERT INTO `cy_member_log` VALUES (562, 36, 1577712556, 1609248556, 1577712556, 874);
+INSERT INTO `cy_member_log` VALUES (563, 36, 1577712572, 1609248572, 1577712572, 875);
+INSERT INTO `cy_member_log` VALUES (564, 36, 1577712588, 1609248588, 1577712588, 876);
+INSERT INTO `cy_member_log` VALUES (565, 36, 1577712597, 1609248597, 1577712597, 877);
+INSERT INTO `cy_member_log` VALUES (566, 36, 1577712691, 1609248691, 1577712691, 878);
+INSERT INTO `cy_member_log` VALUES (567, 36, 1577712700, 1609248700, 1577712700, 879);
+INSERT INTO `cy_member_log` VALUES (568, 36, 1577712720, 1609248720, 1577712720, 880);
+INSERT INTO `cy_member_log` VALUES (569, 36, 1577712728, 1609248728, 1577712728, 881);
+INSERT INTO `cy_member_log` VALUES (570, 36, 1577712751, 1609248751, 1577712751, 882);
+INSERT INTO `cy_member_log` VALUES (571, 36, 1577712757, 1609248757, 1577712757, 883);
+INSERT INTO `cy_member_log` VALUES (572, 36, 1577712778, 1609248778, 1577712778, 884);
+INSERT INTO `cy_member_log` VALUES (573, 36, 1577712787, 1609248787, 1577712787, 885);
+INSERT INTO `cy_member_log` VALUES (574, 36, 1577712805, 1609248805, 1577712805, 886);
+INSERT INTO `cy_member_log` VALUES (575, 36, 1577712823, 1609248823, 1577712823, 887);
+INSERT INTO `cy_member_log` VALUES (576, 36, 1577712861, 1609248861, 1577712861, 888);
+INSERT INTO `cy_member_log` VALUES (577, 36, 1577712965, 1609248965, 1577712965, 889);
+INSERT INTO `cy_member_log` VALUES (578, 36, 1577712982, 1609248982, 1577712982, 890);
+INSERT INTO `cy_member_log` VALUES (579, 36, 1577712996, 1609248996, 1577712996, 891);
+INSERT INTO `cy_member_log` VALUES (580, 36, 1577713029, 1609249029, 1577713029, 892);
+INSERT INTO `cy_member_log` VALUES (581, 36, 1577713052, 1609249052, 1577713052, 893);
+INSERT INTO `cy_member_log` VALUES (582, 36, 1577713100, 1609249100, 1577713100, 894);
+INSERT INTO `cy_member_log` VALUES (583, 36, 1577713127, 1609249127, 1577713127, 895);
+INSERT INTO `cy_member_log` VALUES (584, 36, 1577713191, 1609249191, 1577713191, 896);
+INSERT INTO `cy_member_log` VALUES (585, 36, 1577713229, 1609249229, 1577713229, 897);
+INSERT INTO `cy_member_log` VALUES (586, 36, 1577713303, 1609249303, 1577713303, 898);
+INSERT INTO `cy_member_log` VALUES (587, 36, 1577713334, 1609249334, 1577713334, 899);
+INSERT INTO `cy_member_log` VALUES (588, 36, 1577713386, 1609249386, 1577713386, 900);
+INSERT INTO `cy_member_log` VALUES (589, 36, 1577713449, 1609249449, 1577713449, 901);
+INSERT INTO `cy_member_log` VALUES (590, 36, 1577713467, 1609249467, 1577713467, 902);
+INSERT INTO `cy_member_log` VALUES (591, 26, 1577713583, 1609249583, 1577713583, 903);
+INSERT INTO `cy_member_log` VALUES (592, 36, 1577713588, 1609249588, 1577713588, 904);
+INSERT INTO `cy_member_log` VALUES (593, 36, 1577713612, 1609249612, 1577713612, 905);
+INSERT INTO `cy_member_log` VALUES (594, 36, 1577713620, 1609249620, 1577713620, 906);
+INSERT INTO `cy_member_log` VALUES (595, 36, 1577713641, 1609249641, 1577713641, 907);
+INSERT INTO `cy_member_log` VALUES (596, 36, 1577713686, 1609249686, 1577713686, 908);
+INSERT INTO `cy_member_log` VALUES (597, 36, 1577713717, 1609249717, 1577713717, 909);
+INSERT INTO `cy_member_log` VALUES (598, 36, 1577713732, 1609249732, 1577713732, 910);
+INSERT INTO `cy_member_log` VALUES (599, 36, 1577713745, 1609249745, 1577713745, 911);
+INSERT INTO `cy_member_log` VALUES (600, 36, 1577713783, 1609249783, 1577713783, 912);
+INSERT INTO `cy_member_log` VALUES (601, 36, 1577713906, 1609249906, 1577713906, 913);
+INSERT INTO `cy_member_log` VALUES (602, 36, 1577713923, 1609249923, 1577713923, 914);
+INSERT INTO `cy_member_log` VALUES (603, 36, 1577713956, 1609249956, 1577713956, 915);
+INSERT INTO `cy_member_log` VALUES (604, 36, 1577714008, 1609250008, 1577714008, 916);
+INSERT INTO `cy_member_log` VALUES (605, 36, 1577714022, 1609250022, 1577714022, 917);
+INSERT INTO `cy_member_log` VALUES (606, 36, 1577714044, 1609250044, 1577714044, 918);
+INSERT INTO `cy_member_log` VALUES (607, 36, 1577714083, 1609250083, 1577714083, 919);
+INSERT INTO `cy_member_log` VALUES (608, 36, 1577714239, 1609250239, 1577714239, 920);
+INSERT INTO `cy_member_log` VALUES (609, 36, 1577714258, 1609250258, 1577714258, 921);
+INSERT INTO `cy_member_log` VALUES (610, 36, 1577714295, 1609250295, 1577714295, 922);
+INSERT INTO `cy_member_log` VALUES (611, 36, 1577714309, 1609250309, 1577714309, 923);
+INSERT INTO `cy_member_log` VALUES (612, 36, 1577714337, 1609250337, 1577714337, 924);
+INSERT INTO `cy_member_log` VALUES (613, 36, 1577714365, 1609250365, 1577714365, 925);
+INSERT INTO `cy_member_log` VALUES (614, 36, 1577714411, 1609250411, 1577714411, 926);
+INSERT INTO `cy_member_log` VALUES (615, 36, 1577714417, 1609250417, 1577714417, 927);
+INSERT INTO `cy_member_log` VALUES (616, 26, 1577714446, 1609250446, 1577714446, 928);
+INSERT INTO `cy_member_log` VALUES (617, 36, 1577714481, 1609250481, 1577714481, 929);
+INSERT INTO `cy_member_log` VALUES (618, 36, 1577714513, 1609250513, 1577714513, 930);
+INSERT INTO `cy_member_log` VALUES (619, 36, 1577714529, 1609250529, 1577714529, 931);
+INSERT INTO `cy_member_log` VALUES (620, 36, 1577714547, 1609250547, 1577714547, 932);
+INSERT INTO `cy_member_log` VALUES (621, 36, 1577714563, 1609250563, 1577714563, 933);
+INSERT INTO `cy_member_log` VALUES (622, 36, 1577714618, 1609250618, 1577714618, 934);
+INSERT INTO `cy_member_log` VALUES (623, 36, 1577714636, 1609250636, 1577714636, 935);
+INSERT INTO `cy_member_log` VALUES (624, 36, 1577714649, 1609250649, 1577714649, 936);
+INSERT INTO `cy_member_log` VALUES (625, 36, 1577714669, 1609250669, 1577714669, 937);
+INSERT INTO `cy_member_log` VALUES (626, 36, 1577714692, 1609250692, 1577714692, 938);
+INSERT INTO `cy_member_log` VALUES (627, 36, 1577714715, 1609250715, 1577714715, 939);
+INSERT INTO `cy_member_log` VALUES (628, 36, 1577714779, 1609250779, 1577714779, 940);
+INSERT INTO `cy_member_log` VALUES (629, 36, 1577714796, 1609250796, 1577714796, 941);
+INSERT INTO `cy_member_log` VALUES (630, 36, 1577714809, 1609250809, 1577714809, 942);
+INSERT INTO `cy_member_log` VALUES (631, 26, 1577714853, 1609250853, 1577714853, 943);
+INSERT INTO `cy_member_log` VALUES (632, 36, 1577714863, 1609250863, 1577714863, 944);
+INSERT INTO `cy_member_log` VALUES (633, 26, 1577714887, 1609250887, 1577714887, 945);
+INSERT INTO `cy_member_log` VALUES (634, 36, 1577714895, 1609250895, 1577714895, 946);
+INSERT INTO `cy_member_log` VALUES (635, 26, 1577714903, 1609250903, 1577714903, 947);
+INSERT INTO `cy_member_log` VALUES (636, 36, 1577714918, 1609250918, 1577714918, 948);
+INSERT INTO `cy_member_log` VALUES (637, 36, 1577714966, 1609250966, 1577714966, 949);
+INSERT INTO `cy_member_log` VALUES (638, 26, 1577714997, 1609250997, 1577714997, 950);
+INSERT INTO `cy_member_log` VALUES (639, 36, 1577715002, 1609251002, 1577715002, 951);
+INSERT INTO `cy_member_log` VALUES (640, 26, 1577715029, 1609251029, 1577715029, 952);
+INSERT INTO `cy_member_log` VALUES (641, 26, 1577715072, 1609251072, 1577715072, 953);
+INSERT INTO `cy_member_log` VALUES (642, 36, 1577715106, 1609251106, 1577715106, 954);
+INSERT INTO `cy_member_log` VALUES (643, 36, 1577715117, 1609251117, 1577715117, 955);
+INSERT INTO `cy_member_log` VALUES (644, 36, 1577715130, 1609251130, 1577715130, 956);
+INSERT INTO `cy_member_log` VALUES (645, 36, 1577715140, 1609251140, 1577715140, 957);
+INSERT INTO `cy_member_log` VALUES (646, 36, 1577715150, 1609251150, 1577715150, 958);
+INSERT INTO `cy_member_log` VALUES (647, 36, 1577715214, 1609251214, 1577715214, 959);
+INSERT INTO `cy_member_log` VALUES (648, 36, 1577715258, 1609251258, 1577715258, 960);
+INSERT INTO `cy_member_log` VALUES (649, 26, 1577715308, 1609251308, 1577715308, 961);
+INSERT INTO `cy_member_log` VALUES (650, 26, 1577715332, 1609251332, 1577715332, 962);
+INSERT INTO `cy_member_log` VALUES (651, 36, 1577715343, 1609251343, 1577715343, 963);
+INSERT INTO `cy_member_log` VALUES (652, 36, 1577715391, 1609251391, 1577715391, 964);
+INSERT INTO `cy_member_log` VALUES (653, 36, 1577715414, 1609251414, 1577715414, 965);
+INSERT INTO `cy_member_log` VALUES (654, 26, 1577715417, 1609251417, 1577715417, 966);
+INSERT INTO `cy_member_log` VALUES (655, 26, 1577715439, 1609251439, 1577715439, 967);
+INSERT INTO `cy_member_log` VALUES (656, 26, 1577715459, 1609251459, 1577715459, 968);
+INSERT INTO `cy_member_log` VALUES (657, 36, 1577715473, 1609251473, 1577715473, 969);
+INSERT INTO `cy_member_log` VALUES (658, 36, 1577715485, 1609251485, 1577715485, 970);
+INSERT INTO `cy_member_log` VALUES (659, 36, 1577715502, 1609251502, 1577715502, 971);
+INSERT INTO `cy_member_log` VALUES (660, 26, 1577715521, 1609251521, 1577715521, 972);
+INSERT INTO `cy_member_log` VALUES (661, 36, 1577715575, 1609251575, 1577715575, 973);
+INSERT INTO `cy_member_log` VALUES (662, 36, 1577715618, 1609251618, 1577715618, 974);
+INSERT INTO `cy_member_log` VALUES (663, 36, 1577715653, 1609251653, 1577715653, 975);
+INSERT INTO `cy_member_log` VALUES (664, 36, 1577715694, 1609251694, 1577715694, 976);
+INSERT INTO `cy_member_log` VALUES (665, 36, 1577715716, 1609251716, 1577715716, 977);
+INSERT INTO `cy_member_log` VALUES (666, 36, 1577715745, 1609251745, 1577715745, 978);
+INSERT INTO `cy_member_log` VALUES (667, 36, 1577715964, 1609251964, 1577715964, 979);
+INSERT INTO `cy_member_log` VALUES (668, 36, 1577716041, 1609252041, 1577716042, 980);
+INSERT INTO `cy_member_log` VALUES (669, 36, 1577716063, 1609252063, 1577716063, 981);
+INSERT INTO `cy_member_log` VALUES (670, 36, 1577716104, 1609252104, 1577716104, 982);
+INSERT INTO `cy_member_log` VALUES (671, 36, 1577716220, 1609252220, 1577716220, 983);
+INSERT INTO `cy_member_log` VALUES (672, 36, 1577716298, 1609252298, 1577716298, 984);
+INSERT INTO `cy_member_log` VALUES (673, 36, 1577716315, 1609252315, 1577716315, 985);
+INSERT INTO `cy_member_log` VALUES (674, 36, 1577716329, 1609252329, 1577716329, 986);
+INSERT INTO `cy_member_log` VALUES (675, 26, 1577716403, 1609252403, 1577716403, 987);
+INSERT INTO `cy_member_log` VALUES (676, 26, 1577716459, 1609252459, 1577716459, 988);
+INSERT INTO `cy_member_log` VALUES (677, 26, 1577716537, 1609252537, 1577716537, 989);
+INSERT INTO `cy_member_log` VALUES (678, 26, 1577716566, 1609252566, 1577716566, 990);
+INSERT INTO `cy_member_log` VALUES (679, 36, 1577716577, 1609252577, 1577716577, 991);
+INSERT INTO `cy_member_log` VALUES (680, 26, 1577716593, 1609252593, 1577716593, 992);
+INSERT INTO `cy_member_log` VALUES (681, 26, 1577716618, 1609252618, 1577716618, 993);
+INSERT INTO `cy_member_log` VALUES (682, 36, 1577716671, 1609252671, 1577716671, 994);
+INSERT INTO `cy_member_log` VALUES (683, 36, 1577716686, 1609252686, 1577716686, 995);
+INSERT INTO `cy_member_log` VALUES (684, 26, 1577716689, 1609252689, 1577716689, 996);
+INSERT INTO `cy_member_log` VALUES (685, 36, 1577716699, 1609252699, 1577716699, 997);
+INSERT INTO `cy_member_log` VALUES (686, 36, 1577716707, 1609252707, 1577716707, 998);
+INSERT INTO `cy_member_log` VALUES (687, 36, 1577716723, 1609252723, 1577716723, 999);
+INSERT INTO `cy_member_log` VALUES (688, 36, 1577716757, 1609252757, 1577716757, 1000);
+INSERT INTO `cy_member_log` VALUES (689, 36, 1577716769, 1609252769, 1577716769, 1001);
+INSERT INTO `cy_member_log` VALUES (690, 36, 1577716802, 1609252802, 1577716802, 1002);
+INSERT INTO `cy_member_log` VALUES (691, 36, 1577716866, 1609252866, 1577716866, 1003);
+INSERT INTO `cy_member_log` VALUES (692, 26, 1577717022, 1609253022, 1577717022, 1004);
+INSERT INTO `cy_member_log` VALUES (693, 26, 1577717163, 1609253163, 1577717163, 1005);
+INSERT INTO `cy_member_log` VALUES (694, 26, 1577717221, 1609253221, 1577717221, 1006);
+INSERT INTO `cy_member_log` VALUES (695, 26, 1577717276, 1609253276, 1577717276, 1007);
+INSERT INTO `cy_member_log` VALUES (696, 26, 1577717318, 1609253318, 1577717318, 1008);
+INSERT INTO `cy_member_log` VALUES (697, 36, 1577717500, 1609253500, 1577717500, 1009);
+INSERT INTO `cy_member_log` VALUES (698, 36, 1577717774, 1609253774, 1577717774, 1010);
+INSERT INTO `cy_member_log` VALUES (699, 36, 1577717817, 1609253817, 1577717817, 1011);
+INSERT INTO `cy_member_log` VALUES (700, 36, 1577717896, 1609253896, 1577717896, 1012);
+INSERT INTO `cy_member_log` VALUES (701, 36, 1577717924, 1609253924, 1577717924, 1013);
+INSERT INTO `cy_member_log` VALUES (702, 36, 1577718007, 1609254007, 1577718007, 1014);
+INSERT INTO `cy_member_log` VALUES (703, 26, 1577718038, 1609254038, 1577718038, 1015);
+INSERT INTO `cy_member_log` VALUES (704, 26, 1577718062, 1609254062, 1577718062, 1016);
+INSERT INTO `cy_member_log` VALUES (705, 36, 1577718071, 1609254071, 1577718071, 1017);
+INSERT INTO `cy_member_log` VALUES (706, 26, 1577718081, 1609254081, 1577718081, 1018);
+INSERT INTO `cy_member_log` VALUES (707, 26, 1577718145, 1609254145, 1577718145, 1019);
+INSERT INTO `cy_member_log` VALUES (708, 36, 1577718170, 1609254170, 1577718170, 1020);
+INSERT INTO `cy_member_log` VALUES (709, 26, 1577718238, 1609254238, 1577718238, 1021);
+INSERT INTO `cy_member_log` VALUES (710, 36, 1577718242, 1609254242, 1577718242, 1022);
+INSERT INTO `cy_member_log` VALUES (711, 26, 1577718249, 1609254249, 1577718249, 1023);
+INSERT INTO `cy_member_log` VALUES (712, 36, 1577718369, 1609254369, 1577718369, 1024);
+INSERT INTO `cy_member_log` VALUES (713, 36, 1577718376, 1609254376, 1577718376, 1025);
+INSERT INTO `cy_member_log` VALUES (714, 26, 1577718396, 1609254396, 1577718396, 1026);
+INSERT INTO `cy_member_log` VALUES (715, 26, 1577718402, 1609254402, 1577718402, 1027);
+INSERT INTO `cy_member_log` VALUES (716, 36, 1577718410, 1609254410, 1577718410, 1028);
+INSERT INTO `cy_member_log` VALUES (717, 36, 1577718426, 1609254426, 1577718426, 1029);
+INSERT INTO `cy_member_log` VALUES (718, 26, 1577718462, 1609254462, 1577718462, 1030);
+INSERT INTO `cy_member_log` VALUES (719, 36, 1577718465, 1609254465, 1577718465, 1031);
+INSERT INTO `cy_member_log` VALUES (720, 36, 1577718477, 1609254477, 1577718477, 1032);
+INSERT INTO `cy_member_log` VALUES (721, 26, 1577718486, 1609254486, 1577718486, 1033);
+INSERT INTO `cy_member_log` VALUES (722, 36, 1577718503, 1609254503, 1577718503, 1034);
+INSERT INTO `cy_member_log` VALUES (723, 36, 1577718547, 1609254547, 1577718547, 1035);
+INSERT INTO `cy_member_log` VALUES (724, 26, 1577718553, 1609254553, 1577718553, 1036);
+INSERT INTO `cy_member_log` VALUES (725, 36, 1577718564, 1609254564, 1577718564, 1037);
+INSERT INTO `cy_member_log` VALUES (726, 36, 1577718576, 1609254576, 1577718576, 1038);
+INSERT INTO `cy_member_log` VALUES (727, 26, 1577718579, 1609254579, 1577718579, 1039);
+INSERT INTO `cy_member_log` VALUES (728, 36, 1577718586, 1609254586, 1577718586, 1040);
+INSERT INTO `cy_member_log` VALUES (729, 26, 1577718600, 1609254600, 1577718600, 1041);
+INSERT INTO `cy_member_log` VALUES (730, 26, 1577718622, 1609254622, 1577718622, 1042);
+INSERT INTO `cy_member_log` VALUES (731, 26, 1577718639, 1609254639, 1577718639, 1043);
+INSERT INTO `cy_member_log` VALUES (732, 26, 1577718673, 1609254673, 1577718673, 1044);
+INSERT INTO `cy_member_log` VALUES (733, 36, 1577718696, 1609254696, 1577718696, 1045);
+INSERT INTO `cy_member_log` VALUES (734, 36, 1577718723, 1609254723, 1577718723, 1046);
+INSERT INTO `cy_member_log` VALUES (735, 36, 1577718739, 1609254739, 1577718739, 1047);
+INSERT INTO `cy_member_log` VALUES (736, 36, 1577718753, 1609254753, 1577718753, 1048);
+INSERT INTO `cy_member_log` VALUES (737, 36, 1577718781, 1609254781, 1577718781, 1049);
+INSERT INTO `cy_member_log` VALUES (738, 26, 1577718792, 1609254792, 1577718792, 1050);
+INSERT INTO `cy_member_log` VALUES (739, 36, 1577718806, 1609254806, 1577718806, 1051);
+INSERT INTO `cy_member_log` VALUES (740, 26, 1577718819, 1609254819, 1577718819, 1052);
+INSERT INTO `cy_member_log` VALUES (741, 36, 1577718831, 1609254831, 1577718831, 1053);
+INSERT INTO `cy_member_log` VALUES (742, 36, 1577718849, 1609254849, 1577718849, 1054);
+INSERT INTO `cy_member_log` VALUES (743, 36, 1577718878, 1609254878, 1577718878, 1055);
+INSERT INTO `cy_member_log` VALUES (744, 26, 1577718894, 1609254894, 1577718894, 1056);
+INSERT INTO `cy_member_log` VALUES (745, 26, 1577719028, 1609255028, 1577719028, 1057);
+INSERT INTO `cy_member_log` VALUES (746, 26, 1577719043, 1609255043, 1577719043, 1058);
+INSERT INTO `cy_member_log` VALUES (747, 36, 1577719111, 1609255111, 1577719111, 1059);
+INSERT INTO `cy_member_log` VALUES (748, 26, 1577719184, 1609255184, 1577719184, 1060);
+INSERT INTO `cy_member_log` VALUES (749, 26, 1577719283, 1609255283, 1577719283, 1061);
+INSERT INTO `cy_member_log` VALUES (750, 26, 1577719364, 1609255364, 1577719364, 1062);
+INSERT INTO `cy_member_log` VALUES (751, 26, 1577719411, 1609255411, 1577719411, 1063);
+INSERT INTO `cy_member_log` VALUES (752, 26, 1577719460, 1609255460, 1577719460, 1064);
+INSERT INTO `cy_member_log` VALUES (753, 26, 1577719547, 1609255547, 1577719547, 1065);
+INSERT INTO `cy_member_log` VALUES (754, 26, 1577719569, 1609255569, 1577719569, 1066);
+INSERT INTO `cy_member_log` VALUES (755, 26, 1577719580, 1609255580, 1577719580, 1067);
+INSERT INTO `cy_member_log` VALUES (756, 26, 1577719635, 1609255635, 1577719635, 1068);
+INSERT INTO `cy_member_log` VALUES (757, 36, 1577719653, 1609255653, 1577719653, 1069);
+INSERT INTO `cy_member_log` VALUES (758, 26, 1577719696, 1609255696, 1577719696, 1070);
+INSERT INTO `cy_member_log` VALUES (759, 36, 1577719708, 1609255708, 1577719708, 1071);
+INSERT INTO `cy_member_log` VALUES (760, 26, 1577719734, 1609255734, 1577719734, 1072);
+INSERT INTO `cy_member_log` VALUES (761, 36, 1577719735, 1609255735, 1577719735, 1073);
+INSERT INTO `cy_member_log` VALUES (762, 26, 1577719785, 1609255785, 1577719785, 1074);
+INSERT INTO `cy_member_log` VALUES (763, 36, 1577719901, 1609255901, 1577719901, 1075);
+INSERT INTO `cy_member_log` VALUES (764, 26, 1577719949, 1609255949, 1577719949, 1076);
+INSERT INTO `cy_member_log` VALUES (765, 26, 1577720218, 1609256218, 1577720218, 1077);
+INSERT INTO `cy_member_log` VALUES (766, 36, 1577720277, 1609256277, 1577720277, 1078);
+INSERT INTO `cy_member_log` VALUES (767, 26, 1577720370, 1609256370, 1577720370, 1079);
+INSERT INTO `cy_member_log` VALUES (768, 36, 1577720514, 1609256514, 1577720514, 1080);
+INSERT INTO `cy_member_log` VALUES (769, 26, 1577720534, 1609256534, 1577720534, 1081);
+INSERT INTO `cy_member_log` VALUES (770, 36, 1577720566, 1609256566, 1577720566, 1082);
+INSERT INTO `cy_member_log` VALUES (771, 36, 1577720611, 1609256611, 1577720611, 1083);
+INSERT INTO `cy_member_log` VALUES (772, 36, 1577720636, 1609256636, 1577720636, 1084);
+INSERT INTO `cy_member_log` VALUES (773, 36, 1577720665, 1609256665, 1577720665, 1085);
+INSERT INTO `cy_member_log` VALUES (774, 36, 1577720768, 1609256768, 1577720768, 1086);
+INSERT INTO `cy_member_log` VALUES (775, 36, 1577720819, 1609256819, 1577720819, 1087);
+INSERT INTO `cy_member_log` VALUES (776, 28, 1577747353, 1609283353, 1577747353, 1088);
+INSERT INTO `cy_member_log` VALUES (777, 29, 1577750559, 1609286559, 1577750559, 1089);
+INSERT INTO `cy_member_log` VALUES (778, 29, 1577752725, 1609288725, 1577752725, 1090);
+INSERT INTO `cy_member_log` VALUES (779, 26, 1577769920, 1609305920, 1577769920, 1091);
+INSERT INTO `cy_member_log` VALUES (780, 26, 1577770036, 1609306036, 1577770036, 1092);
+INSERT INTO `cy_member_log` VALUES (781, 26, 1577770818, 1609306818, 1577770818, 1093);
+INSERT INTO `cy_member_log` VALUES (782, 26, 1577770847, 1609306847, 1577770847, 1094);
+INSERT INTO `cy_member_log` VALUES (783, 26, 1577770866, 1609306866, 1577770866, 1095);
+INSERT INTO `cy_member_log` VALUES (784, 26, 1577770891, 1609306891, 1577770891, 1096);
+INSERT INTO `cy_member_log` VALUES (785, 26, 1577770930, 1609306930, 1577770930, 1097);
+INSERT INTO `cy_member_log` VALUES (786, 26, 1577771265, 1609307265, 1577771265, 1098);
+INSERT INTO `cy_member_log` VALUES (787, 26, 1577771336, 1609307336, 1577771336, 1099);
+INSERT INTO `cy_member_log` VALUES (788, 26, 1577771388, 1609307388, 1577771388, 1100);
+INSERT INTO `cy_member_log` VALUES (789, 26, 1577771511, 1609307511, 1577771511, 1101);
+INSERT INTO `cy_member_log` VALUES (790, 26, 1577771547, 1609307547, 1577771547, 1102);
+INSERT INTO `cy_member_log` VALUES (791, 26, 1577771572, 1609307572, 1577771572, 1103);
+INSERT INTO `cy_member_log` VALUES (792, 26, 1577771600, 1609307600, 1577771600, 1104);
+INSERT INTO `cy_member_log` VALUES (793, 26, 1577771611, 1609307611, 1577771611, 1105);
+INSERT INTO `cy_member_log` VALUES (794, 26, 1577771666, 1609307666, 1577771666, 1106);
+INSERT INTO `cy_member_log` VALUES (795, 26, 1577771671, 1609307671, 1577771671, 1107);
+INSERT INTO `cy_member_log` VALUES (796, 26, 1577771792, 1609307792, 1577771792, 1108);
+INSERT INTO `cy_member_log` VALUES (797, 26, 1577771832, 1609307832, 1577771832, 1109);
+INSERT INTO `cy_member_log` VALUES (798, 26, 1577772458, 1609308458, 1577772458, 1110);
+INSERT INTO `cy_member_log` VALUES (799, 26, 1577772899, 1609308899, 1577772899, 1111);
+INSERT INTO `cy_member_log` VALUES (800, 26, 1577772918, 1609308918, 1577772918, 1112);
+INSERT INTO `cy_member_log` VALUES (801, 26, 1577772933, 1609308933, 1577772933, 1113);
+INSERT INTO `cy_member_log` VALUES (802, 26, 1577772961, 1609308961, 1577772961, 1114);
+INSERT INTO `cy_member_log` VALUES (803, 26, 1577773135, 1609309135, 1577773135, 1115);
+INSERT INTO `cy_member_log` VALUES (804, 26, 1577773181, 1609309181, 1577773181, 1116);
+INSERT INTO `cy_member_log` VALUES (805, 26, 1577773276, 1609309276, 1577773276, 1117);
+INSERT INTO `cy_member_log` VALUES (806, 26, 1577773879, 1609309879, 1577773879, 1118);
+INSERT INTO `cy_member_log` VALUES (807, 26, 1577774220, 1609310220, 1577774220, 1119);
+INSERT INTO `cy_member_log` VALUES (808, 26, 1577774389, 1609310389, 1577774389, 1120);
+INSERT INTO `cy_member_log` VALUES (809, 26, 1577774427, 1609310427, 1577774427, 1122);
+INSERT INTO `cy_member_log` VALUES (810, 29, 1577774456, 1609310456, 1577774456, 1123);
+INSERT INTO `cy_member_log` VALUES (811, 26, 1577774575, 1609310575, 1577774575, 1124);
+INSERT INTO `cy_member_log` VALUES (812, 26, 1577774604, 1609310604, 1577774604, 1125);
+INSERT INTO `cy_member_log` VALUES (813, 28, 1577774750, 1609310750, 1577774750, 1127);
+INSERT INTO `cy_member_log` VALUES (814, 28, 1577774860, 1609310860, 1577774860, 1128);
+INSERT INTO `cy_member_log` VALUES (815, 29, 1577774880, 1609310880, 1577774880, 1129);
+INSERT INTO `cy_member_log` VALUES (816, 26, 1577775200, 1609311200, 1577775200, 1130);
+
+-- ----------------------------
+-- Table structure for cy_member_money_record
+-- ----------------------------
+DROP TABLE IF EXISTS `cy_member_money_record`;
+CREATE TABLE `cy_member_money_record`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NULL DEFAULT NULL COMMENT '用户id',
+  `orderId` int(11) NULL DEFAULT NULL COMMENT '订单id',
+  `money` decimal(10, 2) NULL DEFAULT NULL COMMENT '收入金额',
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '金额状态 1-增加 2-减少',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `moneyType` tinyint(1) NULL DEFAULT NULL COMMENT '金额来源 1-组团',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '会员金额记录' ROW_FORMAT = Fixed;
+
+-- ----------------------------
+-- Records of cy_member_money_record
+-- ----------------------------
+INSERT INTO `cy_member_money_record` VALUES (1, 26, 678, 12.00, 1, 1578689467, 1);
+INSERT INTO `cy_member_money_record` VALUES (2, 26, 688, 2.00, 1, 1577689467, 1);
 
 -- ----------------------------
 -- Table structure for cy_order
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_order`;
-CREATE TABLE `cy_order` (
+CREATE TABLE `cy_order`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `orderNumber` varchar(80) NOT NULL COMMENT '订单号',
+  `orderNumber` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单号',
   `uid` int(11) NOT NULL COMMENT '用户uid',
-  `productId` int(11) DEFAULT NULL COMMENT '商品Id',
-  `productTitle` varchar(255) DEFAULT NULL COMMENT '商品名称',
-  `totalPrice` decimal(10,2) DEFAULT NULL COMMENT '订单总价',
-  `reducePrice` decimal(10,2) DEFAULT NULL COMMENT '订单优惠卷优惠价格',
-  `payPrice` decimal(10,2) DEFAULT NULL COMMENT '实际支付价格',
-  `coupon` int(5) DEFAULT NULL COMMENT '优惠券Id',
-  `number` int(5) DEFAULT '1' COMMENT '商品数量',
-  `extInfo` text COMMENT '其他信息',
-  `status` int(1) DEFAULT NULL COMMENT '订单状态 1-支付成功 0-支付失败',
-  `createTime` int(11) DEFAULT NULL COMMENT '订单时间',
-  `payType` int(1) DEFAULT '1' COMMENT '支付类型  0-其他 1-微信',
-  `paySign` varchar(255) DEFAULT NULL COMMENT '支付签名 回调验证',
-  `ip` char(20) DEFAULT NULL COMMENT '下单ip',
-  `finishTime` int(11) DEFAULT NULL COMMENT '完成时间',
-  `type` tinyint(1) DEFAULT '0' COMMENT '付款类型 1-充值 2-买商品',
-  `address` varchar(255) DEFAULT NULL COMMENT '地址Id',
-  `integral` int(11) DEFAULT NULL COMMENT '积分消费',
-  `remark` text COMMENT '订单备注',
-  `productType` tinyint(1) DEFAULT '1' COMMENT '1-商品购买 2-组团 购买 3-购物车',
-  `evaluate` text,
-  `typeStatus` tinyint(1) DEFAULT '0' COMMENT '0-代付款 1-待接单 2-已接单 3-待评价 4-待售后',
-  `evalTime` int(11) DEFAULT NULL COMMENT '评价时间',
-  `evalImage` text COMMENT '图片',
-  `evalVideo` text COMMENT '视频',
-  `serverFee` int(11) DEFAULT '0' COMMENT '服务费',
-  `repairUid` int(11) DEFAULT NULL COMMENT '维修师id',
-  `repairImg` varchar(255) DEFAULT NULL COMMENT '维修图片',
-  `repairTime` int(11) DEFAULT NULL COMMENT '接单时间',
-  `proType` tinyint(1) DEFAULT NULL COMMENT '商品类型 1-维修 2-新车 3-二手车',
-  `repairSuccess` int(11) DEFAULT NULL COMMENT '维修师完成时间',
+  `productId` int(11) NULL DEFAULT NULL COMMENT '商品Id',
+  `productTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `totalPrice` decimal(10, 2) NULL DEFAULT NULL COMMENT '订单总价',
+  `reducePrice` decimal(10, 2) NULL DEFAULT NULL COMMENT '订单优惠卷优惠价格',
+  `payPrice` decimal(10, 2) NULL DEFAULT NULL COMMENT '实际支付价格',
+  `coupon` int(5) NULL DEFAULT NULL COMMENT '优惠券Id',
+  `number` int(5) NULL DEFAULT 1 COMMENT '商品数量',
+  `extInfo` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '其他信息',
+  `status` int(1) NULL DEFAULT NULL COMMENT '订单状态 1-支付成功 0-支付中 -1 退款中 -2 退款成功 -3 退款失败',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '订单时间',
+  `payType` int(1) NULL DEFAULT 1 COMMENT '支付类型  0-其他 1-微信',
+  `paySign` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付签名 回调验证',
+  `ip` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '下单ip',
+  `finishTime` int(11) NULL DEFAULT NULL COMMENT '完成时间',
+  `type` tinyint(1) NULL DEFAULT 0 COMMENT '付款类型 1-充值 2-买商品',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址Id',
+  `integral` int(11) NULL DEFAULT NULL COMMENT '积分消费',
+  `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '订单备注',
+  `productType` tinyint(1) NULL DEFAULT 1 COMMENT '1-商品购买 2-组团 购买 3-购物车',
+  `evaluate` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `typeStatus` tinyint(1) NULL DEFAULT 0 COMMENT '0-代付款 1-待接单 2-已接单 3-待评价 4-待售后',
+  `evalTime` int(11) NULL DEFAULT NULL COMMENT '评价时间',
+  `evalImage` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片',
+  `evalVideo` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '视频',
+  `serverFee` int(11) NULL DEFAULT 0 COMMENT '服务费',
+  `repairUid` int(11) NULL DEFAULT NULL COMMENT '维修师id',
+  `repairImg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '维修图片',
+  `repairTime` int(11) NULL DEFAULT NULL COMMENT '接单时间',
+  `proType` tinyint(1) NULL DEFAULT NULL COMMENT '商品类型 1-维修 2-新车 3-二手车',
+  `repairSuccess` int(11) NULL DEFAULT NULL COMMENT '维修师完成时间',
+  `returnRemark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '退款说明',
+  `returnTime` int(11) NULL DEFAULT NULL COMMENT '退款申请时间',
+  `returnSuccess` int(11) NULL DEFAULT NULL COMMENT '完成时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=407 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='订单记录表';
+) ENGINE = MyISAM AUTO_INCREMENT = 1141 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_order
 -- ----------------------------
-INSERT INTO `cy_order` VALUES ('1', 'ren158252013225', '1', '1', '测试', '190.00', '90.00', '100.00', '0', '1', null, '1', '1582312458', '1', null, null, null, '0', '1', '0', null, '1', 'cece', '4', '1572804659', null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('284', 'RM1576891395196162', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576891395', '1', '8C7BBF11F8CEC9C5810F43FC7399721F', '183.227.56.94', null, '2', '79', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('283', 'RM1576891324628763', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576891324', '1', '05B58C919B8245B3EE6FDA67AA91A965', '183.227.56.94', null, '2', '78', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('6', 'RM1574740489323385', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740489', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('7', 'RM1574740500800792', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740500', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('8', 'RM1574740543551482', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740543', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('9', 'RM1574740623896905', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740623', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('10', 'RM1574740675832973', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740675', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('11', 'RM1574740709127522', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740709', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('12', 'RM1574740717444857', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740717', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('13', 'RM1574740743497554', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740743', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('14', 'RM1574740877475753', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740877', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('15', 'RM1574740928909157', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574740928', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('16', 'RM1574745968867881', '0', '1', 'ceshi', '100.00', '0.00', '100.00', '0', '1', '', '0', '1574745968', '1', null, null, null, '2', '15', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('17', 'RM1575037880678518', '0', '2', 'ceshi2', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575037880', '1', null, null, null, '2', '19', '0', 'null', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('67', 'RM1575352963369449', '33', '5', 'ceshi5', '0.01', '0.00', '0.01', '0', '1', '', '1', '1575352963', '1', '8DD5E500DE5B1477309F4ED971ABB81D', '117.175.131.162', '1575353815', '2', '19', '0', 'null', '1', '111', '4', '1575559759', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5de9224d8d75a.png\";', 's:0:\"\";', '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('68', 'RM1575353879675388', '33', '6', 'ceshi6', '0.01', '0.00', '0.01', '0', '1', '', '1', '1575353879', '1', 'CF08C9A904D8397186681B7510DB9D5A', '117.175.131.162', '1575353886', '2', '19', '0', 'null', '1', '2222', '2', '1575356747', null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('75', 'RM1575379289777359', '26', '5', 'ceshi5', '0.01', '0.00', '0.01', '0', '1', '', '-1', '1575379289', '1', '197340B21E0EF78E000ED0BCAD6A3C98', '221.237.148.47', '1575379305', '2', '22', '0', 'null', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('348', 'RM1577039752433033', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '-1', '1577039752', '1', null, null, '1577039752', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('116', 'RM1575684168910093', '33', '10', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '', '1', '1575684168', '1', null, null, '1575684168', '2', '20', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('115', 'RM1575684133225587', '33', '10', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '', '1', '1575684133', '1', null, null, '1575684133', '2', '20', '0', null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('112', 'RM1575683751267745', '33', '10', '购物车购买', '0.00', '0.00', '0.00', '0', '2', '', '1', '1575683751', '1', null, null, '1575683751', '1', '19', '0', null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('114', 'RM1575684100464893', '33', '10', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '', '1', '1575684100', '1', null, null, '1575684100', '1', '19', '0', null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('105', 'RM1575630756900356', '33', '9', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '', '1', '1575630756', '1', null, null, '1575630756', '2', 'undefined', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('120', 'RM1575684950450180', '33', '10', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '', '1', '1575684950', '1', null, null, '1575684950', '2', '20', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('262', 'RM1576765526932108', '35', '3', 'ceshi3', '300.00', '0.00', '300.00', '0', '3', '', '1', '1576765526', '1', '25B2D34112114F1EAA1800ED8D65B3F7', '183.227.56.172', null, '2', '67', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('261', 'RM1576765503884894', '35', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '1', '1576765503', '1', '1F2D4758D466FC313CA51B652F9B3C32', '183.227.56.172', null, '2', '67', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('260', 'RM1576765495998930', '35', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '1', '1576765495', '1', 'AF428654A5BB861437925410BE8C6DB7', '183.227.56.172', null, '2', '67', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('126', 'RM1575714294294682', '30', '0', '会员开通', '20.00', null, '20.00', null, '1', null, '0', '1575714294', '1', '31D4F6836A7B2A20D42116167C30D986', '171.217.98.244', null, '1', null, null, null, '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('127', 'RM1575714296403822', '30', '0', '会员开通', '20.00', null, '20.00', null, '1', null, '0', '1575714296', '1', '4B024427FCD4A287C85A16F89F4581B7', '171.217.98.244', null, '1', null, null, null, '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('128', 'RM1575714297416689', '30', '0', '会员开通', '20.00', null, '20.00', null, '1', null, '0', '1575714297', '1', 'D22DB59DDC6489AF65F8ED53666E0639', '171.217.98.244', null, '1', null, null, null, '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('129', 'RM1575714298671269', '30', '0', '会员开通', '20.00', null, '20.00', null, '1', null, '0', '1575714298', '1', '7349BB066D281ACF18D0612D40C04454', '171.217.98.244', null, '1', null, null, null, '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('259', 'RM1576764846772170', '35', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '1', '1576764846', '1', '11330F9943923028681250DE8A29C70F', '183.227.56.172', null, '2', '67', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('138', 'RM1575948444930637', '30', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575948444', '1', '88BED37936970B5CE304E7493C14CBCF', '171.217.98.244', null, '2', '32', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('139', 'RM1575948445520131', '30', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575948445', '1', 'ADA279C2B480BF968709C5A0660DB28E', '171.217.98.244', null, '2', '32', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('140', 'RM1575948446665357', '30', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575948446', '1', '59D5A07970F33541FBF0B08FDC1436C1', '171.217.98.244', null, '2', '32', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('141', 'RM1575948447330206', '30', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575948447', '1', '3B08D89781F7A163500BAEBA224D3804', '171.217.98.244', null, '2', '32', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('142', 'RM1575948447693552', '30', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575948447', '1', '702799A8E1CBE894F0F49B7D6F87DB78', '171.217.98.244', null, '2', '32', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('143', 'RM1575948480616405', '30', '5', 'ceshi5', '0.01', '0.00', '0.01', '0', '1', '', '1', '1575948480', '1', 'D34C9B4C449771BC540B523DA8B2CEF1', '171.217.98.244', '1575950536', '2', '32', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('144', 'RM1575948707309609', '33', '5', 'ceshi5', '0.01', '0.00', '0.01', '0', '1', '', '-1', '1575948707', '1', 'E527ACBD32AD490A0C1CF86FF5130F26', '171.221.254.102', '1575950762', '2', '41', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('145', 'RM1575949921169278', '30', '5', 'ceshi5', '0.01', '0.00', '0.01', '0', '1', '', '1', '1575949921', '1', '02007106B45814F625D5DA955DEE0293', '171.217.98.244', '1575949931', '2', '32', '0', '', '1', '别扭扭捏捏', '4', '1575959228', 's:0:\"\";', 's:0:\"\";', '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('146', 'RM1575959145610145', '30', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1575959145', '1', 'DA84CA25489063CEFDD83A0C0DCF4286', '117.136.64.82', null, '2', '32', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('147', 'RM1575959170245168', '30', '0', '会员开通', '20.00', null, '20.00', null, '1', null, '0', '1575959170', '1', 'C2B625526768D93D085B6213CA26F3A2', '117.136.64.82', null, '1', null, null, null, '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('258', 'RM1576755875828666', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '1', '1576755875', '1', '79025ABD939A19C8F2E9B2125CCF42F9', '183.227.56.172', null, '2', '67', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('150', 'RM1576030141874382', '33', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576030141', '1', '00DFA0374E8C5196264F26B9134F857F', '171.221.254.102', '1576030147', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('152', 'RM1576030432955916', '33', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576030432', '1', '36B37E4ED0AE71932D4259D190F42D08', '171.221.254.102', '1576030437', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('154', 'RM1576030740158846', '33', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576030740', '1', '6CD758ED8847183166FFD49CF029B1FE', '171.221.254.102', '1576030745', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('156', 'RM1576034060153469', '30', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576034060', '1', 'FD72D088BBB7028696F9B9E8C1A400F6', '139.207.21.140', '1576034068', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('157', 'RM1576034081313488', '33', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576034081', '1', 'CCD715285F5FAA51BD618960AF47C848', '171.221.254.102', '1576034087', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('158', 'RM1576034132869727', '33', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576034132', '1', '982675C595EC99D602FF748A2B8C9422', '171.221.254.102', '1576034145', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('159', 'RM1576042985681193', '31', '0', '会员开通', '0.01', null, '0.01', null, '1', null, '1', '1576042985', '1', '4C4B11E7016135F614F89FDEA1C7C17F', '221.237.148.235', '1576042994', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('347', 'RM1577023927201592', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '1', '1577023927', '1', null, null, '1577023927', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('282', 'RM1576891263730627', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576891263', '1', '96D6888E3665D8B70A1C0D856B50C281', '183.227.56.94', null, '2', '77', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('281', 'RM1576891120541184', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576891120', '1', 'F8DC298A819FF38B08DE645F6F76DA27', '183.227.56.94', null, '2', '76', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('280', 'RM1576891055485838', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576891055', '1', 'B64B4F2DD06E06811AECE2E956AEE889', '183.227.56.94', null, '2', '75', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('279', 'RM1576890718489369', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576890718', '1', '607419C71017C479D40697780874D7CA', '183.227.56.94', null, '2', '74', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('278', 'RM1576890675986972', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576890675', '1', 'B2BAB8CC6F96386D5C902DA70769DE84', '183.227.56.94', null, '2', '73', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('271', 'RM1576864564891716', '26', '2', 'ceshi2', '100.00', '0.00', '100.00', '0', '1', '', '1', '1576864564', '1', '03D69414A6C264DA8523E45D3A55801E', '112.67.84.40', '1576927821', '2', '22', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('346', 'RM1577023927975871', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '1', '1577023927', '1', null, null, '1577023927', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('345', 'RM1577023926588718', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '1', '1577023926', '1', null, null, '1577023926', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('344', 'RM1577023926988658', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '1', '1577023926', '1', null, null, '1577023926', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('343', 'RM1577023925886847', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '-1', '1577023925', '1', null, null, '1577023925', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('342', 'RM1577023918384375', '29', '1', '购物车购买', '0.00', '0.00', '0.00', '0', '1', '1-1', '1', '1577023918', '1', null, null, '1577023918', '2', '42', '0', '', '3', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('205', 'RM1576147705533988', '29', '6', 'ceshi6', '0.01', '0.00', '0.01', '0', '1', '', '1', '1576147705', '1', '72E026C9706B064C17FF7577A283ACE8', '121.230.80.218', '1576147719', '2', '42', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('199', 'RM1576146814639811', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12334421334NaN', '1', '1576146814', '1', null, null, '1576146814', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('277', 'RM1576890198769227', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576890198', '1', 'C427FBEBAC92F3F3B120D74C798B10D4', '183.227.56.94', null, '2', '72', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('190', 'RM1576146352989701', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12345678901NaN', '1', '1576146352', '1', null, null, '1576146352', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('191', 'RM1576146357284464', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12345678901NaN', '1', '1576146357', '1', null, null, '1576146357', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('192', 'RM1576146358889255', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12345678901NaN', '1', '1576146358', '1', null, null, '1576146358', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('193', 'RM1576146358652597', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12345678901NaN', '1', '1576146358', '1', null, null, '1576146358', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('194', 'RM1576146358408397', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12345678901NaN', '1', '1576146358', '1', null, null, '1576146358', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('195', 'RM1576146359493167', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12345678901NaN', '1', '1576146359', '1', null, null, '1576146359', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('197', 'RM1576146417336439', '29', '9', '1', '1.00', '0.00', '1.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-12098765431NaN', '1', '1576146417', '1', 'C76551C8C9FFA1401FBC4EF09D3122DF', '121.230.80.218', '1576146427', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('203', 'RM1576147407230028', '29', '0', '会员续费', '0.01', null, '0.01', null, '1', null, '1', '1576147407', '1', 'CD7A627F40816E278699E93EBC9E0068', '121.230.80.218', '1576147415', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('204', 'RM1576147576127923', '29', '9', '1', '1.00', '0.00', '1.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-112333333333NaN', '1', '1576147576', '1', '112A2B30FBDCF0BC37F7A3F80F00D10E', '121.230.80.218', '1576147588', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('285', 'RM1576891515159434', '35', '1', '购物车购买', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576891515', '1', 'DD4E397C0A8AA29E965BC8B222335974', '183.227.56.94', null, '2', '80', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('286', 'RM1576891804634407', '35', '40', '购物车购买', '100.00', '1.00', '99.00', '0', '2', '', '0', '1576891804', '1', 'BFF9D2F8D0F95FC23DF231741AB31C49', '183.227.56.94', null, '2', '81', '1', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('287', 'RM1576892196253701', '35', '40', '购物车购买', '100.00', '1.00', '99.00', '0', '2', '', '0', '1576892196', '1', 'ED78E8B09717743FFE79908F846298B3', '183.227.56.94', null, '2', '83', '1', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('288', 'RM1576892458222859', '35', '40', '购物车购买', '100.00', '1.00', '99.00', '0', '2', '', '0', '1576892458', '1', '33A43B3BDEB580E52850E6DCD05EF475', '183.227.56.94', null, '2', '84', '1', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('289', 'RM1576892744731884', '35', '40', '购物车购买', '100.00', '1.00', '114.00', '0', '2', '', '0', '1576892744', '1', '5FA8E60D946EEB547FEF85FABB31C6FC', '183.227.56.94', null, '2', '85', '1', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('290', 'RM1576893349438250', '35', '40', '购物车购买', '100.00', '0.00', '120.00', '0', '2', '', '0', '1576893349', '1', '93C74C239BB08E5091C835F91312833B', '183.227.56.94', null, '2', '86', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('291', 'RM1576894342634916', '35', '40', '购物车购买', '0.00', '1.00', '14.00', '0', '2', '', '0', '1576894342', '1', 'B2330748A8F3EA3446F257BE5A8F3BAF', '183.227.56.94', null, '2', '87', '1', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('292', 'RM1576894371992242', '35', '40', '购物车购买', '0.00', '0.00', '20.00', '0', '2', '', '0', '1576894371', '1', '55DE5FD01162BB81B022C614D92877C6', '183.227.56.94', null, '2', '88', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('293', 'RM1576894919973892', '35', '40', '购物车购买', '0.00', '0.00', '20.00', '0', '2', '', '0', '1576894919', '1', '196252BC9A75C87A838CBE5E6BFABF9A', '183.227.56.94', null, '2', '89', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('294', 'RM1576895196311615', '35', '2', '购物车购买', '200.00', '0.00', '220.00', '0', '2', '', '0', '1576895196', '1', 'F2BEF25C50ACF4549C585F82F22BFA67', '183.227.56.94', null, '2', '91', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('295', 'RM1576895373616458', '35', '2', '购物车购买', '200.00', '0.00', '220.00', '0', '2', '', '0', '1576895373', '1', '52ED5C2EC2AED20CA3EE8DE1ABDC41DE', '183.227.56.94', null, '2', '92', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('296', 'RM1576895384311321', '35', '2', '购物车购买', '200.00', '1.00', '214.00', '0', '2', '', '0', '1576895384', '1', 'E296F4B565E4272F3BFEC690C5E99A74', '183.227.56.94', null, '2', '92', '1', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('297', 'RM1576896025374745', '35', '2', '购物车购买', '200.00', '50.00', '165.00', '0', '2', '', '0', '1576896025', '1', 'EF403219A0D2BCBB0B61D6B5DFF2C542', '183.227.56.94', null, '2', '93', '50', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('299', 'RM1576896532333229', '35', '2', '购物车购买', '200.00', '0.00', '220.00', '0', '2', '', '0', '1576896532', '1', '00CBAD5EF2109990CC558D70F173DDFC', '183.227.56.94', null, '2', '93', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('300', 'RM1576896769593132', '35', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '0', '1576896769', '1', 'D3A11230E0F207EA716D86A8D2503494', '183.227.56.94', null, '2', '93', '0', '', '1', null, '0', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('301', 'RM1576896856303938', '35', '3', 'ceshi3', '100.00', '0.00', '110.00', '0', '1', '', '0', '1576896856', '1', '9BFDE4BBED7ADE16B63B4BBBFF35F256', '183.227.56.94', null, '2', '93', '0', '', '1', null, '0', null, null, null, '10', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('302', 'RM1576896916899821', '35', '3', 'ceshi3', '100.00', '50.00', '55.00', '0', '1', '', '0', '1576896916', '1', 'B1090EC233E43686DA31C6DC4809CAF2', '183.227.56.94', null, '2', '93', '50', '', '1', null, '0', null, null, null, '5', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('303', 'RM1576901615879357', '35', '2', '购物车购买', '200.00', '0.00', '220.00', '0', '2', '', '0', '1576901615', '1', '7FA0E5EA4342457A2411154CEF1DC4D3', '183.227.56.94', null, '2', '96', '0', '', '1', null, '0', null, null, null, '20', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('304', 'RM1576901801138623', '35', '2', '购物车购买', '200.00', '80.00', '132.00', '1', '2', '', '0', '1576901801', '1', '2869C292B7CA5EE373609201809B635E', '183.227.56.94', null, '2', '97', '50', '', '1', null, '0', null, null, null, '12', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('305', 'RM1576902058367309', '35', '2', '购物车购买', '200.00', '80.00', '135.00', '1', '2', '', '0', '1576902058', '1', 'C85EDADED04E02ECA9F797D5D74DF129', '183.227.56.94', null, '2', '98', '50', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('306', 'RM1576902353217348', '35', '2', '购物车购买', '200.00', '80.00', '135.00', '1', '2', '', '0', '1576902353', '1', '221FC1794FD31D50ACB6B5AA58235C24', '183.227.56.94', null, '2', '99', '50', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('307', 'RM1576902356746436', '35', '2', '购物车购买', '200.00', '80.00', '135.00', '1', '2', '', '0', '1576902356', '1', '76FD6D14533E8314748483FF5404FE21', '183.227.56.94', null, '2', '99', '50', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('308', 'RM1576902358653560', '35', '2', '购物车购买', '200.00', '80.00', '135.00', '1', '2', '', '0', '1576902358', '1', 'CEDD8D2276D199A6044F27C3AE85481C', '183.227.56.94', null, '2', '99', '50', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('309', 'RM1576903556603591', '35', '2', '购物车购买', '200.00', '80.00', '135.00', '1', '2', '', '0', '1576903556', '1', 'C2E12ED133225304CF476E7C375528E0', '183.227.56.94', null, '2', '103', '50', '', '1', null, '0', null, null, null, '15', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('310', 'RM1576903616983281', '35', '3', 'ceshi3', '100.00', '80.00', '25.00', '1', '1', '', '0', '1576903616', '1', '6B244C63A6782688ABC6BCEA24AF6A27', '183.227.56.94', null, '2', '103', '50', '', '1', null, '0', null, null, null, '5', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('313', 'RM1576907980553034', '26', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576907980', '1', '82BC1B8D0CCFBDA4A7E1C73CFB02FCA9', '121.58.37.8', '1576917235', '2', '120', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('329', 'RM1576927634280665', '33', '20', '还是试试看', '0.10', '0.00', '0.11', '0', '1', '', '1', '1576927634', '1', '8665481BD5137AEC07BC114E127EE3EB', '118.133.209.174', '1576927653', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, '3', null);
-INSERT INTO `cy_order` VALUES ('351', 'RM1577111897259934', '26', '7', '1', '2.00', '0.00', '2.00', '0', '1', '\'address-四川省成都市金牛区新泉路33号,phone-18121394387NaN', '1', '1577111897', '1', '8D885DE6860259F3716C1A6EDC615746', '171.210.125.254', '1577111905', '2', '0', '0', 'undefined', '1', null, '2', null, null, null, '0', '26', null, '1577111941', '1', null);
-INSERT INTO `cy_order` VALUES ('318', 'RM1576908600475887', '33', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576908600', '1', 'A0FEBE249A16A8D8EF3F79D0756D0B43', '58.16.228.118', '1576917856', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('319', 'RM1576908838925447', '35', '2', '购物车购买', '200.00', '80.00', '132.00', '1', '2', '', '0', '1576908838', '1', 'C18B11B8F44CB4C53C5DAA631CFB19CE', '183.227.56.94', null, '2', '121', '50', '', '1', null, '0', null, null, null, '12', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('320', 'RM1576909159399435', '33', '20', '还是试试看', '0.10', '0.00', '0.11', '0', '1', '', '1', '1576909159', '1', '16A63946300D186419514647BC94AD42', '58.16.228.118', '1576918419', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('321', 'RM1576911343262850', '33', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576911343', '1', 'C17F7A5F3AB770E38B4FE276877B71B6', '58.16.228.118', '1576916999', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('322', 'RM1576911663648130', '33', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576911663', '1', 'D0766EE61A8AC4F712BE0643FB9817FC', '118.133.209.174', '1576915532', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('323', 'RM1576912331700908', '33', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576912331', '1', 'B9887B7C34CAB838023A60ECC709213B', '118.133.209.174', '1576916195', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('324', 'RM1576913762410751', '33', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576913762', '1', '817E5B5CBBBC6C1F1559FC9D02BE686C', '118.133.209.174', '1576915826', '2', '119', '0', '', '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('332', 'RM1576929789970815', '1', '2', '购物车购买', '200.00', '12.00', '200.00', '0', '2', '2-1,3-1', '2', '1576929789', '1', '38F55B9849E69FD67CE4EB0893F98869', '183.222.21.253', null, '2', '46', '12', null, '3', null, '0', null, null, null, '12', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('331', 'RM1576929433665571', '26', '20', '还是试试看', '0.10', '0.00', '0.11', '0', '1', '', '1', '1576929433', '1', '44362ACDA4FD2647EBE240083A5E1C6C', '121.58.37.8', '1576929443', '2', '120', '0', '', '1', null, '2', null, null, null, '0', '26', null, '1576929764', '3', null);
-INSERT INTO `cy_order` VALUES ('326', 'RM1576915396674238', '33', '20', '还是试试看', '0.10', '0.00', '0.10', '0', '1', '', '1', '1576915396', '1', 'F25B15289A0924BBD5DB497DFC939843', '118.133.209.174', '1576915418', '2', '119', '0', '', '1', null, '2', null, null, null, '0', '33', null, '1576919421', null, null);
-INSERT INTO `cy_order` VALUES ('333', 'RM15769297899708152', '1', '2', 'ceshi2', '100.00', '0.00', '100.00', '0', '1', '2-1,3-1', '1', '1576929789', '1', null, null, '1576930141', '2', '46', '0', '购物车购买', '1', null, '1', null, null, null, '6', null, null, null, '2', null);
-INSERT INTO `cy_order` VALUES ('334', 'RM15769297899708153', '1', '3', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '2-1,3-1', '1', '1576929789', '1', null, null, '1576930141', '2', '46', '0', '购物车购买', '1', null, '1', null, null, null, '6', null, null, null, '2', null);
-INSERT INTO `cy_order` VALUES ('335', 'RM1576931752712250', '35', '3', 'ceshi3', '100.00', '50.00', '55.00', '0', '1', '', '0', '1576931752', '1', '66470DBDD94D4BFE6BA0C5A395DF27C3', '183.227.56.94', null, '2', '122', '50', '', '1', null, '0', null, null, null, '5', null, null, null, '2', null);
-INSERT INTO `cy_order` VALUES ('336', 'RM1576932715180647', '35', '20', '还是试试看', '0.10', '50.00', '0.00', '0', '1', '', '1', '1576932715', '1', null, null, '1576932715', '2', '122', '50', '', '1', null, '1', null, null, null, '0', null, null, null, '3', null);
-INSERT INTO `cy_order` VALUES ('337', 'RM1576932720143251', '35', '20', '还是试试看', '0.10', '50.00', '0.00', '0', '1', '', '1', '1576932720', '1', null, null, '1576932720', '2', '122', '50', '', '1', null, '1', null, null, null, '0', null, null, null, '3', null);
-INSERT INTO `cy_order` VALUES ('338', 'RM1576932726535566', '35', '20', '还是试试看', '0.10', '50.00', '0.00', '0', '1', '', '1', '1576932726', '1', null, null, '1576932726', '2', '122', '50', '', '1', null, '1', null, null, null, '0', null, null, null, '3', null);
-INSERT INTO `cy_order` VALUES ('339', 'RM1576932729818768', '35', '20', '还是试试看', '0.10', '50.00', '0.00', '0', '1', '', '1', '1576932729', '1', null, null, '1576932729', '2', '122', '50', '', '1', null, '1', null, null, null, '0', null, null, null, '3', null);
-INSERT INTO `cy_order` VALUES ('340', 'RM1576932795620471', '35', '20', '还是试试看', '0.10', '0.00', '0.11', '0', '1', '', '1', '1576932795', '1', '1C4D04FC0E7562FA5DC97F60D18A08B6', '183.227.56.94', '1576932831', '2', '122', '0', '', '1', null, '1', null, null, null, '0', null, null, null, '3', null);
-INSERT INTO `cy_order` VALUES ('402', 'RM1577195924796138', '36', '0', '会员续费', '0.01', null, '0.01', null, '1', null, '1', '1577195924', '1', '346CFC36030A6A28FC9EE78302765616', '116.24.89.247', '1577195948', '1', null, null, null, '1', null, '1', null, null, null, '0', null, null, null, null, null);
-INSERT INTO `cy_order` VALUES ('395', 'RM1577181112323813', '36', '13', '1', '2.00', '0.00', '2.00', '0', '1', '\'address-广东省深圳市龙岗区龙翔大道8033号,phone-18666212314NaN', '1', '1577181112', '1', '0C1C14E67C8CEA2EC21D8E297BF0DEF4', '113.118.8.45', '1577181130', '2', '0', '0', 'undefined', '1', null, '2', null, null, null, '0', '36', null, '1577200080', '1', null);
-INSERT INTO `cy_order` VALUES ('383', 'RM1577147857438999', '29', '11', '多少', '0.00', '0.00', '0.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-11111222222NaN', '1', '1577147857', '1', null, null, '1577147857', '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, '1', null);
-INSERT INTO `cy_order` VALUES ('384', 'RM1577147881368914', '28', '11', '测试产品', '100000.00', '0.00', '100000.00', '0', '1', '\'address-江苏省泰州市兴化市,phone-2288273737383NaN', '1', '1577147881', '1', '31045A390F4F13B8DB787A92EE87E4A8', '117.94.24.229', null, '2', '0', '0', 'undefined', '1', null, '1', null, null, null, '0', null, null, null, '1', null);
-INSERT INTO `cy_order` VALUES ('385', 'RM1577151392200442', '36', '11', 'ceshi3', '100.00', '0.00', '100.00', '0', '1', '', '1', '1577151392', '1', '4AB93412EC369CDE6B372B9FEA7CCF70', '113.118.8.45', null, '2', '127', '0', '', '1', null, '2', null, null, null, '0', '36', null, '1577168128', '1', null);
-INSERT INTO `cy_order` VALUES ('386', 'RM1577151929687693', '36', '11', 'ceshi3', '200.00', '0.00', '220.00', '0', '2', '', '1', '1577151929', '1', 'BF26514FDE910F1A17229ACE818967E1', '113.118.8.45', null, '2', '127', '0', '', '1', null, '2', null, null, null, '20', '36', null, '1577169152', '1', null);
-INSERT INTO `cy_order` VALUES ('387', 'RM1577161417161708', '36', '11', 'ceshi3', '100.00', '0.00', '105.00', '0', '1', '', '1', '1577161417', '1', '5CDC7B75F5EC71088F7A9741D4A0F68E', '113.118.8.45', null, '2', '127', '0', '', '1', null, '2', null, null, null, '5', '36', null, '1577163904', '1', null);
-INSERT INTO `cy_order` VALUES ('388', 'RM1577161560412302', '36', '11', 'ceshi3', '100.00', '50.00', '55.00', '0', '1', '', '1', '1577161560', '1', '28535404F166F10B95CE96BC0E308B49', '113.118.8.45', null, '2', '127', '50', '', '1', null, '2', null, null, null, '5', '36', null, '1577163253', '1', null);
-INSERT INTO `cy_order` VALUES ('389', 'RM1577161574683494', '36', '11', 'ceshi3', '100.00', '50.00', '60.00', '0', '1', '', '1', '1577161574', '1', '9D82AE487E02F743EC44D14528B17356', '113.118.8.45', null, '2', '127', '50', '', '1', null, '3', null, null, null, '10', '36', 'https://lck.hzlyzhenzhi.com/files/attach/file5e01ce6bc1ee8.jpg', '1577163235', '1', '1577197588');
-INSERT INTO `cy_order` VALUES ('390', 'RM1577161640586739', '36', '11', 'ceshi3', '100.00', '50.00', '55.00', '0', '1', '', '1', '1577161640', '1', 'C6593A8810A12F9C1796393BD95FB802', '113.118.8.45', null, '2', '127', '50', '', '1', null, '3', null, null, null, '5', '36', null, '1577163102', '1', null);
-INSERT INTO `cy_order` VALUES ('391', 'RM1577161649684751', '36', '11', 'ceshi3', '100.00', '0.00', '110.00', '0', '1', '', '1', '1577161649', '1', '04133CED9857EB0161FDB9A494730498', '113.118.8.45', null, '2', '127', '0', '', '1', null, '3', null, null, null, '10', '36', null, '1577162943', '1', null);
-INSERT INTO `cy_order` VALUES ('392', 'RM1577161662638206', '36', '11', 'ceshi3', '100.00', '30.00', '80.00', '1', '1', '', '1', '1577161662', '1', '1BDDAC601FB7D0737026BBE85EFA4CEE', '113.118.8.45', null, '2', '127', '0', '', '1', null, '3', null, null, null, '10', '36', null, '1577163175', '1', null);
+INSERT INTO `cy_order` VALUES (1, 'ren158252013225', 1, 1, '测试', 190.00, 90.00, 100.00, 0, 1, NULL, 1, 1582312458, 1, NULL, NULL, NULL, 0, '1', 0, NULL, 1, 'cece', 4, 1572804659, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (284, 'RM1576891395196162', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576891395, 1, '8C7BBF11F8CEC9C5810F43FC7399721F', '183.227.56.94', NULL, 2, '79', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (283, 'RM1576891324628763', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576891324, 1, '05B58C919B8245B3EE6FDA67AA91A965', '183.227.56.94', NULL, 2, '78', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (6, 'RM1574740489323385', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740489, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (7, 'RM1574740500800792', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740500, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (8, 'RM1574740543551482', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740543, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (9, 'RM1574740623896905', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740623, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (10, 'RM1574740675832973', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740675, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (11, 'RM1574740709127522', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740709, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (12, 'RM1574740717444857', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740717, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (13, 'RM1574740743497554', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740743, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (14, 'RM1574740877475753', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740877, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (15, 'RM1574740928909157', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574740928, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (16, 'RM1574745968867881', 0, 1, 'ceshi', 100.00, 0.00, 100.00, 0, 1, '', 0, 1574745968, 1, NULL, NULL, NULL, 2, '15', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (17, 'RM1575037880678518', 0, 2, 'ceshi2', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575037880, 1, NULL, NULL, NULL, 2, '19', 0, 'null', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (67, 'RM1575352963369449', 33, 5, 'ceshi5', 0.01, 0.00, 0.01, 0, 1, '', 1, 1575352963, 1, '8DD5E500DE5B1477309F4ED971ABB81D', '117.175.131.162', 1575353815, 2, '19', 0, 'null', 1, '111', 4, 1575559759, 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5de9224d8d75a.png\";', 's:0:\"\";', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (68, 'RM1575353879675388', 33, 6, 'ceshi6', 0.01, 0.00, 0.01, 0, 1, '', 1, 1575353879, 1, 'CF08C9A904D8397186681B7510DB9D5A', '117.175.131.162', 1575353886, 2, '19', 0, 'null', 1, '2222', 2, 1575356747, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (75, 'RM1575379289777359', 26, 5, 'ceshi5', 0.01, 0.00, 0.01, 0, 1, '', -1, 1575379289, 1, '197340B21E0EF78E000ED0BCAD6A3C98', '221.237.148.47', 1575379305, 2, '22', 0, 'null', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (348, 'RM1577039752433033', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', -1, 1577039752, 1, NULL, NULL, 1577039752, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (116, 'RM1575684168910093', 33, 10, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '', 1, 1575684168, 1, NULL, NULL, 1575684168, 2, '20', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (115, 'RM1575684133225587', 33, 10, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '', 1, 1575684133, 1, NULL, NULL, 1575684133, 2, '20', 0, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (112, 'RM1575683751267745', 33, 10, '购物车购买', 0.00, 0.00, 0.00, 0, 2, '', 1, 1575683751, 1, NULL, NULL, 1575683751, 1, '19', 0, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (114, 'RM1575684100464893', 33, 10, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '', 1, 1575684100, 1, NULL, NULL, 1575684100, 1, '19', 0, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (105, 'RM1575630756900356', 33, 9, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '', 1, 1575630756, 1, NULL, NULL, 1575630756, 2, 'undefined', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (120, 'RM1575684950450180', 33, 10, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '', 1, 1575684950, 1, NULL, NULL, 1575684950, 2, '20', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (262, 'RM1576765526932108', 35, 3, 'ceshi3', 300.00, 0.00, 300.00, 0, 3, '', 1, 1576765526, 1, '25B2D34112114F1EAA1800ED8D65B3F7', '183.227.56.172', NULL, 2, '67', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (261, 'RM1576765503884894', 35, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 1, 1576765503, 1, '1F2D4758D466FC313CA51B652F9B3C32', '183.227.56.172', NULL, 2, '67', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (260, 'RM1576765495998930', 35, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 1, 1576765495, 1, 'AF428654A5BB861437925410BE8C6DB7', '183.227.56.172', NULL, 2, '67', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (126, 'RM1575714294294682', 30, 0, '会员开通', 20.00, NULL, 20.00, NULL, 1, NULL, 0, 1575714294, 1, '31D4F6836A7B2A20D42116167C30D986', '171.217.98.244', NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (127, 'RM1575714296403822', 30, 0, '会员开通', 20.00, NULL, 20.00, NULL, 1, NULL, 0, 1575714296, 1, '4B024427FCD4A287C85A16F89F4581B7', '171.217.98.244', NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (128, 'RM1575714297416689', 30, 0, '会员开通', 20.00, NULL, 20.00, NULL, 1, NULL, 0, 1575714297, 1, 'D22DB59DDC6489AF65F8ED53666E0639', '171.217.98.244', NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (129, 'RM1575714298671269', 30, 0, '会员开通', 20.00, NULL, 20.00, NULL, 1, NULL, 0, 1575714298, 1, '7349BB066D281ACF18D0612D40C04454', '171.217.98.244', NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (259, 'RM1576764846772170', 35, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 1, 1576764846, 1, '11330F9943923028681250DE8A29C70F', '183.227.56.172', NULL, 2, '67', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (138, 'RM1575948444930637', 30, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575948444, 1, '88BED37936970B5CE304E7493C14CBCF', '171.217.98.244', NULL, 2, '32', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (139, 'RM1575948445520131', 30, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575948445, 1, 'ADA279C2B480BF968709C5A0660DB28E', '171.217.98.244', NULL, 2, '32', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (140, 'RM1575948446665357', 30, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575948446, 1, '59D5A07970F33541FBF0B08FDC1436C1', '171.217.98.244', NULL, 2, '32', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (141, 'RM1575948447330206', 30, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575948447, 1, '3B08D89781F7A163500BAEBA224D3804', '171.217.98.244', NULL, 2, '32', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (142, 'RM1575948447693552', 30, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575948447, 1, '702799A8E1CBE894F0F49B7D6F87DB78', '171.217.98.244', NULL, 2, '32', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (143, 'RM1575948480616405', 30, 5, 'ceshi5', 0.01, 0.00, 0.01, 0, 1, '', 1, 1575948480, 1, 'D34C9B4C449771BC540B523DA8B2CEF1', '171.217.98.244', 1575950536, 2, '32', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (144, 'RM1575948707309609', 33, 5, 'ceshi5', 0.01, 0.00, 0.01, 0, 1, '', -1, 1575948707, 1, 'E527ACBD32AD490A0C1CF86FF5130F26', '171.221.254.102', 1575950762, 2, '41', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (145, 'RM1575949921169278', 30, 5, 'ceshi5', 0.01, 0.00, 0.01, 0, 1, '', 1, 1575949921, 1, '02007106B45814F625D5DA955DEE0293', '171.217.98.244', 1575949931, 2, '32', 0, '', 1, '别扭扭捏捏', 4, 1575959228, 's:0:\"\";', 's:0:\"\";', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (146, 'RM1575959145610145', 30, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1575959145, 1, 'DA84CA25489063CEFDD83A0C0DCF4286', '117.136.64.82', NULL, 2, '32', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (147, 'RM1575959170245168', 30, 0, '会员开通', 20.00, NULL, 20.00, NULL, 1, NULL, 0, 1575959170, 1, 'C2B625526768D93D085B6213CA26F3A2', '117.136.64.82', NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (258, 'RM1576755875828666', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 1, 1576755875, 1, '79025ABD939A19C8F2E9B2125CCF42F9', '183.227.56.172', NULL, 2, '67', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (150, 'RM1576030141874382', 33, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576030141, 1, '00DFA0374E8C5196264F26B9134F857F', '171.221.254.102', 1576030147, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (152, 'RM1576030432955916', 33, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576030432, 1, '36B37E4ED0AE71932D4259D190F42D08', '171.221.254.102', 1576030437, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (154, 'RM1576030740158846', 33, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576030740, 1, '6CD758ED8847183166FFD49CF029B1FE', '171.221.254.102', 1576030745, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (156, 'RM1576034060153469', 30, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576034060, 1, 'FD72D088BBB7028696F9B9E8C1A400F6', '139.207.21.140', 1576034068, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (157, 'RM1576034081313488', 33, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576034081, 1, 'CCD715285F5FAA51BD618960AF47C848', '171.221.254.102', 1576034087, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (158, 'RM1576034132869727', 33, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576034132, 1, '982675C595EC99D602FF748A2B8C9422', '171.221.254.102', 1576034145, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (159, 'RM1576042985681193', 31, 0, '会员开通', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576042985, 1, '4C4B11E7016135F614F89FDEA1C7C17F', '221.237.148.235', 1576042994, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (347, 'RM1577023927201592', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', 1, 1577023927, 1, NULL, NULL, 1577023927, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (282, 'RM1576891263730627', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576891263, 1, '96D6888E3665D8B70A1C0D856B50C281', '183.227.56.94', NULL, 2, '77', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (281, 'RM1576891120541184', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576891120, 1, 'F8DC298A819FF38B08DE645F6F76DA27', '183.227.56.94', NULL, 2, '76', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (280, 'RM1576891055485838', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576891055, 1, 'B64B4F2DD06E06811AECE2E956AEE889', '183.227.56.94', NULL, 2, '75', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (279, 'RM1576890718489369', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576890718, 1, '607419C71017C479D40697780874D7CA', '183.227.56.94', NULL, 2, '74', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (278, 'RM1576890675986972', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576890675, 1, 'B2BAB8CC6F96386D5C902DA70769DE84', '183.227.56.94', NULL, 2, '73', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (271, 'RM1576864564891716', 26, 2, 'ceshi2', 100.00, 0.00, 100.00, 0, 1, '', 1, 1576864564, 1, '03D69414A6C264DA8523E45D3A55801E', '112.67.84.40', 1576927821, 2, '22', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (346, 'RM1577023927975871', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', 1, 1577023927, 1, NULL, NULL, 1577023927, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (345, 'RM1577023926588718', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', 1, 1577023926, 1, NULL, NULL, 1577023926, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (344, 'RM1577023926988658', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', 1, 1577023926, 1, NULL, NULL, 1577023926, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (343, 'RM1577023925886847', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', -1, 1577023925, 1, NULL, NULL, 1577023925, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (342, 'RM1577023918384375', 29, 1, '购物车购买', 0.00, 0.00, 0.00, 0, 1, '1-1', 1, 1577023918, 1, NULL, NULL, 1577023918, 2, '42', 0, '', 3, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (205, 'RM1576147705533988', 29, 6, 'ceshi6', 0.01, 0.00, 0.01, 0, 1, '', 1, 1576147705, 1, '72E026C9706B064C17FF7577A283ACE8', '121.230.80.218', 1576147719, 2, '42', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (199, 'RM1576146814639811', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12334421334NaN', 1, 1576146814, 1, NULL, NULL, 1576146814, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (277, 'RM1576890198769227', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576890198, 1, 'C427FBEBAC92F3F3B120D74C798B10D4', '183.227.56.94', NULL, 2, '72', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (190, 'RM1576146352989701', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12345678901NaN', 1, 1576146352, 1, NULL, NULL, 1576146352, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (191, 'RM1576146357284464', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12345678901NaN', 1, 1576146357, 1, NULL, NULL, 1576146357, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (192, 'RM1576146358889255', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12345678901NaN', 1, 1576146358, 1, NULL, NULL, 1576146358, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (193, 'RM1576146358652597', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12345678901NaN', 1, 1576146358, 1, NULL, NULL, 1576146358, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (194, 'RM1576146358408397', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12345678901NaN', 1, 1576146358, 1, NULL, NULL, 1576146358, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (195, 'RM1576146359493167', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12345678901NaN', 1, 1576146359, 1, NULL, NULL, 1576146359, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (197, 'RM1576146417336439', 29, 9, '1', 1.00, 0.00, 1.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-12098765431NaN', 1, 1576146417, 1, 'C76551C8C9FFA1401FBC4EF09D3122DF', '121.230.80.218', 1576146427, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (203, 'RM1576147407230028', 29, 0, '会员续费', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1576147407, 1, 'CD7A627F40816E278699E93EBC9E0068', '121.230.80.218', 1576147415, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (204, 'RM1576147576127923', 29, 9, '1', 1.00, 0.00, 1.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-112333333333NaN', 1, 1576147576, 1, '112A2B30FBDCF0BC37F7A3F80F00D10E', '121.230.80.218', 1576147588, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (285, 'RM1576891515159434', 35, 1, '购物车购买', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576891515, 1, 'DD4E397C0A8AA29E965BC8B222335974', '183.227.56.94', NULL, 2, '80', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (286, 'RM1576891804634407', 35, 40, '购物车购买', 100.00, 1.00, 99.00, 0, 2, '', 0, 1576891804, 1, 'BFF9D2F8D0F95FC23DF231741AB31C49', '183.227.56.94', NULL, 2, '81', 1, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (287, 'RM1576892196253701', 35, 40, '购物车购买', 100.00, 1.00, 99.00, 0, 2, '', 0, 1576892196, 1, 'ED78E8B09717743FFE79908F846298B3', '183.227.56.94', NULL, 2, '83', 1, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (288, 'RM1576892458222859', 35, 40, '购物车购买', 100.00, 1.00, 99.00, 0, 2, '', 0, 1576892458, 1, '33A43B3BDEB580E52850E6DCD05EF475', '183.227.56.94', NULL, 2, '84', 1, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (289, 'RM1576892744731884', 35, 40, '购物车购买', 100.00, 1.00, 114.00, 0, 2, '', 0, 1576892744, 1, '5FA8E60D946EEB547FEF85FABB31C6FC', '183.227.56.94', NULL, 2, '85', 1, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (290, 'RM1576893349438250', 35, 40, '购物车购买', 100.00, 0.00, 120.00, 0, 2, '', 0, 1576893349, 1, '93C74C239BB08E5091C835F91312833B', '183.227.56.94', NULL, 2, '86', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (291, 'RM1576894342634916', 35, 40, '购物车购买', 0.00, 1.00, 14.00, 0, 2, '', 0, 1576894342, 1, 'B2330748A8F3EA3446F257BE5A8F3BAF', '183.227.56.94', NULL, 2, '87', 1, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (292, 'RM1576894371992242', 35, 40, '购物车购买', 0.00, 0.00, 20.00, 0, 2, '', 0, 1576894371, 1, '55DE5FD01162BB81B022C614D92877C6', '183.227.56.94', NULL, 2, '88', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (293, 'RM1576894919973892', 35, 40, '购物车购买', 0.00, 0.00, 20.00, 0, 2, '', 0, 1576894919, 1, '196252BC9A75C87A838CBE5E6BFABF9A', '183.227.56.94', NULL, 2, '89', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (294, 'RM1576895196311615', 35, 2, '购物车购买', 200.00, 0.00, 220.00, 0, 2, '', 0, 1576895196, 1, 'F2BEF25C50ACF4549C585F82F22BFA67', '183.227.56.94', NULL, 2, '91', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (295, 'RM1576895373616458', 35, 2, '购物车购买', 200.00, 0.00, 220.00, 0, 2, '', 0, 1576895373, 1, '52ED5C2EC2AED20CA3EE8DE1ABDC41DE', '183.227.56.94', NULL, 2, '92', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (296, 'RM1576895384311321', 35, 2, '购物车购买', 200.00, 1.00, 214.00, 0, 2, '', 0, 1576895384, 1, 'E296F4B565E4272F3BFEC690C5E99A74', '183.227.56.94', NULL, 2, '92', 1, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (297, 'RM1576896025374745', 35, 2, '购物车购买', 200.00, 50.00, 165.00, 0, 2, '', 0, 1576896025, 1, 'EF403219A0D2BCBB0B61D6B5DFF2C542', '183.227.56.94', NULL, 2, '93', 50, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (299, 'RM1576896532333229', 35, 2, '购物车购买', 200.00, 0.00, 220.00, 0, 2, '', 0, 1576896532, 1, '00CBAD5EF2109990CC558D70F173DDFC', '183.227.56.94', NULL, 2, '93', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (300, 'RM1576896769593132', 35, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1576896769, 1, 'D3A11230E0F207EA716D86A8D2503494', '183.227.56.94', NULL, 2, '93', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (301, 'RM1576896856303938', 35, 3, 'ceshi3', 100.00, 0.00, 110.00, 0, 1, '', 0, 1576896856, 1, '9BFDE4BBED7ADE16B63B4BBBFF35F256', '183.227.56.94', NULL, 2, '93', 0, '', 1, NULL, 0, NULL, NULL, NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (302, 'RM1576896916899821', 35, 3, 'ceshi3', 100.00, 50.00, 55.00, 0, 1, '', 0, 1576896916, 1, 'B1090EC233E43686DA31C6DC4809CAF2', '183.227.56.94', NULL, 2, '93', 50, '', 1, NULL, 0, NULL, NULL, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (303, 'RM1576901615879357', 35, 2, '购物车购买', 200.00, 0.00, 220.00, 0, 2, '', 0, 1576901615, 1, '7FA0E5EA4342457A2411154CEF1DC4D3', '183.227.56.94', NULL, 2, '96', 0, '', 1, NULL, 0, NULL, NULL, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (304, 'RM1576901801138623', 35, 2, '购物车购买', 200.00, 80.00, 132.00, 1, 2, '', 0, 1576901801, 1, '2869C292B7CA5EE373609201809B635E', '183.227.56.94', NULL, 2, '97', 50, '', 1, NULL, 0, NULL, NULL, NULL, 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (305, 'RM1576902058367309', 35, 2, '购物车购买', 200.00, 80.00, 135.00, 1, 2, '', 0, 1576902058, 1, 'C85EDADED04E02ECA9F797D5D74DF129', '183.227.56.94', NULL, 2, '98', 50, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (306, 'RM1576902353217348', 35, 2, '购物车购买', 200.00, 80.00, 135.00, 1, 2, '', 0, 1576902353, 1, '221FC1794FD31D50ACB6B5AA58235C24', '183.227.56.94', NULL, 2, '99', 50, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (307, 'RM1576902356746436', 35, 2, '购物车购买', 200.00, 80.00, 135.00, 1, 2, '', 0, 1576902356, 1, '76FD6D14533E8314748483FF5404FE21', '183.227.56.94', NULL, 2, '99', 50, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (308, 'RM1576902358653560', 35, 2, '购物车购买', 200.00, 80.00, 135.00, 1, 2, '', 0, 1576902358, 1, 'CEDD8D2276D199A6044F27C3AE85481C', '183.227.56.94', NULL, 2, '99', 50, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (309, 'RM1576903556603591', 35, 2, '购物车购买', 200.00, 80.00, 135.00, 1, 2, '', 0, 1576903556, 1, 'C2E12ED133225304CF476E7C375528E0', '183.227.56.94', NULL, 2, '103', 50, '', 1, NULL, 0, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (310, 'RM1576903616983281', 35, 3, 'ceshi3', 100.00, 80.00, 25.00, 1, 1, '', 0, 1576903616, 1, '6B244C63A6782688ABC6BCEA24AF6A27', '183.227.56.94', NULL, 2, '103', 50, '', 1, NULL, 0, NULL, NULL, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (313, 'RM1576907980553034', 26, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', -1, 1576907980, 1, '82BC1B8D0CCFBDA4A7E1C73CFB02FCA9', '121.58.37.8', 1576917235, 2, '120', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (329, 'RM1576927634280665', 33, 20, '还是试试看', 0.10, 0.00, 0.11, 0, 1, '', 1, 1576927634, 1, '8665481BD5137AEC07BC114E127EE3EB', '118.133.209.174', 1576927653, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (351, 'RM1577111897259934', 26, 7, '1', 2.00, 0.00, 2.00, 0, 1, '\'address-四川省成都市金牛区新泉路33号,phone-18121394387NaN', 1, 1577111897, 1, '8D885DE6860259F3716C1A6EDC615746', '171.210.125.254', 1577111905, 2, '0', 0, 'undefined', 1, NULL, 2, NULL, NULL, NULL, 0, 26, NULL, 1577111941, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (318, 'RM1576908600475887', 33, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', 1, 1576908600, 1, 'A0FEBE249A16A8D8EF3F79D0756D0B43', '58.16.228.118', 1576917856, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (319, 'RM1576908838925447', 35, 2, '购物车购买', 200.00, 80.00, 132.00, 1, 2, '', 0, 1576908838, 1, 'C18B11B8F44CB4C53C5DAA631CFB19CE', '183.227.56.94', NULL, 2, '121', 50, '', 1, NULL, 0, NULL, NULL, NULL, 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (320, 'RM1576909159399435', 33, 20, '还是试试看', 0.10, 0.00, 0.11, 0, 1, '', 1, 1576909159, 1, '16A63946300D186419514647BC94AD42', '58.16.228.118', 1576918419, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (321, 'RM1576911343262850', 33, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', 1, 1576911343, 1, 'C17F7A5F3AB770E38B4FE276877B71B6', '58.16.228.118', 1576916999, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (322, 'RM1576911663648130', 33, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', 1, 1576911663, 1, 'D0766EE61A8AC4F712BE0643FB9817FC', '118.133.209.174', 1576915532, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (323, 'RM1576912331700908', 33, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', 1, 1576912331, 1, 'B9887B7C34CAB838023A60ECC709213B', '118.133.209.174', 1576916195, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (324, 'RM1576913762410751', 33, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', 1, 1576913762, 1, '817E5B5CBBBC6C1F1559FC9D02BE686C', '118.133.209.174', 1576915826, 2, '119', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (332, 'RM1576929789970815', 1, 2, '购物车购买', 200.00, 12.00, 200.00, 0, 2, '2-1,3-1', 2, 1576929789, 1, '38F55B9849E69FD67CE4EB0893F98869', '183.222.21.253', NULL, 2, '46', 12, NULL, 3, NULL, 0, NULL, NULL, NULL, 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (331, 'RM1576929433665571', 26, 20, '还是试试看', 0.10, 0.00, 0.11, 0, 1, '', 1, 1576929433, 1, '44362ACDA4FD2647EBE240083A5E1C6C', '121.58.37.8', 1576929443, 2, '120', 0, '', 1, NULL, 2, NULL, NULL, NULL, 0, 26, NULL, 1576929764, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (326, 'RM1576915396674238', 33, 20, '还是试试看', 0.10, 0.00, 0.10, 0, 1, '', 1, 1576915396, 1, 'F25B15289A0924BBD5DB497DFC939843', '118.133.209.174', 1576915418, 2, '119', 0, '', 1, NULL, 2, NULL, NULL, NULL, 0, 33, NULL, 1576919421, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (333, 'RM15769297899708152', 1, 2, 'ceshi2', 100.00, 0.00, 100.00, 0, 1, '2-1,3-1', 1, 1576929789, 1, NULL, NULL, 1576930141, 2, '46', 0, '购物车购买', 1, NULL, 1, NULL, NULL, NULL, 6, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (334, 'RM15769297899708153', 1, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '2-1,3-1', 1, 1576929789, 1, NULL, NULL, 1576930141, 2, '46', 0, '购物车购买', 1, NULL, 1, NULL, NULL, NULL, 6, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (335, 'RM1576931752712250', 35, 3, 'ceshi3', 100.00, 50.00, 55.00, 0, 1, '', 0, 1576931752, 1, '66470DBDD94D4BFE6BA0C5A395DF27C3', '183.227.56.94', NULL, 2, '122', 50, '', 1, NULL, 0, NULL, NULL, NULL, 5, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (336, 'RM1576932715180647', 35, 20, '还是试试看', 0.10, 50.00, 0.00, 0, 1, '', 1, 1576932715, 1, NULL, NULL, 1576932715, 2, '122', 50, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (337, 'RM1576932720143251', 35, 20, '还是试试看', 0.10, 50.00, 0.00, 0, 1, '', 1, 1576932720, 1, NULL, NULL, 1576932720, 2, '122', 50, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (338, 'RM1576932726535566', 35, 20, '还是试试看', 0.10, 50.00, 0.00, 0, 1, '', 1, 1576932726, 1, NULL, NULL, 1576932726, 2, '122', 50, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (339, 'RM1576932729818768', 35, 20, '还是试试看', 0.10, 50.00, 0.00, 0, 1, '', 1, 1576932729, 1, NULL, NULL, 1576932729, 2, '122', 50, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (340, 'RM1576932795620471', 35, 20, '还是试试看', 0.10, 0.00, 0.11, 0, 1, '', 1, 1576932795, 1, '1C4D04FC0E7562FA5DC97F60D18A08B6', '183.227.56.94', 1576932831, 2, '122', 0, '', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (402, 'RM1577195924796138', 36, 0, '会员续费', 0.01, NULL, 0.01, NULL, 1, NULL, 1, 1577195924, 1, '346CFC36030A6A28FC9EE78302765616', '116.24.89.247', 1577195948, 1, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (407, 'RM1577269118170295', 36, 9, '1', 1.00, 0.00, 1.00, 0, 1, '\'address-广东省深圳市龙岗区龙翔大道8033号,phone-18666212311NaN', 1, 1577269118, 1, '503F492ADDB625FF0D6621FF29A8D79B', '113.118.8.102', 1577269144, 2, '0', 0, 'undefined', 1, NULL, 2, NULL, NULL, NULL, 0, 29, NULL, 1577701561, 1, NULL, '11', 1577367626, NULL);
+INSERT INTO `cy_order` VALUES (456, 'RM1577625775822059', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625775, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (395, 'RM1577181112323813', 36, 13, '1', 2.00, 0.00, 2.00, 0, 1, '\'address-广东省深圳市龙岗区龙翔大道8033号,phone-18666212314NaN', 1, 1577181112, 1, '0C1C14E67C8CEA2EC21D8E297BF0DEF4', '113.118.8.45', 1577181130, 2, '0', 0, 'undefined', 1, NULL, 2, NULL, NULL, NULL, 0, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e033e9fc394d.jpg', 1577200080, 1, 1577270944, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (383, 'RM1577147857438999', 29, 11, '多少', 0.00, 0.00, 0.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-11111222222NaN', 1, 1577147857, 1, NULL, NULL, 1577147857, 2, '0', 0, 'undefined', 1, NULL, 2, NULL, NULL, NULL, 0, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e03947b3ad02.jpg', 1577292564, 1, 1577292924, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (384, 'RM1577147881368914', 28, 11, '测试产品', 100000.00, 0.00, 100000.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-2288273737383NaN', 1, 1577147881, 1, '31045A390F4F13B8DB787A92EE87E4A8', '117.94.24.229', NULL, 2, '0', 0, 'undefined', 1, NULL, 2, NULL, NULL, NULL, 0, 26, 'https://lck.hzlyzhenzhi.com/files/attach/file5e043ab863d05.jpg', 1577291735, 1, 1577335481, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (385, 'RM1577151392200442', 36, 11, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 1, 1577151392, 1, '4AB93412EC369CDE6B372B9FEA7CCF70', '113.118.8.45', NULL, 2, '127', 0, '', 1, NULL, 2, NULL, NULL, NULL, 0, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e0392b198a54.jpg', 1577168128, 1, 1577292467, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (386, 'RM1577151929687693', 36, 11, 'ceshi3', 200.00, 0.00, 220.00, 0, 2, '', 1, 1577151929, 1, 'BF26514FDE910F1A17229ACE818967E1', '113.118.8.45', NULL, 2, '127', 0, '', 1, NULL, 2, NULL, NULL, NULL, 20, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e03929f22e0a.jpg', 1577169152, 1, 1577292449, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (387, 'RM1577161417161708', 36, 11, 'ceshi3', 100.00, 0.00, 105.00, 0, 1, '', 1, 1577161417, 1, '5CDC7B75F5EC71088F7A9741D4A0F68E', '113.118.8.45', NULL, 2, '127', 0, '', 1, NULL, 2, NULL, NULL, NULL, 5, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e0391c86c0ea.jpg', 1577163904, 1, 1577292233, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (388, 'RM1577161560412302', 36, 11, 'ceshi3', 100.00, 50.00, 55.00, 0, 1, '', 1, 1577161560, 1, '28535404F166F10B95CE96BC0E308B49', '113.118.8.45', NULL, 2, '127', 50, '', 1, NULL, 2, NULL, NULL, NULL, 5, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e033eaa9d0f3.jpg', 1577163253, 1, 1577270955, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (389, 'RM1577161574683494', 36, 11, 'ceshi3', 100.00, 50.00, 60.00, 0, 1, '', 1, 1577161574, 1, '9D82AE487E02F743EC44D14528B17356', '113.118.8.45', NULL, 2, '127', 50, '', 1, NULL, 3, NULL, NULL, NULL, 10, 36, 'https://lck.hzlyzhenzhi.com/files/attach/file5e01ce6bc1ee8.jpg', 1577163235, 1, 1577197588, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (390, 'RM1577161640586739', 36, 11, 'ceshi3', 100.00, 50.00, 55.00, 0, 1, '', 1, 1577161640, 1, 'C6593A8810A12F9C1796393BD95FB802', '113.118.8.45', NULL, 2, '127', 50, '', 1, NULL, 3, NULL, NULL, NULL, 5, 36, NULL, 1577163102, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (391, 'RM1577161649684751', 36, 11, 'ceshi3', 100.00, 0.00, 110.00, 0, 1, '', 1, 1577161649, 1, '04133CED9857EB0161FDB9A494730498', '113.118.8.45', NULL, 2, '127', 0, '', 1, NULL, 3, NULL, NULL, NULL, 10, 36, NULL, 1577162943, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (392, 'RM1577161662638206', 36, 11, 'ceshi3', 100.00, 30.00, 80.00, 1, 1, '', 1, 1577161662, 1, '1BDDAC601FB7D0737026BBE85EFA4CEE', '113.118.8.45', NULL, 2, '127', 0, '', 1, NULL, 3, NULL, NULL, NULL, 10, 36, NULL, 1577163175, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (815, 'RM1577703276738385', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703276, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (816, 'RM1577703299227620', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703299, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (410, 'RM1577354493882835', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577354493, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (411, 'RM1577363494822085', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577363494, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (412, 'RM1577363755239979', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577363755, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (413, 'RM1577363958679963', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577363958, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (414, 'RM1577364039599525', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364039, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (415, 'RM1577364069786240', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364069, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (416, 'RM1577364136284250', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364136, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (417, 'RM1577364450439908', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364450, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (418, 'RM1577364589738358', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364589, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (419, 'RM1577364661883209', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364661, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (420, 'RM1577364797617180', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364797, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (421, 'RM1577364816698126', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364816, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (422, 'RM1577364945172462', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577364945, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (423, 'RM1577365004782255', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577365004, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (424, 'RM1577365105715460', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577365105, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (425, 'RM1577365156208521', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577365156, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (426, 'RM1577365919635638', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577365919, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (427, 'RM1577366049519436', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366049, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (428, 'RM1577366063591233', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366063, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (429, 'RM1577366542426399', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366542, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (430, 'RM1577366578386622', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366578, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (431, 'RM1577366601574835', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366601, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (432, 'RM1577366785760106', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366785, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (433, 'RM1577366799782335', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577366799, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (434, 'RM1577367185760748', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367185, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (435, 'RM1577367203488968', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367203, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (436, 'RM1577367227892732', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367227, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (437, 'RM1577367424726160', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367424, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (438, 'RM1577367434221842', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367434, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (439, 'RM1577367478547844', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367478, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (440, 'RM1577367569917850', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577367569, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (441, 'RM1577401972380068', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577401972, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (442, 'RM1577410661949496', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577410661, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (443, 'RM1577429490648852', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577429490, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (444, 'RM1577444850871814', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577444850, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (445, 'RM1577444863774390', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577444863, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (446, 'RM1577520835401228', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577520835, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (447, 'RM1577520839533801', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577520839, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (448, 'RM1577539823141833', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577539823, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (449, 'RM1577568591810690', 28, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577568591, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (450, 'RM1577579768594149', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577579768, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (451, 'RM1577586728379132', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577586728, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (452, 'RM1577612372964021', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577612372, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (453, 'RM1577612382321459', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577612382, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (454, 'RM1577625750982746', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625750, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (455, 'RM1577625753907980', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625753, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (457, 'RM1577625786129448', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625786, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (458, 'RM1577625844652143', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625844, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (459, 'RM1577625855141458', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625855, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (460, 'RM1577625877674987', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625877, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (461, 'RM1577625956688790', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625956, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (462, 'RM1577625978588638', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577625978, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (463, 'RM1577626034372471', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626034, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (464, 'RM1577626061492338', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626061, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (465, 'RM1577626068259399', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626068, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (466, 'RM1577626074378169', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626074, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (467, 'RM1577626208316724', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626208, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (468, 'RM1577626215370626', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626215, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (469, 'RM1577626264254183', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626264, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (470, 'RM1577626274512106', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626274, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (471, 'RM1577626422689673', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626422, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (472, 'RM1577626441295003', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626441, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (473, 'RM1577626472898296', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626472, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (474, 'RM1577626568671777', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626568, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (475, 'RM1577626638784234', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626638, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (476, 'RM1577626869525990', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577626869, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (477, 'RM1577627470533319', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577627470, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (478, 'RM1577627698723726', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577627698, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (479, 'RM1577627989876361', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577627989, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (480, 'RM1577628081728942', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628081, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (481, 'RM1577628104455744', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628104, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (671, 'RM1577682458862826', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577682458, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (672, 'RM1577682740392106', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577682740, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (483, 'RM1577628165324455', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628165, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (484, 'RM1577628172955220', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628172, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (485, 'RM1577628196137660', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628196, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (486, 'RM1577628196676565', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628196, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (487, 'RM1577628395486239', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628395, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (488, 'RM1577628411675495', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628411, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (489, 'RM1577628528861194', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628528, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (490, 'RM1577628634444750', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628634, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (491, 'RM1577628673725331', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628673, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (492, 'RM1577628677202368', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628677, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (493, 'RM1577628693607390', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628693, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (494, 'RM1577628827593239', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628827, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (495, 'RM1577628964438838', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577628964, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (496, 'RM1577629210832759', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629210, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (497, 'RM1577629216584064', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629216, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (498, 'RM1577629284942273', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629284, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (499, 'RM1577629290811038', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629290, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (500, 'RM1577629313943584', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629313, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (501, 'RM1577629319692642', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629319, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (502, 'RM1577629368339783', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629368, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (503, 'RM1577629372278659', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629372, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (504, 'RM1577629479184820', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629479, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (505, 'RM1577629518451304', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629518, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (506, 'RM1577629588880106', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629588, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (507, 'RM1577629710176929', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629710, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (508, 'RM1577629820953990', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629820, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (509, 'RM1577629846372552', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629846, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (510, 'RM1577629864571973', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577629864, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (511, 'RM1577630774649361', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577630774, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (512, 'RM1577630784646258', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577630784, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (513, 'RM1577630856582619', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577630856, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (514, 'RM1577631043275048', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631043, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (515, 'RM1577631070795014', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631070, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (516, 'RM1577631581650297', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631581, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (517, 'RM1577631604618197', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631604, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (518, 'RM1577631669930048', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631669, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (519, 'RM1577631703561380', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631703, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (520, 'RM1577631824935238', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631824, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (521, 'RM1577631929883824', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631929, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (522, 'RM1577631946402806', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577631946, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (523, 'RM1577632020565178', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632020, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (524, 'RM1577632037769629', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632037, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (525, 'RM1577632063959179', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632063, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (526, 'RM1577632073306345', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632073, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (527, 'RM1577632100364928', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632100, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (528, 'RM1577632142512829', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632142, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (529, 'RM1577632277763503', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632277, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (530, 'RM1577632280382824', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632280, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (531, 'RM1577632347736432', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632347, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (532, 'RM1577632413523368', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632413, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (533, 'RM1577632475994569', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632475, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (534, 'RM1577632583259158', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632583, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (535, 'RM1577632616488138', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632616, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (536, 'RM1577632635554773', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632635, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (537, 'RM1577632637922558', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632637, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (538, 'RM1577632672615549', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632672, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (539, 'RM1577632695556618', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632695, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (540, 'RM1577632714526712', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632714, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (541, 'RM1577632734407674', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632734, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (542, 'RM1577632751982559', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632751, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (543, 'RM1577632773218579', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632773, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (544, 'RM1577632785653534', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632785, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (545, 'RM1577632811529735', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632811, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (546, 'RM1577632882447746', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632882, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (547, 'RM1577632903235297', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577632903, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (548, 'RM1577633027252952', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633027, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (549, 'RM1577633345194825', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633345, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (550, 'RM1577633358276011', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633358, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (551, 'RM1577633371964850', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633371, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (552, 'RM1577633391791697', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633391, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (553, 'RM1577633434177277', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633434, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (554, 'RM1577633478936495', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633478, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (555, 'RM1577633511241049', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633511, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (556, 'RM1577633530970575', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633530, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (557, 'RM1577633603532945', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633603, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (558, 'RM1577633700152399', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633700, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (559, 'RM1577633724190304', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633724, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (560, 'RM1577633748506623', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633748, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (561, 'RM1577633782211169', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633782, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (562, 'RM1577633804372150', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633804, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (563, 'RM1577633994230482', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577633994, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (564, 'RM1577634001638741', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634001, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (565, 'RM1577634048533399', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634048, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (697, 'RM1577689842660194', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577689842, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (695, 'RM1577688594506275', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577688594, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (696, 'RM1577689487932483', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577689487, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (568, 'RM1577634119823744', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634119, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (569, 'RM1577634155245436', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634155, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (570, 'RM1577634178879357', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634178, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (571, 'RM1577634220509191', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634220, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (572, 'RM1577634231903807', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634231, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (573, 'RM1577634281909050', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634281, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (574, 'RM1577634733566489', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634733, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (575, 'RM1577634976648692', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577634976, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (576, 'RM1577635078630823', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635078, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (577, 'RM1577635151673141', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635151, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (578, 'RM1577635217562396', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635217, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (579, 'RM1577635229785117', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635229, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (580, 'RM1577635247619401', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635247, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (581, 'RM1577635284906829', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635284, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (582, 'RM1577635295209243', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635295, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (583, 'RM1577635305133273', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635305, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (584, 'RM1577635317935024', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635317, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (585, 'RM1577635341142689', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635341, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (586, 'RM1577635358387104', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635358, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (587, 'RM1577635391638901', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635391, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (588, 'RM1577635396217000', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635396, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (589, 'RM1577635459484046', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635459, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (590, 'RM1577635562800231', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635562, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (591, 'RM1577635597579918', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635597, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (592, 'RM1577635646440309', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635646, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (593, 'RM1577635679642272', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577635679, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (594, 'RM1577636021171017', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577636021, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (595, 'RM1577636107971992', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577636107, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (596, 'RM1577636214914079', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577636214, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (597, 'RM1577636219458740', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577636219, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (598, 'RM1577636594735763', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577636594, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (599, 'RM1577636653432819', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577636653, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (600, 'RM1577637849368646', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577637849, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (601, 'RM1577669327214058', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577669327, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (602, 'RM1577670020302734', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577670020, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (603, 'RM1577670865424794', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577670865, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (604, 'RM1577670964274566', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577670964, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (605, 'RM1577671238196162', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577671238, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (606, 'RM1577671257769120', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577671257, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (607, 'RM1577671316189769', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577671316, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (608, 'RM1577671811450635', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577671811, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (609, 'RM1577672241998555', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672241, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (610, 'RM1577672342528772', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672342, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (611, 'RM1577672446712357', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672446, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (612, 'RM1577672516512829', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672516, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (613, 'RM1577672568979402', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672568, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (614, 'RM1577672615790922', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672615, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (615, 'RM1577672790967793', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672790, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (616, 'RM1577672965230910', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577672965, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (617, 'RM1577673063307817', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673063, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (618, 'RM1577673088512829', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673088, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (619, 'RM1577673283661291', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673283, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (620, 'RM1577673287660328', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673287, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (621, 'RM1577673347985715', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673347, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (622, 'RM1577673405481050', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673405, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (623, 'RM1577673413191508', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673413, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (624, 'RM1577673419638206', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673419, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (625, 'RM1577673475652865', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673475, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (626, 'RM1577673572537786', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673572, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (627, 'RM1577673701713026', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673701, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (628, 'RM1577673824930878', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673824, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (629, 'RM1577673861692589', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673861, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (630, 'RM1577673914348717', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577673914, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (631, 'RM1577674102933312', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577674102, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (632, 'RM1577674743917101', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577674743, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (633, 'RM1577674763289413', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577674763, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (634, 'RM1577674799409092', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577674799, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (635, 'RM1577674922191160', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577674922, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (636, 'RM1577674945595085', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577674945, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (637, 'RM1577675402870342', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577675402, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (638, 'RM1577675418946874', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577675418, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (639, 'RM1577675539882433', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577675539, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (640, 'RM1577675611824306', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577675611, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (641, 'RM1577675891954551', 31, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577675891, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (642, 'RM1577675923379988', 31, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577675923, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (643, 'RM1577676294688255', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676294, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (644, 'RM1577676324860846', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676324, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (645, 'RM1577676395292435', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676395, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (646, 'RM1577676622969237', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676622, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (647, 'RM1577676677597947', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676677, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (648, 'RM1577676761978359', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676761, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (649, 'RM1577676766808684', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676766, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (650, 'RM1577676817518580', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577676817, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (651, 'RM1577678769444723', 31, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577678769, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (652, 'RM1577678786422708', 31, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577678786, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (653, 'RM1577679694715112', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577679694, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (654, 'RM1577679841948479', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577679841, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (655, 'RM1577679896491536', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577679896, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (656, 'RM1577679939919643', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577679939, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (657, 'RM1577680099452989', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577680099, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (658, 'RM1577680149556083', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577680149, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (659, 'RM1577681172764921', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681172, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (660, 'RM1577681250911029', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681250, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (661, 'RM1577681340553489', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681340, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (662, 'RM1577681459396252', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681459, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (663, 'RM1577681678147263', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681678, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (664, 'RM1577681690675415', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681690, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (665, 'RM1577681773470911', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681773, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (666, 'RM1577681956777894', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681956, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (667, 'RM1577681971180594', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577681971, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1124, 'RM1577774575974587', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774575, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (669, 'RM1577682352583957', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577682352, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (670, 'RM1577682377262475', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577682377, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (673, 'RM1577682927765349', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577682927, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (674, 'RM1577682990613890', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577682990, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (675, 'RM1577683079508736', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683079, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (676, 'RM1577683258478000', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683258, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (677, 'RM1577683451887703', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683451, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (678, 'RM1577683672382717', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683672, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (679, 'RM1577683713274727', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683713, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (680, 'RM1577683714809994', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683714, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (681, 'RM1577683890773106', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577683890, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (682, 'RM1577684264793891', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577684264, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (683, 'RM1577684316842068', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577684316, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1123, 'RM1577774456832063', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774456, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1122, 'RM1577774427172488', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774427, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (686, 'RMZT157768435458680', 26, 3, 'ceshi3', 100.00, NULL, 100.00, NULL, 1, NULL, 1, 1577684354, 1, '89FADFA0C5B56F7D94E29E8ACC5627CC', '221.237.151.58', NULL, 2, '123', NULL, '用户组团购买商品', 2, NULL, 3, NULL, NULL, NULL, 0, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (687, 'RMZT157768439321392', 26, 2, 'ceshi2', 100.00, NULL, 100.00, NULL, 1, NULL, 1, 1577684393, 1, 'D0B6865701E8FE97DB11E46815278062', '221.237.151.58', NULL, 2, '123', NULL, '用户组团购买商品', 2, NULL, 3, NULL, NULL, NULL, 0, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (688, 'RMZT157768448824820', 26, 3, 'ceshi3', 100.00, NULL, 100.00, NULL, 1, NULL, 1, 1577684488, 1, '41C9067522BB126197E861F638D6A1EC', '110.185.168.6', NULL, 2, '123', NULL, '用户组团购买商品', 2, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (689, 'RM1577686873849103', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577686873, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (690, 'RM1577686913902442', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577686913, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (691, 'RM1577687449489957', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577687449, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (692, 'RM1577687482669851', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577687482, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (693, 'RM1577688422828853', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577688422, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (694, 'RM1577688446155636', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577688446, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (698, 'RM1577691118500096', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577691118, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (699, 'RM1577691392838911', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577691392, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (700, 'RM1577691455201753', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577691455, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (701, 'RM1577691580283635', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577691580, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (702, 'RM1577691894488219', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577691894, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (703, 'RM1577693426203090', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577693426, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (704, 'RM1577693833353987', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577693833, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (705, 'RM1577693855595754', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577693855, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (706, 'RM1577694236710083', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694236, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (707, 'RM1577694399415138', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694399, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (708, 'RM1577694428423216', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694428, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (709, 'RM1577694471689994', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694471, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (710, 'RM1577694522564296', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694522, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (711, 'RM1577694643625821', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694643, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (712, 'RM1577694864436243', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694864, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (713, 'RM1577694877848702', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577694877, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (714, 'RM1577695212677395', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695212, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (715, 'RM1577695254159060', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695254, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (716, 'RM1577695332865287', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695332, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (717, 'RM1577695342176608', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695342, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (718, 'RM1577695391850708', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695391, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (719, 'RM1577695578201004', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695578, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (720, 'RM1577695625528397', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695625, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (721, 'RM1577695676258195', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695676, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (722, 'RM1577695703780141', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695703, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (723, 'RM1577695908779232', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577695908, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (724, 'RM1577696054475405', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696054, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (725, 'RM1577696114430385', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696114, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (726, 'RM1577696123655807', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696123, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (727, 'RM1577696160431937', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696160, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (728, 'RM1577696213283822', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696213, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (729, 'RM1577696304903432', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696304, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (730, 'RM1577696340180701', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696340, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (731, 'RM1577696378267478', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696378, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (732, 'RM1577696411572107', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696411, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (733, 'RM1577696561458847', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696561, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (734, 'RM1577696617495655', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696617, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (735, 'RM1577696687652704', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696687, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (736, 'RM1577696806559614', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696806, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (737, 'RM1577696837570849', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696837, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (738, 'RM1577696866757832', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696866, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (739, 'RM1577696943623172', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696943, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (740, 'RM1577696961698768', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577696961, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (741, 'RM1577697069391250', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697069, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (742, 'RM1577697202778189', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697202, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (743, 'RM1577697340525401', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697340, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (744, 'RM1577697344418883', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697344, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (745, 'RM1577697366127281', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697366, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (746, 'RM1577697387368084', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697387, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (747, 'RM1577697467535593', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697467, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (748, 'RM1577697505571170', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697505, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (749, 'RM1577697531692482', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697531, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (750, 'RM1577697549458071', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697549, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (751, 'RM1577697764684938', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697764, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (752, 'RM1577697794297919', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697794, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (753, 'RM1577697837916887', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697837, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (754, 'RM1577697988158311', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697988, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (755, 'RM1577697998980017', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577697998, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (756, 'RM1577698048306345', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698048, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (757, 'RM1577698085350028', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698085, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (758, 'RM1577698129638821', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698129, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (759, 'RM1577698182479445', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698182, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (760, 'RM1577698218782816', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698218, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (761, 'RM1577698252999919', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698252, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (762, 'RM1577698283620578', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698283, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (763, 'RM1577698351467621', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698351, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (764, 'RM1577698393222350', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698393, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (765, 'RM1577698405233077', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698405, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (766, 'RM1577698436126478', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698436, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (767, 'RM1577698458323064', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698458, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (768, 'RM1577698462911323', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698462, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (769, 'RM1577698608765375', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698608, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (770, 'RM1577698623179363', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698623, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (771, 'RM1577698636787792', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698636, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (772, 'RM1577698732753338', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698732, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (773, 'RM1577698787508335', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698787, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (774, 'RM1577698793438571', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698793, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (775, 'RM1577698867526605', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698867, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (776, 'RM1577698889670868', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698889, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (777, 'RM1577698895847043', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698895, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (778, 'RM1577698908568255', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577698908, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (779, 'RM1577699302474121', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577699302, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (780, 'RM1577699311138222', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577699311, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (781, 'RM1577699369836504', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577699369, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (782, 'RM1577699431765830', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577699431, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (783, 'RM1577699478373140', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577699478, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (784, 'RM1577699677486025', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577699677, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (785, 'RM1577700165245222', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700165, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1120, 'RM1577774389357786', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774389, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1121, 'RM1577774404918359', 26, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1577774404, 1, '79A64AC10A70E58E432C3522C8C48420', '110.185.168.6', NULL, 2, '123', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (787, 'RM1577700257146889', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700257, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (788, 'RM1577700262364714', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700262, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (789, 'RM1577700283875933', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700283, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (790, 'RM1577700292490546', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700292, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (791, 'RM1577700306965546', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700306, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (792, 'RM1577700469492632', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700469, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (793, 'RM1577700481826205', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700481, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (794, 'RM1577700504582245', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700504, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (795, 'RM1577700584944146', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700584, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (796, 'RM1577700800374852', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577700800, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (797, 'RM1577701523606373', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577701523, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (798, 'RM1577701953752562', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577701953, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (799, 'RM1577702234635237', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702234, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (800, 'RM1577702311602414', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702311, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (801, 'RM1577702346783218', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702346, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (802, 'RM1577702395790681', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702395, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (803, 'RM1577702426219007', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702426, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (804, 'RM1577702429921007', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702429, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (805, 'RM1577702490495093', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702490, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (806, 'RM1577702650636494', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702650, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (807, 'RM1577702824658108', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702824, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (808, 'RM1577702865537947', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702865, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (809, 'RM1577702963148761', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577702963, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (810, 'RM1577703061780890', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703061, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (811, 'RM1577703134339248', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703134, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (812, 'RM1577703155632909', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703155, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (813, 'RM1577703232805126', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703232, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (814, 'RM1577703239591367', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703239, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (817, 'RM1577703379579944', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703379, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (818, 'RM1577703437443974', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703437, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (819, 'RM1577703451923976', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703451, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (820, 'RM1577703458331892', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703458, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (821, 'RM1577703478545972', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703478, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (822, 'RM1577703479286042', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703479, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (823, 'RM1577703499415271', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703499, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (824, 'RM1577703629315681', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703629, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (825, 'RM1577703670330073', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703670, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (826, 'RM1577703704672232', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703704, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (827, 'RM1577703707799187', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577703707, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1119, 'RM1577774220927614', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774220, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1118, 'RM1577773879306854', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577773879, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (830, 'RM1577705063996816', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577705063, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (831, 'RM1577706187212346', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577706187, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (832, 'RM1577706512915015', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577706512, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (833, 'RM1577706675510368', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577706675, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (834, 'RM1577706979208039', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577706979, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (835, 'RM1577707006838938', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577707006, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (836, 'RM1577707015355485', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577707015, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (837, 'RM1577708868451197', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577708868, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (838, 'RM1577710383727310', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710383, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (839, 'RM1577710606175351', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710606, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (840, 'RM1577710735182011', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710735, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (841, 'RM1577710795788621', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710795, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (842, 'RM1577710826894792', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710826, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (843, 'RM1577710916257125', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710916, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (844, 'RM1577710961420354', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577710961, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (845, 'RM1577711243750422', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711243, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (846, 'RM1577711334299952', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711334, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (847, 'RM1577711553472944', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711553, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (848, 'RM1577711628277241', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711628, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (849, 'RM1577711746194584', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711746, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (850, 'RM1577711760890993', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711760, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (851, 'RM1577711792399917', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711792, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (852, 'RM1577711808673569', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711808, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (853, 'RM1577711934994141', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711934, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (854, 'RM1577711961911323', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577711961, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (855, 'RM1577712013951957', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712013, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (856, 'RM1577712024741006', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712024, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (857, 'RM1577712044710832', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712044, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (858, 'RM1577712063759490', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712063, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (859, 'RM1577712085257634', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712085, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (860, 'RM1577712108330929', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712108, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (861, 'RM1577712116951020', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712116, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (862, 'RM1577712152510368', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712152, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (863, 'RM1577712182367656', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712182, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (864, 'RM1577712217442770', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712217, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (865, 'RM1577712251750342', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712251, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (866, 'RM1577712274218231', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712274, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (867, 'RM1577712294919455', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712294, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (868, 'RM1577712309905759', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712309, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (869, 'RM1577712370719446', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712370, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (870, 'RM1577712396956504', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712396, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (871, 'RM1577712442971966', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712442, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (872, 'RM1577712501400880', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712501, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (873, 'RM1577712521621621', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712521, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (874, 'RM1577712556854961', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712556, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (875, 'RM1577712572172515', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712572, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (876, 'RM1577712588689726', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712588, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (877, 'RM1577712597624109', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712597, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (878, 'RM1577712691695665', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712691, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (879, 'RM1577712700480515', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712700, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (880, 'RM1577712720262368', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712720, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (881, 'RM1577712726502155', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712726, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (882, 'RM1577712751678839', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712751, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (883, 'RM1577712757695745', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712757, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (884, 'RM1577712778255280', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712778, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (885, 'RM1577712787553569', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712787, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (886, 'RM1577712805307576', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712805, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (887, 'RM1577712823417706', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712823, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (888, 'RM1577712861477465', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712861, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (889, 'RM1577712965767863', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712965, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (890, 'RM1577712982715032', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712982, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (891, 'RM1577712996170081', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577712996, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (892, 'RM1577713029341816', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713029, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (893, 'RM1577713052969745', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713052, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (894, 'RM1577713100956584', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713100, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (895, 'RM1577713127473051', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713127, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (896, 'RM1577713190164891', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713191, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (897, 'RM1577713229799294', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713229, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (898, 'RM1577713303455664', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713303, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (899, 'RM1577713334424206', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713334, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (900, 'RM1577713386738304', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713386, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (901, 'RM1577713449761256', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713449, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (902, 'RM1577713467559668', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713467, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (903, 'RM1577713583339676', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713583, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (904, 'RM1577713586592731', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713586, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (905, 'RM1577713612276359', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713612, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (906, 'RM1577713620231044', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713620, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (907, 'RM1577713641869486', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713641, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (908, 'RM1577713686463502', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713686, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (909, 'RM1577713717223741', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713717, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (910, 'RM1577713732215743', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713732, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (911, 'RM1577713745573712', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713745, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (912, 'RM1577713783756441', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713783, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (913, 'RM1577713906170054', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713906, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (914, 'RM1577713923202288', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713923, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (915, 'RM1577713956541264', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577713956, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (916, 'RM1577714008951930', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714008, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (917, 'RM1577714022995613', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714022, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (918, 'RM1577714044960918', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714044, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (919, 'RM1577714083838938', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714083, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (920, 'RM1577714239272988', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714239, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (921, 'RM1577714258190946', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714258, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (922, 'RM1577714295369235', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714295, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (923, 'RM1577714309641790', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714309, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (924, 'RM1577714337411179', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714337, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (925, 'RM1577714365394192', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714365, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (926, 'RM1577714411728942', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714411, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (927, 'RM1577714417456573', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714417, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (928, 'RM1577714446902630', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714446, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (929, 'RM1577714481901426', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714481, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (930, 'RM1577714513166844', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714513, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (931, 'RM1577714529464010', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714529, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (932, 'RM1577714547563440', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714547, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (933, 'RM1577714563522619', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714563, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (934, 'RM1577714618262556', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714618, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (935, 'RM1577714636582325', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714636, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (936, 'RM1577714649130598', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714649, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (937, 'RM1577714669508789', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714669, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (938, 'RM1577714692531206', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714692, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (939, 'RM1577714715801622', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714715, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (940, 'RM1577714779918305', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714779, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (941, 'RM1577714796288797', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714796, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (942, 'RM1577714809323947', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714809, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (943, 'RM1577714853685821', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714853, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (944, 'RM1577714863267130', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714863, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (945, 'RM1577714887717172', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714887, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (946, 'RM1577714895609824', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714895, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (947, 'RM1577714903681461', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714903, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (948, 'RM1577714918302440', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714918, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (949, 'RM1577714966171285', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714966, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (950, 'RM1577714997836076', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577714997, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (951, 'RM1577715002996041', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715002, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (952, 'RM1577715029525963', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715029, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (953, 'RM1577715072488138', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715072, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (954, 'RM1577715106759999', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715106, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (955, 'RM1577715117256831', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715117, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (956, 'RM1577715130202101', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715130, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (957, 'RM1577715140728648', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715140, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (958, 'RM1577715150998796', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715150, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (959, 'RM1577715214361049', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715214, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (960, 'RM1577715258785117', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715258, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (961, 'RM1577715308899634', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715308, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (962, 'RM1577715332641978', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715332, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (963, 'RM1577715343563226', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715343, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (964, 'RM1577715391420782', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715391, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (965, 'RM1577715414226176', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715414, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (966, 'RM1577715415965385', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715415, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (967, 'RM1577715439200790', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715439, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (968, 'RM1577715459832357', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715459, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (969, 'RM1577715473650003', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715473, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (970, 'RM1577715485944627', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715485, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (971, 'RM1577715502737341', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715502, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (972, 'RM1577715521668487', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715521, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (973, 'RM1577715575739428', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715575, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (974, 'RM1577715618875719', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715618, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (975, 'RM1577715653177812', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715653, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (976, 'RM1577715694485624', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715694, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (977, 'RM1577715716981301', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715716, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (978, 'RM1577715745155021', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715745, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (979, 'RM1577715964425196', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577715964, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (980, 'RM1577716041235538', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716041, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (981, 'RM1577716063368432', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716063, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (982, 'RM1577716104173157', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716104, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (983, 'RM1577716220505740', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716220, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (984, 'RM1577716298822808', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716298, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (985, 'RM1577716315911297', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716315, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (986, 'RM1577716329446087', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716329, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (987, 'RM1577716403716610', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716403, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (988, 'RM1577716459126291', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716459, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (989, 'RM1577716537615147', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716537, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (990, 'RM1577716566589976', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716566, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (991, 'RM1577716575892786', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716575, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (992, 'RM1577716593905840', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716593, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (993, 'RM1577716618673596', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716618, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (994, 'RM1577716671971752', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716671, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (995, 'RM1577716686911083', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716686, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (996, 'RM1577716689590939', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716689, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (997, 'RM1577716699196189', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716699, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (998, 'RM1577716706346337', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716706, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (999, 'RM1577716723872509', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716723, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1000, 'RM1577716757314130', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716757, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1001, 'RM1577716769920686', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716769, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1002, 'RM1577716802498437', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716802, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1003, 'RM1577716866695076', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577716866, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1004, 'RM1577717022390635', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717022, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1005, 'RM1577717163298508', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717163, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1006, 'RM1577717221710324', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717221, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1007, 'RM1577717276225988', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717276, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1008, 'RM1577717318139827', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717318, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1009, 'RM1577717500654069', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717500, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1010, 'RM1577717774830672', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717774, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1011, 'RM1577717817612927', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717817, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1012, 'RM1577717896250759', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717896, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1013, 'RM1577717924676539', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577717924, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1014, 'RM1577718007381085', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718007, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1015, 'RM1577718038945028', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718038, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1016, 'RM1577718062163500', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718062, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1017, 'RM1577718066250866', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718066, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1018, 'RM1577718081518152', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718081, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1019, 'RM1577718145639356', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718145, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1020, 'RM1577718170930022', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718170, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1021, 'RM1577718238534309', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718238, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1022, 'RM1577718240425650', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718240, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1023, 'RM1577718248295378', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718248, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1024, 'RM1577718369623306', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718369, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1025, 'RM1577718376178561', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718376, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1026, 'RM1577718396158953', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718396, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1027, 'RM1577718402421852', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718402, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1028, 'RM1577718410513310', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718410, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1029, 'RM1577718426571812', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718426, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1030, 'RM1577718462481959', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718462, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1031, 'RM1577718463944092', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718463, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1032, 'RM1577718473562370', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718473, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1033, 'RM1577718486817217', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718486, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1034, 'RM1577718499238721', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718499, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1035, 'RM1577718547647756', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718547, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1036, 'RM1577718551339649', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718551, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1037, 'RM1577718564169626', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718564, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1038, 'RM1577718576380229', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718576, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1039, 'RM1577718577967391', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718577, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1040, 'RM1577718586826633', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718586, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1041, 'RM1577718595871519', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718595, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1042, 'RM1577718622275877', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718622, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1043, 'RM1577718639954846', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718639, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1044, 'RM1577718673630234', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718673, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1045, 'RM1577718696262877', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718696, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1046, 'RM1577718723261753', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718723, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1047, 'RM1577718739934970', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718739, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1048, 'RM1577718751923254', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718751, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1049, 'RM1577718781850815', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718781, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1050, 'RM1577718792772678', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718792, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1051, 'RM1577718806185221', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718806, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1052, 'RM1577718819734747', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718819, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1053, 'RM1577718831250010', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718831, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1054, 'RM1577718849315066', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718849, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1055, 'RM1577718878769923', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718878, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1056, 'RM1577718894878795', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577718894, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1057, 'RM1577719028324000', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719028, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1058, 'RM1577719043176421', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719043, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1059, 'RM1577719111834818', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719111, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1060, 'RM1577719184287112', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719184, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1061, 'RM1577719283429770', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719283, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1062, 'RM1577719364825884', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719364, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1063, 'RM1577719411645188', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719411, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1064, 'RM1577719460886018', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719460, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1065, 'RM1577719547352917', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719547, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1066, 'RM1577719569760721', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719569, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1067, 'RM1577719577127548', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719577, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1068, 'RM1577719635783753', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719635, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1069, 'RM1577719653354923', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719653, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1070, 'RM1577719696524465', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719696, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1071, 'RM1577719707310331', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719707, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1072, 'RM1577719734911083', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719734, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1073, 'RM1577719735454193', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719735, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1074, 'RM1577719785652624', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719785, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1075, 'RM1577719901404999', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719901, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1076, 'RM1577719949336573', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577719949, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1077, 'RM1577720218331009', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720218, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1078, 'RM1577720277548353', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720277, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1079, 'RM1577720370776156', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720370, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1080, 'RM1577720514676191', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720514, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1081, 'RM1577720534491750', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720534, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1082, 'RM1577720566287326', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720566, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1083, 'RM1577720611741086', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720611, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1084, 'RM1577720636155502', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720636, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1085, 'RM1577720665156733', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720665, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1086, 'RM1577720768939518', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720768, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1087, 'RM1577720819283019', 36, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577720819, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1088, 'RM1577747353372632', 28, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577747353, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1089, 'RM1577750559360434', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577750559, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1090, 'RM1577752725925635', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577752725, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1091, 'RM1577769920177089', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577769920, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1092, 'RM1577770036219622', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577770036, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1093, 'RM1577770818326996', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577770818, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1094, 'RM1577770847173425', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577770847, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1095, 'RM1577770866503974', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577770866, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1096, 'RM1577770891635103', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577770891, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1097, 'RM1577770930373943', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577770930, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1098, 'RM1577771265147798', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771265, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1099, 'RM1577771336879357', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771336, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1100, 'RM1577771388499320', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771388, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1101, 'RM1577771511794078', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771511, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1102, 'RM1577771547871439', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771547, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1103, 'RM1577771572321780', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771572, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1104, 'RM1577771600817779', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771600, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1105, 'RM1577771611608112', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771611, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1106, 'RM1577771666470564', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771666, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1107, 'RM1577771671491108', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771671, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1108, 'RM1577771792273550', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771792, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1109, 'RM1577771832398954', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577771832, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1110, 'RM1577772458871359', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577772458, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1111, 'RM1577772899202502', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577772899, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1112, 'RM1577772918505767', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577772918, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1113, 'RM1577772933309850', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577772933, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1114, 'RM1577772961275877', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577772961, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1115, 'RM1577773135751546', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577773135, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1116, 'RM1577773181486587', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577773181, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1117, 'RM1577773276568629', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577773276, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1125, 'RM1577774604525990', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774604, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1126, 'RM1577774664530189', 26, 3, 'ceshi3', 100.00, 0.00, 100.00, 0, 1, '', 0, 1577774664, 1, '322C9C263CEFD0899EFDD61AC4429207', '110.185.168.6', NULL, 2, '123', 0, '', 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1127, 'RM1577774750388013', 28, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774750, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1128, 'RM1577774860483591', 28, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774860, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1129, 'RM1577774880737903', 29, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577774880, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1130, 'RM1577775200270260', 26, 0, '注册小程序赠送会员', 0.00, NULL, 0.00, NULL, 1, NULL, 1, 1577775200, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1136, 'RM1577775864262582', 29, 13, '1', 2.00, 0.00, 2.00, 0, 1, '\'address-江苏省泰州市兴化市,phone-13262862856NaN', 1, 1577775864, 1, '4D5088F3F064F1669D4C058400689F4E', '117.94.24.229', 1577776565, 2, '0', 0, 'undefined', 1, NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1137, 'RMZT157855235385444', 1, 27, '大刀2', 21.00, NULL, 21.00, NULL, 1, NULL, 0, 1578552353, 1, '0779CE4D2EBA8FE50C2653621FA000F8', '127.0.0.1', NULL, 2, '1', NULL, '用户组团购买商品', 2, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1138, 'RMZT157855238116419', 1, 27, '大刀2', 0.01, NULL, 0.01, NULL, 1, NULL, 0, 1578552381, 1, '1B228450170F78AA1BFA654AB7FAB5A4', '127.0.0.1', NULL, 2, '1', NULL, '用户组团购买商品', 2, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1139, 'RMZT157855248622376', 12, 27, '大刀2', 0.01, NULL, 0.01, NULL, 1, NULL, 0, 1578552486, 1, 'E622D8D385C2D7762AC9171407FDCD36', '127.0.0.1', NULL, 2, '12', NULL, '用户组团购买商品', 2, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_order` VALUES (1140, 'RMZT157855251878252', 12, 27, '大刀2', 21.00, NULL, 21.00, NULL, 1, NULL, 0, 1578552518, 1, 'D447CE907D7F2736D9F6FA4C7F118A86', '127.0.0.1', NULL, 2, '12', NULL, '用户组团购买商品', 2, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for cy_order_logistics
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_order_logistics`;
-CREATE TABLE `cy_order_logistics` (
+CREATE TABLE `cy_order_logistics`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `orderId` int(11) DEFAULT NULL COMMENT '订单Id',
-  `logistics` varchar(30) DEFAULT NULL COMMENT '物流号',
-  `name` varchar(30) DEFAULT NULL COMMENT '物流名称',
-  `createTime` int(11) DEFAULT NULL COMMENT '发送时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '完成状态 1-完成 0-未完成',
+  `orderId` int(11) NULL DEFAULT NULL COMMENT '订单Id',
+  `logistics` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '物流号',
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '物流名称',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '发送时间',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '完成状态 1-完成 0-未完成',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='订单物流';
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单物流' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_order_logistics
 -- ----------------------------
-INSERT INTO `cy_order_logistics` VALUES ('1', '68', '韵达', '123456789', '1575355392', '0');
-INSERT INTO `cy_order_logistics` VALUES ('2', '67', '韵达', '33333', '1575356859', '0');
-INSERT INTO `cy_order_logistics` VALUES ('3', '145', '韵达', '123456789', '1575951079', '1');
+INSERT INTO `cy_order_logistics` VALUES (1, 68, '韵达', '123456789', 1575355392, 0);
+INSERT INTO `cy_order_logistics` VALUES (2, 67, '韵达', '33333', 1575356859, 0);
+INSERT INTO `cy_order_logistics` VALUES (3, 331, '韵达', '123456789', 1575951079, 1);
 
 -- ----------------------------
 -- Table structure for cy_product
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_product`;
-CREATE TABLE `cy_product` (
+CREATE TABLE `cy_product`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `catPid` int(5) DEFAULT NULL COMMENT '一级分类',
-  `catCid` int(5) DEFAULT NULL COMMENT '二级分类',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '价格',
-  `voltage` varchar(30) DEFAULT NULL COMMENT '电压',
-  `mileage` varchar(50) DEFAULT NULL COMMENT '续航里程',
-  `sex` char(4) DEFAULT '0' COMMENT '性别使用 0-通用 1-男 2-女',
-  `headMsg` varchar(255) DEFAULT NULL COMMENT '封面展示 图片',
-  `image` text COMMENT '图片',
-  `tradeAddress` varchar(255) DEFAULT NULL COMMENT '交易地点',
-  `createTime` int(11) DEFAULT NULL,
-  `brand` varchar(80) DEFAULT NULL COMMENT '品牌名称',
-  `introduce` text COMMENT '详细介绍',
-  `type` tinyint(1) DEFAULT '0' COMMENT '商品类型 1-维修 2-新车 3-二手车',
-  `uid` int(11) DEFAULT NULL COMMENT '用户id',
-  `number` int(11) DEFAULT '1' COMMENT '库存',
-  `flushTime` int(11) DEFAULT NULL COMMENT '刷新时间',
-  `zhibao` tinyint(1) DEFAULT '0' COMMENT '质保商品 0-不是 1-是',
-  `remark` text COMMENT '商品说明',
-  `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
+  `catPid` int(5) NULL DEFAULT NULL COMMENT '一级分类',
+  `catCid` int(5) NULL DEFAULT NULL COMMENT '二级分类',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '价格',
+  `voltage` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电压',
+  `mileage` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '续航里程',
+  `sex` char(4) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '性别使用 0-通用 1-男 2-女',
+  `headMsg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '封面展示 图片',
+  `image` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片',
+  `tradeAddress` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易地点',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `brand` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '品牌名称',
+  `introduce` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '详细介绍',
+  `type` tinyint(1) NULL DEFAULT 0 COMMENT '商品类型 1-维修 2-新车 3-二手车',
+  `uid` int(11) NULL DEFAULT NULL COMMENT '用户id',
+  `number` int(11) NULL DEFAULT 1 COMMENT '库存',
+  `flushTime` int(11) NULL DEFAULT NULL COMMENT '刷新时间',
+  `zhibao` tinyint(1) NULL DEFAULT 0 COMMENT '质保商品 0-不是 1-是',
+  `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品说明',
+  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `video` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品视频',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='商品';
+) ENGINE = MyISAM AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_product
 -- ----------------------------
-INSERT INTO `cy_product` VALUES ('2', 'ceshi2', '50', '52', '100.00', '100', '200', '0', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 'a:4:{i:0;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:1;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:2;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:3;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";}\0', '测试地址', '1589123423', '零件', '知道你的事草泥马草泥马性能明显你小内存虚拟财产那些年	', '2', '1', '200', '1576657865', '1', null, null);
-INSERT INTO `cy_product` VALUES ('3', 'ceshi3', '50', '52', '100.00', '100', '200', '0', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 'a:4:{i:0;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:1;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:2;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:3;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";}\0', '测试地址', '1589123423', '零件', '知道你的事草泥马草泥马性能明显你小内存虚拟财产那些年	', '2', '1', '300', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('4', 'ceshi4', '50', '52', '100.00', '100', '200', '1', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 'a:4:{i:0;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:1;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:2;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:3;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";}\0', '测试地址', '1589123423', '零件', '知道你的事草泥马草泥马性能明显你小内存虚拟财产那些年	', '1', '1', '400', '1576657749', '1', null, null);
-INSERT INTO `cy_product` VALUES ('25', '11', '0', '0', '1111.00', 'undefined', '11', '0', 'https://lck.hzlyzhenzhi.com/files/attach/file5e02e517147de.jpg', 's:62:\"https://lck.hzlyzhenzhi.com/files/attach/file5e02e52b59093.jpg\";', '11', '1577248046', '11', '11', '3', '36', '11111', null, '0', 'null', '11');
-INSERT INTO `cy_product` VALUES ('7', '1', '50', '52', '2.00', '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5def9c98161a6.png', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5def9cbbb7184.png\";', '8', '1575984323', '4', '7', '1', '25', '3', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('8', '1', '50', '52', '2.00', '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0d2c88c71d.png', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0d2bcf3709.png\";', '888', '1576063715', '4', '7', '1', '25', '3', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('9', '1', '50', '52', '1.00', '4', '5', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0d6a53c8e2.jpg', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0d6c1b05c4.jpg\";', '7', '1576064711', '3', '6', '1', '25', '2', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('10', '测试产品', '50', '52', '100000.00', '100', '100', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0d77a1e8c3.jpg', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0d79e3faf4.jpg\";', '成都', '1576064929', '测试', '陈', '1', '25', '100', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('11', '多少', '50', '52', '0.00', '现在', '小点声', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0e02bed9c8.jpg', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0e05aa207c.jpg\";', '的地方', '1576067167', '小点声', '方法不能', '1', '30', '0', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('12', '111', '50', '52', '222.00', '55', '66', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0e824c5f79.png', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0e83f3d78f.png,http://lck.hzlyzhenzhi.com/files/attach/file5df0e8433997c.png\";', '2222', '1576069195', '44', '111', '1', '25', '333', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('13', '1', '50', '52', '2.00', '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0e99ce39d6.png', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0e9b044fd4.png\";', '8', '1576069554', '4', '7', '1', '25', '3', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('14', '1', '50', '52', '2.00', '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea7d7a6e1.png', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png,http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\";', '99', '1576069791', '4', '78', '1', '25', '3', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('15', '1', '50', '52', '1.00', '40', '60', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0f1b06068c.jpg', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0f1d1d16fc.jpg,http://lck.hzlyzhenzhi.com/files/attach/file5df0f1db5ad4b.jpg\";', '成都', '1576071645', '接口', '厚', '1', '25', '20', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('16', 'ces222', '50', '52', '111.00', '44', '555', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0f23db0f11.jpg', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0f24eb88d3.png,http://lck.hzlyzhenzhi.com/files/attach/file5df0f254b73d4.png\";', 'xa', '1576071767', '33', 'ss', '1', '25', '112', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('17', 'ceshi', '50', '52', '100.00', '100', '1200', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png', 's:129:\"[\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png\",\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\"]\";', '成都市天府大道', '1576072839', '零件', null, '0', '25', '100', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('18', 'ceshi', '50', '52', '100.00', '100', '1200', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png', 's:129:\"[\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png\",\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\"]\";', '成都市天府大道', '1576072882', '零件', null, '0', '25', '100', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('19', 'ceshi', '50', '52', '100.00', '100', '1200', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png', 's:129:\"[\'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png\',\'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\']\";', '成都市天府大道', '1576072902', '零件', null, '0', '25', '100', '1576225727', '1', null, null);
-INSERT INTO `cy_product` VALUES ('26', '表标题', '0', '0', '60.00', 'undefined', '1000', '0', 'https://lck.hzlyzhenzhi.com/files/attach/file5e030602c79a1.png', 's:125:\"https://lck.hzlyzhenzhi.com/files/attach/file5e0305f9e2d1d.jpg,https://lck.hzlyzhenzhi.com/files/attach/file5e0305fe0b977.jpg\";', '交易地址', '1577256456', '品牌名字', '商品介绍', '3', '36', '59', null, '0', 'null', '18666212333');
-INSERT INTO `cy_product` VALUES ('24', '标题', '0', '0', '60.00', 'undefined', '1000', '0', 'https://lck.hzlyzhenzhi.com/files/attach/file5e02bd253409b.jpg', 's:62:\"https://lck.hzlyzhenzhi.com/files/attach/file5e02bd48d8c3a.jpg\";', '成都', '1577237838', '品牌', '1', '1', '36', '59', null, '0', 'null', '1');
+INSERT INTO `cy_product` VALUES (27, '大刀2', NULL, NULL, 1202.03, '200', '400', '2', 'https://lck.hzlyzhenzhi.com/files/attach/images/20191216/1576496154353118.jpg', 'a:1:{i:0;s:75:\"https://lck.hzlyzhenzhi.com/files/attach/file/20191225/1577274109721599.png\";}', '四川省成都市锦江区2', 1577274116, '道具2', '详情2', 3, 999999, 1234, NULL, 0, '说明2', '158280436072', NULL);
+INSERT INTO `cy_product` VALUES (2, 'ceshi2', 50, 52, 100.00, '100', '200', '0', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 'a:4:{i:0;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:1;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:2;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:3;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";}\0', '测试地址', 1589123423, '零件', '知道你的事草泥马草泥马性能明显你小内存虚拟财产那些年	', 2, 1, 200, 1576657865, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (3, 'ceshi3', 50, 52, 100.00, '100', '200', '0', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 'a:4:{i:0;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:1;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:2;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:3;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";}\0', '测试地址', 1589123423, '零件', '知道你的事草泥马草泥马性能明显你小内存虚拟财产那些年	', 2, 1, 300, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (4, 'ceshi4', 50, 52, 100.00, '100', '200', '1', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 'a:4:{i:0;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:1;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:2;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";i:3;s:37:\"http://lck.hzlyzhenzhi.com/api/bg.jpg\";}\0', '测试地址', 1589123423, '零件', '知道你的事草泥马草泥马性能明显你小内存虚拟财产那些年	', 1, 1, 400, 1576657749, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (25, '11', 0, 0, 1111.00, 'undefined', '11', '0', 'https://lck.hzlyzhenzhi.com/files/attach/file5e02e517147de.jpg', 's:62:\"https://lck.hzlyzhenzhi.com/files/attach/file5e02e52b59093.jpg\";', '11', 1577248046, '11', '11', 3, 36, 11111, NULL, 0, 'null', '11', NULL);
+INSERT INTO `cy_product` VALUES (7, '1', 50, 52, 2.00, '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5def9c98161a6.png', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5def9cbbb7184.png\";', '8', 1575984323, '4', '7', 1, 25, 3, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (8, '1', 50, 52, 2.00, '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0d2c88c71d.png', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0d2bcf3709.png\";', '888', 1576063715, '4', '7', 1, 25, 3, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (9, '1', 50, 52, 1.00, '4', '5', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0d6a53c8e2.jpg', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0d6c1b05c4.jpg\";', '7', 1576064711, '3', '6', 1, 25, 2, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (10, '测试产品', 50, 52, 100000.00, '100', '100', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0d77a1e8c3.jpg', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0d79e3faf4.jpg\";', '成都', 1576064929, '测试', '陈', 1, 25, 100, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (11, '多少', 50, 52, 0.00, '现在', '小点声', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0e02bed9c8.jpg', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0e05aa207c.jpg\";', '的地方', 1576067167, '小点声', '方法不能', 1, 30, 0, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (12, '111', 50, 52, 222.00, '55', '66', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0e824c5f79.png', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0e83f3d78f.png,http://lck.hzlyzhenzhi.com/files/attach/file5df0e8433997c.png\";', '2222', 1576069195, '44', '111', 1, 25, 333, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (13, '1', 50, 52, 2.00, '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0e99ce39d6.png', 's:61:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0e9b044fd4.png\";', '8', 1576069554, '4', '7', 1, 25, 3, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (14, '1', 50, 52, 2.00, '5', '6', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea7d7a6e1.png', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png,http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\";', '99', 1576069791, '4', '78', 1, 25, 3, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (15, '1', 50, 52, 1.00, '40', '60', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0f1b06068c.jpg', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0f1d1d16fc.jpg,http://lck.hzlyzhenzhi.com/files/attach/file5df0f1db5ad4b.jpg\";', '成都', 1576071645, '接口', '厚', 1, 25, 20, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (16, 'ces222', 50, 52, 111.00, '44', '555', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0f23db0f11.jpg', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5df0f24eb88d3.png,http://lck.hzlyzhenzhi.com/files/attach/file5df0f254b73d4.png\";', 'xa', 1576071767, '33', 'ss', 1, 25, 112, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (17, 'ceshi', 50, 52, 100.00, '100', '1200', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png', 's:129:\"[\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png\",\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\"]\";', '成都市天府大道', 1576072839, '零件', NULL, 0, 25, 100, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (18, 'ceshi', 50, 52, 100.00, '100', '1200', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png', 's:129:\"[\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png\",\"http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\"]\";', '成都市天府大道', 1576072882, '零件', NULL, 0, 25, 100, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (19, 'ceshi', 50, 52, 100.00, '100', '1200', '0', 'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png', 's:129:\"[\'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea906f1c8.png\',\'http://lck.hzlyzhenzhi.com/files/attach/file5df0ea9314fd6.png\']\";', '成都市天府大道', 1576072902, '零件', NULL, 0, 25, 100, 1576225727, 1, NULL, NULL, NULL);
+INSERT INTO `cy_product` VALUES (26, '表标题', 0, 0, 60.00, 'undefined', '1000', '0', 'https://lck.hzlyzhenzhi.com/files/attach/file5e030602c79a1.png', 's:125:\"https://lck.hzlyzhenzhi.com/files/attach/file5e0305f9e2d1d.jpg,https://lck.hzlyzhenzhi.com/files/attach/file5e0305fe0b977.jpg\";', '交易地址', 1577256456, '品牌名字', '商品介绍', 3, 36, 59, NULL, 0, 'null', '18666212333', NULL);
+INSERT INTO `cy_product` VALUES (24, '标题', 0, 0, 60.00, 'undefined', '1000', '0', 'https://lck.hzlyzhenzhi.com/files/attach/file5e02bd253409b.jpg', 's:62:\"https://lck.hzlyzhenzhi.com/files/attach/file5e02bd48d8c3a.jpg\";', '成都', 1577237838, '品牌', '1', 1, 36, 59, NULL, 0, 'null', '1', NULL);
+INSERT INTO `cy_product` VALUES (28, '大刀', 50, 53, 12.00, '200', '400', '0', 'https://lck.hzlyzhenzhi.comhttps://lck.hzlyzhenzhi.com/files/attach/images/20191216/1576496154353118.jpg', 'a:2:{i:0;s:69:\"https://lck.hzlyzhenzhi.com/files/attach/file/20191204/1575456532.jpg\";i:1;s:69:\"https://lck.hzlyzhenzhi.com/files/attach/file/20191101/1572601633.png\";}', '四川省成都市锦江区', 1577274880, '道具', '详情2', 1, 999999, 1234, NULL, 1, '说明2', '15828043607', 'https://lck.hzlyzhenzhi.com');
+
+-- ----------------------------
+-- Table structure for cy_product_category
+-- ----------------------------
+DROP TABLE IF EXISTS `cy_product_category`;
+CREATE TABLE `cy_product_category`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productId` int(11) NULL DEFAULT NULL COMMENT '商品id',
+  `cateDesc` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类描述',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '价格',
+  `createTime` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品颜色' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cy_product_category
+-- ----------------------------
+INSERT INTO `cy_product_category` VALUES (8, 28, '24cun', 16.00, 1578551095);
+INSERT INTO `cy_product_category` VALUES (7, 28, '28cun', 18.00, 1577777974);
 
 -- ----------------------------
 -- Table structure for cy_quality_product
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_quality_product`;
-CREATE TABLE `cy_quality_product` (
+CREATE TABLE `cy_quality_product`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL,
-  `productId` int(11) DEFAULT NULL COMMENT '商品Id',
-  `catId` int(5) DEFAULT NULL COMMENT '分类Id',
-  `brand` int(5) DEFAULT NULL COMMENT '品牌',
-  `buyTime` int(11) DEFAULT NULL COMMENT '购买日期',
-  `gyTime` int(11) DEFAULT NULL COMMENT '商品钢印日期',
-  `barCode` varchar(255) DEFAULT NULL COMMENT '条形码',
-  `createTime` int(11) DEFAULT NULL COMMENT '上传时间',
-  `productName` varchar(255) DEFAULT NULL COMMENT '质保商品名称',
-  `after` tinyint(1) DEFAULT '0' COMMENT '1-申请售后',
-  `orderId` int(11) DEFAULT NULL COMMENT '订单id',
-  `afterUid` int(11) DEFAULT NULL COMMENT '售后维修师id',
-  `afterMsg` varchar(255) DEFAULT NULL COMMENT '维修视频或图片',
-  `name` varchar(255) DEFAULT NULL COMMENT '联系姓名',
-  `phone` char(12) DEFAULT NULL COMMENT '联系电话 ',
-  `address` varchar(255) DEFAULT NULL COMMENT '联系地址',
+  `uid` int(11) NULL DEFAULT NULL,
+  `productId` int(11) NULL DEFAULT NULL COMMENT '商品Id',
+  `catId` int(5) NULL DEFAULT NULL COMMENT '分类Id',
+  `brand` int(5) NULL DEFAULT NULL COMMENT '品牌',
+  `buyTime` int(11) NULL DEFAULT NULL COMMENT '购买日期',
+  `gyTime` int(11) NULL DEFAULT NULL COMMENT '商品钢印日期',
+  `barCode` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '条形码',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '上传时间',
+  `productName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '质保商品名称',
+  `after` tinyint(1) NULL DEFAULT 0 COMMENT '1-申请售后',
+  `orderId` int(11) NULL DEFAULT NULL COMMENT '订单id',
+  `afterUid` int(11) NULL DEFAULT NULL COMMENT '售后维修师id',
+  `afterMsg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '维修视频或图片',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系姓名',
+  `phone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系电话 ',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='质保商品';
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '质保商品' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_quality_product
 -- ----------------------------
-INSERT INTO `cy_quality_product` VALUES ('1', '35', '3', '52', null, '1582804267', '1582406159', '12345qwer', '1582759625', '千斤顶', '1', '261', null, null, null, null, null);
-INSERT INTO `cy_quality_product` VALUES ('2', '35', '1', '52', '0', '1589123423', '2019', '212', '1574261983', 'ceshi', '1', '260', null, null, null, null, null);
-INSERT INTO `cy_quality_product` VALUES ('3', '35', '2', '52', null, '1589123423', null, null, null, null, '1', null, null, null, null, null, null);
+INSERT INTO `cy_quality_product` VALUES (1, 35, 3, 52, NULL, 1582804267, 1582406159, '12345qwer', 1582759625, '千斤顶', 1, 261, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `cy_quality_product` VALUES (3, 35, 2, 52, NULL, 1589123423, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for cy_repair_return
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_repair_return`;
-CREATE TABLE `cy_repair_return` (
+CREATE TABLE `cy_repair_return`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL COMMENT '用户uid',
-  `money` decimal(10,2) DEFAULT '0.00' COMMENT '体现金额',
-  `status` tinyint(1) DEFAULT '0' COMMENT '状态 0-未提现（待审核） 1-已体现',
-  `createTime` int(11) DEFAULT NULL COMMENT '提现时间',
-  `checkTime` int(11) DEFAULT NULL COMMENT '平台审核通过时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='维修师体现记录';
+  `uid` int(11) NULL DEFAULT NULL COMMENT '用户uid',
+  `money` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '体现金额',
+  `status` tinyint(1) NULL DEFAULT 0 COMMENT '状态 0-未提现（待审核） 1-已体现',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '提现时间',
+  `checkTime` int(11) NULL DEFAULT NULL COMMENT '平台审核通过时间',
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '1-维修师 2-会员',
+  `phone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '提现账号',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '维修师体现记录' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_repair_return
 -- ----------------------------
-INSERT INTO `cy_repair_return` VALUES ('1', '36', '12.00', '1', '1577197388', '1577199588');
-INSERT INTO `cy_repair_return` VALUES ('2', '36', '22.00', '1', '1577197588', '1577198588');
-INSERT INTO `cy_repair_return` VALUES ('3', '36', '45.00', '0', '1577200689', null);
-INSERT INTO `cy_repair_return` VALUES ('4', '36', '45.00', '0', '1577200740', null);
-INSERT INTO `cy_repair_return` VALUES ('5', '36', '1.00', '0', '1577251868', null);
-INSERT INTO `cy_repair_return` VALUES ('6', '36', '2.00', '0', '1577251894', null);
-INSERT INTO `cy_repair_return` VALUES ('7', '36', '1.00', '0', '1577251921', null);
+INSERT INTO `cy_repair_return` VALUES (1, 36, 12.00, 1, 1577197388, 1577199588, 1, NULL);
+INSERT INTO `cy_repair_return` VALUES (2, 36, 22.00, 1, 1577197588, 1577198588, 1, NULL);
+INSERT INTO `cy_repair_return` VALUES (3, 36, 45.00, 0, 1577200689, NULL, 1, NULL);
+INSERT INTO `cy_repair_return` VALUES (4, 36, 45.00, 0, 1577200740, NULL, 1, NULL);
+INSERT INTO `cy_repair_return` VALUES (5, 36, 1.00, 0, 1577251868, NULL, 1, NULL);
+INSERT INTO `cy_repair_return` VALUES (6, 36, 2.00, 0, 1577251894, NULL, 1, NULL);
+INSERT INTO `cy_repair_return` VALUES (7, 36, 1.00, 1, 1577251921, 1578034268, 1, NULL);
 
 -- ----------------------------
 -- Table structure for cy_role
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_role`;
-CREATE TABLE `cy_role` (
+CREATE TABLE `cy_role`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `createTime` int(11) DEFAULT NULL,
-  `createUser` int(5) DEFAULT NULL COMMENT '创建人',
-  `createPower` tinyint(1) DEFAULT '0' COMMENT '编辑角色权限 1-有 0-无',
-  `realPass` varchar(255) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `createTime` int(11) NULL DEFAULT NULL,
+  `createUser` int(5) NULL DEFAULT NULL COMMENT '创建人',
+  `createPower` tinyint(1) NULL DEFAULT 0 COMMENT '编辑角色权限 1-有 0-无',
+  `realPass` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户角色表';
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_role
 -- ----------------------------
-INSERT INTO `cy_role` VALUES ('1', 'admin', '25b6e0de03803595e069456b4b37fd8c', '1561365326', '0', '1', 'cyAdmin');
+INSERT INTO `cy_role` VALUES (1, 'admin', '25b6e0de03803595e069456b4b37fd8c', 1561365326, 0, 1, 'cyAdmin');
 
 -- ----------------------------
 -- Table structure for cy_role_catalog
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_role_catalog`;
-CREATE TABLE `cy_role_catalog` (
+CREATE TABLE `cy_role_catalog`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `roleId` int(11) NOT NULL COMMENT '角色id',
   `cataId` int(11) NOT NULL COMMENT '目录id',
-  `createTime` int(11) DEFAULT NULL,
+  `createTime` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='角色权限表';
+) ENGINE = MyISAM AUTO_INCREMENT = 78 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色权限表' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_role_catalog
 -- ----------------------------
-INSERT INTO `cy_role_catalog` VALUES ('1', '1', '1', '1561365326');
-INSERT INTO `cy_role_catalog` VALUES ('2', '1', '2', '1561365326');
-INSERT INTO `cy_role_catalog` VALUES ('3', '1', '3', '1561365326');
-INSERT INTO `cy_role_catalog` VALUES ('5', '1', '13', '1561452444');
-INSERT INTO `cy_role_catalog` VALUES ('6', '1', '4', '1561452444');
-INSERT INTO `cy_role_catalog` VALUES ('7', '1', '5', '1561452444');
-INSERT INTO `cy_role_catalog` VALUES ('8', '1', '6', '1561452444');
-INSERT INTO `cy_role_catalog` VALUES ('42', '1', '15', '1572588811');
-INSERT INTO `cy_role_catalog` VALUES ('43', '1', '16', '1572588862');
-INSERT INTO `cy_role_catalog` VALUES ('44', '1', '17', '1572588922');
-INSERT INTO `cy_role_catalog` VALUES ('45', '1', '18', '1572589268');
-INSERT INTO `cy_role_catalog` VALUES ('46', '1', '19', '1572834451');
-INSERT INTO `cy_role_catalog` VALUES ('47', '1', '20', '1572837153');
-INSERT INTO `cy_role_catalog` VALUES ('48', '1', '21', '1572837178');
-INSERT INTO `cy_role_catalog` VALUES ('49', '1', '22', '1572855506');
-INSERT INTO `cy_role_catalog` VALUES ('50', '1', '23', '1572867332');
-INSERT INTO `cy_role_catalog` VALUES ('51', '1', '24', '1572868884');
-INSERT INTO `cy_role_catalog` VALUES ('52', '1', '25', '1572868910');
-INSERT INTO `cy_role_catalog` VALUES ('53', '1', '26', '1572868997');
-INSERT INTO `cy_role_catalog` VALUES ('54', '1', '27', '1572869020');
-INSERT INTO `cy_role_catalog` VALUES ('55', '1', '28', '1572869050');
-INSERT INTO `cy_role_catalog` VALUES ('56', '1', '29', '1572869097');
-INSERT INTO `cy_role_catalog` VALUES ('57', '1', '30', '1572869144');
-INSERT INTO `cy_role_catalog` VALUES ('58', '1', '31', '1572869185');
-INSERT INTO `cy_role_catalog` VALUES ('59', '1', '32', '1572869254');
-INSERT INTO `cy_role_catalog` VALUES ('60', '1', '33', '1572869306');
-INSERT INTO `cy_role_catalog` VALUES ('61', '1', '34', '1572869334');
-INSERT INTO `cy_role_catalog` VALUES ('62', '1', '35', '1572869476');
-INSERT INTO `cy_role_catalog` VALUES ('63', '1', '36', '1574151575');
-INSERT INTO `cy_role_catalog` VALUES ('64', '1', '37', '1574151614');
-INSERT INTO `cy_role_catalog` VALUES ('65', '1', '38', '1575534323');
-INSERT INTO `cy_role_catalog` VALUES ('66', '1', '39', '1576658036');
-INSERT INTO `cy_role_catalog` VALUES ('67', '1', '40', '1576658251');
-INSERT INTO `cy_role_catalog` VALUES ('69', '1', '42', '1576916677');
+INSERT INTO `cy_role_catalog` VALUES (1, 1, 1, 1561365326);
+INSERT INTO `cy_role_catalog` VALUES (2, 1, 2, 1561365326);
+INSERT INTO `cy_role_catalog` VALUES (3, 1, 3, 1561365326);
+INSERT INTO `cy_role_catalog` VALUES (5, 1, 13, 1561452444);
+INSERT INTO `cy_role_catalog` VALUES (6, 1, 4, 1561452444);
+INSERT INTO `cy_role_catalog` VALUES (7, 1, 5, 1561452444);
+INSERT INTO `cy_role_catalog` VALUES (8, 1, 6, 1561452444);
+INSERT INTO `cy_role_catalog` VALUES (42, 1, 15, 1572588811);
+INSERT INTO `cy_role_catalog` VALUES (43, 1, 16, 1572588862);
+INSERT INTO `cy_role_catalog` VALUES (44, 1, 17, 1572588922);
+INSERT INTO `cy_role_catalog` VALUES (45, 1, 18, 1572589268);
+INSERT INTO `cy_role_catalog` VALUES (46, 1, 19, 1572834451);
+INSERT INTO `cy_role_catalog` VALUES (47, 1, 20, 1572837153);
+INSERT INTO `cy_role_catalog` VALUES (48, 1, 21, 1572837178);
+INSERT INTO `cy_role_catalog` VALUES (49, 1, 22, 1572855506);
+INSERT INTO `cy_role_catalog` VALUES (50, 1, 23, 1572867332);
+INSERT INTO `cy_role_catalog` VALUES (51, 1, 24, 1572868884);
+INSERT INTO `cy_role_catalog` VALUES (52, 1, 25, 1572868910);
+INSERT INTO `cy_role_catalog` VALUES (53, 1, 26, 1572868997);
+INSERT INTO `cy_role_catalog` VALUES (54, 1, 27, 1572869020);
+INSERT INTO `cy_role_catalog` VALUES (55, 1, 28, 1572869050);
+INSERT INTO `cy_role_catalog` VALUES (56, 1, 29, 1572869097);
+INSERT INTO `cy_role_catalog` VALUES (57, 1, 30, 1572869144);
+INSERT INTO `cy_role_catalog` VALUES (58, 1, 31, 1572869185);
+INSERT INTO `cy_role_catalog` VALUES (59, 1, 32, 1572869254);
+INSERT INTO `cy_role_catalog` VALUES (60, 1, 33, 1572869306);
+INSERT INTO `cy_role_catalog` VALUES (61, 1, 34, 1572869334);
+INSERT INTO `cy_role_catalog` VALUES (62, 1, 35, 1572869476);
+INSERT INTO `cy_role_catalog` VALUES (63, 1, 36, 1574151575);
+INSERT INTO `cy_role_catalog` VALUES (64, 1, 37, 1574151614);
+INSERT INTO `cy_role_catalog` VALUES (65, 1, 38, 1575534323);
+INSERT INTO `cy_role_catalog` VALUES (66, 1, 39, 1576658036);
+INSERT INTO `cy_role_catalog` VALUES (67, 1, 40, 1576658251);
+INSERT INTO `cy_role_catalog` VALUES (70, 1, 43, 1577764530);
+INSERT INTO `cy_role_catalog` VALUES (69, 1, 42, 1576916677);
+INSERT INTO `cy_role_catalog` VALUES (71, 1, 44, 1578031645);
+INSERT INTO `cy_role_catalog` VALUES (72, 1, 45, 1578031707);
+INSERT INTO `cy_role_catalog` VALUES (73, 1, 46, 1578031732);
+INSERT INTO `cy_role_catalog` VALUES (74, 1, 47, 1578032422);
+INSERT INTO `cy_role_catalog` VALUES (75, 1, 48, 1578032447);
+INSERT INTO `cy_role_catalog` VALUES (76, 1, 49, 1578032473);
+INSERT INTO `cy_role_catalog` VALUES (77, 1, 50, 1578034185);
 
 -- ----------------------------
 -- Table structure for cy_search
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_search`;
-CREATE TABLE `cy_search` (
+CREATE TABLE `cy_search`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) DEFAULT NULL COMMENT '类型 1-电压 2-续航',
-  `val` varchar(255) DEFAULT NULL COMMENT '内容',
-  `createTime` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL COMMENT '类型',
+  `type` tinyint(1) NULL DEFAULT NULL COMMENT '类型 1-电压 2-续航',
+  `val` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='筛选内容';
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '筛选内容' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_search
 -- ----------------------------
-INSERT INTO `cy_search` VALUES ('1', '1', '100', '1576220347', '电压');
-INSERT INTO `cy_search` VALUES ('2', '1', '200', '1576220357', '电压');
-INSERT INTO `cy_search` VALUES ('3', '2', '125', '1576220364', '续航里程');
-INSERT INTO `cy_search` VALUES ('4', '2', '400', '1576220372', '续航里程');
+INSERT INTO `cy_search` VALUES (1, 1, '100', 1576220347, '电压');
+INSERT INTO `cy_search` VALUES (2, 1, '200', 1576220357, '电压');
+INSERT INTO `cy_search` VALUES (3, 2, '125', 1576220364, '续航里程');
+INSERT INTO `cy_search` VALUES (4, 2, '400', 1576220372, '续航里程');
 
 -- ----------------------------
 -- Table structure for cy_shop
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_shop`;
-CREATE TABLE `cy_shop` (
+CREATE TABLE `cy_shop`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '店铺名',
-  `phone` char(12) DEFAULT NULL COMMENT '电话',
-  `shopTime` char(20) DEFAULT NULL COMMENT '营业时间',
-  `video` varchar(255) DEFAULT NULL COMMENT '店铺视频',
-  `image` text COMMENT '店铺图片',
-  `address` varchar(255) DEFAULT NULL COMMENT '详细地址',
-  `introduce` text COMMENT '店铺介绍',
-  `status` tinyint(1) DEFAULT NULL COMMENT '店铺状态 1-申请成功 -1申请失败 0-待审核',
-  `createTime` int(11) DEFAULT NULL,
-  `headImage` varchar(100) DEFAULT NULL COMMENT '店铺头图',
-  `checkTime` int(11) DEFAULT NULL COMMENT '审核时间',
-  `province` char(40) DEFAULT NULL COMMENT '省',
-  `city` char(40) DEFAULT NULL COMMENT '市',
-  `area` char(40) DEFAULT NULL COMMENT '地区',
-  `uid` int(11) DEFAULT NULL COMMENT '会员id',
-  `checkRemark` text COMMENT '审核理由',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺名',
+  `phone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
+  `shopTime` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '营业时间',
+  `video` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺视频',
+  `image` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '店铺图片',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地址',
+  `introduce` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '店铺介绍',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '店铺状态 1-申请成功 -1申请失败 0-待审核',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `headImage` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺头图',
+  `checkTime` int(11) NULL DEFAULT NULL COMMENT '审核时间',
+  `province` char(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省',
+  `city` char(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
+  `area` char(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区',
+  `uid` int(11) NULL DEFAULT NULL COMMENT '会员id',
+  `checkRemark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '审核理由',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='商家店铺';
+) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商家店铺' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_shop
 -- ----------------------------
-INSERT INTO `cy_shop` VALUES ('2', 'oathYc2', '15828043607', '08:00-19:00', '', 'http://www.baidu.comhttp://www.baidu.com\r\nhttp://www.baidu.com\r\n', '牛市口路81号', '一个测试', '1', '1572849041', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', '1572850510', '四川省', '成都市', '锦江区', '1', null);
-INSERT INTO `cy_shop` VALUES ('3', '测试1', '15828043608', '08:00-20:00', null, null, '天府大道32号', null, '1', '1587654321', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', '1587676676', '四川省', '成都市', '武侯区', '1', null);
-INSERT INTO `cy_shop` VALUES ('4', 'oathYc22', '15828043607', '08:00-19:00', '', 'http://www.baidu.comhttp://www.baidu.com\r\nhttp://www.baidu.com\r\n', '天府大道45号', '一个测试', '1', '1572849041', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', '1572850510', '四川省', '成都市', '武侯区', '1', '');
-INSERT INTO `cy_shop` VALUES ('5', '测试12', '15828043608', '08:00-20:00', '', '', '天府大道33号', '', '1', '1587654321', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', '1587676676', '四川省', '成都市', '武侯区', '1', '');
-INSERT INTO `cy_shop` VALUES ('6', 'oathYc23', '15828043607', '08:00-19:00', '', 'http://www.baidu.comhttp://www.baidu.com\r\nhttp://www.baidu.com\r\n', '天府大道99号', '一个测试', '1', '1572849041', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', '1572850510', '四川省', '成都市', '武侯区', '1', '');
-INSERT INTO `cy_shop` VALUES ('7', '测试14', '15828043608', '08:00-20:00', '', '', '天府大道39号', '', '1', '1587654321', 'http://lck.hzlyzhenzhi.com/api/bg.jpg', '1587676676', '四川省', '成都市', '武侯区', '1', '');
+INSERT INTO `cy_shop` VALUES (2, 'oathYc2', '15828043607', '08:00-19:00', '', 'http://www.baidu.comhttp://www.baidu.com\r\nhttp://www.baidu.com\r\n', '牛市口路81号', '一个测试', 1, 1572849041, 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 1572850510, '四川省', '成都市', '锦江区', 1, NULL);
+INSERT INTO `cy_shop` VALUES (3, '测试1', '15828043608', '08:00-20:00', NULL, 'http://www.baidu.comhttp://www.baidu.com\r\nhttp://www.baidu.com\r\n', '天府大道32号', NULL, 1, 1587654321, 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 1587676676, '四川省', '成都市', '武侯区', 1, NULL);
+INSERT INTO `cy_shop` VALUES (4, 'oathYc22', '15828043607', '08:00-19:00', '', 'http://www.baidu.comhttp://www.baidu.com\r\nhttp://www.baidu.com\r\n', '天府大道45号', '一个测试', 1, 1572849041, 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 1572850510, '四川省', '成都市', '武侯区', 1, '');
+INSERT INTO `cy_shop` VALUES (5, '测试12', '15828043608', '08:00-20:00', '', '', '天府大道33号', '', 1, 1587654321, 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 1587676676, '四川省', '成都市', '武侯区', 1, '');
+INSERT INTO `cy_shop` VALUES (7, '测试14', '15828043608', '08:00-20:00', '', '', '天府大道39号', '', 1, 1587654321, 'http://lck.hzlyzhenzhi.com/api/bg.jpg', 1587676676, '四川省', '成都市', '武侯区', 1, '');
+INSERT INTO `cy_shop` VALUES (9, '纳兰乐容', '15828043607', '08:00-20:00', 'https://lck.hzlyzhenzhi.com/files/attach/file/20191231/1577765146.mp4', '', '牛市口路82号', '一个测试', 1, 1578038178, 'https://lck.hzlyzhenzhi.com/files/attach/images/20200103/1578038017.jpg', NULL, '四川省', '成都市', '锦江区', 999999, NULL);
 
 -- ----------------------------
 -- Table structure for cy_shop_cart
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_shop_cart`;
-CREATE TABLE `cy_shop_cart` (
+CREATE TABLE `cy_shop_cart`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL,
-  `productId` int(11) DEFAULT NULL,
-  `createTime` int(11) DEFAULT NULL,
-  `number` int(3) DEFAULT '1' COMMENT '数量',
+  `uid` int(11) NULL DEFAULT NULL,
+  `productId` int(11) NULL DEFAULT NULL,
+  `createTime` int(11) NULL DEFAULT NULL,
+  `number` int(3) NULL DEFAULT 1 COMMENT '数量',
+  `catPriceId` int(11) NULL DEFAULT 0 COMMENT '分类价格id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=119 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='用户购物车';
+) ENGINE = MyISAM AUTO_INCREMENT = 120 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物车' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_shop_cart
 -- ----------------------------
-INSERT INTO `cy_shop_cart` VALUES ('53', '1', '5', '1576593031', '1');
-INSERT INTO `cy_shop_cart` VALUES ('116', '26', '4', '1576930078', '1');
-INSERT INTO `cy_shop_cart` VALUES ('3', '1', '4', '1562456528', '1');
-INSERT INTO `cy_shop_cart` VALUES ('6', '27', '1', '1575355231', '1');
-INSERT INTO `cy_shop_cart` VALUES ('33', '29', '7', '1576148983', '1');
-INSERT INTO `cy_shop_cart` VALUES ('34', '29', '3', '1576158015', '1');
-INSERT INTO `cy_shop_cart` VALUES ('19', '25', '3', '1575684797', '1');
-INSERT INTO `cy_shop_cart` VALUES ('118', '36', '3', '1577175947', '2');
-INSERT INTO `cy_shop_cart` VALUES ('57', '1', '7', '1576668887', '1');
-INSERT INTO `cy_shop_cart` VALUES ('25', '30', '3', '1575948432', '1');
-INSERT INTO `cy_shop_cart` VALUES ('38', '1', '1', '1576562380', '1');
-INSERT INTO `cy_shop_cart` VALUES ('73', '35', '1', '1576895309', '1');
-INSERT INTO `cy_shop_cart` VALUES ('105', '34', '3', '1576928669', '1');
-INSERT INTO `cy_shop_cart` VALUES ('42', '35', '5', '1576591191', '1');
-INSERT INTO `cy_shop_cart` VALUES ('114', '33', '4', '1576929064', '1');
-INSERT INTO `cy_shop_cart` VALUES ('110', '35', '3', '1576928895', '1');
-INSERT INTO `cy_shop_cart` VALUES ('117', '26', '7', '1576930093', '1');
-INSERT INTO `cy_shop_cart` VALUES ('115', '35', '2', '1576929098', '1');
-INSERT INTO `cy_shop_cart` VALUES ('106', '34', '2', '1576928678', '1');
-INSERT INTO `cy_shop_cart` VALUES ('87', '33', '0', '1576903031', '1');
-INSERT INTO `cy_shop_cart` VALUES ('103', '34', '1', '1576928558', '1');
+INSERT INTO `cy_shop_cart` VALUES (53, 1, 5, 1576593031, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (119, 26, 8, 1577776287, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (3, 1, 4, 1562456528, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (6, 27, 1, 1575355231, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (33, 29, 7, 1576148983, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (34, 29, 3, 1576158015, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (19, 25, 3, 1575684797, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (118, 36, 3, 1577175947, 2, NULL);
+INSERT INTO `cy_shop_cart` VALUES (57, 1, 7, 1576668887, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (25, 30, 3, 1575948432, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (38, 1, 1, 1576562380, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (73, 35, 1, 1576895309, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (105, 34, 3, 1576928669, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (42, 35, 5, 1576591191, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (114, 33, 4, 1576929064, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (110, 35, 3, 1576928895, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (115, 35, 2, 1576929098, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (106, 34, 2, 1576928678, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (87, 33, 0, 1576903031, 1, NULL);
+INSERT INTO `cy_shop_cart` VALUES (103, 34, 1, 1576928558, 1, NULL);
 
 -- ----------------------------
 -- Table structure for cy_shop_message
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_shop_message`;
-CREATE TABLE `cy_shop_message` (
+CREATE TABLE `cy_shop_message`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text COMMENT '内容',
-  `type` tinyint(1) DEFAULT '0' COMMENT '1-关于我们  2-客服联系 3-会员充值说明',
-  `createTime` int(11) DEFAULT NULL COMMENT '时间',
-  `image` varchar(255) DEFAULT NULL COMMENT '图片',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '内容',
+  `type` tinyint(1) NULL DEFAULT 0 COMMENT '1-关于我们  2-客服联系 3-会员充值说明',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '时间',
+  `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='商城信息';
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商城信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_shop_message
 -- ----------------------------
-INSERT INTO `cy_shop_message` VALUES ('1', '关于我们说明', '1', '1574151692', null);
-INSERT INTO `cy_shop_message` VALUES ('2', '客服联系说明		大神就科尼塞克奶茶店萨克才能多斯拉克才能登录看成你多斯拉克才能打卢克你弄错的离开时才能多斯拉克才能打卢克才能登录商城呢登录数', '2', '1576496167', 'https://lck.hzlyzhenzhi.com/files/attach/images/20191216/1576496154353118.jpg');
-INSERT INTO `cy_shop_message` VALUES ('3', '会员充值说明', '3', '1574151655', null);
-INSERT INTO `cy_shop_message` VALUES ('4', '积分规则 积分兑换优惠券 优惠券抵扣商品金额', '4', '1575534362', 'https://lck.hzlyzhenzhi.com/files/attach/images/20191205/1575534357809599.jpg');
-INSERT INTO `cy_shop_message` VALUES ('5', '花费100元/年，预计省200元/年', '5', '1576658066', null);
+INSERT INTO `cy_shop_message` VALUES (1, '关于我们说明', 1, 1574151692, NULL);
+INSERT INTO `cy_shop_message` VALUES (2, '客服联系说明		大神就科尼塞克奶茶店萨克才能多斯拉克才能登录看成你多斯拉克才能打卢克你弄错的离开时才能多斯拉克才能打卢克才能登录商城呢登录数', 2, 1576496167, 'https://lck.hzlyzhenzhi.com/files/attach/images/20191216/1576496154353118.jpg');
+INSERT INTO `cy_shop_message` VALUES (3, '会员充值说明', 3, 1574151655, NULL);
+INSERT INTO `cy_shop_message` VALUES (4, '积分规则 积分兑换优惠券 优惠券抵扣商品金额', 4, 1575534362, 'https://lck.hzlyzhenzhi.com/files/attach/images/20191205/1575534357809599.jpg');
+INSERT INTO `cy_shop_message` VALUES (5, '花费100元/年，预计省200元/年', 5, 1576658066, NULL);
 
 -- ----------------------------
 -- Table structure for cy_user_address
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_user_address`;
-CREATE TABLE `cy_user_address` (
+CREATE TABLE `cy_user_address`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` char(25) DEFAULT NULL COMMENT 'app用户唯一识别码',
-  `province` char(25) DEFAULT NULL COMMENT '省份',
-  `city` char(25) DEFAULT NULL COMMENT '市',
-  `area` char(25) DEFAULT NULL COMMENT '地区',
-  `address` varchar(255) DEFAULT NULL COMMENT '详细地址',
-  `default` tinyint(1) DEFAULT '0' COMMENT '默认地址 0-否 1-是',
-  `createTime` int(11) DEFAULT NULL,
-  `name` char(40) DEFAULT NULL COMMENT '姓名',
-  `phone` char(12) DEFAULT NULL COMMENT '电话',
-  `label` varchar(30) DEFAULT NULL COMMENT '标签',
+  `uid` char(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'app用户唯一识别码',
+  `province` char(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省份',
+  `city` char(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市',
+  `area` char(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '详细地址',
+  `default` tinyint(1) NULL DEFAULT 0 COMMENT '默认地址 0-否 1-是',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `name` char(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `phone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
+  `label` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=129 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户收货地址';
+) ENGINE = MyISAM AUTO_INCREMENT = 134 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户收货地址' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_user_address
 -- ----------------------------
-INSERT INTO `cy_user_address` VALUES ('11', '1', 'null', 'null', '122', '2222', '0', '1574140418', 'test', '123456', null);
-INSERT INTO `cy_user_address` VALUES ('14', '1', 'null', 'null', '66', '7', '0', '1574141022', '44', '55', null);
-INSERT INTO `cy_user_address` VALUES ('15', '1', 'null', 'null', '四川省成都市武侯区', '天府五街', '0', '1574478156', '测试的', '18011654', '公司');
-INSERT INTO `cy_user_address` VALUES ('18', 'undefined', 'null', 'null', 'sad', 'null', '0', '1574751019', 'sadas', 'asd', '家');
-INSERT INTO `cy_user_address` VALUES ('32', '30', 'null', 'null', '四川省成都市金牛区金府路799号', '金府国际', '1', '1575788562', 'null', '15984817250', '家');
-INSERT INTO `cy_user_address` VALUES ('41', '25', 'null', 'null', '3', '4', '1', '1575890981', '1', '2', '家');
-INSERT INTO `cy_user_address` VALUES ('71', '33', '山西省', '长治市', '发发发', '发发发', '0', '1576866499', '啦啦啦啦', '13124671483', '046200');
-INSERT INTO `cy_user_address` VALUES ('23', '1', 'null', 'null', 'null', 'null', '0', '1575455208', 'null', 'null', '家');
-INSERT INTO `cy_user_address` VALUES ('24', '30', 'null', 'null', 'null', 'null', '0', '1575648821', '不让人不饿女', 'null', '家');
-INSERT INTO `cy_user_address` VALUES ('25', '30', 'null', 'null', '不仅仅', 'null', '0', '1575648846', 'null', '15984817350', '家');
-INSERT INTO `cy_user_address` VALUES ('26', '30', 'null', 'null', '不仅仅', 'null', '0', '1575648846', 'null', '15984817350', '家');
-INSERT INTO `cy_user_address` VALUES ('33', '31', 'null', 'null', '四川省成都市金牛区北一巷1号', 'null', '0', '1575790185', '哈哈', '12584865558', '家');
-INSERT INTO `cy_user_address` VALUES ('34', '31', 'null', 'null', '四川省成都市金牛区北一巷1号', 'null', '0', '1575790186', '哈哈', '12584865558', '家');
-INSERT INTO `cy_user_address` VALUES ('44', '28', 'null', 'null', '江苏省泰州市兴化市', 'null', '0', '1576139656', '经济', '1122333333', '家');
-INSERT INTO `cy_user_address` VALUES ('45', 'undefined', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576508094', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('46', 'undefined', '内蒙古自治区', '呼伦贝尔市', '副驾驶', '副驾驶', '0', '1576508170', '斤斤计较', '13124671483', '021500');
-INSERT INTO `cy_user_address` VALUES ('47', 'undefined', '山西省', '长治市', '发发发', '发发发', '1', '1576508509', '啦啦啦啦', '13124671483', '046200');
-INSERT INTO `cy_user_address` VALUES ('48', '1', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576593104', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('49', '1', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576593122', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('50', '1', '广东省', '广州市', '新港中路397号', '新港中路397号', '1', '1576594209', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('51', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576664417', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('52', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576665027', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('54', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576677501', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('55', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576677510', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('56', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576677644', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('57', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754446', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('58', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754454', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('59', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754505', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('60', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754556', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('61', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754632', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('62', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754635', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('63', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754643', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('64', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754681', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('65', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576754734', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('66', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576755278', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('67', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576755525', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('68', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576848661', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('69', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576848677', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('70', '34', '广东省', '广州市', '新港中路397号', '新港中路397号', '1', '1576848890', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('72', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576890195', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('73', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576890671', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('74', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576890715', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('75', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891051', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('76', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891117', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('77', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891260', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('78', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891321', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('79', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891393', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('80', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891513', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('81', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891798', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('82', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576891803', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('83', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576892194', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('84', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576892457', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('85', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576892741', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('86', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576893347', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('87', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576894340', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('88', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576894369', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('89', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576894916', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('90', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576895188', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('91', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576895194', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('92', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576895371', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('93', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576896023', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('94', '26', 'null', 'null', '海南省三亚市海棠区藤海街', '三楼', '0', '1576896274', '小周', '15984817250', '家');
-INSERT INTO `cy_user_address` VALUES ('95', '26', '北京市', '北京市', '我们的', '我们的', '0', '1576896327', '用扫帚', '15984817250', '100010');
-INSERT INTO `cy_user_address` VALUES ('96', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576901611', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('97', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576901798', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('98', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576902047', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('99', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576902349', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('100', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576902554', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('101', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576902902', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('102', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576903015', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('103', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576903554', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('104', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576903792', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('105', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576903815', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('106', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576903821', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('107', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904272', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('108', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904281', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('109', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904305', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('110', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904313', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('111', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904319', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('112', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904325', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('113', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904338', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('114', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576904669', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('115', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576905056', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('116', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576905943', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('117', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576906053', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('118', '33', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576907236', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('119', '33', '山西省', '长治市', '发发发', '发发发', '1', '1576907697', '啦啦啦啦', '13124671483', '046200');
-INSERT INTO `cy_user_address` VALUES ('120', '26', '北京市', '北京市', '我们的', '我们的', '0', '1576907931', '用扫帚', '15984817250', '100010');
-INSERT INTO `cy_user_address` VALUES ('121', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1576908836', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('122', '35', '广东省', '广州市', '新港中路397号', '新港中路397号', '1', '1576909305', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('123', '26', '北京市', '北京市', '我们的', '我们的', '1', '1577111895', '用扫帚', '15984817250', '100010');
-INSERT INTO `cy_user_address` VALUES ('125', '36', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1577116076', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('128', '36', '广东省', '广州市', '新港中路397号', '新港中路397号', '1', '1577183392', '张三', '020-81167888', '510000');
-INSERT INTO `cy_user_address` VALUES ('127', '36', '广东省', '广州市', '新港中路397号', '新港中路397号', '0', '1577149935', '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (11, '1', 'null', 'null', '122', '2222', 0, 1574140418, 'test', '123456', NULL);
+INSERT INTO `cy_user_address` VALUES (14, '1', 'null', 'null', '66', '7', 0, 1574141022, '44', '55', NULL);
+INSERT INTO `cy_user_address` VALUES (15, '1', 'null', 'null', '四川省成都市武侯区', '天府五街', 0, 1574478156, '测试的', '18011654', '公司');
+INSERT INTO `cy_user_address` VALUES (18, 'undefined', 'null', 'null', 'sad', 'null', 0, 1574751019, 'sadas', 'asd', '家');
+INSERT INTO `cy_user_address` VALUES (32, '30', 'null', 'null', '四川省成都市金牛区金府路799号', '金府国际', 1, 1575788562, 'null', '15984817250', '家');
+INSERT INTO `cy_user_address` VALUES (41, '25', 'null', 'null', '3', '4', 1, 1575890981, '1', '2', '家');
+INSERT INTO `cy_user_address` VALUES (71, '33', '山西省', '长治市', '发发发', '发发发', 0, 1576866499, '啦啦啦啦', '13124671483', '046200');
+INSERT INTO `cy_user_address` VALUES (23, '1', 'null', 'null', 'null', 'null', 0, 1575455208, 'null', 'null', '家');
+INSERT INTO `cy_user_address` VALUES (24, '30', 'null', 'null', 'null', 'null', 0, 1575648821, '不让人不饿女', 'null', '家');
+INSERT INTO `cy_user_address` VALUES (25, '30', 'null', 'null', '不仅仅', 'null', 0, 1575648846, 'null', '15984817350', '家');
+INSERT INTO `cy_user_address` VALUES (26, '30', 'null', 'null', '不仅仅', 'null', 0, 1575648846, 'null', '15984817350', '家');
+INSERT INTO `cy_user_address` VALUES (33, '31', 'null', 'null', '四川省成都市金牛区北一巷1号', 'null', 0, 1575790185, '哈哈', '12584865558', '家');
+INSERT INTO `cy_user_address` VALUES (34, '31', 'null', 'null', '四川省成都市金牛区北一巷1号', 'null', 0, 1575790186, '哈哈', '12584865558', '家');
+INSERT INTO `cy_user_address` VALUES (129, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577269112, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (44, '28', 'null', 'null', '江苏省泰州市兴化市', 'null', 0, 1576139656, '经济', '1122333333', '家');
+INSERT INTO `cy_user_address` VALUES (45, 'undefined', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576508094, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (46, 'undefined', '内蒙古自治区', '呼伦贝尔市', '副驾驶', '副驾驶', 0, 1576508170, '斤斤计较', '13124671483', '021500');
+INSERT INTO `cy_user_address` VALUES (47, 'undefined', '山西省', '长治市', '发发发', '发发发', 1, 1576508509, '啦啦啦啦', '13124671483', '046200');
+INSERT INTO `cy_user_address` VALUES (48, '1', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576593104, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (49, '1', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576593122, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (50, '1', '广东省', '广州市', '新港中路397号', '新港中路397号', 1, 1576594209, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (51, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576664417, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (52, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576665027, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (54, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576677501, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (55, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576677510, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (56, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576677644, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (57, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754446, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (58, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754454, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (59, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754505, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (60, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754556, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (61, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754632, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (62, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754635, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (63, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754643, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (64, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754681, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (65, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576754734, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (66, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576755278, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (67, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576755525, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (68, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576848661, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (69, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576848677, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (70, '34', '广东省', '广州市', '新港中路397号', '新港中路397号', 1, 1576848890, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (72, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576890195, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (73, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576890671, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (74, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576890715, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (75, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891051, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (76, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891117, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (77, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891260, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (78, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891321, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (79, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891393, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (80, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891513, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (81, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891798, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (82, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576891803, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (83, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576892194, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (84, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576892457, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (85, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576892741, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (86, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576893347, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (87, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576894340, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (88, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576894369, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (89, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576894916, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (90, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576895188, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (91, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576895194, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (92, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576895371, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (93, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576896023, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (94, '26', 'null', 'null', '海南省三亚市海棠区藤海街', '三楼', 0, 1576896274, '小周', '15984817250', '家');
+INSERT INTO `cy_user_address` VALUES (95, '26', '北京市', '北京市', '我们的', '我们的', 0, 1576896327, '用扫帚', '15984817250', '100010');
+INSERT INTO `cy_user_address` VALUES (96, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576901611, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (97, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576901798, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (98, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576902047, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (99, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576902349, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (100, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576902554, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (101, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576902902, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (102, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576903015, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (103, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576903554, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (104, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576903792, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (105, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576903815, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (106, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576903821, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (107, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904272, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (108, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904281, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (109, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904305, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (110, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904313, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (111, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904319, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (112, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904325, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (113, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904338, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (114, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576904669, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (115, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576905056, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (116, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576905943, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (117, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576906053, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (118, '33', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576907236, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (119, '33', '山西省', '长治市', '发发发', '发发发', 1, 1576907697, '啦啦啦啦', '13124671483', '046200');
+INSERT INTO `cy_user_address` VALUES (120, '26', '北京市', '北京市', '我们的', '我们的', 0, 1576907931, '用扫帚', '15984817250', '100010');
+INSERT INTO `cy_user_address` VALUES (121, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1576908836, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (122, '35', '广东省', '广州市', '新港中路397号', '新港中路397号', 1, 1576909305, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (123, '26', '北京市', '北京市', '我们的', '我们的', 1, 1577111895, '用扫帚', '15984817250', '100010');
+INSERT INTO `cy_user_address` VALUES (125, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577116076, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (128, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577183392, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (127, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577149935, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (130, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577336626, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (131, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577336707, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (132, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 0, 1577720253, '张三', '020-81167888', '510000');
+INSERT INTO `cy_user_address` VALUES (133, '36', '广东省', '广州市', '新港中路397号', '新港中路397号', 1, 1577720259, '张三', '020-81167888', '510000');
 
 -- ----------------------------
 -- Table structure for cy_user_coupon
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_user_coupon`;
-CREATE TABLE `cy_user_coupon` (
+CREATE TABLE `cy_user_coupon`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL,
-  `couponId` int(11) DEFAULT NULL COMMENT '优惠券Id',
-  `orderId` int(11) DEFAULT NULL COMMENT '用于那个订单',
-  `createTime` int(11) DEFAULT NULL COMMENT '使用时间',
-  `status` tinyint(1) DEFAULT '0' COMMENT '状态  0 未使用 1-已使用',
+  `uid` int(11) NULL DEFAULT NULL,
+  `couponId` int(11) NULL DEFAULT NULL COMMENT '优惠券Id',
+  `orderId` int(11) NULL DEFAULT NULL COMMENT '用于那个订单',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '使用时间',
+  `status` tinyint(1) NULL DEFAULT 0 COMMENT '状态  0 未使用 1-已使用',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='用户使用优惠卷';
+) ENGINE = MyISAM AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户使用优惠卷' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_user_coupon
 -- ----------------------------
-INSERT INTO `cy_user_coupon` VALUES ('1', '25', '1', null, '1575555449', '0');
-INSERT INTO `cy_user_coupon` VALUES ('2', '25', '1', null, '1575691120', '0');
-INSERT INTO `cy_user_coupon` VALUES ('3', '31', '3', null, '1576042994', '0');
-INSERT INTO `cy_user_coupon` VALUES ('4', '31', '5', null, '1576042994', '0');
-INSERT INTO `cy_user_coupon` VALUES ('5', '31', '6', null, '1576042994', '0');
-INSERT INTO `cy_user_coupon` VALUES ('6', '31', '7', null, '1576042994', '0');
-INSERT INTO `cy_user_coupon` VALUES ('7', '31', '8', null, '1576042994', '0');
-INSERT INTO `cy_user_coupon` VALUES ('8', '31', '9', null, '1576042994', '0');
-INSERT INTO `cy_user_coupon` VALUES ('9', '29', '3', null, '1576147415', '0');
-INSERT INTO `cy_user_coupon` VALUES ('10', '29', '5', null, '1576147415', '0');
-INSERT INTO `cy_user_coupon` VALUES ('11', '29', '6', null, '1576147415', '0');
-INSERT INTO `cy_user_coupon` VALUES ('12', '29', '7', null, '1576147415', '0');
-INSERT INTO `cy_user_coupon` VALUES ('13', '29', '8', null, '1576147415', '0');
-INSERT INTO `cy_user_coupon` VALUES ('14', '29', '9', null, '1576147415', '0');
-INSERT INTO `cy_user_coupon` VALUES ('15', '33', '11', null, '1576735474', '0');
-INSERT INTO `cy_user_coupon` VALUES ('16', '33', '11', null, '1576736145', '0');
-INSERT INTO `cy_user_coupon` VALUES ('17', '35', '1', null, '1576754121', '0');
-INSERT INTO `cy_user_coupon` VALUES ('18', '35', '1', null, '1576754122', '0');
-INSERT INTO `cy_user_coupon` VALUES ('19', '35', '1', null, '1576897490', '0');
-INSERT INTO `cy_user_coupon` VALUES ('20', '35', '1', null, '1576897835', '0');
-INSERT INTO `cy_user_coupon` VALUES ('21', '35', '1', '304', '1576901802', '0');
-INSERT INTO `cy_user_coupon` VALUES ('22', '35', '1', '305', '1576902059', '0');
-INSERT INTO `cy_user_coupon` VALUES ('23', '35', '1', '306', '1576902354', '0');
-INSERT INTO `cy_user_coupon` VALUES ('24', '35', '1', '308', '1576902360', '0');
-INSERT INTO `cy_user_coupon` VALUES ('25', '35', '1', '307', '1576902360', '0');
-INSERT INTO `cy_user_coupon` VALUES ('26', '35', '1', '309', '1576903557', '0');
-INSERT INTO `cy_user_coupon` VALUES ('27', '35', '1', '310', '1576903617', '0');
-INSERT INTO `cy_user_coupon` VALUES ('28', '33', '11', '311', '1576907700', '0');
-INSERT INTO `cy_user_coupon` VALUES ('29', '33', '11', '312', '1576907705', '0');
-INSERT INTO `cy_user_coupon` VALUES ('30', '35', '1', '319', '1576908839', '0');
-INSERT INTO `cy_user_coupon` VALUES ('31', '33', '11', '327', '1576917118', '0');
-INSERT INTO `cy_user_coupon` VALUES ('32', '33', '11', '328', '1576917145', '0');
-INSERT INTO `cy_user_coupon` VALUES ('33', '36', '1', null, '1577152780', '0');
-INSERT INTO `cy_user_coupon` VALUES ('34', '36', '1', null, '1577152801', '0');
-INSERT INTO `cy_user_coupon` VALUES ('35', '36', '1', '392', '1577161663', '0');
-INSERT INTO `cy_user_coupon` VALUES ('36', '36', '1', '393', '1577161669', '0');
-INSERT INTO `cy_user_coupon` VALUES ('37', '36', '1', '397', '1577183513', '0');
-INSERT INTO `cy_user_coupon` VALUES ('38', '36', '1', null, '1577183974', '0');
-INSERT INTO `cy_user_coupon` VALUES ('39', '36', '1', null, '1577183981', '0');
-INSERT INTO `cy_user_coupon` VALUES ('40', '36', '3', null, '1577195948', '0');
-INSERT INTO `cy_user_coupon` VALUES ('41', '36', '5', null, '1577195948', '0');
-INSERT INTO `cy_user_coupon` VALUES ('42', '36', '6', null, '1577195948', '0');
-INSERT INTO `cy_user_coupon` VALUES ('43', '36', '7', null, '1577195948', '0');
-INSERT INTO `cy_user_coupon` VALUES ('44', '36', '8', null, '1577195948', '0');
-INSERT INTO `cy_user_coupon` VALUES ('45', '36', '9', null, '1577195948', '0');
+INSERT INTO `cy_user_coupon` VALUES (1, 25, 1, NULL, 1575555449, 0);
+INSERT INTO `cy_user_coupon` VALUES (2, 25, 1, NULL, 1575691120, 0);
+INSERT INTO `cy_user_coupon` VALUES (3, 31, 3, NULL, 1576042994, 0);
+INSERT INTO `cy_user_coupon` VALUES (4, 31, 5, NULL, 1576042994, 0);
+INSERT INTO `cy_user_coupon` VALUES (5, 31, 6, NULL, 1576042994, 0);
+INSERT INTO `cy_user_coupon` VALUES (6, 31, 7, NULL, 1576042994, 0);
+INSERT INTO `cy_user_coupon` VALUES (7, 31, 8, NULL, 1576042994, 0);
+INSERT INTO `cy_user_coupon` VALUES (8, 31, 9, NULL, 1576042994, 0);
+INSERT INTO `cy_user_coupon` VALUES (9, 29, 3, NULL, 1576147415, 0);
+INSERT INTO `cy_user_coupon` VALUES (10, 29, 5, NULL, 1576147415, 0);
+INSERT INTO `cy_user_coupon` VALUES (11, 29, 6, NULL, 1576147415, 0);
+INSERT INTO `cy_user_coupon` VALUES (12, 29, 7, NULL, 1576147415, 0);
+INSERT INTO `cy_user_coupon` VALUES (13, 29, 8, NULL, 1576147415, 0);
+INSERT INTO `cy_user_coupon` VALUES (14, 29, 9, NULL, 1576147415, 0);
+INSERT INTO `cy_user_coupon` VALUES (15, 33, 11, NULL, 1576735474, 0);
+INSERT INTO `cy_user_coupon` VALUES (16, 33, 11, NULL, 1576736145, 0);
+INSERT INTO `cy_user_coupon` VALUES (17, 35, 1, NULL, 1576754121, 0);
+INSERT INTO `cy_user_coupon` VALUES (18, 35, 1, NULL, 1576754122, 0);
+INSERT INTO `cy_user_coupon` VALUES (19, 35, 1, NULL, 1576897490, 0);
+INSERT INTO `cy_user_coupon` VALUES (20, 35, 1, NULL, 1576897835, 0);
+INSERT INTO `cy_user_coupon` VALUES (21, 35, 1, 304, 1576901802, 0);
+INSERT INTO `cy_user_coupon` VALUES (22, 35, 1, 305, 1576902059, 0);
+INSERT INTO `cy_user_coupon` VALUES (23, 35, 1, 306, 1576902354, 0);
+INSERT INTO `cy_user_coupon` VALUES (24, 35, 1, 308, 1576902360, 0);
+INSERT INTO `cy_user_coupon` VALUES (25, 35, 1, 307, 1576902360, 0);
+INSERT INTO `cy_user_coupon` VALUES (26, 35, 1, 309, 1576903557, 0);
+INSERT INTO `cy_user_coupon` VALUES (27, 35, 1, 310, 1576903617, 0);
+INSERT INTO `cy_user_coupon` VALUES (28, 33, 11, 311, 1576907700, 0);
+INSERT INTO `cy_user_coupon` VALUES (29, 33, 11, 312, 1576907705, 0);
+INSERT INTO `cy_user_coupon` VALUES (30, 35, 1, 319, 1576908839, 0);
+INSERT INTO `cy_user_coupon` VALUES (31, 33, 11, 327, 1576917118, 0);
+INSERT INTO `cy_user_coupon` VALUES (32, 33, 11, 328, 1576917145, 0);
+INSERT INTO `cy_user_coupon` VALUES (33, 36, 1, NULL, 1577152780, 0);
+INSERT INTO `cy_user_coupon` VALUES (34, 36, 1, NULL, 1577152801, 0);
+INSERT INTO `cy_user_coupon` VALUES (35, 36, 1, 392, 1577161663, 0);
+INSERT INTO `cy_user_coupon` VALUES (36, 36, 1, 393, 1577161669, 0);
+INSERT INTO `cy_user_coupon` VALUES (37, 36, 1, 397, 1577183513, 0);
+INSERT INTO `cy_user_coupon` VALUES (38, 36, 1, NULL, 1577183974, 0);
+INSERT INTO `cy_user_coupon` VALUES (39, 36, 1, NULL, 1577183981, 0);
+INSERT INTO `cy_user_coupon` VALUES (40, 36, 3, NULL, 1577195948, 0);
+INSERT INTO `cy_user_coupon` VALUES (41, 36, 5, NULL, 1577195948, 0);
+INSERT INTO `cy_user_coupon` VALUES (42, 36, 6, NULL, 1577195948, 0);
+INSERT INTO `cy_user_coupon` VALUES (43, 36, 7, NULL, 1577195948, 0);
+INSERT INTO `cy_user_coupon` VALUES (44, 36, 8, NULL, 1577195948, 0);
+INSERT INTO `cy_user_coupon` VALUES (45, 36, 9, NULL, 1577195948, 0);
+INSERT INTO `cy_user_coupon` VALUES (46, 29, 10, NULL, 1577354493, 0);
+INSERT INTO `cy_user_coupon` VALUES (47, 29, 11, NULL, 1577354493, 0);
+INSERT INTO `cy_user_coupon` VALUES (48, 36, 10, NULL, 1577363494, 0);
+INSERT INTO `cy_user_coupon` VALUES (49, 36, 11, NULL, 1577363494, 0);
+INSERT INTO `cy_user_coupon` VALUES (50, 28, 3, NULL, 1577568591, 0);
+INSERT INTO `cy_user_coupon` VALUES (51, 28, 5, NULL, 1577568591, 0);
+INSERT INTO `cy_user_coupon` VALUES (52, 28, 6, NULL, 1577568591, 0);
+INSERT INTO `cy_user_coupon` VALUES (53, 28, 7, NULL, 1577568591, 0);
+INSERT INTO `cy_user_coupon` VALUES (54, 28, 8, NULL, 1577568591, 0);
+INSERT INTO `cy_user_coupon` VALUES (55, 26, 3, NULL, 1577625750, 0);
+INSERT INTO `cy_user_coupon` VALUES (56, 26, 5, NULL, 1577625750, 0);
+INSERT INTO `cy_user_coupon` VALUES (57, 26, 6, NULL, 1577625750, 0);
+INSERT INTO `cy_user_coupon` VALUES (58, 26, 7, NULL, 1577625750, 0);
+INSERT INTO `cy_user_coupon` VALUES (59, 26, 8, NULL, 1577625750, 0);
+INSERT INTO `cy_user_coupon` VALUES (60, 26, 9, NULL, 1577625759, 0);
+INSERT INTO `cy_user_coupon` VALUES (61, 26, 10, NULL, 1577625759, 0);
+INSERT INTO `cy_user_coupon` VALUES (62, 26, 11, NULL, 1577625759, 0);
+INSERT INTO `cy_user_coupon` VALUES (63, 31, 10, NULL, 1577675891, 0);
+INSERT INTO `cy_user_coupon` VALUES (64, 31, 11, NULL, 1577675891, 0);
+INSERT INTO `cy_user_coupon` VALUES (65, 28, 9, NULL, 1577747353, 0);
+INSERT INTO `cy_user_coupon` VALUES (66, 28, 10, NULL, 1577747353, 0);
+INSERT INTO `cy_user_coupon` VALUES (67, 28, 11, NULL, 1577747353, 0);
 
 -- ----------------------------
 -- Table structure for cy_user_group
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_user_group`;
-CREATE TABLE `cy_user_group` (
+CREATE TABLE `cy_user_group`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL COMMENT '用户id',
-  `groupId` int(11) DEFAULT NULL COMMENT '组团id',
-  `promoter` tinyint(1) DEFAULT '0' COMMENT '发起人 1-是 0不是',
-  `promoterUid` int(11) DEFAULT NULL COMMENT '发起人的uid',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态 0-组团中 1-组团成功 2组团失败 ',
-  `createTime` int(11) DEFAULT NULL COMMENT '创建时间',
-  `finishTime` int(11) DEFAULT NULL COMMENT '组团成功时间',
-  `orderId` int(11) DEFAULT NULL COMMENT '对应的订单id',
-  `userGroupId` int(11) DEFAULT NULL COMMENT '同一组组团标识   发起人创建组团生成记录的id',
+  `uid` int(11) NULL DEFAULT NULL COMMENT '用户id',
+  `groupId` int(11) NULL DEFAULT NULL COMMENT '组团id',
+  `promoter` tinyint(1) NULL DEFAULT 0 COMMENT '发起人 1-是 0不是',
+  `promoterUid` int(11) NULL DEFAULT NULL COMMENT '发起人的uid',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态 0-组团中 1-组团成功 2组团失败 ',
+  `createTime` int(11) NULL DEFAULT NULL COMMENT '创建时间',
+  `finishTime` int(11) NULL DEFAULT NULL COMMENT '组团成功时间',
+  `orderId` int(11) NULL DEFAULT NULL COMMENT '对应的订单id',
+  `userGroupId` int(11) NULL DEFAULT NULL COMMENT '同一组组团标识   发起人创建组团生成记录的id',
+  `catPriceId` int(11) NULL DEFAULT NULL COMMENT '组团分类id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='用户组团';
+) ENGINE = MyISAM AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户组团' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of cy_user_group
 -- ----------------------------
-INSERT INTO `cy_user_group` VALUES ('1', '35', '1', '1', '35', '0', '1582460123', null, '258', '1');
-INSERT INTO `cy_user_group` VALUES ('2', '33', '1', '0', '35', '0', '1582635412', null, '258', '1');
-INSERT INTO `cy_user_group` VALUES ('3', '35', '2', '1', '35', '1', '1582460123', null, '258', '1');
-INSERT INTO `cy_user_group` VALUES ('4', '33', '2', '0', '35', '1', '1582635412', null, '258', '1');
-INSERT INTO `cy_user_group` VALUES ('5', '35', '3', '1', '35', '2', '1582460123', null, '258', '1');
-INSERT INTO `cy_user_group` VALUES ('6', '33', '3', '0', '35', '2', '1582635412', null, '258', '1');
+INSERT INTO `cy_user_group` VALUES (1, 35, 1, 1, 35, 0, 1582460123, NULL, 258, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (2, 33, 1, 0, 35, 0, 1582635412, NULL, 258, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (3, 35, 2, 1, 35, 1, 1582460123, NULL, 258, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (4, 33, 2, 0, 35, 1, 1582635412, NULL, 258, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (5, 35, 3, 1, 35, 2, 1582460123, NULL, 258, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (6, 33, 3, 0, 35, 2, 1582635412, NULL, 258, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (7, 26, 2, 1, 26, 0, 1577628107, NULL, 482, 7, NULL);
+INSERT INTO `cy_user_group` VALUES (8, 26, 3, 1, 26, 0, 1577634055, NULL, 566, 8, NULL);
+INSERT INTO `cy_user_group` VALUES (9, 26, 3, 1, 26, 0, 1577634093, NULL, 567, 9, NULL);
+INSERT INTO `cy_user_group` VALUES (10, 26, 2, 1, 26, 0, 1577682001, NULL, 668, 10, NULL);
+INSERT INTO `cy_user_group` VALUES (11, 26, 3, 1, 26, 0, 1577684350, NULL, 684, 11, NULL);
+INSERT INTO `cy_user_group` VALUES (12, 26, 3, 1, 26, 0, 1577684351, NULL, 685, 12, NULL);
+INSERT INTO `cy_user_group` VALUES (13, 26, 3, 0, 26, 1, 1577684354, 1577684488, 686, 15, NULL);
+INSERT INTO `cy_user_group` VALUES (14, 26, 3, 0, 26, 1, 1577684393, 1577684488, 687, 15, NULL);
+INSERT INTO `cy_user_group` VALUES (15, 26, 3, 1, 26, 1, 1577684488, 1577684488, 688, 15, NULL);
+INSERT INTO `cy_user_group` VALUES (16, 26, 2, 0, 35, 0, 1577700208, NULL, 786, 1, NULL);
+INSERT INTO `cy_user_group` VALUES (17, 1, 8, 1, 1, 1, 1578552353, NULL, 1137, 17, 20);
+INSERT INTO `cy_user_group` VALUES (18, 1, 8, 1, 1, 0, 1578552381, NULL, 1138, 18, NULL);
+INSERT INTO `cy_user_group` VALUES (19, 12, 8, 0, 1, 0, 1578552486, NULL, 1139, 17, 0);
+INSERT INTO `cy_user_group` VALUES (20, 12, 8, 0, 1, 0, 1578552518, NULL, 1140, 17, 20);
 
 -- ----------------------------
 -- Table structure for cy_user_integral
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_user_integral`;
-CREATE TABLE `cy_user_integral` (
+CREATE TABLE `cy_user_integral`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL,
-  `integral` int(11) DEFAULT NULL,
-  `remark` varchar(255) DEFAULT NULL COMMENT '描述',
-  `createTime` int(11) DEFAULT NULL,
-  `type` tinyint(1) DEFAULT '1' COMMENT '1-减少 2-新增',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+  `uid` int(11) NULL DEFAULT NULL,
+  `integral` int(11) NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `createTime` int(11) NULL DEFAULT NULL,
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '1-减少 2-新增',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_user_integral
 -- ----------------------------
-INSERT INTO `cy_user_integral` VALUES ('1', '33', '12', '购买商品赠送', '1572809234', '2');
-INSERT INTO `cy_user_integral` VALUES ('2', '33', '24', '优惠券抵扣', '1582345678', '1');
-INSERT INTO `cy_user_integral` VALUES ('3', '33', '1000000', '积分兑换优惠卷', '1576735474', '1');
-INSERT INTO `cy_user_integral` VALUES ('4', '33', '999700', '积分兑换优惠卷', '1576736145', '1');
-INSERT INTO `cy_user_integral` VALUES ('5', '35', '10000', '积分兑换优惠卷', '1576754121', '1');
-INSERT INTO `cy_user_integral` VALUES ('6', '35', '9000', '积分兑换优惠卷', '1576754122', '1');
-INSERT INTO `cy_user_integral` VALUES ('7', '35', '8000', '积分兑换优惠卷', '1576897490', '1');
-INSERT INTO `cy_user_integral` VALUES ('8', '35', '7000', '积分兑换优惠卷', '1576897835', '1');
-INSERT INTO `cy_user_integral` VALUES ('9', '33', '0', '购买商品赠送', '1576915418', '2');
-INSERT INTO `cy_user_integral` VALUES ('10', '33', '0', '购买商品赠送', '1576915532', '2');
-INSERT INTO `cy_user_integral` VALUES ('11', '33', '0', '购买商品赠送', '1576915826', '2');
-INSERT INTO `cy_user_integral` VALUES ('12', '33', '0', '购买商品赠送', '1576916195', '2');
-INSERT INTO `cy_user_integral` VALUES ('13', '33', '0', '购买商品赠送', '1576916999', '2');
-INSERT INTO `cy_user_integral` VALUES ('14', '26', '0', '购买商品赠送', '1576917235', '2');
-INSERT INTO `cy_user_integral` VALUES ('15', '33', '0', '购买商品赠送', '1576917856', '2');
-INSERT INTO `cy_user_integral` VALUES ('16', '33', '0', '购买商品赠送', '1576918419', '2');
-INSERT INTO `cy_user_integral` VALUES ('17', '33', '0', '购买商品赠送', '1576927653', '2');
-INSERT INTO `cy_user_integral` VALUES ('18', '26', '100', '购买商品赠送', '1576927821', '2');
-INSERT INTO `cy_user_integral` VALUES ('19', '26', '0', '购买商品赠送', '1576929443', '2');
-INSERT INTO `cy_user_integral` VALUES ('20', '35', '0', '购买商品赠送', '1576932831', '2');
-INSERT INTO `cy_user_integral` VALUES ('21', '26', '2', '购买商品赠送', '1577111905', '2');
-INSERT INTO `cy_user_integral` VALUES ('22', '36', '80000', '积分兑换优惠卷', '1577152780', '1');
-INSERT INTO `cy_user_integral` VALUES ('23', '36', '79000', '积分兑换优惠卷', '1577152801', '1');
-INSERT INTO `cy_user_integral` VALUES ('24', '36', '2', '购买商品赠送', '1577181130', '2');
-INSERT INTO `cy_user_integral` VALUES ('25', '36', '1000', '积分兑换优惠卷', '1577183974', '1');
-INSERT INTO `cy_user_integral` VALUES ('26', '36', '1000', '积分兑换优惠卷', '1577183981', '1');
-INSERT INTO `cy_user_integral` VALUES ('27', '36', '0', '购买商品赠送', '1577195948', '2');
+INSERT INTO `cy_user_integral` VALUES (1, 33, 12, '购买商品赠送', 1572809234, 2);
+INSERT INTO `cy_user_integral` VALUES (2, 33, 24, '优惠券抵扣', 1582345678, 1);
+INSERT INTO `cy_user_integral` VALUES (3, 33, 1000000, '积分兑换优惠卷', 1576735474, 1);
+INSERT INTO `cy_user_integral` VALUES (4, 33, 999700, '积分兑换优惠卷', 1576736145, 1);
+INSERT INTO `cy_user_integral` VALUES (5, 35, 10000, '积分兑换优惠卷', 1576754121, 1);
+INSERT INTO `cy_user_integral` VALUES (6, 35, 9000, '积分兑换优惠卷', 1576754122, 1);
+INSERT INTO `cy_user_integral` VALUES (7, 35, 8000, '积分兑换优惠卷', 1576897490, 1);
+INSERT INTO `cy_user_integral` VALUES (8, 35, 7000, '积分兑换优惠卷', 1576897835, 1);
+INSERT INTO `cy_user_integral` VALUES (9, 33, 0, '购买商品赠送', 1576915418, 2);
+INSERT INTO `cy_user_integral` VALUES (10, 33, 0, '购买商品赠送', 1576915532, 2);
+INSERT INTO `cy_user_integral` VALUES (11, 33, 0, '购买商品赠送', 1576915826, 2);
+INSERT INTO `cy_user_integral` VALUES (12, 33, 0, '购买商品赠送', 1576916195, 2);
+INSERT INTO `cy_user_integral` VALUES (13, 33, 0, '购买商品赠送', 1576916999, 2);
+INSERT INTO `cy_user_integral` VALUES (14, 26, 0, '购买商品赠送', 1576917235, 2);
+INSERT INTO `cy_user_integral` VALUES (15, 33, 0, '购买商品赠送', 1576917856, 2);
+INSERT INTO `cy_user_integral` VALUES (16, 33, 0, '购买商品赠送', 1576918419, 2);
+INSERT INTO `cy_user_integral` VALUES (17, 33, 0, '购买商品赠送', 1576927653, 2);
+INSERT INTO `cy_user_integral` VALUES (18, 26, 100, '购买商品赠送', 1576927821, 2);
+INSERT INTO `cy_user_integral` VALUES (19, 26, 0, '购买商品赠送', 1576929443, 2);
+INSERT INTO `cy_user_integral` VALUES (20, 35, 0, '购买商品赠送', 1576932831, 2);
+INSERT INTO `cy_user_integral` VALUES (21, 26, 2, '购买商品赠送', 1577111905, 2);
+INSERT INTO `cy_user_integral` VALUES (22, 36, 80000, '积分兑换优惠卷', 1577152780, 1);
+INSERT INTO `cy_user_integral` VALUES (23, 36, 79000, '积分兑换优惠卷', 1577152801, 1);
+INSERT INTO `cy_user_integral` VALUES (24, 36, 2, '购买商品赠送', 1577181130, 2);
+INSERT INTO `cy_user_integral` VALUES (25, 36, 1000, '积分兑换优惠卷', 1577183974, 1);
+INSERT INTO `cy_user_integral` VALUES (26, 36, 1000, '积分兑换优惠卷', 1577183981, 1);
+INSERT INTO `cy_user_integral` VALUES (27, 36, 0, '购买商品赠送', 1577195948, 2);
+INSERT INTO `cy_user_integral` VALUES (28, 36, 1, '购买商品赠送', 1577269144, 2);
+INSERT INTO `cy_user_integral` VALUES (29, 29, 2, '会员特权：购买商品赠送', 1577776526, 2);
+INSERT INTO `cy_user_integral` VALUES (30, 29, 2, '会员特权：购买商品赠送', 1577776565, 2);
 
 -- ----------------------------
 -- Table structure for cy_user_push
 -- ----------------------------
 DROP TABLE IF EXISTS `cy_user_push`;
-CREATE TABLE `cy_user_push` (
+CREATE TABLE `cy_user_push`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT NULL,
-  `content` text,
-  `createTime` int(11) DEFAULT NULL,
-  `type` tinyint(1) DEFAULT NULL COMMENT '1-意见反馈',
-  `image` text COMMENT '图片',
+  `uid` int(11) NULL DEFAULT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `createTime` int(11) NULL DEFAULT NULL,
+  `type` tinyint(1) NULL DEFAULT NULL COMMENT '1-意见反馈',
+  `image` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='内容提交 反馈';
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '内容提交 反馈' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cy_user_push
 -- ----------------------------
-INSERT INTO `cy_user_push` VALUES ('1', '25', '111', '1575548883', '1', 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5de8f7c652707.png,http://lck.hzlyzhenzhi.com/files/attach/file5de8f7cb711d9.png\";');
-INSERT INTO `cy_user_push` VALUES ('2', '25', '111', '1575892016', '1', 's:0:\"\";');
-INSERT INTO `cy_user_push` VALUES ('3', '30', '古古惑惑', '1575959858', '1', 's:0:\"\";');
-INSERT INTO `cy_user_push` VALUES ('4', '30', '古古惑惑', '1575959859', '1', 's:0:\"\";');
-INSERT INTO `cy_user_push` VALUES ('5', '30', '古古惑惑', '1575959860', '1', 's:0:\"\";');
-INSERT INTO `cy_user_push` VALUES ('6', '26', '测试', '1576866038', '1', 's:0:\"\";');
-INSERT INTO `cy_user_push` VALUES ('7', '26', '测试', '1576866038', '1', 's:0:\"\";');
+INSERT INTO `cy_user_push` VALUES (1, 25, '111', 1575548883, 1, 's:123:\"http://lck.hzlyzhenzhi.com/files/attach/file5de8f7c652707.png,http://lck.hzlyzhenzhi.com/files/attach/file5de8f7cb711d9.png\";');
+INSERT INTO `cy_user_push` VALUES (2, 25, '111', 1575892016, 1, 's:0:\"\";');
+INSERT INTO `cy_user_push` VALUES (3, 30, '古古惑惑', 1575959858, 1, 's:0:\"\";');
+INSERT INTO `cy_user_push` VALUES (4, 30, '古古惑惑', 1575959859, 1, 's:0:\"\";');
+INSERT INTO `cy_user_push` VALUES (5, 30, '古古惑惑', 1575959860, 1, 's:0:\"\";');
+INSERT INTO `cy_user_push` VALUES (6, 26, '测试', 1576866038, 1, 's:0:\"\";');
+INSERT INTO `cy_user_push` VALUES (7, 26, '测试', 1576866038, 1, 's:0:\"\";');
+
+SET FOREIGN_KEY_CHECKS = 1;
