@@ -1707,7 +1707,7 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $type = Yii::$app->request->post('type',99);//99-全部 0-组团中 1-组团成功 2-组团失败
-        $where = " uid = $uid and promoter = 1 ";
+        $where = " uid = $uid  ";
         if($type != 99){
             $where .= " and status = $type";
         }
