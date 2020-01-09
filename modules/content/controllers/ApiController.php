@@ -1725,6 +1725,9 @@ class ApiController extends  Controller
                     $data[$k]['groupTime'] = $group->groupTime;//有效时间
                     $data[$k]['return'] = $group->return;//奖励
                     $totalNumber = $group->number;
+                    if($v['catPriceId']){
+                        $data[$k]['price'] = GroupCategory::find()->where(" id = {$v['catPriceId']}")->asArray()->one()['price'];
+                    }
                 }else{
                     $data[$k]['headMsg'] = '';
                     $data[$k]['title'] = '失效商品';
