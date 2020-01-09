@@ -82,8 +82,11 @@ class Order extends ActiveRecord
                 $model->integral = 0;
                 $model->remark = '购物车购买';
                 $model->serverFee = $serFee;
-                $res = $model->save();
-                Quality::addProduct($order->uid,$productId,$model->id);
+                $res = $model->save();//质保商品判断
+                $zhibao = Product::find()->where("id = {$productId} and zhibao =1")->asArray()->one();
+                if($zhibao){
+                    Quality::addProduct($order->uid,$productId,$model->id);
+                }
             }else{
                 continue;
             }
