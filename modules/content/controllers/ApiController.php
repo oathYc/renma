@@ -1727,6 +1727,7 @@ class ApiController extends  Controller
                     $totalNumber = $group->number;
                     if($v['catPriceId']){
                         $data[$k]['price'] = GroupCategory::find()->where(" id = {$v['catPriceId']}")->asArray()->one()['price'];
+                        $data[$k]['catPriceDesc'] = GroupCategory::find()->where(" id = {$v['catPriceId']}")->asArray()->one()['cateDesc'];
                     }
                 }else{
                     $data[$k]['headMsg'] = '';
@@ -1813,7 +1814,7 @@ class ApiController extends  Controller
         if(!$userGroupId){
             Methods::jsonData(0,'用户组团id不存在');
         }
-        $had = UserGroup::find()->where("promoterUid = $uid and status =1 and id = $userGroupId and promoter = 1")->asArray()->one();
+        $had = UserGroup::find()->where("uid = $uid and status =1 and id = $userGroupId ")->asArray()->one();
         if(!$had){
             Methods::jsonData(0,'你还没有发起组团');
         }

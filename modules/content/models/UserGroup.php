@@ -162,10 +162,10 @@ class UserGroup extends ActiveRecord
             $data = ['code'=>0,'message'=>'用户组团不存在'];
             return $data;
         }
-        if($userGroup->promoter != 1){//不是发起人
-            $data = ['code'=>0,'message'=>'用户组团发起人不存在'];
-            return $data;
-        }
+//        if($userGroup->promoter != 1){//不是发起人
+//            $data = ['code'=>0,'message'=>'用户组团发起人不存在'];
+//            return $data;
+//        }
         if($userGroup->status != 1){//发起人还未完成支付 不能进行分享购买
             $data = ['code'=>0,'message'=>'分享人组团未成功（未购买）'];
             return $data;
