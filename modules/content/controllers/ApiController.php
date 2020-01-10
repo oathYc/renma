@@ -1480,14 +1480,14 @@ class ApiController extends  Controller
      * 邀请有奖
      */
     public function actionMyShare(){
-        $uid = Yii::$app->request->post('inviterCode');
+        $uid = Yii::$app->request->post('uid');
         if(!$uid){
-            Methods::jsonData(0,'用户邀请码不存在');
+            Methods::jsonData(0,'用户id不存在');
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
         $myShare = Member::find()->where("inviterCode = '{$shareCode}'")->asArray()->all();
-        $shareUrl = "https://lck.hzlyzhenzhi.com/api/getcode.php?uid=$uid";
-        Methods::jsonData(1,'success',['shareUrl'=>$shareUrl,'inviteCode'=>$shareCode,'myShare'=>$myShare]);
+//        $shareUrl = "https://lck.hzlyzhenzhi.com/api/getcode.php?uid=$uid";
+        Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare]);
     }
     /**
      * 我的订单
