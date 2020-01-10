@@ -1981,7 +1981,7 @@ class ApiController extends  Controller
         $model->promoter = 0;
         $model->promoterUid = $userGroup->uid;
         $model->status = 0;//0 组团中 1-组团成功 2-组团失败
-        $model->userGroupId = $userGroup->userGroupId;
+        $model->userGroupId = $userGroup->id;
         $model->createTime = time();
         $model->catPriceId = $catPriceId;
         $res = $model->save();
