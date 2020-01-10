@@ -1480,9 +1480,9 @@ class ApiController extends  Controller
      * 邀请有奖
      */
     public function actionMyShare(){
-        $uid = Yii::$app->request->post('uid');
+        $uid = Yii::$app->request->post('inviterCode');
         if(!$uid){
-            Methods::jsonData(0,'用户uid不存在');
+            Methods::jsonData(0,'用户邀请码不存在');
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
         $myShare = Member::find()->where("inviterCode = '{$shareCode}'")->asArray()->all();
@@ -2045,17 +2045,18 @@ class ApiController extends  Controller
     }
     /**
      * 邀请记录
+     * 邀请用户
      */
     public function actionShareSuccess(){
        $uid = Yii::$app->request->post('uid');
-       $pid = Yii::$app->request->post('pid');//邀请人的uid
+       $inviterCode = Yii::$app->request->post('inviterCode');//邀请人的邀请码
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        if(!$pid){
-            Methods::jsonData(0,'邀请人id不存在');
+        if(!$inviterCode){
+            Methods::jsonData(0,'邀请码不存在');
         }
-        $parent = Member::findOne($pid);
+        $parent = Member::find()->where("inviteCode = '{$inviterCode}'")->asArray()->one();
         if(!$parent){
             Methods::jsonData(0,'不存在邀请人这个用户');
         }
@@ -2063,10 +2064,10 @@ class ApiController extends  Controller
         if(!$self){
             Methods::jsonData(0,'邀请的用户不存在');
         }
-        $self->inviterCode = $parent->inviteCode;
+        $self->inviterCode = $inviterCode;
         $res = $self->save();
         if($res) {
-            Methods::jsonData(1, 'success');
+            Methods::jsonData(1,'success');
         }else{
             Methods::jsonData(0,'失败');
         }
