@@ -1462,13 +1462,14 @@ class ApiController extends  Controller
         $address = Yii::$app->request->post('address');//地址信息
         $name = Yii::$app->request->post('name');
         $phone = Yii::$app->request->post('phone');
+        $location = Yii::$app->request->post('location');//经纬度
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         if(!$qualityId){
             Methods::jsonData(0,'质保id不存在');
         }
-        $res = Quality::updateAll(['after'=>1,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone],"uid = $uid and id = $qualityId");
+        $res = Quality::updateAll(['after'=>1,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone,'location'=>$location],"uid = $uid and id = $qualityId");
         if($res){
             Methods::jsonData(1,'申请售后成功');
         }else{
