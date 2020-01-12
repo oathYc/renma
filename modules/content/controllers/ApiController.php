@@ -1414,6 +1414,7 @@ class ApiController extends  Controller
         foreach($data as $k => $v){
             $data[$k]['productImage'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
             $data[$k]['productPrice'] = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['payPrice'];
+            $data[$k]['productNumber'] = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['number'];
         }
         Methods::jsonData(1,'success',['total'=>$total,'quality'=>$data]);
     }
