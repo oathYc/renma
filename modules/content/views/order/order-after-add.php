@@ -57,6 +57,12 @@
                 </div>
             <?php }else{?>
             <div class="control-group">
+                <label for="modulename" class="control-label">指派时间</label>
+                <div class="controls">
+                    <input type="text" name="repairTime" id="repairTime" value="<?php echo isset($data['repairTime'])?date("Y-m-d",$data['repairTime']):'';?>" readonly />
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">维修师姓名</label>
                 <div class="controls">
                     <input type="text" name="repairName" id="repairName" value="<?php echo isset($data['repairName'])?$data['repairName']:'';?>" readonly />
@@ -66,6 +72,18 @@
                 <label for="modulename" class="control-label">维修师电话</label>
                 <div class="controls">
                     <input type="text" name="repairPhone" id="repairPhone" value="<?php echo isset($data['repairPhone'])?$data['repairPhone']:'';?>" readonly />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">完成图片</label>
+                <div class="controls">
+                    <input type="text" name="repairImg" id="repairImg" value="<?php echo isset($data['repairImg'])?$data['repairImg']:'';?>" readonly />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">完成时间</label>
+                <div class="controls">
+                    <input type="text" name="repairSuccess" id="repairSuccess" value="<?php echo isset($data['repairSuccess'])?date("Y-m-d",$data['repairSuccess']):'';?>" readonly />
                 </div>
             </div>
                 <br/>

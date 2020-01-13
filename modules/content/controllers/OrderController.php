@@ -203,7 +203,7 @@ class OrderController  extends AdminController
     public function actionOrderAfter(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $where = " after = 1";//售后订单才能进行后续
+        $where = " after > 0 ";//售后订单才能进行后续
         $count = Quality::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $order = Quality::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
@@ -235,7 +235,7 @@ class OrderController  extends AdminController
             if(!$id){
                 echo "<script>alert('id不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            $res = Quality::updateAll(['afterUid'=>$repairId]," id = $id");
+            $res = Quality::updateAll(['afterUid'=>$repairId,'repairTime'=>time()]," id = $id");
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='order-after';},1000)</script>";die;
             }else{

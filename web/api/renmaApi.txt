@@ -516,6 +516,17 @@
     接口参数         uid              用户id
                     page              页数 默认1  每页10条
 
+    接口名称        售后订单（维修师 质保商品）
+    接口地址        /content/api/repair-after-list
+    接口参数         uid              用户id
+                     page             页数 默认1
+                     type             完成状态 默认 0  0-全部  1-待完成 2-已完成
+
+    接口名称        售后完成（维修师 质保商品）
+    接口地址        /content/api/repair-after-success
+    接口参数         uid              用户id
+                     qualityId        质保id
+                     repairImg        完成图片
 
 
 

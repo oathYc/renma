@@ -2962,4 +2962,76 @@ class ApiController extends  Controller
         $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'total'=>$total,'history'=>$data];
         Methods::jsonData(1,'success',$data);
     }
+    /**
+     * 商品质保
+     * 售后列表
+     * 维修师
+     */
+    public function actionRepairAfterList(){
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        $type = Yii::$app->request->post('type',0);//0-全部 1-待完成 2-已完成
+        if(!$uid){
+            Methods::jsonData(0,'用户ID不存在');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'用户不存在');
+        }
+        if($member->repair != 1){
+            Methods::jsonData(0,'你还不是维修师身份');
+        }
+        $where = " afterUid  = $uid ";
+        if($type > 0){
+            $where .= " and after = $type";
+        }
+        $total = Quality::find()->where($where)->count();
+        $pageSize = 10;
+        $offset = ($page-1)*$pageSize;
+        $data = Quality::find()->where($where)->orderBy("after asc")->offset($offset)->limit($pageSize)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['productImg'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['headMsg'];
+        }
+        $data = ['total'=>$total,'data'=>$data];
+        Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 商品质保
+     * 售后完成
+     * 维修师
+     */
+    public function actionRepairAfterSuccess(){
+        $uid = Yii::$app->request->post('uid');
+        $qualityId = Yii::$app->request->post('qualityId');//质保id
+        $repairImg = Yii::$app->request->post('repairImg','');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$qualityId){
+            Methods::jsonData(0,'质保id不存在');
+        }
+        if(!$repairImg){
+            Methods::jsonData(0,'完成图片不存在');
+        }
+        $user = Member::find()->where("id = $uid and repair = 1")->one();
+        if(!$user){
+            Methods::jsonData(0,'身份错误（不是维修师）');
+        }
+        $quality = Quality::findOne($qualityId);
+        if(!$quality){
+            Methods::jsonData(0,'质保信息不存在');
+        }
+        if($quality->after != 1 || $quality->afterUid != $uid){
+            Methods::jsonData(0,'订单信息有误');
+        }
+        $quality->repairImg = $repairImg;
+        $quality->repairSuccess = time();
+        $quality->after = 2;//完成
+        $res = $quality->save();
+        if($res){
+            Methods::jsonData(1,'操作成功');
+        }else{
+            Methods::jsonData(0,'操作失败，请重试');
+        }
+    }
 }
