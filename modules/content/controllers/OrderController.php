@@ -252,7 +252,7 @@ class OrderController  extends AdminController
                 $data['repairName'] = '';
                 $data['repairPhone'] = '';
             }
-            $repairs = Member::find()->select("id,name,phone")->where(" repair = 1")->asArray()->all();
+            $repairs = Member::find()->select("id,repairName,repairPhone")->where(" repair = 1")->asArray()->all();
             return $this->render('order-after-add',['data'=>$data,'repairs'=>$repairs]);
         }
     }
