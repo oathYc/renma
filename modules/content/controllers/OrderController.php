@@ -246,8 +246,8 @@ class OrderController  extends AdminController
             $data = Quality::find()->where(" id = $id")->asArray()->one();
             if($data['afterUid']){
                 $user = Member::findOne($data['afterUid']);
-                $data['repairName'] = $user->name;
-                $data['repairPhone'] = $user->phone;
+                $data['repairName'] = $user->repairName;
+                $data['repairPhone'] = $user->repairPhone;
             }else{
                 $data['repairName'] = '';
                 $data['repairPhone'] = '';
