@@ -210,8 +210,8 @@ class OrderController  extends AdminController
         foreach($order as $k => $v){
             if($v['afterUid']){
                 $after = Member::findOne($v['afterUid']);
-                $afterName = $after->name;
-                $afterPhone = $after->phone;
+                $afterName = $after->repairName;
+                $afterPhone = $after->repairPhone;
             }else{
                 $afterName = '';
                 $afterPhone = '';
