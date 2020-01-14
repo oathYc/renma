@@ -43,7 +43,7 @@
                     <select name="repair">
                         <option value="0">请选择</option>
                         <?php foreach($repairs as $k => $v){?>
-                            <option value="<?php echo $v['id'];?>"><?php echo $v['name'];?></option>
+                            <option value="<?php echo $v['id'];?>"><?php echo $v['repairName'];?></option>
                         <?php }?>
                     </select>
                 </div>
