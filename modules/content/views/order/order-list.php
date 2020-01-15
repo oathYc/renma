@@ -64,7 +64,10 @@
                     <td ><span><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
                     <td ><span><?php echo $v['returnRemark']?></span></td>
-                    <td ><span><textarea id="key<?php echo $kss;?>"><?php echo $v['refuseRemark']?></textarea></span></td>
+                    <td ><span>
+                        <?php if($v['status'] == -1){?>
+                            <textarea id="key<?php echo $kss;?>"><?php echo $v['refuseRemark']?></textarea></span></td>
+                        <?php }?>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
