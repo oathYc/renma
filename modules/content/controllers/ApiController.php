@@ -1470,7 +1470,7 @@ class ApiController extends  Controller
         if(!$qualityId){
             Methods::jsonData(0,'质保id不存在');
         }
-        $res = Quality::updateAll(['after'=>1,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone,'location'=>$location],"uid = $uid and id = $qualityId");
+        $res = Quality::updateAll(['after'=>1,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone,'location'=>$location,'afterTime'=>time()],"uid = $uid and id = $qualityId");
         if($res){
             Methods::jsonData(1,'申请售后成功');
         }else{

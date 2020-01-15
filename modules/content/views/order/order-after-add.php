@@ -36,6 +36,18 @@
                     <input type="text" name="barCode" id="barCode" value="<?php echo isset($data['barCode'])?$data['barCode']:'';?>" readonly/>
                 </div>
             </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">申请时间</label>
+                <div class="controls">
+                    <input type="text" name="afterTime" id="afterTime" value="<?php echo isset($data['afterTime'])?date("Y-m-d",$data['afterTime']):'';?>" readonly/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">申请信息</label>
+                <div class="controls">
+                    <textarea name="afterMsg"><?php echo isset($data['afterMsg'])?$data['afterMsg']:'';?></textarea>
+                </div>
+            </div>
             <?php if(!isset($data['afterUid']) || !$data['afterUid']){?>
             <div class="control-group">
                 <label for="modulename" class="control-label">维修师</label>

@@ -5,6 +5,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\libs\Methods;
 use app\modules\content\models\Address;
 use app\modules\content\models\Logistics;
 use app\modules\content\models\Member;
@@ -50,6 +51,8 @@ class OrderController  extends AdminController
                 $status = '退款申请中';
             }elseif($v['status'] == -2){
                 $status = '已退款';
+            }elseif($v['status'] == -3){
+                $status = '拒绝退款';
             }else{
                 $status = '待支付';
             }
@@ -198,6 +201,23 @@ class OrderController  extends AdminController
         }
     }
     /**
+     * 订单退款
+     * 拒绝
+     */
+    public function actionOrderSureRefuse(){
+        $id = Yii::$app->request->post('id');
+        $remark = Yii::$app->request->post('remark');
+        if(!$remark){
+            Methods::jsonData(0,'拒绝理由不存在');
+        }
+        $res = Order::updateAll(['status'=>-3,'returnSuccess'=>time(),'refuseRemark'=>$remark],"id = $id");
+        if($res){
+            Methods::jsonData(1,'拒绝成功');
+        }else{
+            Methods::jsonData(0,'拒绝失败');
+        }
+    }
+    /**
      * 订单售后
      */
     public function actionOrderAfter(){
@@ -206,7 +226,7 @@ class OrderController  extends AdminController
         $where = " after > 0 ";//售后订单才能进行后续
         $count = Quality::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $order = Quality::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $order = Quality::find()->where($where)->orderBy('afterTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
         foreach($order as $k => $v){
             if($v['afterUid']){
                 $after = Member::findOne($v['afterUid']);

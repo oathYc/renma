@@ -42,6 +42,8 @@
                 <th>订单状态</th>
                 <th>订单说明</th>
                 <th>购买时间</th>
+                <th>退款理由</th>
+                <th>拒绝理由</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -61,13 +63,17 @@
                     <td ><span><?php echo $v['statusStr']?></span></td>
                     <td ><span><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
+                    <td ><span><?php echo $v['returnRemark']?></span></td>
+                    <td ><span><textarea id="key<?php echo $kss;?>"><?php echo $v['refuseRemark']?></textarea></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
                             <?php if($v['status'] == -1){?>
                                 <a class="btn" href="JavaScript:if(confirm('确认退款？')){location.href='/content/order/order-sure-return?id=<?php echo $v['id']; ?>'}">确认退款</a>&nbsp;
+                                <a class="btn" href="#" onclick="refuseRemark(<?php echo $v['id']; ?>,<?php echo $kss;?>)">拒绝退款</a>&nbsp;
                             <?php }?>
                             <a class="btn" href="JavaScript:if(confirm('确认删除？')){location.href='/content/order/order-delete?id=<?php echo $v['id']; ?>'}">删除</a>
+
                         </div>
                     </td>
                 </tr>
@@ -99,5 +105,22 @@
             return false;
         }
         location.href = '/content/rule/role?page='+page;
+    }
+    function refuseRemark(id,site){
+        var str = '#key'+site;
+        var val = $(str).val();
+        if(!val){
+            alert('请填写拒绝理由');return false;
+        }
+        if(confirm('确认拒绝退款？')){
+            $.post('/content/order/order-sure-refuse',{id:id,remark:val},function(e){
+                alert(e.message);
+                if(e.code ==1){
+                    window.location.reload();
+                }
+            },'json');
+        }else{
+            return false;
+        }
     }
 </script>

@@ -26,6 +26,8 @@
                 <th>维修师id</th>
                 <th>维修师姓名</th>
                 <th>维修师电话</th>
+                <th>申请时间</th>
+                <th>申请信息</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -44,6 +46,8 @@
                     <td ><span><?php echo $v['afterUid']?></span></td>
                     <td ><span><?php echo $v['afterName']?></span></td>
                     <td ><span><?php echo $v['afterPhone']?></span></td>
+                    <td ><span><?php echo date('Y-m-d H:i:s',$v['afterTime']);?></span></td>
+                    <td ><span><?php echo $v['afterMsg']?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <a class="btn" href="/content/order/order-after-add?id=<?php echo $v['id']; ?>">
