@@ -1464,13 +1464,14 @@ class ApiController extends  Controller
         $name = Yii::$app->request->post('name');
         $phone = Yii::$app->request->post('phone');
         $location = Yii::$app->request->post('location');//经纬度
+        $remark = Yii::$app->request->post('remark');//经纬度
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         if(!$qualityId){
             Methods::jsonData(0,'质保id不存在');
         }
-        $res = Quality::updateAll(['after'=>1,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone,'location'=>$location,'afterTime'=>time()],"uid = $uid and id = $qualityId");
+        $res = Quality::updateAll(['after'=>1,'remark'=>$remark,'afterMsg'=>$msg,'address'=>$address,'name'=>$name,'phone'=>$phone,'location'=>$location,'afterTime'=>time()],"uid = $uid and id = $qualityId");
         if($res){
             Methods::jsonData(1,'申请售后成功');
         }else{
@@ -2991,6 +2992,8 @@ class ApiController extends  Controller
         $data = Quality::find()->where($where)->orderBy("after asc")->offset($offset)->limit($pageSize)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['productImg'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['headMsg'];
+            $data[$k]['productPrice'] =  Product::find()->where("id = {$v['productId']}")->asArray()->one()['price'];
+            $data[$k]['productPayPrice'] =  Order::find()->where("id = {$v['orderId']}")->asArray()->one()['payPrice'];
         }
         $data = ['total'=>$total,'data'=>$data];
         Methods::jsonData(1,'success',$data);
