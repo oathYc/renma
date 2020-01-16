@@ -2051,8 +2051,11 @@ class ApiController extends  Controller
      * 邀请用户
      */
     public function actionShareSuccess(){
+        $log = 'login.txt';
+        Methods::varDumpLog($log,'邀请测试：','a');
        $uid = Yii::$app->request->post('uid');
        $inviterCode = Yii::$app->request->post('inviterCode');//邀请人的邀请码
+        Methods::varDumpLog($log,$uid-$inviterCode,'a');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
