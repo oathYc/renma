@@ -2067,6 +2067,9 @@ class ApiController extends  Controller
         if(!$self){
             Methods::jsonData(0,'邀请的用户不存在');
         }
+        if($self->inviterCode){
+            Methods::jsonData(0,'该用户已经有邀请人');
+        }
         $self->inviterCode = $inviterCode;
         $res = $self->save();
         if($res) {
