@@ -2055,7 +2055,9 @@ class ApiController extends  Controller
         Methods::varDumpLog($log,'邀请测试：','a');
        $uid = Yii::$app->request->post('uid');
        $inviterCode = Yii::$app->request->post('inviterCode');//邀请人的邀请码
-        Methods::varDumpLog($log,$uid-$inviterCode,'a');
+        $content = $uid.'-'.$inviterCode;
+        Methods::varDumpLog($log,$content,'a');
+        Methods::varDumpLog($log,"\n",'a');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
