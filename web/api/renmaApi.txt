@@ -238,6 +238,7 @@
                     phone       联系电话
                     msg         故障图片或视频
                     location    经纬度
+                    remark      售后说明
 
 
     接口名称        我的邀请
