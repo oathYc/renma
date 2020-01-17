@@ -1488,7 +1488,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
-        $myShare = Member::find()->where("inviterCode = '{$shareCode}'")->asArray()->all();
+        $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
 //        $shareUrl = "https://lck.hzlyzhenzhi.com/api/getcode.php?uid=$uid";
         Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare]);
     }
