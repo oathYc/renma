@@ -239,18 +239,20 @@ class ApiController extends  Controller
             //会员赠送
             $orderNumber = 'RM'.time().rand(123456,999999);
             $uid = $model->id;
-            $orderId = Order::createOrder($uid,$orderNumber,0,'注册小程序赠送会员',1);
-            $beginTime = time();
-            $endTime = $beginTime + 86400*365;
-            $model = new MemberLog();
-            $model->uid = $uid;
-            $model->beginTime = $beginTime;
-            $model->endTime = $endTime;
-            $model->orderId = $orderId;
-            $model->createTime = time();
-            $model->save();
-            //赠送优惠券
-            Member::sendCoupon($uid);
+            if(!$res){//第一次登录
+                $orderId = Order::createOrder($uid,$orderNumber,0,'注册小程序赠送会员',1);
+                $beginTime = time();
+                $endTime = $beginTime + 86400*365;
+                $model = new MemberLog();
+                $model->uid = $uid;
+                $model->beginTime = $beginTime;
+                $model->endTime = $endTime;
+                $model->orderId = $orderId;
+                $model->createTime = time();
+                $model->save();
+                //赠送优惠券
+                Member::sendCoupon($uid);
+            }
             Methods::jsonData(1,'登录成功',$member);
         }else{
             Methods::jsonData(0,'请求错误',$return);
