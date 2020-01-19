@@ -57,7 +57,9 @@ class LoginController extends  Controller{
      */
     public function actionShare(){
         $uid = Yii::$app->request->get('uid');
-        $redirect_uri = urlencode ('http://lck.hzlyzhenzhi.com/content/login/share-login');
+        $host = Yii::$app->params['domain'];
+        $loginUrl = $host.'/content/login/share-login';
+        $redirect_uri = urlencode ($loginUrl);
         $appid = Yii::$app->params['appId'];
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_userinfo&state=u".$uid."#wechat_redirect";
          return $this->redirect($url);
@@ -97,7 +99,7 @@ class LoginController extends  Controller{
                 Member::inviteCode($model->id);
             }
         }
-        return $this->redirect("http://lc.hzlyzhenzhi.com");
+        return $this->redirect("https://lc.hzlyzhenzhi.com");
     }
 
     private function getJson($url){

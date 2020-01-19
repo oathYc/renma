@@ -1,16 +1,17 @@
 <?php
 include('./phpqrcode.php');
 
-$imgpath="./bg.jpg"; //背景图片
+$imgpath="./backgroud.jpg"; //背景图片
+//$imgpath="./bg.jpg"; //背景图片
 $im=imagecreatefromjpeg($imgpath);
 //背景中二维码的位置和尺寸信息
-$top=900;
-$left=290;
+$top=350;
+$left=210;
 $width=180;
 $height=180;
 
 //生成我们需要的二维码图片
-$url="http://lck.hzlyzhenzhi.com/content/login/share?uid=".$_GET["uid"];
+$url="pages/index/index?code=".$_GET["uid"];
 
 QRcode::png($url,false, 'L', 6, 1);
 
