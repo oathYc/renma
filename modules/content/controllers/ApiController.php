@@ -1410,7 +1410,7 @@ class ApiController extends  Controller
         }
         $offset = ($page-1)*10;
         $total = Quality::find()->where("uid = $uid")->count();
-        $data = Quality::find()->where(" uid = $uid")->asArray()->offset($offset)->limit(10)->all();
+        $data = Quality::find()->where(" uid = $uid")->orderBy('createTime desc')->asArray()->offset($offset)->limit(10)->all();
         foreach($data as $k => $v){
             $data[$k]['productImage'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
             $data[$k]['productPrice'] = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['payPrice'];
@@ -1716,7 +1716,7 @@ class ApiController extends  Controller
         }
         $offset = ($page-1)*10;
         $total = UserGroup::find()->where($where)->count();
-        $data = UserGroup::find()->where($where)->orderBy(" id desc")->asArray()->offset($offset)->limit(10)->all();
+        $data = UserGroup::find()->where($where)->orderBy(" createTime desc")->asArray()->offset($offset)->limit(10)->all();
         foreach($data as $k => $v){
             $group = GroupProduct::findOne($v['groupId']);
             if($group){
