@@ -11,7 +11,7 @@ $width=180;
 $height=180;
 
 //生成我们需要的二维码图片
-$url="pages/index/index?code=".$_GET["uid"];
+$url="pages/index/index?code=".$_GET["code"];
 
 QRcode::png($url,false, 'L', 6, 1);
 
