@@ -1489,8 +1489,7 @@ class ApiController extends  Controller
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
         $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
-        $host = Yii::$app->params['domain'];
-        $shareUrl = $host."/api/shareqrcode.php?code=$shareCode";
+        $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
         Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare,'shareUrl'=>$shareUrl]);
     }
     /**

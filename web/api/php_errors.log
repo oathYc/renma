@@ -1,279 +1,209 @@
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(bg.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:52:39 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(bg.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:52:44 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:52:58 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:53:34 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:53:35 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:53:36 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(./back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:05 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(./back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(./back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:06 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(./back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(./back.jpg): failed to open stream: No such file or directory in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:07 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.png' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.png' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:18 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.png' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:54:19 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.png' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:54:32 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[20-Nov-2019 19:54:35 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:54:35 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.png' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.jpg' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.jpg' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 20
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 25
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:20) in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 33
-[20-Nov-2019 19:55:15 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.jpg' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagejpeg() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 30
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 34
-[20-Nov-2019 19:55:24 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[20-Nov-2019 19:55:27 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error:  in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:55:27 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): './back.jpg' is not a valid JPEG file in D:\project\renma\web\api\getcode.php on line 5
-[20-Nov-2019 19:56:56 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[19-Jan-2020 14:45:59 Asia/Shanghai] PHP Warning:  imagecreatefromjpeg(): Filename cannot be empty in D:\project\renma\web\api\getcode.php on line 5
-[19-Jan-2020 14:45:59 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'Yii' not found in D:\project\renma\web\api\getcode.php:13
-Stack trace:
-#0 {main}
-  thrown in D:\project\renma\web\api\getcode.php on line 13
-[19-Jan-2020 14:52:26 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'Yii' not found in D:\project\renma\web\api\getcode.php:13
-Stack trace:
-#0 {main}
-  thrown in D:\project\renma\web\api\getcode.php on line 13
-[19-Jan-2020 14:52:54 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 30
-[19-Jan-2020 14:53:10 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:55:05 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:55:38 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:55:57 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:56:02 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:56:13 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:57:51 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:57:53 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 14
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:57:59 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 14
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:58:24 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Notice:  Undefined index: code in D:\project\renma\web\api\getcode.php on line 14
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:58:41 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Notice:  Undefined index: code in D:\project\renma\web\api\getcode.php on line 14
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:58:42 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 14
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 21
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 26
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:21) in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 14:59:41 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 35
-[19-Jan-2020 14:59:46 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
-[19-Jan-2020 15:01:10 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
-[19-Jan-2020 15:01:23 Asia/Shanghai] PHP Notice:  Undefined variable: left in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 15:01:23 Asia/Shanghai] PHP Notice:  Undefined variable: top in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 15:01:23 Asia/Shanghai] PHP Notice:  Undefined variable: width in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 15:01:23 Asia/Shanghai] PHP Notice:  Undefined variable: height in D:\project\renma\web\api\getcode.php on line 29
-[19-Jan-2020 15:01:23 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:29) in D:\project\renma\web\api\getcode.php on line 30
-[19-Jan-2020 15:01:23 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
-[19-Jan-2020 15:01:36 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 31
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:46:13 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:50:46 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:50:47 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:51:09 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:51:19 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:51:39 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:51:59 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:00 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:52:01 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:53:17 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:53:50 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:26 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:27 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:28 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:57 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\getcode.php on line 15
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Warning:  imagecreatefromstring(): Data is not in a recognized format in D:\project\renma\web\api\getcode.php on line 22
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Warning:  imagesx() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 27
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Warning:  imagesy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 28
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Warning:  imagecopyresampled() expects parameter 2 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 29
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\project\renma\web\api\getcode.php:22) in D:\project\renma\web\api\getcode.php on line 30
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Notice:  Undefined variable: newqrimg in D:\project\renma\web\api\getcode.php on line 32
+[19-Jan-2020 15:54:58 Asia/Shanghai] PHP Warning:  imagedestroy() expects parameter 1 to be resource, boolean given in D:\project\renma\web\api\getcode.php on line 36
+[19-Jan-2020 15:58:47 Asia/Shanghai] PHP Notice:  Undefined index: uid in D:\project\renma\web\api\shareqrcode.php on line 34

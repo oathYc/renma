@@ -31,15 +31,16 @@ else{
 //path是扫描二维码跳转的小程序路径，可以带参数?id=xxx
 //width是二维码宽度
 $shareCode = $_GET['code'];
+$uid = $_GET['uid'];
 $qcode ="https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=$ACCESS_TOKEN";
-$param = json_encode(array("path"=>"pages/index/index?code=$shareCode","width"=> 150));
+$param = json_encode(array("path"=>"pages/index/index?code=$shareCode","width"=> 150,'height'=>120));
 
 //POST参数
 $result = httpRequest( $qcode, $param,"POST");
 //生成二维码
-file_put_contents("qrcode.png", $result);
+$img = "qrcode-$uid.png";
+file_put_contents("./qrcode/$img", $result);
 $base64_image ="data:image/jpeg;base64,".base64_encode( $result );
-
 //把请求发送到微信服务器换取二维码
 function httpRequest($url, $data='', $method='GET'){
     $curl = curl_init();
