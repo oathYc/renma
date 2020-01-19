@@ -12,7 +12,7 @@ $height=180;
 
 //生成我们需要的二维码图片
 $url="pages/index/index?code=".$_GET["code"];
-$url="http://lck.hzlyzhenzhi.com/content/login/share?uid=".$_GET["uid"];
+$url="https://lck.hzlyzhenzhi.com/content/login/share?uid=".$_GET["uid"];
 
 QRcode::png($url,false, 'L', 6, 1);
 
