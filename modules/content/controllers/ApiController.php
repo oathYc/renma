@@ -2620,6 +2620,26 @@ class ApiController extends  Controller
         $order = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 ")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
         foreach($order as $k => $v){
             $order[$k]['headMsg'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
+            $addressId = $v['address']?$v['address']:0;
+            if($addressId){
+                $address = Address::find()->asArray()->where("id = $addressId")->one();
+                if($address){
+                    $addressStr = $address['province'].$v['city'].$v['area'].$v['address'];
+                    $phone = $v['phone'];
+                    $name = $v['name'];
+                }else{
+                    $addressStr = '';
+                    $phone = '';
+                    $name = '';
+                }
+            }else{
+                $addressStr = '';
+                $phone = '';
+                $name = '';
+            }
+            $order[$k]['address'] = $addressStr;
+            $order[$k]['phone'] = $phone;
+            $order[$k]['name'] = $name;
         }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }

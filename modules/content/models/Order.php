@@ -108,8 +108,8 @@ class Order extends ActiveRecord
             if(!$userGroup){
                 return false;
             }
-            $userGroupId = $userGroup->userGroupId;
-            if($userGroup->promoter != 1 && $userGroup->id = $userGroupId){//不是组团发起人 给发起人返现
+            $userGroupId = $userGroup->userGroupId;//分享人组团id
+//            if($userGroup->promoter != 1 && $userGroup->id = $userGroupId){//不是组团发起人 给发起人返现
                 $pid = $userGroup->promoterUid;
                 $group = GroupProduct::findOne($userGroup->groupId);
                 if($group){
@@ -117,9 +117,9 @@ class Order extends ActiveRecord
                     $number = $group->number;//组团人数
                     $groupTime = $group->groupTime;//有效时间
                     if($return){
-                        $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and promoter != 1 and status = 1")->count();
+                        $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and uid != $pid and status = 1")->count();
                         //过期时间
-                        $createTime = UserGroup::find()->where("userGroupId = $userGroupId and status = 1 and promoter = 1")->asArray()->one()['createTime'];//发起组团时间
+                        $createTime = UserGroup::find()->where("userGroupId = $userGroupId and status = 1 and uid = $pid")->asArray()->one()['createTime'];//发起组团时间
                         $expirTime = $groupTime*86400 + $createTime;
                         $now = time();
                         if($hadNumber < $number && $now < $expirTime){//人数未满且在有效期内
@@ -131,7 +131,7 @@ class Order extends ActiveRecord
                         }
                     }
                 }
-            }
+//            }
         }
         return true;
     }
