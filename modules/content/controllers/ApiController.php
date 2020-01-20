@@ -2625,8 +2625,8 @@ class ApiController extends  Controller
                 $address = Address::find()->asArray()->where("id = $addressId")->one();
                 if($address){
                     $addressStr = $address['province'].$address['city'].$address['area'].$address['address'];
-                    $phone = $v['phone'];
-                    $name = $v['name'];
+                    $phone = $address['phone'];
+                    $name = $address['name'];
                 }else{
                     $addressStr = '';
                     $phone = '';

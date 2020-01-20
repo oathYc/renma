@@ -117,7 +117,7 @@ class Order extends ActiveRecord
                     $number = $group->number;//组团人数
                     $groupTime = $group->groupTime;//有效时间
                     if($return){
-                        $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and uid != $pid and status = 1")->count();
+                        $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and uid != $pid and status = 1 and uid != {$order['uid']}")->count();
                         //过期时间
                         $createTime = UserGroup::find()->where("userGroupId = $userGroupId and status = 1 and uid = $pid")->asArray()->one()['createTime'];//发起组团时间
                         $expirTime = $groupTime*86400 + $createTime;
