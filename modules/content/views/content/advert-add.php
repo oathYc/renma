@@ -23,7 +23,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">内容分类</label>
                 <div class="controls">
-                    <label for="img0" style="display: inline;"><input type="radio" name="imageType" id="img0" value="0"  />&nbsp;&nbsp;其他</label>&nbsp;&nbsp;
+                    <label for="img0" style="display: inline;"><input type="radio" name="imageType" id="img0" value="0"  <?php if(isset($advert['imageType']) && $advert['imageType'] ==0) echo 'checked';?>/>&nbsp;&nbsp;其他</label>&nbsp;&nbsp;
                     <label for="img1" style="display: inline;"><input type="radio" name="imageType" id="img1" value="1" <?php if(isset($advert['imageType']) && $advert['imageType'] ==1) echo 'checked';?> />&nbsp;&nbsp;商品</label>&nbsp;&nbsp;
                     <label for="img2" style="display: inline;"><input type="radio" name="imageType" id="img2" value="2" <?php if(isset($advert['imageType']) && $advert['imageType'] ==2) echo 'checked';?> />&nbsp;&nbsp;组团</label>
                 </div>
@@ -65,7 +65,11 @@
             <br/>
             <div class="control-group">
                 <div class="controls">
-                    <input type="submit" class="btn " value="提交">&nbsp;&nbsp;&nbsp;
+                    <?php if(isset($advert['id'])){?>
+                        <a href="Javascript:history.go(-1);" class="btn">返回</a>
+                    <?php }else{?>
+                        <input type="submit" class="btn " value="提交">&nbsp;&nbsp;&nbsp;
+                    <?php }?>
                 </div>
             </div>
         </fieldset>

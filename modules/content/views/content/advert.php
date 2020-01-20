@@ -43,7 +43,7 @@
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
-                            <a class="btn" href="/content/content/advert-add?id=<?php echo $v['id']; ?>">修改</a>
+                            <a class="btn" href="/content/content/advert-add?id=<?php echo $v['id']; ?>">详情</a>
                             <a class="btn" href="/content/content/alter-status?id=<?php echo $v['id']; ?>"><?php echo $v['status']==1?'禁用':'启用'?></a>
                             <a class="btn" href="JavaScript:if(confirm('确认删除该广告？')){location.href='/content/content/advert-delete?id=<?php echo $v['id']; ?>'}">删除</a>
                         </div>
