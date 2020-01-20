@@ -1596,11 +1596,11 @@ class ApiController extends  Controller
             $endTime = '';
         }
         //节省金额
-        $reduceMoney = Order::find()->where("uid = $uid and status = 1")->sum('reducePrice');
+        $reduceMoney = Order::find()->where("uid = $uid and status = 1 and type = 2")->sum('reducePrice');
         //优惠券数量
         $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
         //免单数量
-        $feeCount = Order::find()->where("uid = $uid and status = 1 and serverFee = 0")->count();
+        $feeCount = Order::find()->where("uid = $uid and status = 1 and serverFee = 0 and type = 2")->count();
         //优惠卷兑换
         $coupons = Coupon::find()->asArray()->all();
         $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons];
