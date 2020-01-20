@@ -29,8 +29,8 @@
                 ?>
                 <tr>
                     <td ><span><?php echo $v['id']?></span></td>
-                    <td ><span ><?php echo $v['name']?></span></td>
-                    <td ><span><?php echo $v['phone']?></span></td>
+                    <td ><span ><?php echo $v['repairName']?></span></td>
+                    <td ><span><?php echo $v['repairPhone']?></span></td>
                     <td ><span><?php echo $v['repair']==1?'是':'否'?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>

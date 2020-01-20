@@ -37,7 +37,7 @@ class RepairController  extends AdminController
         parent::setActionId($action);
         $count = Member::find()->where(" repair in(-1,1)")->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = Member::find()->select("id,name,phone,repair")->orderBy('id desc')->where("repair in(-1,1)")->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $data = Member::find()->select("id,repairName,repairPhone,repair")->orderBy('id desc')->where("repair in(-1,1)")->asArray()->offset($page->offset)->limit($page->limit)->all();
         return $this->render('repair-check',['page'=>$page,'count'=>$count,'data'=>$data]);
     }
     /**
