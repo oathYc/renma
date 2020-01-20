@@ -119,7 +119,7 @@ class Order extends ActiveRecord
                     if($return){echo '2-';
                         $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and uid != $pid and status = 1 and uid != {$order['uid']}")->count();
                         //过期时间
-                        $createTime = UserGroup::find()->where("userGroupId = $userGroupId and status = 1 and uid = $pid")->asArray()->one()['createTime'];//发起组团时间
+                        $createTime = UserGroup::find()->where("id = $userGroupId and status = 1 and uid = $pid")->asArray()->one()['createTime'];//发起组团时间
                         $expirTime = $groupTime*86400 + $createTime;
                         $now = time();echo $hadNumber.'-';echo $number.'-';echo $now.'-';echo $expirTime.'-';
                         if($hadNumber < $number && $now < $expirTime){//人数未满且在有效期内
