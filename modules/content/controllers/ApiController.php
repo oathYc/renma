@@ -2618,6 +2618,9 @@ class ApiController extends  Controller
         $offset = ($page-1)*10;
         $total = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 ")->count();
         $order = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 ")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        foreach($order as $k => $v){
+            $order[$k]['headMsg'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
+        }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }
     /**
