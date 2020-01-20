@@ -112,25 +112,25 @@ class Order extends ActiveRecord
 //            if($userGroup->promoter != 1 && $userGroup->id = $userGroupId){//不是组团发起人 给发起人返现
                 $pid = $userGroup->promoterUid;
                 $group = GroupProduct::findOne($userGroup->groupId);
-                if($group){
+                if($group){echo 1;
                     $return = $group->return;//返现金额
                     $number = $group->number;//组团人数
                     $groupTime = $group->groupTime;//有效时间
-                    if($return){
+                    if($return){echo '2-';
                         $hadNumber = UserGroup::find()->where("userGroupId = $userGroupId and uid != $pid and status = 1 and uid != {$order['uid']}")->count();
                         //过期时间
                         $createTime = UserGroup::find()->where("userGroupId = $userGroupId and status = 1 and uid = $pid")->asArray()->one()['createTime'];//发起组团时间
                         $expirTime = $groupTime*86400 + $createTime;
-                        $now = time();
+                        $now = time();echo $hadNumber.'-';echo $number.'-';echo $now.'-';echo $expirTime.'-';
                         if($hadNumber < $number && $now < $expirTime){//人数未满且在有效期内
                             $money = Member::find()->where(" id = $pid")->asArray()->one()['memberMoney'];
-                            $add = $money + $return;
+                            $add = $money + $return;echo $money;echo 4;
                             Member::updateAll(['memberMoney'=>$add],"id = $pid");
                             //记录金额收入记录
                             MoneyRecord::saveRecord($pid,$orderId,$return,1,1);
                         }
                     }
-                }
+                }die;
 //            }
         }
         return true;
