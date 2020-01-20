@@ -105,7 +105,7 @@
                 <label for="modulename" class="control-label">商品分类价格</label>
                 <div class="controls">
                     分类描述：<input type="text"  name="condition" id='catDesc' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
-                    分类价格：<input type="text" style="width:120px" name="propId" id='catPrice' onkeyup="value = value.replace(/[^0-9]/g,'')" autocomplete="off" value="" />
+                    分类价格：<input type="text" style="width:120px" name="propId" id='catPrice' onkeyup="value = value.replace(/[^.0-9]/g,'')" autocomplete="off" value="" />
                     &nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addPrice(this)">添加</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                 </div><br/>
