@@ -34,6 +34,7 @@
                     <td ><span><?php echo $v['id']?></span></td>
                     <td ><span ><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['phone']?></span></td>
+                    <td ><span><?php echo $v['shopTime']?></span></td>
                     <td ><span><?php echo $v['province'].$v['city'].$v['area'].$v['address']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['checkTime']);?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
