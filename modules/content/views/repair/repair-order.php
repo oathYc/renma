@@ -46,7 +46,11 @@
                     <td ><span><?php echo $v['payPrice']?></span></td>
 <!--                    <td ><span>--><?php //echo $v['status']?><!--</span></td>-->
 <!--                    <td ><span>--><?php //echo $v['remark']?><!--</span></td>-->
-                    <td ><span><img width="120px"   height="90px" src="<?php echo $v['repairImg']?>" title="单击放大"  onclick="maxPic(this)"  /></span></td>
+                    <td ><span>
+                            <?php if($v['repairImg']){?>
+                            <img width="120px"   height="90px" src="<?php echo $v['repairImg']?>" title="单击放大"  onclick="maxPic(this)"  />
+                            <?php }?>
+                        </span></td>
                     <td ><span><?php echo $v['repairSuccess']?date('Y-m-d H:i:s',$v['repairSuccess']):'';?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
