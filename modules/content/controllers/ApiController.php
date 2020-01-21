@@ -1769,6 +1769,7 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $str = $groupId.'-'.$uid.'-'.$page;
+        Methods::varDumpLog('test.txt',"\n",'a');
         Methods::varDumpLog('test.txt',$str,'a');
         Methods::varDumpLog('test.txt',"\n",'a');
         if(!$uid){
