@@ -1768,7 +1768,7 @@ class ApiController extends  Controller
         $groupId = Yii::$app->request->post('groupId');
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
-        $str = $groupId.'-'.$uid.'-'.$page;
+        $str = 'detail-'.$groupId.'-'.$uid.'-'.$page;
         Methods::varDumpLog('test.txt',"\n",'a');
         Methods::varDumpLog('test.txt',$str,'a');
         Methods::varDumpLog('test.txt',"\n",'a');
@@ -1814,7 +1814,8 @@ class ApiController extends  Controller
     public function actionGroupProductShare(){
         $userGroupId = Yii::$app->request->post('userGroupId');
         $uid = Yii::$app->request->post('uid');
-        $str = $userGroupId.'-'.$uid.'-';
+        $str = 'share-'.$userGroupId.'-'.$uid.'-';
+        Methods::varDumpLog('test.txt',"\n",'a');
         Methods::varDumpLog('test.txt',$str,'a');
         Methods::varDumpLog('test.txt',"\n",'a');
         if(!$uid){
