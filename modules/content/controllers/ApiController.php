@@ -1769,7 +1769,8 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
-            Methods::jsonData(0,'用户id不存在');
+            $nickname = '';
+            $avatar = '';
         }else{
             $user = Member::findOne($uid);
             $nickname = isset($user->nickname)?$user->nickname:'';
