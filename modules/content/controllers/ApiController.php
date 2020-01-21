@@ -1769,9 +1769,9 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $str = 'detail-'.$groupId.'-'.$uid.'-'.$page;
-        Methods::varDumpLog('test.txt',"\n",'a');
+        Methods::varDumpLog('test.txt',"\n\r",'a');
         Methods::varDumpLog('test.txt',$str,'a');
-        Methods::varDumpLog('test.txt',"\n",'a');
+        Methods::varDumpLog('test.txt',"\n\r",'a');
         if(!$uid){
             $nickname = '';
             $avatar = '';
@@ -1815,9 +1815,9 @@ class ApiController extends  Controller
         $userGroupId = Yii::$app->request->post('userGroupId');
         $uid = Yii::$app->request->post('uid');
         $str = 'share-'.$userGroupId.'-'.$uid.'-';
-        Methods::varDumpLog('test.txt',"\n",'a');
+        Methods::varDumpLog('test.txt',"\n\r",'a');
         Methods::varDumpLog('test.txt',$str,'a');
-        Methods::varDumpLog('test.txt',"\n",'a');
+        Methods::varDumpLog('test.txt',"\n\r",'a');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }else{
