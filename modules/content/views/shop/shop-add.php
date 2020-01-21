@@ -30,25 +30,25 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">店铺地址（省份）</label>
                 <div class="controls">
-                    <input type="text" name="province" id="province" value="" />
+                    <input type="text" name="province" id="province" value="" placeholder="例如 四川省" />
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">店铺地址（市级）</label>
                 <div class="controls">
-                    <input type="text" name="city" id="city" value="" />
+                    <input type="text" name="city" id="city" value="" placeholder="例如 成都市" />
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">店铺地址（地区）</label>
                 <div class="controls">
-                    <input type="text" name="area" id="area" value="" />
+                    <input type="text" name="area" id="area" value="" placeholder="例如 武侯区" />
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">店铺详细地址</label>
                 <div class="controls">
-                    <input type="text" name="address" id="address" value="" />
+                    <input type="text" name="address" id="address" value="" placeholder="街道门牌号" />
                 </div>
             </div>
             <div class="control-group">
