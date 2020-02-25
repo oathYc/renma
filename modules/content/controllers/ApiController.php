@@ -2382,8 +2382,14 @@ class ApiController extends  Controller
             Methods::jsonData(0,'商品id不存在');
         }
         $today = strtotime(date('Y-m-d'));
-        $had = Product::find()->where("id = $productId and uid = $uid and flushTime >= $today")->one();
-        if($had){
+        $had = Product::find()->where("id = $productId ")->one();
+        if(!$had){
+            Methods::jsonData(0,'没有该商品');
+        }
+        if($had->uid != $uid){
+            Methods::jsonData(0,'你不是发布者，没有刷新权限');
+        }
+        if($had->flushTime >= $today){
             Methods::jsonData(2,'当前支刷新需要支付一定的费用');
         }
         $had = Product::findOne($productId);
