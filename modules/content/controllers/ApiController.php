@@ -45,8 +45,8 @@ class ApiController extends  Controller
         if($city){
             $data = Member::getip();
             if($data['code'] ==1){//获取地区成功
-                $city = $data['city'];
-                if($city != $city){
+                $currentCity = $data['city'];//当前城市
+                if($currentCity != $city){
                     Methods::jsonData(0,'没有进入权限');
                 }
             }else{
