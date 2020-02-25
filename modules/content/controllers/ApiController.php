@@ -47,10 +47,10 @@ class ApiController extends  Controller
             if($data['code'] ==1){//获取地区成功
                 $currentCity = $data['city'];//当前城市
                 if($currentCity != $city){
-                    Methods::jsonData(0,'没有进入权限');
+                    Methods::jsonData(0,'没有进入权限（不在允许地区）');
                 }
             }else{
-                Methods::jsonData(0,'没有进入权限');
+                Methods::jsonData(0,'没有进入权限（定位失败）');
             }
         }
     }

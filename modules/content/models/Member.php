@@ -177,7 +177,8 @@ class Member extends ActiveRecord
 //
 //        $cip =$ip[1];
         $code = 1;//获取成功
-        $cip = \Yii::$app->request->getUserIP();
+        $cip = $_SERVER['REMOTE_ADDR'];
+//        $cip = \Yii::$app->request->getUserIP();
         if($cip == ''){
             $url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json";//新浪借口获取访问者地区
             $ip=json_decode(file_get_contents($url),true);
