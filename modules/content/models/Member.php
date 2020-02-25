@@ -179,7 +179,8 @@ class Member extends ActiveRecord
                 return ['code'=>2];
             }else{
                 $data = (array)$ip->data;
-                return ['code'=>1,'data'=>$data];
+                $data['code'] = 1;
+                return $data;
             }
         }catch(\Exception  $e){
             return ['code'=>3];
