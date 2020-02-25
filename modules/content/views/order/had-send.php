@@ -43,7 +43,16 @@
                     <td ><span ><?php echo $v['uid']?></span></td>
                     <td ><span ><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['productId']?></span></td>
-                    <td ><span><?php echo $v['productTitle']?></span></td>
+                    <td ><span>
+                            <?php if(isset($v['infos'])){?>
+                                <?php
+                                foreach( $v['infos'] as $vv) {
+                                    ?>
+                                    <?php echo $vv;?>
+                                <?php } }else{?>
+                                <?php echo $v['productTitle'] ?>
+                            <?php } ?>
+                        </span></td>
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['payPrice']?></span></td>
                     <td ><span><?php echo $v['integral']?></span></td>

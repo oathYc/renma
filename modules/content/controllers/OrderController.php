@@ -57,6 +57,9 @@ class OrderController  extends AdminController
                 $status = '待支付';
             }
             $data[$k]['statusStr'] = $status;
+            if($v['productInfo']){
+                $data[$k]['infos'] = explode(',',$v['productInfo']);
+            }
         }
         return $this->render('order-list',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
@@ -238,6 +241,9 @@ class OrderController  extends AdminController
             }
             $order[$k]['afterName'] = $afterName;
             $order[$k]['afterPhone'] = $afterPhone;
+            $productInfos = Order::find()->where(" id = {$v['orderId']}")->asArray()->one()['productInfo'];
+            $order[$k]['infos'] = explode(',',$productInfos);
+
         }
         return $this->render('order-after',['data'=>$order,'page'=>$page,'count'=>$count]);
     }
@@ -299,6 +305,9 @@ class OrderController  extends AdminController
                 $status = '待支付';
             }
             $data[$k]['statusStr'] = $status;
+            if($v['productInfo']){
+                $data[$k]['infos'] = explode(',',$v['productInfo']);
+            }
         }
         return $this->render('had-buy',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
@@ -325,6 +334,9 @@ class OrderController  extends AdminController
                 $status = '待支付';
             }
             $data[$k]['statusStr'] = $status;
+            if($v['productInfo']){
+                $data[$k]['infos'] = explode(',',$v['productInfo']);
+            }
         }
         return $this->render('need-buy',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
@@ -346,6 +358,9 @@ class OrderController  extends AdminController
             $data[$k]['logisticsName'] = isset($logistics['name'])?$logistics['name']:'';
             $data[$k]['logisticsType'] = isset($logistics['logistics'])?$logistics['logistics']:'';
             $data[$k]['logisticsStr'] = isset($logistics['status'])?$logistics['status']:'';
+            if($v['productInfo']){
+                $data[$k]['infos'] = explode(',',$v['productInfo']);
+            }
         }
         return $this->render('had-send',['data'=>$data,'page'=>$page,'count'=>$count]);
     }

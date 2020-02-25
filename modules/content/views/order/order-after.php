@@ -38,7 +38,16 @@
                 <tr>
                     <td ><span><?php echo $v['id']?></span></td>
                     <td ><span ><?php echo $v['orderId']?></span></td>
-                    <td ><span><?php echo $v['productName']?></span></td>
+                    <td ><span>
+                            <?php if(isset($v['infos'])){?>
+                                <?php
+                                foreach( $v['infos'] as $vv) {
+                                    ?>
+                                    <?php echo $vv?$vv:$v['productName'];?>
+                                <?php } }else{?>
+                                <?php echo $v['productName'] ?>
+                            <?php } ?>
+                        </span></td>
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['gyTime']?></span></td>
                     <td ><span><?php echo $v['barCode']?></span></td>

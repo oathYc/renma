@@ -141,4 +141,27 @@ class Member extends ActiveRecord
             }
         }
     }
+
+    /**
+     * 余额增加
+     */
+    public static function addYu($uid,$money=0){
+        if(!$uid){
+            return true;
+        }
+        if($money<= 0){
+            return true;
+        }else{
+            $member = Member::findOne($uid);
+            if(!$member){
+                return true;
+            }else{
+                $memberMoney = $member->memberMoney;
+                $newMoney = $memberMoney + $money;
+                $member->memberMoney = $newMoney;
+                $member->save();
+                return true;
+            }
+        }
+    }
 }
