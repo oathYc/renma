@@ -1628,7 +1628,7 @@ class ApiController extends  Controller
      * 我的订单
      */
     public function actionMyOrder(){
-        $type = Yii::$app->request->post('type',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $type = Yii::$app->request->post('type',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后 5 已完成
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1642,15 +1642,17 @@ class ApiController extends  Controller
 //            echo 2;die;
             $total = Order::find()->where($where)->count();
             $orders = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
-        }elseif($type ==4){
-            $total = Quality::find()->where(" uid = $uid and after = 1")->count();
-            $data = Quality::find()->where("uid = $uid and after =1")->offset($offset)->limit(10)->asArray()->all();
-            $orders = [];
-            foreach($data as $kk => $vk){
-                $order = Order::find()->where("id = {$vk['orderId']}")->asArray()->one();
-                $orders[]= $order;
-            }
-        }else{
+        }
+//        elseif($type ==4){
+//            $total = Quality::find()->where(" uid = $uid and after = 1")->count();
+//            $data = Quality::find()->where("uid = $uid and after =1")->offset($offset)->limit(10)->asArray()->all();
+//            $orders = [];
+//            foreach($data as $kk => $vk){
+//                $order = Order::find()->where("id = {$vk['orderId']}")->asArray()->one();
+//                $orders[]= $order;
+//            }
+//        }
+        else{
             $total = Order::find()->where($where)->count();
             $orders = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
         }
@@ -2312,7 +2314,8 @@ class ApiController extends  Controller
         }
         $order->evaluate = $comment;
         $order->evalTime = time();
-        $order->typeStatus = 4;
+//        $order->typeStatus = 4;
+        $order->typeStatus = 5;
         $order->evalImage = serialize($image);
         $order->evalVideo = serialize($video);
         $res = $order->save();
@@ -2432,13 +2435,15 @@ class ApiController extends  Controller
             if(!$uid){
                 $data[] = ['type'=>$v,'number'=>0];
             }else{
-                if($v == 4){
-                    $total = Quality::find()->where("uid = $uid and after = 1")->count();
-                }else{
-//                    $where = " uid = $uid  and typeStatus = $v and type = 2 ";
-                    $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
-                    $total = Order::find()->where($where)->count();
-                }
+//                if($v == 4){
+//                    $total = Quality::find()->where("uid = $uid and after = 1")->count();
+//                }else{
+////                    $where = " uid = $uid  and typeStatus = $v and type = 2 ";
+//                    $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
+//                    $total = Order::find()->where($where)->count();
+//                }
+                $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
+                $total = Order::find()->where($where)->count();
                 $data[] = ['type'=>$v,'number'=>$total];
             }
         }
