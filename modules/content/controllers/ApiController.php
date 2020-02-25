@@ -43,14 +43,18 @@ class ApiController extends  Controller
         //验证进入地区  地区限制
         $city = ShopMessage::find()->where('type =11')->asArray()->one()['content'];
         if($city){
-            $data = Member::getip();
-            if($data['code'] ==1){//获取地区成功
-                $currentCity = $data['city'];//当前城市
-                if($currentCity != $city){
-                    Methods::jsonData(0,'没有进入权限（不在允许地区）');
+            $areaIn = Yii::$app->session->get('areaIn');
+            if($areaIn != $city){
+                $data = Member::getip();
+                if($data['code'] ==1){//获取地区成功
+                    $currentCity = $data['city'];//当前城市
+                    if($currentCity != $city){
+                        Methods::jsonData(0,'没有进入权限（不在允许地区）');
+                    }
+                    Yii::$app->session->set('areaIn',$city);
+                }else{
+                    Methods::jsonData(0,'定位失败，请刷新重试');
                 }
-            }else{
-                Methods::jsonData(0,'定位失败，请刷新重试');
             }
         }
     }
