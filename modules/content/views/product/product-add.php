@@ -105,7 +105,8 @@
                 <label for="modulename" class="control-label">商品分类价格</label>
                 <div class="controls">
                     分类描述：<input type="text"  name="condition" id='catDesc' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
-                    分类价格：<input type="text" style="width:120px" name="propId" id='catPrice' onkeyup="value = value.replace(/[^.0-9]/g,'')" autocomplete="off" value="" />
+                    分类价格：<input type="text" style="width:120px" name="propId" id='catPrice' onkeyup="value = value.replace(/[^.0-9]/g,'')" autocomplete="off" value="" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    分类库存：<input type="text" style="width:120px" id='number' onkeyup="value = value.replace(/[^.0-9]/g,'')" autocomplete="off" value="" />
                     &nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addPrice(this)">添加</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                 </div><br/>
@@ -116,8 +117,8 @@
                                 ?>
                                 <tr>
                                     <td>
-                                        <?php echo $v['cateDesc']?>：<?php echo $v['price']?>元
-                                        <input type="hidden" value="<?php echo $v['id'].'-'.$v['cateDesc'].'-'.$v['price']?>" name="submit[priceCat][]"/>&nbsp;&nbsp;&nbsp;
+                                        <?php echo $v['cateDesc']?>：<?php echo $v['price']?>元 ： 库存 <?php echo $v['number']?>
+                                        <input type="hidden" value="<?php echo $v['id'].'-'.$v['cateDesc'].'-'.$v['price'].'-'.$v['number']?>" name="submit[priceCat][]"/>&nbsp;&nbsp;&nbsp;
                                     </td>
                                     <td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td>
                                 </tr>
@@ -188,6 +189,26 @@
                     </div>
                 </div>
             </div>
+
+            <div class="control-group">
+                <label for="modulename" class="control-label">商品轮播图</label>
+                <div class="controls">
+                    <div style="margin-bottom: 10px" >
+                        <a href="#" class="btn btn-info" onclick="upFiles3();">上传内容</a>
+                    </div>
+                </div>
+                <div class="controls" id="imgDiv3" data-imgNum="<?php echo isset($data['headImgs'])?count($data['headImgs']):0?>">
+                    <?php if(isset($data['headImgs']) && is_array($data['headImgs'])) { ?>
+                        <?php foreach ($data['headImgs'] as $k => $v) { ?>
+                            <img width="120px" data-imgId="img3Id<?php echo $k + 1; ?>" title="双击删除" height="90px"
+                                 src="<?php echo $v; ?>" ondblclick="imgDelete3(this)" />&nbsp;&nbsp;
+                            <input type="hidden" name="imageFiles3[]" value="<?php echo $v; ?>"
+                                   id="img3Id<?php echo $k + 1; ?>"/>
+                        <?php }
+                    }?>
+                </div>
+            </div>
+
             <div class="control-group">
                 <label for="modulename" class="control-label">商品视频</label>
                 <div class="controls">
@@ -243,16 +264,33 @@
         $('#imgDiv').attr('data-imgNum',imgNum);
         $(_this).remove();
     }
+
+
+    function imgDelete3(_this){
+        //删除对应的图片值
+        var img3Id = $(_this).attr('data-imgId');
+        $('#'+img3Id).remove();
+        //img 数量减一
+        var imgNum = $('#imgDiv3').attr('data-imgNum');
+        imgNum--;
+        $('#imgDiv3').attr('data-imgNum',imgNum);
+        $(_this).remove();
+    }
+
     function addPrice(){
         var desc = $('#catDesc').val();
         var price = $('#catPrice').val();
+        var number = $('#number').val();
         if(!desc){
             alert('请填写分类描述');return false;
         }
         if(!price){
             alert('请填写分类价格');return false;
         }
-        var str = '<tr><td>'+desc+'：'+price+'元'+'<input type="hidden" value="0-'+desc+'-'+price+'" name="submit[priceCat][]" /></td>';
+        if(!price){
+            alert('请填写分类库存');return false;
+        }
+        var str = '<tr><td>'+desc+'：'+price+'元 '+' 库存'+number+'<input type="hidden" value="0-'+desc+'-'+price+'-'+number+'" name="submit[priceCat][]" /></td>';
         str += '<td><a href="#" style="display: inline;" onclick="deleteCont(this)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></td></tr>';
         $('#catPriceDiv').append(str);
     }
@@ -363,3 +401,54 @@
 
 </script>
 <script type="text/plain" id="j_ueditorupload2"></script>
+
+<script>
+
+    //实例化编辑器
+    var o_ueditorupload3 = UE.getEditor('j_ueditorupload',
+        {
+            autoHeightEnabled:false
+        });
+    o_ueditorupload3.ready(function ()
+    {
+
+        o_ueditorupload3.hide();//隐藏编辑器
+
+        //监听图片上传
+        o_ueditorupload3.addListener('beforeInsertImage', function (t,arg)
+        {
+            $('#headMsg').val(arg[0].src);
+
+        });
+
+        /* 文件上传监听
+         * 需要在ueditor.all.min.js文件中找到
+         * d.execCommand("insertHtml",l)
+         * 之后插入d.fireEvent('afterUpfile',b)
+         */
+        o_ueditorupload.addListener('afterUpfile', function (t, arg)
+        {
+            var str = '';
+            var imgNum =  $('#imgDiv3').attr('data-imgNum');
+            if(!imgNum){
+                imgNum = 0;
+            }
+            for(var t=0;t<arg.length;t++){
+                imgNum++;
+                str += '<img width="120px" data-imgId="img3Id'+imgNum+'" title="双击删除" height="90px" src="'+arg[t].url+'" ondblclick="imgDelete3(this)" />&nbsp;&nbsp;';
+                str += '<input type="hidden" name="imageFiles3[]" value="'+arg[t].url+'" id="img3Id'+imgNum+'"/>';
+            }
+            $('#imgDiv3').attr('data-imgNum',imgNum);
+            $('#imgDiv3').append(str);
+        });
+    });
+
+    //弹出文件上传的对话框
+    function upFiles3()
+    {
+        var myFiles3 = o_ueditorupload3.getDialog("attachment");
+        myFiles3.open();
+    }
+
+</script>
+<script type="text/plain" id="j_ueditorupload3"></script>

@@ -52,8 +52,16 @@ class Product extends ActiveRecord
         $data = \Yii::$app->db->createCommand($sqlData)->queryAll();
         foreach($data as $k => $v){
             $data[$k]['evalImage'] = $v['evalImage']?unserialize($v['evalImage']):'';
+            if($data[$k]['evalImage']){
+                $data[$k]['evalImages'] = explode(',',$data[$k]['evalImage']);
+            }
+//            var_dump($data[$k]['evalImage']);die;
             $data[$k]['evalVideo'] = $v['evalVideo']?unserialize($v['evalVideo']):'';
+            if($data[$k]['evalVideo']){
+                $data[$k]['evalVideos'] = explode(',',$data[$k]['evalVideo']);
+            }
         }
+//        var_dump($data);die;
         //获取类型数量
         $sql1 = $sql.$where1;
         $content1 = \Yii::$app->db->createCommand($sql1)->queryAll();

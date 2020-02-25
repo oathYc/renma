@@ -403,8 +403,10 @@ class ApiController extends  Controller
         $mileage = $request->post('mileage');//续航里程
         $sex = $request->post('sex',0);//使用性别 0-通用 1-男 2-女
         $image = $request->post('image');//图片集合
+        $headImgs = $request->post('headImgs');//图片集合
         $tradeAddress = $request->post('tradeAddress');//商品详细地址
-        $type = $request->post('type',0);//商品特性  1-维修 2-新车 3-二手车
+//        $type = $request->post('type',0);//商品特性  1-维修 2-新车 3-二手车
+        $type = 3;//默认 二手车
         $introduce = $request->post('introduce');//详细介绍
         $number = $request->post('number',1);//数量
         $zhibao = Yii::$app->request->post('zhibao',0);//质保商品 0-不是 1-是
@@ -420,7 +422,8 @@ class ApiController extends  Controller
             }else{
                 $had = Product::find()->where("uid = $uid")->count();
                 $memberLevel = $user['memberLevel'];
-                if($memberLevel ==1){
+//                if($memberLevel ==1){
+                if($memberLevel ==3){
                     $total = 12;
                 }elseif($memberLevel ==2){
                     $total = 6;
@@ -459,6 +462,9 @@ class ApiController extends  Controller
         if(!$image){
             Methods::jsonData(0,'商品图片数据不存在');
         }
+        if(!$headImgs){
+            Methods::jsonData(0,'商品封面信息不存在');
+        }
         if(!$remark){
             Methods::jsonData(0,'商品说明不存在');
         }
@@ -479,7 +485,8 @@ class ApiController extends  Controller
         $model->sex = $sex;
         $model->headMsg = $headMsg;
         $model->video = $video;
-        $model->image = serialize($image);
+        $model->image = serialize(explode(',',$image));
+        $model->headImgs = serialize(explode(',',$headImgs));
         $model->tradeAddress = $tradeAddress;
         $model->brand = $brand;
         $model->introduce = $introduce;
@@ -503,6 +510,7 @@ class ApiController extends  Controller
                 $product['catCidName'] = '';
             }
             $product['image'] = unserialize($product['image']);
+            $product['headImgs'] = unserialize($product['headImgs']);
             Methods::jsonData(1,'上传成功',$product);
         }else{
             Methods::jsonData(0,'上传失败');
@@ -645,6 +653,7 @@ class ApiController extends  Controller
                 $product['catCidName'] = '';
             }
             $product['image'] = unserialize($product['image']);
+            $product['headImgs'] = unserialize($product['headImgs']);
             //商品分类价格
             $product['catPrice'] = ProductCategory::find()->where("productId = $productId")->asArray()->all();
             if($uid){
@@ -809,9 +818,21 @@ class ApiController extends  Controller
             }else{
                 $totalPrice = $number*$product->price;
             }
+
+            $productInfo[] = $product->title.' (规格：'.$catPrice->cateDesc.') x '.$number;
+
+            //判断库存是否充足
+            if($number > $catPrice->number && $product->number >0){
+                Methods::jsonData(0,'商品库存仅剩'.$catPrice->number.'件，请重新选择商品数量');
+            }
+
         }else{
             $totalPrice = $number*$product->price;
+            $productInfo[] = $product->title.' (规格：默认) x '.$number;
+
         }
+
+
         //积分抵扣
         if(!$integral){
             $integral = 0;
@@ -856,6 +877,7 @@ class ApiController extends  Controller
         $model->orderNumber = $orderNumber;
         $model->uid = $uid;
         $model->productId = $productId;
+        $model->productInfo = implode(',',$productInfo);
         $model->productTitle = $product->title;
         $model->totalPrice = $totalPrice;
         $model->reducePrice = $reducePrice;
@@ -877,6 +899,9 @@ class ApiController extends  Controller
         if(is_array($extInfo)){
             $remark = json_encode($extInfo);
         }
+        if(isset($catPriceId)){
+            $model->catPriceId = $catPriceId;
+        }
         $model->payType = 1;
         $model->type = $type;
         $model->address = $address;
@@ -889,6 +914,20 @@ class ApiController extends  Controller
             if($couponId){
                 UserCoupon::addRecord($uid,$couponId,$model->id);
             }
+
+            //库存减少处理m'y
+            if($catPriceId){
+                $newNumber = $catPrice->number - $number;
+                $newNumber = $newNumber > 0 ?$newNumber:0;
+                $categoryModel = new ProductCategory();
+                $categoryModel->updateAll(['number'=>$newNumber],'id = :id',[':id' => $catPriceId]);
+            }
+
+            $totalNumber = $product->number - $number;
+            $totalNumber = $totalNumber > 0 ? $totalNumber : 0;
+            $productModel = new Product();
+            $productModel->updateAll(['number'=>$totalNumber],'id = :id',[':id' => $productId]);
+
             if($status ==0){//需要支付金额
                 $return  = WeixinPayController::WxOrder($orderNumber,$product->title,$payPrice,$model->id);
                 die(json_encode($return));
@@ -898,6 +937,7 @@ class ApiController extends  Controller
                 Member::reduceIntegral($uid,$integral);
                 Methods::jsonData(1,'success',['status'=>1]);//支付成功
             }
+
         }else{
             Methods::jsonData(0,'订单添加失败');
         }
@@ -932,27 +972,50 @@ class ApiController extends  Controller
         $productIds = [];
         $numbers = 0;
         $products = explode(',',$productstr);
+        $productInfo = [];
         foreach($products as $k => $v){
             $arr = explode('-',$v);
-            if(count($arr)!=2){
+            if(count($arr)!=3){
                 continue;
             }
-            $catPriceId = ShopCart::find()->where("uid = $uid and productId = {$arr[0]}")->asArray()->one()['catPriceId'];
+//            $catPriceId = ShopCart::find()->where("uid = $uid and productId = {$arr[0]}")->asArray()->one()['catPriceId'];
+            //获取传过来的货品id
+            $catPriceId = $arr[2];
             if($catPriceId){//加入购物车勾选的分类id
                 $price = ProductCategory::find()->where("id = $catPriceId and productId = {$arr[0]}")->asArray()->one()['price'];
                 if(!$price){
                     $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
                     if(!$price)$price=0;
                 }
+                $productCategoryNum = ProductCategory::find()->where("id = $catPriceId and productId = {$arr[0]}")->asArray()->one()['number'];
+                $productName = Product::find()->where("id = {$arr[0]}")->asArray()->one()['title'];
+                $cateName = ProductCategory::find()->where("id = $catPriceId and productId = {$arr[0]}")->asArray()->one()['cateDesc'];
+//                echo $catPriceId;die;
+//                Methods::jsonData(0,'规格数量：'.$productCategoryNum.'-商品名称-'.$productName.'-货品名称-'.$cateName);
+                //判断库存
+                if($arr[1] > $productCategoryNum){
+                    Methods::jsonData(0,$arr[0].'商品'.$productName.'(规格：'.$cateName.')库存仅剩'.$productCategoryNum.'件，请重新选择商品数量');
+                }
+
+                $productInfo[] = $productName.' (规格：'.$cateName.') x '.$arr[1];
+
             }else{
                 $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
+                $productName = Product::find()->where("id = {$arr[0]}")->asArray()->one()['title'];
+                $productNum = Product::find()->where("id = {$arr[0]}")->asArray()->one()['number'];
+                $productInfo[] = $productName.' (规格：默认)'. ' x '.$arr[1];
+                //判断库存
+                if($arr[1] > $productNum){
+                    Methods::jsonData(0,'商品'.$productName.'库存仅剩'.$productNum.'件，请重新选择商品数量2');
+                }
+
                 if(!$price)$price=0;
             }
             $numbers += $arr[1];
             $price = $arr[1]*$price;
             $totalPrice += $price;
             $productIds[] = $arr[0];
-            ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}");
+//            ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}"); // 放到下单完成处理
         }
 //        $totalPrice = 100;
         $productIds = implode(',',$productIds);
@@ -1026,8 +1089,43 @@ class ApiController extends  Controller
         $model->integral = $integral;
         $model->remark = $remark;
         $model->serverFee = $serFee;
+        $model->productInfo = implode(',',$productInfo);
         $res = $model->save();
         if($res){
+
+            //处理减少库存问题
+            foreach($products as $k => $v) {
+                $arr = explode('-', $v);
+                if (count($arr) != 3) {
+                    continue;
+                }
+                $catPriceId = ShopCart::find()->where("uid = $uid and productId = {$arr[0]}")->asArray()->one()['catPriceId'];
+                if ($catPriceId) {//加入购物车勾选的分类id
+                    $productCategoryNum = ProductCategory::find()->where("id = $catPriceId and productId = {$arr[0]}")->asArray()->one()['number'];
+
+                    $newNumber = $productCategoryNum - $arr[1];
+                    $newNumber = $newNumber > 0 ?$newNumber:0;
+                    $categoryModel = new ProductCategory();
+                    $categoryModel->updateAll(['number'=>$newNumber],'id = :id',[':id' => $catPriceId]);
+
+
+                    //删除购物车
+                    ShopCart::deleteAll("uid = $uid and productId = {$arr[0]} and catPriceId = {$catPriceId}");
+
+                } else {
+                    //删除购物车
+                    ShopCart::deleteAll("uid = $uid and productId = {$arr[0]}");
+                }
+                $productNum = Product::find()->where("id = {$arr[0]}")->asArray()->one()['number'];
+                $totalNumber = $productNum - $arr[1];
+                $totalNumber = $totalNumber > 0 ? $totalNumber : 0;
+                $productModel = new Product();
+                $productModel->updateAll(['number'=>$totalNumber],'id = :id',[':id' => $arr[0]]);
+
+
+
+            }
+
             //记录用户优惠券使用记录
             if($couponId){
                 UserCoupon::addRecord($uid,$couponId,$model->id);
@@ -1244,7 +1342,8 @@ class ApiController extends  Controller
         if(!$productId){
             Methods::jsonData(0,'商品id不存在');
         }
-        $res = ShopCart::find()->where("uid = $uid and productId = $productId")->one();
+//        $res = ShopCart::find()->where("uid = $uid  and productId = $productId")->one();
+        $res = ShopCart::find()->where("uid = $uid and catPriceId = $catPriceId  and productId = $productId")->one();
         if(!$res){
             $model = new ShopCart();
             $model->uid = $uid ;
@@ -1292,14 +1391,27 @@ class ApiController extends  Controller
                     if(!$price){
                         $price = $product->price;;
                     }
+                    $cateDesc = ProductCategory::find()->where("id = $catPriceId and productId = {$v['productId']}")->asArray()->one()['cateDesc'];
+                    if(!$cateDesc){
+                        $cateDesc = '默认';
+                    }
+                    $number = ProductCategory::find()->where("id = $catPriceId and productId = {$v['productId']}")->asArray()->one()['number'];
+                    if(!isset($number)){
+                        $number = $product->number;
+                    }
+
                 }else{
-                    $price = $product->price;;
+                    $price = $product->price;
+                    $cateDesc = '默认';
+                    $number = $product->number;
                 }
                 $userCart[$k]['price'] = $price;
+                $userCart[$k]['cateDesc'] = $cateDesc;
                 $userCart[$k]['title'] = $product->title;
                 $userCart[$k]['brand'] = $product->brand;
                 $userCart[$k]['productImage'] = $product->headMsg;
-                $userCart[$k]['productNumber'] = $product->number;
+//                $userCart[$k]['productNumber'] = $product->number;
+                $userCart[$k]['productNumber'] = $number;
                 $userCart[$k]['tradeAddress'] = $product->tradeAddress;
                 $carts[] = $userCart[$k];
             }
@@ -1411,12 +1523,30 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $offset = ($page-1)*10;
-        $total = Quality::find()->where("uid = $uid")->count();
-        $data = Quality::find()->where(" uid = $uid")->orderBy('createTime desc')->asArray()->offset($offset)->limit(10)->all();
+
+        $sql = " select q.* from {{%quality_product}} q left join {{%order}} o on o.id = q.orderId where q.uid = {$uid} and o.status != -2 order by q.createTime desc";
+        $datas = Yii::$app->db->createCommand($sql)->queryAll();
+        $total = count($datas);
+        $limit = " limit ".(10*($page-1)).',10 ';
+        $sql .= $limit;
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+//        $total = Quality::find()->where("uid = $uid")->count();
+//        $data = Quality::find()->where(" uid = $uid")->orderBy('createTime desc')->asArray()->offset($offset)->limit(10)->all();
         foreach($data as $k => $v){
             $data[$k]['productImage'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
             $data[$k]['productPrice'] = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['payPrice'];
             $data[$k]['productNumber'] = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['number'];
+            $productInfo = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['productInfo'];
+            $data[$k]['infos'] = explode(',',$productInfo);
+            $repaired = Order::find()->where("id = '{$v['orderId']}'")->asArray()->one()['repairUid'];
+            if($repaired){
+                $data[$k]['repairName'] = Member::find()->where("id = '{$repaired}'")->asArray()->one()['repairName'];
+                $data[$k]['repairPhone'] = Member::find()->where("id = '{$repaired}'")->asArray()->one()['repairPhone'];
+            }else{
+                $data[$k]['repairName'] = '';
+                $data[$k]['repairPhone'] = '';
+            }
+
         }
         Methods::jsonData(1,'success',['total'=>$total,'quality'=>$data]);
     }
@@ -1508,6 +1638,8 @@ class ApiController extends  Controller
         $offset = ($page -1)*10;
         if($type !=99 && $type != 4){
             $where .= " and typeStatus = $type";
+            $where .= " and status != -2";
+//            echo 2;die;
             $total = Order::find()->where($where)->count();
             $orders = Order::find()->where($where)->orderBy("id desc")->offset($offset)->limit(10)->asArray()->all();
         }elseif($type ==4){
@@ -1524,6 +1656,7 @@ class ApiController extends  Controller
         }
         foreach($orders as $k => $v){
             $product = Product::find()->where("id = {$v['productId']}")->asArray()->one();
+//            var_dump($v['productId']);die;
             $orders[$k]['productImage'] = $product['headMsg'];
             $orders[$k]['productNumber'] = $product['number'];
             if($v['proType'] ==1 && $v['repairUid']){
@@ -1534,6 +1667,7 @@ class ApiController extends  Controller
                 $orders[$k]['repairName'] = '';
                 $orders[$k]['repairPhone'] = '';
             }
+            $orders[$k]['infos'] = explode(',',$v['productInfo']);
         }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$orders]);
     }
@@ -1562,6 +1696,11 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
 //        $offset = rand(11,99);
         $data = Product::find()->limit(10)->asArray()->all();
+        if($data){
+            foreach ($data as &$datum){
+                $datum['image'] = unserialize($datum['image']);
+            }
+        }
         Methods::jsonData(1,'sucess',$data);
     }
     /**
@@ -1761,6 +1900,34 @@ class ApiController extends  Controller
         $data = ['total'=>$total,'data'=>$data];
         die(json_encode($data));
     }
+
+    /**
+     * 获取拼团状态
+     */
+    public function actionGetGroupStatus()
+    {
+//        Methods::jsonData(1,'success',['status'=>999999]);
+        $userGroupId = Yii::$app->request->post('userGroupId');
+
+        if($userGroupId){
+            //根据userGroupId 获取groupid
+            $groupId = UserGroup::find()->where(['userGroupId'=>$userGroupId])->one()['groupId'];
+            //获取当前拼团的数量
+            $count = UserGroup::find()->where(['userGroupId'=>$userGroupId,'status'=>1,'promoter'=>0])->count();
+            //获取当前团 的允许数量
+            $number = GroupProduct::find()->where(['id'=>$groupId])->one()['number'];
+            if($count >= $number){
+                $status = 1;
+            }else{
+                $status = 0;
+            }
+        }else{
+            $status = 0;
+        }
+
+        Methods::jsonData(1,'success',['status'=>$status]);
+    }
+
     /**
      * 组团商品详情
      */
@@ -1939,13 +2106,23 @@ class ApiController extends  Controller
 //            }else{//参与者
 //                $price = $groupProduct->price;//商品组团价格
 //            }
+
+            if($catPriceId){
+                $cateDesc = GroupCategory::find()->where("id = $catPriceId")->asArray()->one()['cateDesc'];//分类价格
+                $cateDesc = $cateDesc?$cateDesc:'默认';
+            }else{
+                $cateDesc = '默认';
+            }
+
             $model = new Order();
             $model->orderNumber = 'RMZT'.time().rand(11111,99999);
             $model->uid = $group->uid;
             $model->productId = $groupProduct->productId;
             $model->productTitle = $product->title;
             $model->totalPrice = $price;
+            $model->productInfo = $product->title.' (规格：'.$cateDesc.') x 1';
             $model->payPrice = $price;
+            $model->catPriceId = $catPriceId?$catPriceId:0;
             $model->status = 0;
             $model->createTime = time();
             $model->payType = 1;
@@ -1989,6 +2166,20 @@ class ApiController extends  Controller
         if($expire['code'] != 1){
             Methods::jsonData(0,$expire['message']);
         }
+
+        //组团商品信息
+        $product = GroupProduct::findOne($userGroup->groupId);
+        if(!$product){
+            Methods::jsonData(0,'组团商品不存在');
+        }
+        $number = $product->number;//组团人数
+        //获取当前组团组团人数
+        $hadNumber = UserGroup::find()->where(" userGroupId = {$groupId} and promoter = 0 ")->count();
+        if($hadNumber >= $number){//组团人数已满 修改组团状态
+            Methods::jsonData(0,'此团人数已满，请去拼团首页发起拼团');
+        }
+
+
         $model = new UserGroup();
         $model->uid = $uid;
         $model->groupId = $userGroup->groupId;
@@ -2244,7 +2435,8 @@ class ApiController extends  Controller
                 if($v == 4){
                     $total = Quality::find()->where("uid = $uid and after = 1")->count();
                 }else{
-                    $where = " uid = $uid  and typeStatus = $v and type = 2";
+//                    $where = " uid = $uid  and typeStatus = $v and type = 2 ";
+                    $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
                     $total = Order::find()->where($where)->count();
                 }
                 $data[] = ['type'=>$v,'number'=>$total];
@@ -2361,7 +2553,7 @@ class ApiController extends  Controller
         $time = strtotime(date("Y-m-d"));
         $begin = $time - 15*86400;
         Product::deleteAll("uid = $uid and flushTime < $begin");
-        $product = Product::find()->where("uid = $uid")->orderBy('flushTime desc')->asArray()->all();
+        $product = Product::find()->where("uid = $uid")->orderBy('flushTime desc,id desc')->asArray()->all();
         foreach($product as $k => $v){
             if($v['flushTime'] > 0){
                 $product[$k]['flushTime'] = date('Y-m-d H:i:s',$v['flushTime']);
@@ -2551,7 +2743,7 @@ class ApiController extends  Controller
         if(!$orderId){
             Methods::jsonData(0,'订单id不存在');
         }
-        $data = Order::find()->asArray()->select("id,payPrice,returnTime,status,typeStatus,returnRemark")->where("uid = $uid and id = $orderId and status < 0")->one();
+        $data = Order::find()->asArray()->select("id,payPrice,returnTime,status,refuseRemark,typeStatus,returnRemark")->where("uid = $uid and id = $orderId and status < 0")->one();
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -2633,8 +2825,10 @@ class ApiController extends  Controller
         $offset = ($page-1)*10;
         $total = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 ")->count();
         $order = Order::find()->where("status = 1 and typeStatus = 1 and type = 2 ")->orderBy('createTime desc')->offset($offset)->limit(10)->asArray()->all();
+
         foreach($order as $k => $v){
             $order[$k]['headMsg'] = Product::find()->where(" id = {$v['productId']}")->asArray()->one()['headMsg'];
+            $order[$k]['infos'] = explode(',',$v['productInfo']);
             $addressId = $v['address']?$v['address']:0;
             if($addressId){
                 $address = Address::find()->asArray()->where("id = $addressId")->one();
@@ -2652,6 +2846,16 @@ class ApiController extends  Controller
                 $phone = '';
                 $name = '';
             }
+//
+//            if($v['id']){
+//                $orderDetail = Quality::find()->where("orderId = {$v['id']} ")->one();
+//                if($orderDetail){
+//                    $order[$k]['orderDetail'] = $orderDetail->toArray();
+//                }else{
+//                    $order[$k]['orderDetail'] = [];
+//                }
+//            }
+
             $order[$k]['address'] = $addressStr;
             $order[$k]['phone'] = $phone;
             $order[$k]['name'] = $name;
@@ -2681,6 +2885,19 @@ class ApiController extends  Controller
         $offset = ($page-1)*10;
         $total = Order::find()->where($where)->count();
         $order = Order::find()->where($where)->orderBy('typeStatus asc,createTime desc')->offset($offset)->limit(10)->asArray()->all();
+        if($order){
+            foreach($order as &$item){
+                if($item['id']){
+                    $item['orderDetail'] = Quality::find()->where("orderId = {$item['id']} ")->one();
+                    if($item['orderDetail']){
+                        $item['orderDetail'] = $item['orderDetail']->toArray();
+                    }
+                }
+                $item['image'] = Product::find()->where(['id'=>$item['productId']])->one()['headMsg'];
+                $item['infos'] = explode(',',$item['productInfo']);
+                $item['addressInfo'] = Address::find()->where(['id'=>$item['address']])->asArray()->one();
+            }
+        }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$order]);
     }
     /**
@@ -2737,6 +2954,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'身份错误');
         }
         $order = Order::findOne($orderId);
+
         if(!$order){
             Methods::jsonData(0,'订单不存在');
         }
@@ -2770,6 +2988,27 @@ class ApiController extends  Controller
                     }
                 }
             }
+
+            //判断是否是拼图商品 返利团长
+
+            if($order['productType'] == 2){
+                //根据订单号id  获取发起人id 和组团奖励金额
+                $groupId = UserGroup::find()->where(['orderId'=>$orderId])->one()['groupId'];
+                $promoterUid = UserGroup::find()->where(['orderId'=>$orderId])->one()['promoterUid'];
+                $userId = UserGroup::find()->where(['orderId'=>$orderId])->one()['uid'];
+                if($promoterUid != $userId){
+                    //根据团id 获取奖励
+                    $award = GroupProduct::find()->where(['id'=>$groupId])->one()['return'];
+                    //发放奖励
+                    $awardTrue = MoneyRecord::saveRecord($promoterUid,$orderId,$award);
+                    if($awardTrue){
+                        //余额增加
+                        Member::addYu($promoterUid,$award);
+                    }
+                }
+
+            }
+
 
             Methods::jsonData(1,'操作成功');
         }else{
@@ -3042,6 +3281,8 @@ class ApiController extends  Controller
             $data[$k]['productImg'] = Product::find()->where("id = {$v['productId']}")->asArray()->one()['headMsg'];
             $data[$k]['productPrice'] =  Product::find()->where("id = {$v['productId']}")->asArray()->one()['price'];
             $data[$k]['productPayPrice'] =  Order::find()->where("id = {$v['orderId']}")->asArray()->one()['payPrice'];
+            $productInfo =  Order::find()->where("id = {$v['orderId']}")->asArray()->one()['productInfo'];
+            $data[$k]['infos'] =  explode(',',$productInfo);
         }
         $data = ['total'=>$total,'data'=>$data];
         Methods::jsonData(1,'success',$data);
@@ -3084,5 +3325,16 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(0,'操作失败，请重试');
         }
+    }
+
+    /**
+     * 根据id获取广告图片
+     * @Obelisk
+     */
+    public function actionGetImg(){
+        $model = new Advert();
+        $id = Yii::$app->request->get('id','8');
+        $data = $model::find()->where(' id = '.$id)->asArray()->one();
+        Methods::jsonData(1,'success',$data);
     }
 }

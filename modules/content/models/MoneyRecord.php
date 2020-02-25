@@ -26,6 +26,6 @@ class MoneyRecord extends ActiveRecord
         $model->createTime = time();
         $model->moneyType =$type;
         $model->save();
-
+        return true;
     }
 }

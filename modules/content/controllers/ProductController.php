@@ -98,6 +98,7 @@ class ProductController  extends AdminController
             $id = Yii::$app->request->post('id');
             $submit = Yii::$app->request->post('submit');
             $image = Yii::$app->request->post('imageFiles');
+            $headImgs = Yii::$app->request->post('imageFiles3');
             if($id){
                 $model = Product::findOne($id);
             }else{
@@ -154,6 +155,15 @@ class ProductController  extends AdminController
                     }
                 }
             }
+            if(!$headImgs || !is_array($headImgs)){
+                echo "<script>alert('商品轮播图片数据不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                foreach($headImgs as $k =>$v){
+                    if(!preg_match("/http/",$v)){
+                        $headImgs[$k] = $domain.$v;
+                    }
+                }
+            }
             if(!$submit['introduce']){
                 echo "<script>alert('商品详情不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -164,6 +174,7 @@ class ProductController  extends AdminController
             $model->sex = $submit['sex'];
             $model->headMsg = $submit['headMsg'];
             $model->image = serialize($image);
+            $model->headImgs = serialize($headImgs);
             $model->tradeAddress = $submit['tradeAddress'];
             $model->brand = $submit['brand'];
             $model->introduce = $submit['introduce'];
@@ -190,6 +201,7 @@ class ProductController  extends AdminController
                 $data = Product::find()->where("id = $id")->asArray()->one();
                 $data['catName'] = $data['type']==1?'维修':($data['type']==2?'新车':($data['type'] ==3?'二手车':''));
                 $data['image'] = unserialize($data['image']);
+                $data['headImgs'] = unserialize($data['headImgs']);
                 $data['priceCat'] = ProductCategory::find()->where("productId = $id")->asArray()->all();
             }else{
                 $data = [];

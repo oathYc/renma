@@ -20,7 +20,7 @@ class ProductCategory extends ActiveRecord
             $ids = "";
             foreach($array as $k => $v){
                 $arr = explode('-',$v);
-                if(count($arr) ==3){
+                if(count($arr) ==4){
                     $id = $arr[0];
                     if($id){//修改
                         $model = self::findOne($id);
@@ -29,6 +29,7 @@ class ProductCategory extends ActiveRecord
                         $model->createTime = time();
                     }
                     $model->productId = $productId;
+                    $model->number = $arr[3];
                     $model->price = $arr[2];
                     $model->cateDesc = $arr[1];
                     $model->save();
