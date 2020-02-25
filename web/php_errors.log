@@ -8,3 +8,10 @@
 [03-Jan-2020 16:16:24 Asia/Shanghai] PHP Fatal error:  Cannot redeclare app\modules\content\controllers\OrderController::actionOrderAfterAdd() in D:\project\renma\modules\content\controllers\OrderController.php on line 262
 [03-Jan-2020 16:16:24 Asia/Shanghai] PHP Fatal error:  Cannot redeclare app\modules\content\controllers\OrderController::actionOrderAfterAdd() in D:\project\renma\modules\content\controllers\OrderController.php on line 262
 [03-Jan-2020 17:30:54 Asia/Shanghai] PHP Fatal error:  Cannot redeclare app\modules\content\controllers\OrderController::actionHadBuy() in D:\project\renma\modules\content\controllers\OrderController.php on line 288
+[25-Feb-2020 16:36:35 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
+[25-Feb-2020 16:58:08 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
+[25-Feb-2020 16:59:17 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
+[25-Feb-2020 17:06:40 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
+[25-Feb-2020 17:08:44 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
+[25-Feb-2020 17:12:06 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
+[25-Feb-2020 17:12:23 Asia/Shanghai] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in D:\project\renma\vendor\yiisoft\yii2\base\ErrorHandler.php on line 143
