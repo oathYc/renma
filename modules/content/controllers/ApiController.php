@@ -38,6 +38,22 @@ header("Access-Control-Allow-Origin:*");
 class ApiController extends  Controller
 {
     public $enableCsrfValidation = false;
+    public static  function areaCheck()
+    {
+        //验证进入地区  地区限制
+        $city = ShopMessage::find()->where('type =11')->asArray()->one()['content'];
+        if($city){
+            $data = Member::getip();
+            if($data['code'] ==1){//获取地区成功
+                $city = $data['city'];
+                if($city != $city){
+                    Methods::jsonData(0,'没有进入权限');
+                }
+            }else{
+                Methods::jsonData(0,'没有进入权限');
+            }
+        }
+    }
     /**
      * 获取分类
      * cy
@@ -193,6 +209,7 @@ class ApiController extends  Controller
      * 微信授权
      */
     public function actionWeixinLogin(){
+        self::areaCheck();
         $request = Yii::$app->request;
         $code = $request->post('code');
         $avatar = $request->post('avatar');
@@ -263,6 +280,7 @@ class ApiController extends  Controller
      * 授权后
      */
     public function actionUserLogin(){
+        self::areaCheck();
         $phone = Yii::$app->request->post('phone');
         $password = Yii::$app->request->post('password');
         if(!$phone){
@@ -284,6 +302,7 @@ class ApiController extends  Controller
      * 个人信息修改
      */
     public function actionAlterMsg(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $avatar = Yii::$app->request->post('avatar');//头像地址
         $phone = Yii::$app->request->post('phone');//电话
@@ -327,6 +346,7 @@ class ApiController extends  Controller
      * 图片上传
      */
     public function actionUploadImage(){
+        self::areaCheck();
         $file = $_FILES['upload'];
         if(!$file){
             Methods::jsonData(0,'请上传图片');
@@ -351,6 +371,7 @@ class ApiController extends  Controller
      * 视频上传
      */
     public function actionFileImage(){
+        self::areaCheck();
         $file = $_FILES['upload'];
         if(!$file){
             Methods::jsonData(0,'请上传文件');
@@ -376,6 +397,7 @@ class ApiController extends  Controller
      * 获取
      */
     public function actionProductCategory(){
+        self::areaCheck();
         $pid = Yii::$app->request->post('pid',0);
         if($pid){
             $category = Category::find()->where("pid = $pid")->asArray()->all();
@@ -390,6 +412,7 @@ class ApiController extends  Controller
      * 上传
      */
     public function actionProductUpload(){
+        self::areaCheck();
         $request = Yii::$app->request;
         $uid = $request->post('uid');
         $title = $request->post('title');//商品名称
@@ -520,6 +543,7 @@ class ApiController extends  Controller
      * 首页信息
      */
     public function actionHomeIndex(){
+        self::areaCheck();
         //logo内容
         $logo = Logo::find()->where("status = 1")->asArray()->one();
         //广告内容
@@ -535,6 +559,7 @@ class ApiController extends  Controller
      * 首页搜索
      */
     public function actionIndexSearch(){
+        self::areaCheck();
         $search = Yii::$app->request->post('search','');
         $where = " 1=1 ";
         if($search){
@@ -552,6 +577,7 @@ class ApiController extends  Controller
      * l栏目进入
      */
     public function actionProductAccess(){
+        self::areaCheck();
         $type = Yii::$app->request->post('type',1);
         $page = Yii::$app->request->post('page',1);
         $search =Yii::$app->request->post('search','');
@@ -627,6 +653,7 @@ class ApiController extends  Controller
      * 商品详情
      */
     public function actionProductDetail(){
+        self::areaCheck();
         $productId = Yii::$app->request->post('productId',0);
         $page = Yii::$app->request->post('page',1);
         $uid = Yii::$app->request->post('uid');
@@ -677,6 +704,7 @@ class ApiController extends  Controller
      * 用户地址数据
      */
     public function actionUserAddress(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid',0);
         $default = Yii::$app->request->post('default',0);
         if($default ==1){
@@ -690,6 +718,7 @@ class ApiController extends  Controller
      * 添加 修改用户地址
      */
     public function actionAddAddress(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $addressId = Yii::$app->request->post('addressId');
         $province = Yii::$app->request->post('province');
@@ -747,6 +776,7 @@ class ApiController extends  Controller
      * 设置默认地址
      */
     public function actionAddressDefault(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $addressId = Yii::$app->request->post('addressId');
         if(!$addressId || !$uid){
@@ -762,6 +792,7 @@ class ApiController extends  Controller
      * 地址删除
      */
     public function actionAddressDelete(){
+        self::areaCheck();
         $addressId = Yii::$app->request->post('addressId');
         $uid = Yii::$app->request->post('uid');
         if(!$addressId || !$uid){
@@ -782,6 +813,7 @@ class ApiController extends  Controller
      * 单个商品购买
      */
     public function actionCreateOrder(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         $number = Yii::$app->request->post('number',1);
@@ -948,6 +980,7 @@ class ApiController extends  Controller
     * 购物车
      */
     public function actionCreateOrderByCart(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productstr = Yii::$app->request->post('products','');//1-2,2-2
         $integral = Yii::$app->request->post('integral',0);//积分
@@ -1148,6 +1181,7 @@ class ApiController extends  Controller
      * 继续付款
      */
     public function actionPayOrder(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         if(!$uid){
@@ -1179,6 +1213,7 @@ class ApiController extends  Controller
      * 返回部分数据由前端调三方获取实时距离
      */
     public function actionNearbyShop(){
+        self::areaCheck();
         $area = Yii::$app->request->post('area');//当前地区
         $province = Yii::$app->request->post('province');
         $city = Yii::$app->request->post('city');
@@ -1200,6 +1235,7 @@ class ApiController extends  Controller
      * 商铺详情
      */
     public function actionShopDetail(){
+        self::areaCheck();
         $shopId = Yii::$app->request->post('shopId');
         if(!$shopId){
             Methods::jsonData(0,'参数错误');
@@ -1212,6 +1248,7 @@ class ApiController extends  Controller
      * 会员申请
      */
     public function actionShopApply(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'参数错误');
@@ -1302,6 +1339,7 @@ class ApiController extends  Controller
      * 商铺申请结果
      */
     public function actionShopApplyCheck(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'参数错误');
@@ -1332,6 +1370,7 @@ class ApiController extends  Controller
      * 加入购物车
      */
     public function actionCartAdd(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         $catPriceId = Yii::$app->request->post('catPriceId',0);
@@ -1376,6 +1415,7 @@ class ApiController extends  Controller
      * 商品获取
      */
     public function actionUserCart(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1424,6 +1464,7 @@ class ApiController extends  Controller
      * 商品删除
      */
     public function actionCartDelete(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productIds','');//多个逗号隔开
         if(!$uid){
@@ -1457,6 +1498,7 @@ class ApiController extends  Controller
      * 数据获取
      */
     public function actionUserPersonal(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1482,6 +1524,7 @@ class ApiController extends  Controller
      * 关于我们
      */
     public function actionAboutUs(){
+        self::areaCheck();
         $content = ShopMessage::find()->where("type = 1")->asArray()->one();
         Methods::jsonData(1,'success',$content);
     }
@@ -1489,6 +1532,7 @@ class ApiController extends  Controller
      * 意见反馈
      */
     public function actionOpinion(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $content = Yii::$app->request->post('content');
         $image = Yii::$app->request->post('image');
@@ -1516,6 +1560,7 @@ class ApiController extends  Controller
      * 用户质保商品数据
      */
     public function actionUserQuality(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page');
         if(!$page)$page = 1;
@@ -1555,6 +1600,7 @@ class ApiController extends  Controller
      * 用户提交
      */
     public function actionQualityAdd(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $qualityId = Yii::$app->request->post('qualityId');
         $gyTime = Yii::$app->request->post('gyTime');
@@ -1589,6 +1635,7 @@ class ApiController extends  Controller
      * 申请售后
      */
     public function actionProductAfter(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $qualityId = Yii::$app->request->post('qualityId');
         $msg = Yii::$app->request->post('msg');//故障信息 图片或视频
@@ -1615,6 +1662,7 @@ class ApiController extends  Controller
      * 邀请有奖
      */
     public function actionMyShare(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1628,6 +1676,7 @@ class ApiController extends  Controller
      * 我的订单
      */
     public function actionMyOrder(){
+        self::areaCheck();
         $type = Yii::$app->request->post('type',99);//99-全部 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后 5 已完成
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
@@ -1677,6 +1726,7 @@ class ApiController extends  Controller
      * 人工客服
      */
     public function actionService(){
+        self::areaCheck();
         $service = ShopMessage::find()->where("type =2")->asArray()->one();
         Methods::jsonData(1,'success',$service);
     }
@@ -1684,6 +1734,7 @@ class ApiController extends  Controller
      * 积分记录
      */
     public function actionUserIntegralHistory(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $offset = 10*($page-1);
@@ -1695,6 +1746,7 @@ class ApiController extends  Controller
      * 猜你喜欢
      */
     public function actionGuessYou(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
 //        $offset = rand(11,99);
         $data = Product::find()->limit(10)->asArray()->all();
@@ -1709,6 +1761,7 @@ class ApiController extends  Controller
      * 会员充值页面
      */
     public function actionMemberRecharge(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $memebeContent = ShopMessage::find()->where("type =3")->asArray()->one();
         Methods::jsonData(1,'success',$memebeContent);
@@ -1718,6 +1771,7 @@ class ApiController extends  Controller
      * 申请页面
      */
     public function actionMemberApply(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1753,6 +1807,7 @@ class ApiController extends  Controller
      * 月为单位
      */
     public function actionMemberApplyAdd(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $month = Yii::$app->request->post('month',1);
         $money = Yii::$app->request->post('money',0);
@@ -1799,6 +1854,7 @@ class ApiController extends  Controller
      * 会员申请历史记录
      */
     public function actionMemberLog(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -1822,6 +1878,7 @@ class ApiController extends  Controller
      * 组团首页
      */
     public function actionGroupProduct(){
+        self::areaCheck();
         //组团商品数据
         $page = Yii::$app->request->post('page',1);
         $offset = 10*($page-1);
@@ -1850,6 +1907,7 @@ class ApiController extends  Controller
      * 我的组团
      */
     public function actionMyGroup(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $type = Yii::$app->request->post('type',99);//99-全部 0-组团中 1-组团成功 2-组团失败
@@ -1906,8 +1964,8 @@ class ApiController extends  Controller
     /**
      * 获取拼团状态
      */
-    public function actionGetGroupStatus()
-    {
+    public function actionGetGroupStatus(){
+        self::areaCheck();
 //        Methods::jsonData(1,'success',['status'=>999999]);
         $userGroupId = Yii::$app->request->post('userGroupId');
 
@@ -1934,6 +1992,7 @@ class ApiController extends  Controller
      * 组团商品详情
      */
     public function actionGroupProductDetail(){
+        self::areaCheck();
         $groupId = Yii::$app->request->post('groupId');
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
@@ -1981,6 +2040,7 @@ class ApiController extends  Controller
      * 分享接口
      */
     public function actionGroupProductShare(){
+        self::areaCheck();
         $userGroupId = Yii::$app->request->post('userGroupId');
         $uid = Yii::$app->request->post('uid');
         $str = 'share-'.$userGroupId.'-'.$uid.'-';
@@ -2028,6 +2088,7 @@ class ApiController extends  Controller
      * 发起组团
      */
     public function actionAddGroup(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $groupId = Yii::$app->request->post('groupId',0);//组团id
         $addressId = Yii::$app->request->post('addressId');//收货地址id
@@ -2146,6 +2207,7 @@ class ApiController extends  Controller
      * 参与组团
      */
     public function actionJoinGroup(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $groupId = Yii::$app->request->post('userGroupId');//组团人发起的的组团id
         $addressId = Yii::$app->request->post('addressId');//收货地址id
@@ -2204,12 +2266,14 @@ class ApiController extends  Controller
      * 组团邀请
      */
     public function actionGroupInvite(){
+        self::areaCheck();
 
     }
     /**
      * 获取所有分类
      */
     public function actionProductAllCate(){
+        self::areaCheck();
         $pid = Category::find()->where("pid = 0")->asArray()->all();
         foreach($pid as $k => $v){
             $child = Category::find()->where("pid = {$v['id']}")->asArray()->all();
@@ -2221,6 +2285,7 @@ class ApiController extends  Controller
      * 获取对应分类的商品数据
      */
     public function actionCateProduct(){
+        self::areaCheck();
         $catPid = Yii::$app->request->post('catPid',0);
         $catCid = Yii::$app->request->post('catCid',0);
         $page = Yii::$app->request->post('page',1);
@@ -2255,6 +2320,7 @@ class ApiController extends  Controller
      * 邀请用户
      */
     public function actionShareSuccess(){
+        self::areaCheck();
         $log = 'login.txt';
         Methods::varDumpLog($log,'邀请测试：','a');
        $uid = Yii::$app->request->post('uid');
@@ -2291,6 +2357,7 @@ class ApiController extends  Controller
      * 订单评价
      */
     public function actionOrderComment(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         $comment = Yii::$app->request->post('comment','');
@@ -2402,6 +2469,7 @@ class ApiController extends  Controller
      * 用户取消订单
      */
     public function actionMemberDeleteOrder(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         if(!$orderId){
@@ -2428,6 +2496,7 @@ class ApiController extends  Controller
      * 订单类型数量
      */
     public function actionMyOrderNumber(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $type = [0,1,2,3,4];// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $data = [];
@@ -2453,6 +2522,7 @@ class ApiController extends  Controller
      * 优惠券页面
      */
     public function actionCouponMessage(){
+        self::areaCheck();
         $rule = ShopMessage::find()->where("type = 4")->asArray()->one();
         $coupons = Coupon::find()->asArray()->all();
         //当前积分
@@ -2469,6 +2539,7 @@ class ApiController extends  Controller
      * 积分兑换优惠券
      */
     public function actionIntegralCoupon(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $couponId = Yii::$app->request->post('couponId');
         if(!$uid){
@@ -2516,6 +2587,7 @@ class ApiController extends  Controller
      * type 0-全部 1-最新 2-有图 3-视频
      */
     public function actionProductComment(){
+        self::areaCheck();
         $type = Yii::$app->request->post('type',0);
         $productId = Yii::$app->request->post('productId',0);
         $page = Yii::$app->request->post('page',1);
@@ -2530,6 +2602,7 @@ class ApiController extends  Controller
      * 已领取
      */
     public function actionMemberCoupon(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -2543,6 +2616,7 @@ class ApiController extends  Controller
      * 电压值获取
      */
     public function actionVoltage(){
+        self::areaCheck();
         $voltage = Search::find()->where(" type =1")->asArray()->all();
         Methods::jsonData(1,'success',$voltage);
     }
@@ -2550,6 +2624,7 @@ class ApiController extends  Controller
      * 我的商品
      */
     public function actionMyProduct(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -2570,6 +2645,7 @@ class ApiController extends  Controller
      * 商品刷新
      */
     public function actionProductFlush(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         if(!$uid){
@@ -2598,6 +2674,7 @@ class ApiController extends  Controller
      * 商品删除
      */
     public function actionProductDelete(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         if(!$uid){
@@ -2622,6 +2699,7 @@ class ApiController extends  Controller
      * 商品刷新支付
      */
     public function actionProductFlushPay(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         $integral = Yii::$app->request->post('integral',0);//积分
@@ -2710,6 +2788,7 @@ class ApiController extends  Controller
      * 申请退款
      */
     public function actionApplyReturn(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         $remark = Yii::$app->request->post('remark');
@@ -2740,6 +2819,7 @@ class ApiController extends  Controller
      * 退款详情
      */
     public function actionReturnDetail(){
+        self::areaCheck();
         $orderId = Yii::$app->request->post('orderId');
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
@@ -2755,6 +2835,7 @@ class ApiController extends  Controller
      * 取消退款
      */
     public function actionReturnReturn(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         if(!$uid){
@@ -2780,6 +2861,7 @@ class ApiController extends  Controller
      * 维修师申请
      */
     public function actionRepairApply(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $name = Yii::$app->request->post('name');
         $phone = Yii::$app->request->post('phone');
@@ -2817,6 +2899,7 @@ class ApiController extends  Controller
      * 维修师身份
      */
     public function actionRepairHall(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
@@ -2872,6 +2955,7 @@ class ApiController extends  Controller
      * 维修师身份
      */
     public function actionRepairOrder(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $type = Yii::$app->request->post('type',0);//状态 0-所有 2-接单中 3-已完成
         $page = Yii::$app->request->post('page',1);
@@ -2909,6 +2993,7 @@ class ApiController extends  Controller
      * 维修师接单
      */
     public function actionRepairReceipt(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         if(!$uid){
@@ -2942,6 +3027,7 @@ class ApiController extends  Controller
      * 维修师完成订单
      */
     public function actionRepairSuccess(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $orderId = Yii::$app->request->post('orderId');
         $repairImg = Yii::$app->request->post('repairImg','');
@@ -3024,6 +3110,7 @@ class ApiController extends  Controller
      * 维修室个人资料
      */
     public function actionRepairMsg(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -3045,6 +3132,7 @@ class ApiController extends  Controller
      * 我的收入
      */
     public function actionRepairMoney(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
@@ -3074,6 +3162,7 @@ class ApiController extends  Controller
         }
     }
     public function actionTest(){
+        self::areaCheck();
         $orderId = Yii::$app->request->post('id');
         Order::updateCartOrder($orderId);
     }
@@ -3081,6 +3170,7 @@ class ApiController extends  Controller
      * 我的优惠券
      */
     public function actionMyCoupon(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         if(!$uid){
             $coupon = [];
@@ -3094,6 +3184,7 @@ class ApiController extends  Controller
      * 维修师提现申请
      */
     public function actionRepairApplyReturn(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $money = Yii::$app->request->post('money',0);
         if(!$uid){
@@ -3130,6 +3221,7 @@ class ApiController extends  Controller
      * 维系师提现记录
      */
     public function actionRepairReturnHistory(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
@@ -3163,6 +3255,7 @@ class ApiController extends  Controller
      * 会员组团
      */
     public function actionMemberMoney(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
@@ -3194,6 +3287,7 @@ class ApiController extends  Controller
      * 会员提现申请
      */
     public function actionMemberApplyReturn(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $money = Yii::$app->request->post('money',0);
         $phone = Yii::$app->request->post('phone');//微信提现账号
@@ -3231,6 +3325,7 @@ class ApiController extends  Controller
      * 会员提现记录
      */
     public function actionMemberReturnHistory(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         if(!$uid){
@@ -3261,6 +3356,7 @@ class ApiController extends  Controller
      * 维修师
      */
     public function actionRepairAfterList(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $type = Yii::$app->request->post('type',0);//0-全部 1-待完成 2-已完成
@@ -3298,6 +3394,7 @@ class ApiController extends  Controller
      * 维修师
      */
     public function actionRepairAfterSuccess(){
+        self::areaCheck();
         $uid = Yii::$app->request->post('uid');
         $qualityId = Yii::$app->request->post('qualityId');//质保id
         $repairImg = Yii::$app->request->post('repairImg','');
@@ -3337,6 +3434,7 @@ class ApiController extends  Controller
      * @Obelisk
      */
     public function actionGetImg(){
+        self::areaCheck();
         $model = new Advert();
         $id = Yii::$app->request->get('id','8');
         $data = $model::find()->where(' id = '.$id)->asArray()->one();
