@@ -164,4 +164,37 @@ class Member extends ActiveRecord
             }
         }
     }
+
+    /**
+     * 获取公网IP和地址
+     * cy
+     */
+    public static function getip(){
+//        $ch = curl_init('http://tool.huixiang360.com/zhanzhang/ipaddress.php');
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        $a  = curl_exec($ch);
+//        preg_match('/\[(.*)\]/', $a, $ip);
+//
+//        $cip =$ip[1];
+        $code = 1;//获取成功
+        $cip = \Yii::$app->request->getUserIP();
+        if($cip == ''){
+            $url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json";//新浪借口获取访问者地区
+            $ip=json_decode(file_get_contents($url),true);
+            $data = $ip;
+        }else{
+            try{
+                $url="http://ip.taobao.com/service/getIpInfo.php?ip=".$cip;//淘宝借口需要填写ip
+                $ip=json_decode(file_get_contents($url));
+                if((string)$ip->code=='1'){
+                    return false;
+                }
+                $data = (array)$ip->data;
+            }catch(\Exception  $e){
+                return ['code'=>2];
+            }
+        }
+        $data['code'] = $code;
+        return $data;
+    }
 }

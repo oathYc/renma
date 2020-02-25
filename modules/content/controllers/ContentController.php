@@ -472,4 +472,35 @@ class ContentController  extends AdminController
             return $this->render('member-desc',['data'=>$about]);
         }
     }
+    /**
+     * 小程序地区进入限制
+     */
+    public function actionAreaCheck(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+//            if(!$content){
+//                echo "<script>alert('请填写地区内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 11; // 1-关于我们 2-客服说明 3-会员充值说明  11-地区设置
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='area-check';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 11")->asArray()->one();
+            return $this->render('area-check',['data'=>$about]);
+        }
+    }
 }
