@@ -191,6 +191,7 @@ class Member extends ActiveRecord
      * ip查询地区
      * 第三方
      * 获取县级数据
+     * 三方购买地址 https://mall.ipplus360.com/pros/IPGeoAPI
      */
     public static function getCity(){
         $cip = $_SERVER['REMOTE_ADDR'];
