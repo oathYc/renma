@@ -50,11 +50,11 @@ class ApiController extends  Controller
                 if($data['code'] ==1){//获取地区成功
                     $areas = $data['areas'];//定位地区
                     if(!in_array($city,$areas)){
-                        Methods::jsonData(0,'没有进入权限（不在允许地区）');
+                        Methods::jsonData(99,'没有进入权限（不在允许地区：'.$city.'）');
                     }
                     Yii::$app->session->set('areaIn',$city);
                 }else{
-                    Methods::jsonData(0,'定位失败，请刷新重试');
+                    Methods::jsonData(99,'定位失败，请刷新重试');
                 }
             }
         }
