@@ -2652,8 +2652,11 @@ class ApiController extends  Controller
         Product::deleteAll("uid = $uid and flushTime < $begin");
         $product = Product::find()->where("uid = $uid")->orderBy('flushTime desc,id desc')->asArray()->all();
         foreach($product as $k => $v){
-            if($v['flushTime'] > 0){
-                $product[$k]['flushTime'] = date('Y-m-d H:i:s',$v['flushTime']);
+            if($v['flushTime']){
+                $product[$k]['flushTimeStr'] = date('Y-m-d H:i:s',$v['flushTime']);
+            }else{
+                $product[$k]['flushTime'] = 0;
+                $product[$k]['flushTimeStr'] = '';
             }
         }
         Methods::jsonData(1,'success',$product);
@@ -2720,8 +2723,13 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         $integral = Yii::$app->request->post('integral',0);//积分
-        $price = Yii::$app->request->post('price',1);//支付价格
+//        $price = Yii::$app->request->post('price',1);//支付价格
         $remark = Yii::$app->request->post('remark','商品刷新支付刷新费用');//订单备注
+        //或者需要支付的刷新金额
+        $price = ShopMessage::find()->where("type = 12")->asArray()->one()['content'];
+        if(!$price){
+            $price = 0;
+        }
         $time = time();
         $orderNumber = 'RM'.$time.rand(123456,999999);
         if(!$uid){

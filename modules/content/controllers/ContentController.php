@@ -503,4 +503,36 @@ class ContentController  extends AdminController
             return $this->render('area-check',['data'=>$about]);
         }
     }
+    /**
+     * 商品刷新金额设置
+     */
+    public function actionFlushMoney(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写刷新金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = round($content,2);
+            $model->type = 12; // 1-关于我们 2-客服说明 3-会员充值说明  11-地区设置 12-刷新金额
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='flush-money';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 12")->asArray()->one();
+            return $this->render('flush-money',['data'=>$about]);
+        }
+    }
 }
