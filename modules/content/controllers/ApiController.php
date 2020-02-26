@@ -41,24 +41,24 @@ class ApiController extends  Controller
     public static  function areaCheck()
     {
         //验证进入地区  地区限制
-//        $city = ShopMessage::find()->where('type =11')->asArray()->one()['content'];
-//        if($city){
-//            $areaIn = Yii::$app->session->get('areaIn');
-//            if($areaIn != $city){
-////                $data = Member::getip();
-//                $data = Member::getCity();
-//                if($data['code'] ==1){//获取地区成功
-//                    $areas = $data['areas'];//定位地区
-//                    $areaStr = implode('-',$areas);
-//                    if(!in_array($city,$areas)){
-//                        Methods::jsonData(99,'没有进入权限（定位地区：'.$areaStr.'不在允许地区：'.$city.'）');
-//                    }
-//                    Yii::$app->session->set('areaIn',$city);
-//                }else{
-//                    Methods::jsonData(99,'定位失败，请刷新重试');
-//                }
-//            }
-//        }
+        $city = ShopMessage::find()->where('type =11')->asArray()->one()['content'];
+        if($city){
+            $areaIn = Yii::$app->session->get('areaIn');
+            if($areaIn != $city){
+//                $data = Member::getip();
+                $data = Member::getCity();
+                if($data['code'] ==1){//获取地区成功
+                    $areas = $data['areas'];//定位地区
+                    $areaStr = implode('-',$areas);
+                    if(!in_array($city,$areas)){
+                        Methods::jsonData(99,'没有进入权限（定位地区：'.$areaStr.'不在允许地区：'.$city.'）');
+                    }
+                    Yii::$app->session->set('areaIn',$city);
+                }else{
+                    Methods::jsonData(99,'定位失败，请刷新重试');
+                }
+            }
+        }
     }
     /**
      * 获取分类
