@@ -45,10 +45,11 @@ class ApiController extends  Controller
         if($city){
             $areaIn = Yii::$app->session->get('areaIn');
             if($areaIn != $city){
-                $data = Member::getip();
+//                $data = Member::getip();
+                $data = Member::getCity();
                 if($data['code'] ==1){//获取地区成功
-                    $currentCity = $data['city'];//当前城市
-                    if($currentCity != $city){
+                    $areas = $data['areas'];//定位地区
+                    if(!in_array($city,$areas)){
                         Methods::jsonData(0,'没有进入权限（不在允许地区）');
                     }
                     Yii::$app->session->set('areaIn',$city);

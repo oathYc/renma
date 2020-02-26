@@ -168,6 +168,7 @@ class Member extends ActiveRecord
     /**
      * 获取公网IP和地址
      * cy
+     * 调用淘宝接口
      */
     public static function getip(){
         $cip = $_SERVER['REMOTE_ADDR'];
@@ -185,5 +186,32 @@ class Member extends ActiveRecord
         }catch(\Exception  $e){
             return ['code'=>3];
         }
+    }
+    /**
+     * ip查询地区
+     * 第三方
+     * 获取县级数据
+     */
+    public static function getCity(){
+        $cip = $_SERVER['REMOTE_ADDR'];
+//        $cip = '118.112.57.202';
+        $url = 'https://api.ipplus360.com/ip/geo/v1/district/?key=TwwNA2VTi1cdOCUsoQwMNA5PK5dcCP31w59P2EUXEookSMV1RZFxK1NTkbEwEC6O&ip='.$cip.'&coordsys=WGS84&area=multi';
+        $data = file_get_contents($url);
+        $data = json_decode($data,true);
+        if(isset($data['code']) && $data['code'] == 'Success'){
+            if($data['data']['multiAreas']){
+                $areas = $data['data']['multiAreas'];
+                $array = [];
+                foreach($areas as $k => $v){
+                    $array[] = $v['district'];
+                }
+                $return = ['code'=>1,'areas'=>$array];
+            }else{
+                $return = ['code'=>2];
+            }
+        }else{
+            $return = ['code'=>2];
+        }
+        return $return;
     }
 }

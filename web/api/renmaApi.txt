@@ -431,7 +431,6 @@
     接口参数        uid              用户id
                     productId         商品Id
                     integral          抵扣积分 默认0
-                    price               支付费用
 
 
     接口名称        订单退款申请
