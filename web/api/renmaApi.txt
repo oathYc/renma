@@ -528,5 +528,8 @@
                      qualityId        质保id
                      repairImg        完成图片
 
+    接口名称        地区验证
+    接口地址        /content/api/area-check
+    接口参数
 
 
