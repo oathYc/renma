@@ -2653,10 +2653,11 @@ class ApiController extends  Controller
         $product = Product::find()->where("uid = $uid")->orderBy('flushTime desc,id desc')->asArray()->all();
         foreach($product as $k => $v){
             if($v['flushTime']){
-                $product[$k]['flushTimeStr'] = date('Y-m-d H:i:s',$v['flushTime']);
+                $day = date('d',$v['flushTime']);
+                $product[$k]['flushTimeStr'] = intval($day);
             }else{
                 $product[$k]['flushTime'] = 0;
-                $product[$k]['flushTimeStr'] = '';
+                $product[$k]['flushTimeStr'] = 0;
             }
         }
         Methods::jsonData(1,'success',$product);
