@@ -42,6 +42,9 @@
                 <th>订单状态</th>
                 <th>订单说明</th>
                 <th>购买时间</th>
+                <th>购买人</th>
+                <th>联系电话</th>
+                <th>联系地址</th>
                 <th>退款理由</th>
                 <th>拒绝理由</th>
                 <th >操作</th>
@@ -72,6 +75,9 @@
                     <td ><span><?php echo $v['statusStr']?></span></td>
                     <td ><span><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
+                    <td ><span><?php echo $v['addressName']?></span></td>
+                    <td ><span><?php echo $v['addressPhone']?></span></td>
+                    <td ><span><?php echo $v['addressStr']?></span></td>
                     <td ><span><?php echo $v['returnRemark']?></span></td>
                     <td ><span>
                         <?php if($v['status'] == -1){?>
