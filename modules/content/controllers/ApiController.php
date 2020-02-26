@@ -2639,8 +2639,11 @@ class ApiController extends  Controller
         Product::deleteAll("uid = $uid and flushTime < $begin");
         $product = Product::find()->where("uid = $uid")->orderBy('flushTime desc,id desc')->asArray()->all();
         foreach($product as $k => $v){
-            if($v['flushTime'] > 0){
+            if($v['flushTime']){
                 $product[$k]['flushTimeStr'] = date('Y-m-d H:i:s',$v['flushTime']);
+            }else{
+                $product[$k]['flushTime'] = 0;
+                $product[$k]['flushTimeStr'] = '';
             }
         }
         Methods::jsonData(1,'success',$product);
