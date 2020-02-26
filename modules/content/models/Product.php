@@ -16,13 +16,13 @@ class Product extends ActiveRecord
      * 获取商品的评价
      */
     public static function getComment($productId,$page=1,$pageSize=10){
-//        if(!$page){$page=1;}
-//        $limit = " limit ".($pageSize*($page-1)).",$pageSize";
-        $sql = "select o.id as orderId,o.uid,m.nickname,m.avatar,o.productId,o.evaluate,FROM_UNIXTIME(o.evalTime, '%Y-%m-%d %H:%i:%s') as evalTime from {{%order}} o inner join {{%product}} p on p.id = o.productId left join {{%member}} m on m.id = o.uid where o.productId = $productId and evalTime > 0 order by evalTime desc ";
+        if(!$page){$page=1;}
+        $limit = " limit ".($pageSize*($page-1)).",$pageSize";
+        $sql = "select o.id as orderId,o.uid,m.nickname,m.avatar,o.productId,o.evalImage,o.evalVideo,o.evaluate,FROM_UNIXTIME(o.evalTime, '%Y-%m-%d %H:%i:%s') as evalTime from {{%order}} o inner join {{%product}} p on p.id = o.productId left join {{%member}} m on m.id = o.uid where o.productId = $productId and evalTime > 0 order by evalTime desc ";
         $data = \Yii::$app->db->createCommand($sql)->queryAll();
         $total = count($data);
-//        $sql .= $limit;
-//        $data = \Yii::$app->db->createCommand($sql)->queryAll();
+        $sql .= $limit;
+        $data = \Yii::$app->db->createCommand($sql)->queryAll();
         return ['total'=>$total,'comment'=>$data];
     }
     /**
@@ -37,7 +37,7 @@ class Product extends ActiveRecord
         $today = strtotime(date('Y-m-d'));
         $where1 = "$where and o.evalTime >= $today";//最新
         $where2 = "$where and !isnull(o.evalImage)";//有图
-        $where3 = "$where and !isnull(o.evalVideo)";//视频
+        $where3 = "$where and o.evalVideo not like '%s%' ";//视频
         if($type ==1){
             $where = $where1;
         }

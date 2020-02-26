@@ -2036,6 +2036,19 @@ class ApiController extends  Controller
         $group['catPrice'] = GroupCategory::find()->where("groupId = {$groupId}")->asArray()->all();
 //        $group['ztPrice'] = $product->price;
         $comment = Product::getComment($group['productId'],$page);
+        if($comment['comment']){
+            foreach($comment['comment'] as $k=>$item){
+                if($item['evalImage']){
+                    $comment['comment'][$k]['evalImages'] = explode(',',unserialize($item['evalImage']));
+                }
+
+                if($item['evalVideo'] && strpos($item['evalVideo'],'https')){
+                    $comment['comment'][$k]['evalVideos'] = explode(',',unserialize($item['evalVideo']));
+                }
+
+            }
+        }
+
         $group['comment'] = $comment;
         Methods::jsonData(1,'success',$group);
     }
