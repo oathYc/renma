@@ -2707,8 +2707,13 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $productId = Yii::$app->request->post('productId');
         $integral = Yii::$app->request->post('integral',0);//积分
-        $price = Yii::$app->request->post('price',1);//支付价格
+//        $price = Yii::$app->request->post('price',1);//支付价格
         $remark = Yii::$app->request->post('remark','商品刷新支付刷新费用');//订单备注
+        //或者需要支付的刷新金额
+        $price = ShopMessage::find()->where("type = 12")->asArray()->one()['content'];
+        if(!$price){
+            $price = 0;
+        }
         $time = time();
         $orderNumber = 'RM'.$time.rand(123456,999999);
         if(!$uid){
