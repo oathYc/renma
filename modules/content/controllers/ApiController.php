@@ -609,7 +609,7 @@ class ApiController extends  Controller
 //        $voltageMax = Yii::$app->request->post('voltageMax');//最高电压
 //        $mileageMin = Yii::$app->request->post('mileageMin');//续航里程最小
 //        $mileageMax = Yii::$app->request->post('mileageMax');//续航里程最大
-        $priceOrder = Yii::$app->request->post('order',1);//价格顺序 1-低到高 2-高到低
+        $priceOrder = Yii::$app->request->post('order',0);//价格顺序 1-低到高 2-高到低 0-默认按刷新时间
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
         $where = " type = $type ";
         if($search){

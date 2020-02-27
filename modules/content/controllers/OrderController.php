@@ -60,6 +60,24 @@ class OrderController  extends AdminController
             if($v['productInfo']){
                 $data[$k]['infos'] = explode(',',$v['productInfo']);
             }
+            if($v['address'] && $v['address']>0){
+                $address = Address::find()->where("id = {$v['address']}")->asArray()->one();
+            }else{
+                $address = [];
+            }
+            if($address){
+//                $logisticsAddress = $address['province'].$address['city'].$address['area'].$address['address'];
+                $addressStr = $address['area'].$address['address'];
+                $addressName = $address['name'];
+                $addressPhone = $address['phone'];
+            }else{
+                $addressStr = '';
+                $addressName = '';
+                $addressPhone = '';
+            }
+            $data[$k]['addressStr'] = $addressStr;
+            $data[$k]['addressName'] = $addressName;
+            $data[$k]['addressPhone'] = $addressPhone;
         }
         return $this->render('order-list',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
