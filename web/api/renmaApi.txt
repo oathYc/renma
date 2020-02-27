@@ -399,7 +399,7 @@
     接口名称        用户下单(购物车购买)
     接口地址        /content/api/create-order-by-cart
     接口参数        uid         用户id
-                    products    商品信息 字符串 id-number,id-number
+                    products    商品信息 字符串 id-number-catPriceId,id-number 商品id-数量-规则id
                     integral    使用积分 默认0 不使用
                     couponId    优惠券id  默认0 不使用
                     type        类型 1-充值 2-买商品

@@ -29,6 +29,7 @@
                 <th>品牌名称</th>
                 <th>商品分类</th>
                 <th>上传时间</th>
+                <th>服务费/元</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -46,7 +47,12 @@
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['category']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
-
+                    <td>
+                        <span>
+                            <input type="text" style="width: 140px;" onkeyup="value = value.replace(/[^.0-9]/g,'')" id="serverFee<?php echo $kss;?>" value="<?php echo $v['serverFee'];?>"  />
+                            <input type="button" class="btn" value="提交" style="position: relative;top: -5px;" onclick="setServerFee(<?php echo $kss;?>,<?php echo $v['id']?>)" />
+                        </span>
+                    </td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <a class="btn" href="/content/product/product-add?id=<?php echo $v['id']; ?>">修改</a>
@@ -82,5 +88,20 @@
             return false;
         }
         location.href = '/content/rule/role?page='+page;
+    }
+    function setServerFee(site,productId){
+        var str = '#serverFee'+site;
+        var fee = $(str).val();
+        if(!fee){
+            fee = 0;
+        }
+        if(confirm('确认修改该商品服务费为'+fee+'元？')){
+            $.post('/content/api/set-server-fee',{productId:productId,serverFee:fee},function(e){
+                alert(e.message);
+                if(e.code !=1){
+                    window.location.reload();
+                }
+            },'json');
+        }
     }
 </script>

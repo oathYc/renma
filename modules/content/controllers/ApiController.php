@@ -208,6 +208,19 @@ class ApiController extends  Controller
             Methods::jsonData(0,'参数错误');
         }
     }
+    /**
+     * 设置商品服务费
+     */
+    public function actionSetServerFee(){
+        $productId = Yii::$app->request->post('productId');
+        $serverFee = Yii::$app->request->post('serverFee',0);
+        $res =  Product::updateAll(['serverFee'=>$serverFee],"id = $productId");
+        if($res){
+            Methods::jsonData(1,'修改成功');
+        }else{
+            Methods::jsonData(0,'修改失败，请重试');
+        }
+    }
 
     //小程序接口
     /**
@@ -881,7 +894,7 @@ class ApiController extends  Controller
             if($user->integral < $integral){
                 Methods::jsonData(0,'用户积分不足');
             }
-            $inteMoney = $integral;//积分金钱比例换算
+            $inteMoney = $integral/100;//积分金钱比例换算 一个积分等于0.01元
         }
         //优惠券金额换算
         if(!$couponId){
@@ -902,8 +915,19 @@ class ApiController extends  Controller
         }
         //抵扣金额
         $reducePrice = $inteMoney+$couponMoney;
-        //实际支付价格
+        //服务费
+        $isMember = Member::find()->where("id = $uid and member = 1")->one();
+        if($isMember){//会员
+            $serverFee = 0;
+        }else{
+            $serverFee = $product->serverFee;//商品服务费
+            $serverFee = $serverFee?$serverFee:0;
+        }
         $serFee = $serFee?$serFee:0;
+        if($serFee != $serverFee){
+            Methods::jsonData(0,'服务费有误');
+        }
+        //实际支付价格
         $payPrice = $totalPrice - $reducePrice + $serFee;
         if($payPrice <= 0){
             $payPrice = 0;
@@ -988,7 +1012,7 @@ class ApiController extends  Controller
     public function actionCreateOrderByCart(){
         self::areaCheck();
         $uid = Yii::$app->request->post('uid');
-        $productstr = Yii::$app->request->post('products','');//1-2,2-2
+        $productstr = Yii::$app->request->post('products','');//1-2,2-2-1 商品id-数量-规则id
         $integral = Yii::$app->request->post('integral',0);//积分
         $couponId = Yii::$app->request->post('couponId',0);//优惠券id
         $type = Yii::$app->request->post('type',1);//1-充值 2-买商品
@@ -1012,6 +1036,10 @@ class ApiController extends  Controller
         $numbers = 0;
         $products = explode(',',$productstr);
         $productInfo = [];
+        //服务费
+        $serverFee = 0;
+        $isMember = Member::find()->where("id = $uid and member = 1")->one();
+
         foreach($products as $k => $v){
             $arr = explode('-',$v);
             if(count($arr)!=3){
@@ -1037,6 +1065,11 @@ class ApiController extends  Controller
                 }
 
                 $productInfo[] = $productName.' (规格：'.$cateName.') x '.$arr[1];
+                if($isMember){
+                    $productFee = 0;
+                }else{
+                    $productFee = Product::find()->where("id = {$arr[0]}")->asArray()->one()['serverFee'];
+                }
 
             }else{
                 $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
@@ -1045,11 +1078,18 @@ class ApiController extends  Controller
                 $productInfo[] = $productName.' (规格：默认)'. ' x '.$arr[1];
                 //判断库存
                 if($arr[1] > $productNum){
-                    Methods::jsonData(0,'商品'.$productName.'库存仅剩'.$productNum.'件，请重新选择商品数量2');
+                    Methods::jsonData(0,'商品'.$productName.'库存仅剩'.$productNum.'件，请重新选择商品数量');
                 }
 
                 if(!$price)$price=0;
+                if($isMember){
+                    $productFee = 0;
+                }else{
+                    $productFee = Product::find()->where("id = {$arr[0]}")->asArray()->one()['serverFee'];
+                }
             }
+            $productFee = $productFee?$productFee:0;
+            $serverFee += $productFee*$arr[1];
             $numbers += $arr[1];
             $price = $arr[1]*$price;
             $totalPrice += $price;
@@ -1068,7 +1108,7 @@ class ApiController extends  Controller
             if($user->integral < $integral){
                 Methods::jsonData(0,'用户积分不足');
             }
-            $inteMoney = $integral;//积分金钱比例换算
+            $inteMoney = $integral/100;//积分金钱比例换算 一个积分等于0.01元
         }
         //优惠券金额换算
         if(!$couponId){
@@ -1089,8 +1129,12 @@ class ApiController extends  Controller
         }
         //抵扣金额
         $reducePrice = $inteMoney+$couponMoney;
-        //实际支付价格
+        //服务费判断
         $serFee = $serFee?$serFee:0;
+        if($serFee != $serverFee){
+            Methods::jsonData(0,'服务费有误');
+        }
+        //实际支付价格
         $payPrice = $totalPrice - $reducePrice + $serFee;
         if($payPrice <= 0){
             $payPrice = 0;
@@ -2756,7 +2800,7 @@ class ApiController extends  Controller
             if($user->integral < $integral){
                 Methods::jsonData(0,'用户积分不足');
             }
-            $inteMoney = $integral;//积分金钱比例换算
+            $inteMoney = $integral/100;//积分金钱比例换算 一个积分等于0.01元
         }
         $couponId = 0;
         $couponMoney = 0;//优惠券优惠价格

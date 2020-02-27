@@ -12,6 +12,7 @@ use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Logo;
+use app\modules\content\models\MemberRecharge;
 use app\modules\content\models\Product;
 use app\modules\content\models\Search;
 use app\modules\content\models\ShopMessage;
@@ -533,6 +534,97 @@ class ContentController  extends AdminController
         }else{
             $about = ShopMessage::find()->where("type = 12")->asArray()->one();
             return $this->render('flush-money',['data'=>$about]);
+        }
+    }
+    /**
+     * 会员充值
+     * 内容列表
+     */
+    public function actionMemberRecharge(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $data = MemberRecharge::find()->asArray()->orderBy('rank desc')->all();
+        return $this->render('member-recharge',['data'=>$data]);
+    }
+    /**
+     * 会员充值
+     * 内容编辑
+     */
+    public function actionRechargeAdd(){
+        if($_POST){
+            $title = \Yii::$app->request->post('title');
+            $remark = Yii::$app->request->post('remark');//说明
+            $upload = Yii::$app->request->post('upload');//上传商品个数
+            $oldPrice = Yii::$app->request->post('oldPrice');
+            $price = Yii::$app->request->post('price');
+            $id = Yii::$app->request->post('id');
+            $level = Yii::$app->request->post('level',1);
+            $rank = Yii::$app->request->post('rank',0);
+            if(!$title){
+                echo "<script>alert('请填写标题');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$remark){
+                echo "<script>alert('请填写充值说明');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$upload){
+                echo "<script>alert('请填写上传商品数');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$price){
+                echo "<script>alert('请填写充值金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $had = MemberRecharge::find()->where("level = $level and id != $id")->one();
+                $model = MemberRecharge::findOne($id);
+            }else{
+                $had = MemberRecharge::find()->where("level = $level")->one();
+                $model = new MemberRecharge();
+            }
+            if($had){
+                echo "<script>alert('该等级充值已经存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $model->title = $title;
+            $model->remark = $remark;
+            $model->upload = $upload;
+            $model->oldPrice = $oldPrice?$oldPrice:'';
+            $model->price = $price;
+            $model->createTime = time();
+            $model->level = $level;
+            $model->rank = $rank;
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('添加成功');setTimeout(function(){location.href='member-recharge';},1000)</script>";die;
+            }else{
+                echo "<script>alert('添加失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $id = \Yii::$app->request->get('id');
+            if($id){
+                $data = MemberRecharge::find()->where("id = $id")->asArray()->one();
+            }else{
+                $data = [];
+            }
+            return $this->render('recharge-add',['data'=>$data]);
+        }
+    }
+    /**
+     * 会员充值
+     * 删除
+     */
+    public function actionRechagrDelete(){
+        $id = \Yii::$app->request->get('id');
+        if($id){
+            $data = MemberRecharge::findOne($id);
+            if(!$data){
+                echo "<script>alert('没有该内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $res = MemberRecharge::deleteAll("id = $id");
+            if($res){
+                echo "<script>alert('删除成功');setTimeout(function(){location.href='member-recharge';},1000)</script>";die;
+            }else{
+                echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
 }
