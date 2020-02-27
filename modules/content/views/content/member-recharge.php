@@ -28,6 +28,7 @@
                 <th>充值说明</th>
                 <th>会员等级</th>
                 <th>排序值</th>
+                <th>月数</th>
                 <th>创建时间</th>
                 <th >操作</th>
             </tr>
@@ -45,6 +46,7 @@
                     <td ><span ><?php echo $v['remark']?></span></td>
                     <td ><span ><?php echo $v['level']?></span></td>
                     <td ><span ><?php echo $v['rank']?></span></td>
+                    <td ><span ><?php echo $v['month']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">

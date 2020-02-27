@@ -560,6 +560,7 @@ class ContentController  extends AdminController
             $id = Yii::$app->request->post('id');
             $level = Yii::$app->request->post('level',1);
             $rank = Yii::$app->request->post('rank',0);
+            $month = Yii::$app->request->post('month',1);
             if(!$title){
                 echo "<script>alert('请填写标题');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -571,6 +572,9 @@ class ContentController  extends AdminController
             }
             if(!$price){
                 echo "<script>alert('请填写充值金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$month){
+                echo "<script>alert('请填写月数');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if($id){
                 $had = MemberRecharge::find()->where("level = $level and id != $id")->one();
@@ -590,6 +594,7 @@ class ContentController  extends AdminController
             $model->createTime = time();
             $model->level = $level;
             $model->rank = $rank;
+            $model->month = $month;
             $res = $model->save();
             if($res){
                 echo "<script>alert('添加成功');setTimeout(function(){location.href='member-recharge';},1000)</script>";die;

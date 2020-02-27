@@ -32,6 +32,12 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">充值月数</label>
+                <div class="controls">
+                    <input type="text" name="month" id="month" onkeyup="value = value.replace(/[^0-9]/g,'')" value="<?php echo isset($data['month'])?$data['month']:''?>" />
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">上传商品数</label>
                 <div class="controls">
                     <input type="text" name="upload" id="upload" onkeyup="value = value.replace(/[^.0-9]/g,'')" value="<?php echo isset($data['upload'])?$data['upload']:''?>" />

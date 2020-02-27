@@ -18,6 +18,7 @@ use app\modules\content\models\Logistics;
 use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberLog;
+use app\modules\content\models\MemberRecharge;
 use app\modules\content\models\MoneyRecord;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
@@ -464,13 +465,9 @@ class ApiController extends  Controller
             }else{
                 $had = Product::find()->where("uid = $uid")->count();
                 $memberLevel = $user['memberLevel'];
-//                if($memberLevel ==1){
-                if($memberLevel ==3){
-                    $total = 12;
-                }elseif($memberLevel ==2){
-                    $total = 6;
-                }else{
-                    $total = 3;
+                $total = MemberRecharge::find()->where(" level = $memberLevel")->asArray()->one()['upload'];
+                if(!$total){
+                    $total = 0;
                 }
                 if($had >=$total){
                     Methods::jsonData(0,"你当前的会员等级只能发布".$total."个商品");
@@ -1848,7 +1845,9 @@ class ApiController extends  Controller
         $feeCount = Order::find()->where("uid = $uid and status = 1 and serverFee = 0 and type = 2")->count();
         //优惠卷兑换
         $coupons = Coupon::find()->asArray()->all();
-        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons];
+        //会员充值数据
+        $recharge = MemberRecharge::find()->orderBy('rank desc')->asArray()->all();
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge];
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -1861,12 +1860,17 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $month = Yii::$app->request->post('month',1);
         $money = Yii::$app->request->post('money',0);
-        $level = Yii::$app->request->post('level',3);//会员等级
+        $level = Yii::$app->request->post('level',1);//会员等级
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
         if(!$money || $money <= 0){
             Methods::jsonData(0,'金额不存在');
+        }
+        //判断是够有该条充值设置
+        $had = MemberRecharge::find()->where("level = $level and month = $month and price = $money")->one();
+        if(!$had){
+            Methods::jsonData(0,'没有该充值设置，请选择正确的充值设置');
         }
         $user = Member::findOne($uid);
         if($user){
