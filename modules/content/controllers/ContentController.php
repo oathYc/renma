@@ -329,6 +329,11 @@ class ContentController  extends AdminController
             }
             if(!$image){
                 echo "<script>alert('请上传图片');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if(!preg_match('/https/',$image)){
+                    $domain = Yii::$app->params['domain'];
+                    $image = $domain.$image;
+                }
             }
             if($id){
                 $model = ShopMessage::findOne($id);
@@ -338,7 +343,7 @@ class ContentController  extends AdminController
             $model->content = $content;
             $model->type = 2; // 1-关于我们 2-客服说明 3-会员充值说明
             $model->createTime = time();
-            $model->image = Yii::$app->params['domain'].$image;
+            $model->image = $image;
             $res = $model->save();
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='service';},1000)</script>";die;
@@ -365,6 +370,11 @@ class ContentController  extends AdminController
             }
             if(!$image){
                 echo "<script>alert('请上传图片');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if(!preg_match('/https/',$image)){
+                    $domain = Yii::$app->params['domain'];
+                    $image = $domain.$image;
+                }
             }
             if($id){
                 $model = ShopMessage::findOne($id);
@@ -374,7 +384,7 @@ class ContentController  extends AdminController
             $model->content = $content;
             $model->type = 4; // 1-关于我们 2-客服说明 3-会员充值说明 4-积分规则
             $model->createTime = time();
-            $model->image = 'https://lck.hzlyzhenzhi.com'.$image;
+            $model->image = $image;
             $res = $model->save();
             if($res){
                 echo "<script>alert('编辑成功');setTimeout(function(){location.href='integral-rule';},1000)</script>";die;
@@ -632,4 +642,59 @@ class ContentController  extends AdminController
             echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
+    /**
+     * 图片设置
+     * 编辑添加
+     */
+    public function actionSetImage(){
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            $image = Yii::$app->request->post('image');
+            $type = Yii::$app->request->post('type');//13-购物车背景图 14-积分明细背景图 15-邀请朋友圈背景图 16-邀请有奖背景图 17-维修师背景图
+            if(!$image){
+                echo "<script>alert('请上传图片');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if(!preg_match('/https/',$image)){
+                    $domain = Yii::$app->params['domain'];
+                    $image = $domain.$image;
+                }
+            }
+            if(!$type){
+                echo "<script>alert('请选择图片类型');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = $type; //13-购物车背景图 14-积分明细背景图 15-邀请朋友圈背景图 16-邀请有奖背景图 17-维修师背景图
+            $model->createTime = time();
+            $model->image = $image;
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='set-image';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $type = Yii::$app->request->get('type',0);//13-购物车背景图 14-积分明细背景图 15-邀请朋友圈背景图 16-邀请有奖背景图 17-维修师背景图
+            if($type){
+                $data = ShopMessage::find()->where("type = $type")->asArray()->one();
+            }else{
+                $data = [];
+            }
+            $types = [
+                ['type'=>13,'name'=>'购物车'],
+                ['type'=>14,'name'=>'积分明细'],
+                ['type'=>15,'name'=>'邀请码背景图'],
+                ['type'=>16,'name'=>'邀请有奖'],
+                ['type'=>17,'name'=>'维修师'],
+            ];
+            return $this->render('set-image',['data'=>$data,'types'=>$types]);
+        }
+    }
+
 }

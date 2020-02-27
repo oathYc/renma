@@ -222,6 +222,18 @@ class ApiController extends  Controller
             Methods::jsonData(0,'修改失败，请重试');
         }
     }
+    /**
+     * 获取图片背景
+     */
+    public function actionSelectType(){
+        $type = Yii::$app->request->post('type');
+        if(!$type){
+            Methods::jsonData(1,'',[]);
+        }else{
+            $data = ShopMessage::find()->where("type = $type")->asArray()->one();
+            Methods::jsonData(1,'success',$data);
+        }
+    }
 
     //小程序接口
     /**
@@ -3545,5 +3557,19 @@ class ApiController extends  Controller
         }else{
             Methods::jsonData(1,'success');
         }
+    }
+    /**
+     * 图片获取
+     * type 13-购物车背景图 14-积分明细背景图 15-邀请朋友圈背景图 16-邀请有奖背景图 17-维修师背景图
+     */
+    public function actionImageType(){
+        self::areaCheck();
+        $type = Yii::$app->request->post('type');
+        if($type){
+            $data = ShopMessage::find()->where("type = $type")->asArray()->one();
+        }else{
+            $data = [];
+        }
+        Methods::jsonData(1,'success',['data'=>$data]);
     }
 }
