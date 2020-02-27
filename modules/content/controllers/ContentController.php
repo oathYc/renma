@@ -647,6 +647,8 @@ class ContentController  extends AdminController
      * 编辑添加
      */
     public function actionSetImage(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
         if($_POST){
             $id = Yii::$app->request->post('id');
             $content = Yii::$app->request->post('content');

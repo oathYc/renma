@@ -16,7 +16,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">充值标题</label>
                 <div class="controls">
-                    <input type="text" name="title" id="title" value="<?php echo isset($data['title'])?$data['title']:''?>" />
+                    <input type="text" name="title" id="title" value="<?php echo isset($data['title'])?$data['title']:''?>" placeholder="标题不要太长（14字内）"/>
                 </div>
             </div>
             <div class="control-group">

@@ -234,6 +234,13 @@ class ApiController extends  Controller
             Methods::jsonData(1,'success',$data);
         }
     }
+    /**
+     * 获取邀请二维码背景图
+     */
+    public function actionGetQrcodeImg(){
+        $imgPath = ShopMessage::find()->where("type = 15")->asArray()->one()['image'];
+        die($imgPath);
+    }
 
     //小程序接口
     /**
