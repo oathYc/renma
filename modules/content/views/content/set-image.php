@@ -10,7 +10,7 @@
     <form action="/content/content/set-image" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定提交该内容？')){return true}else{
         return false;
     }">
-        <input type="hidden" name="id" value="<?php echo isset($data['id'])?$data['id']:0;?>"
+        <input type="hidden" name="id" id="id" value="<?php echo isset($data['id'])?$data['id']:0;?>"
         <fieldset>
 
             <div class="control-group">
@@ -63,10 +63,12 @@
                     $('#image').val(e.data.image);
                     $('#imgDiv').attr('src',e.data.image);
                     $('#content').val(e.data.content);
+                    $('#id').val(e.data.id);
                 }else{
                     $('#image').val('');
                     $('#imgDiv').attr('src','');
                     $('#content').val('');
+                    $('#id').val('');
                 }
             },'json');
         }
