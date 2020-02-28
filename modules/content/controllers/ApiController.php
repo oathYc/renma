@@ -3579,4 +3579,11 @@ class ApiController extends  Controller
         }
         Methods::jsonData(1,'success',['data'=>$data]);
     }
+    /**
+     * 活动规则
+     */
+    public function actionActivityRule(){
+        $data = ShopMessage::find()->where("type = 18")->asArray()->one();
+        Methods::jsonData(1,'success',['data'=>$data]);
+    }
 }

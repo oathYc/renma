@@ -698,5 +698,37 @@ class ContentController  extends AdminController
             return $this->render('set-image',['data'=>$data,'types'=>$types]);
         }
     }
+    /**
+     * 活动规则
+     * 1-关于我们  2-客服联系 3-会员充值说明 4-积分规则 5-会员优惠说明 11-地区设置 12-刷新金额 13-购物车背景图 14-积分明细背景图 15-邀请朋友圈背景图 16-邀请有奖背景图 17-维修师背景图 18-活动规则
+     */
+    public function actionActivityRule(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写活动规则内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 18;// 18-活动规则
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='activity-rule';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $data = ShopMessage::find()->where("type = 18")->asArray()->one();
+            return $this->render('activity-rule',['data'=>$data]);
+        }
+    }
 
 }
