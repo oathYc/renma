@@ -691,7 +691,7 @@ class ContentController  extends AdminController
             $types = [
                 ['type'=>13,'name'=>'购物车'],
                 ['type'=>14,'name'=>'积分明细'],
-                ['type'=>15,'name'=>'邀请码背景图'],
+//                ['type'=>15,'name'=>'邀请码背景图'],
                 ['type'=>16,'name'=>'邀请有奖'],
                 ['type'=>17,'name'=>'维修师'],
             ];
