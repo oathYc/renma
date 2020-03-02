@@ -3586,4 +3586,11 @@ class ApiController extends  Controller
         $data = ShopMessage::find()->where("type = 18")->asArray()->one();
         Methods::jsonData(1,'success',['data'=>$data]);
     }
+    /**
+     * 积分规则接口
+     */
+    public function actionIntegralRule(){
+        $data = ShopMessage::find()->where('type = 4')->asArray()->one();
+        Methods::jsnData(1,'success',['data'=>$data]);
+    }
 }

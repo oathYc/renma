@@ -541,3 +541,7 @@
     接口地址        /content/api/activity-rule
     接口参数
 
+    接口名称        积分规则
+    接口地址        /content/api/integral-rule
+    接口参数
+
