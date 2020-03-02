@@ -3591,6 +3591,6 @@ class ApiController extends  Controller
      */
     public function actionIntegralRule(){
         $data = ShopMessage::find()->where('type = 4')->asArray()->one();
-        Methods::jsnData(1,'success',['data'=>$data]);
+        Methods::jsonData(1,'success',['data'=>$data]);
     }
 }
