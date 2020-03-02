@@ -1735,6 +1735,10 @@ class ApiController extends  Controller
         }
         $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
         $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
+        foreach($myShare as $k => $v){
+            $myShare[$k]['orderNumber'] = 1;
+            $myShare[$k]['orderMoney'] = 10;
+        }
         $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
         Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare,'shareUrl'=>$shareUrl]);
     }
@@ -3591,6 +3595,13 @@ class ApiController extends  Controller
      */
     public function actionIntegralRule(){
         $data = ShopMessage::find()->where('type = 4')->asArray()->one();
+        Methods::jsonData(1,'success',['data'=>$data]);
+    }
+    /**
+     * 反馈电话
+     */
+    public function actionOptionPhone(){
+        $data = ShopMessage::find()->where("type = 19")->asArray()->one();
         Methods::jsonData(1,'success',['data'=>$data]);
     }
 }
