@@ -730,5 +730,37 @@ class ContentController  extends AdminController
             return $this->render('activity-rule',['data'=>$data]);
         }
     }
+    /**
+     * 商品刷新金额设置
+     */
+    public function actionOptionPhone(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $phone = Yii::$app->request->post('phone');
+            if(!$phone){
+                echo "<script>alert('请填写反馈电话');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
 
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->phone = $phone;
+            $model->content = '反馈联系电话';
+            $model->type = 19; // 1-关于我们 2-客服说明 3-会员充值说明  11-地区设置 12-刷新金额 19-反馈电话
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='option-phone';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $about = ShopMessage::find()->where("type = 19")->asArray()->one();
+            return $this->render('option-phone',['data'=>$about]);
+        }
+    }
 }
