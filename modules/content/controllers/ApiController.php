@@ -703,6 +703,7 @@ class ApiController extends  Controller
             $userIntegral = 0;
             $userAddress = [];
             $userCoupon = [];
+            $member = 0;
         }else{
             if($product['catPid']){
                 $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
@@ -719,8 +720,11 @@ class ApiController extends  Controller
             //商品分类价格
             $product['catPrice'] = ProductCategory::find()->where("productId = $productId")->asArray()->all();
             if($uid){
+                $user = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one();
                 //用户积分
-                $userIntegral = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one()['integral'];
+                $userIntegral = $user['integral'];
+                //用户会员
+                $member = $user['member']?$user['member']:0;
                 //用户默认收货地址数据
                 $userAddress = Address::find()->where("uid = $uid and `default` = 1")->asArray()->one();
                 //用户优惠券
@@ -729,10 +733,11 @@ class ApiController extends  Controller
                 $userIntegral = 0;
                 $userAddress = [];
                 $userCoupon = [];
+                $member = 0;
             }
             $comment = Product::getComment($productId,$page);
         }
-        $data = ['userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment];
+        $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment];
         Methods::jsonData(1,'success',$data);
     }
     /**
