@@ -720,7 +720,7 @@ class ApiController extends  Controller
             //商品分类价格
             $product['catPrice'] = ProductCategory::find()->where("productId = $productId")->asArray()->all();
             if($uid){
-                $user = Member::find()->select("id,integral")->where("id = $uid")->asArray()->one();
+                $user = Member::find()->select("id,integral,member")->where("id = $uid")->asArray()->one();
                 //用户积分
                 $userIntegral = $user['integral'];
                 //用户会员
