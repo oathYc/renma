@@ -2083,10 +2083,12 @@ class ApiController extends  Controller
         if(!$uid){
             $nickname = '';
             $avatar = '';
+            $member = 0 ;
         }else{
             $user = Member::findOne($uid);
             $nickname = isset($user->nickname)?$user->nickname:'';
             $avatar = isset($user->avatar)?$user->avatar:'';
+            $member = isset($user->member)?$user->member:0;
         }
         if(!$groupId){
             Methods::jsonData(0,'组团id不存在');
@@ -2106,6 +2108,7 @@ class ApiController extends  Controller
         $group['brand'] = $product->brand;
         $group['nickname'] = $nickname;
         $group['avatar'] = $avatar;
+        $group['member'] = $member;
         $group['introduce'] = $product->introduce;
         $group['video'] = $product->video;
         //获取规格分类
