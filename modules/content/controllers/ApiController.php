@@ -1573,7 +1573,8 @@ class ApiController extends  Controller
         Member::checkMemberStatus($uid);
         $user = Member::find()->where("id = $uid")->asArray()->one();
         if($user){
-            $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
+            $now = time();
+            $userCou = UserCoupon::find()->where("uid = $uid and status = 0 and endTime > $now")->count();
             $user['couponNumber'] = $userCou;
         }
         $coupons = Coupon::find()->asArray()->limit(8)->all();
