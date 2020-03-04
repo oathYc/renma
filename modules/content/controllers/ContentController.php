@@ -222,7 +222,7 @@ class ContentController  extends AdminController
             $model->least = $least?$least:0;
             $model->integral = $number;
             $model->remark = $remark;
-            $model->day = $day;
+            $model->day = $day?$day:7;
             $model->createTime = time();
             $res = $model->save();
             if($res){
