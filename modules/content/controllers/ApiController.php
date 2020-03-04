@@ -2706,7 +2706,8 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        $sql = " select *,c.id as couponId from {{%user_coupon}} uc inner join {{%coupon}} c on c.id = uc.couponId where uc.uid = $uid and uc.status =0";
+        $now = time();
+        $sql = " select *,c.id as couponId from {{%user_coupon}} uc inner join {{%coupon}} c on c.id = uc.couponId where uc.uid = $uid and uc.status =0 and uc.endTime > $now";
         $coupons = Yii::$app->db->createCommand($sql)->queryAll();
         foreach($coupons as $k => $v){
             $coupons[$k]['endTimeStr'] = date('Y-m-d H:i',$v['endTime']);
