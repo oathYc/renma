@@ -2644,31 +2644,38 @@ class ApiController extends  Controller
         if(!$coupon){
             Methods::jsonData(0,'该优惠券已停用');
         }
+        $day = $coupon->day;//有效期
         $need = $coupon->integral;
-        $had = UserCoupon::find()->where("uid = $uid and couponId = $couponId and status = 1")->one();
+        $now = time();
+        $had = UserCoupon::find()->where("uid = $uid and couponId = $couponId and status = 0 and endTime > $now")->one();
         if($had){
-            Methods::jsonData(0,'你已经有该优惠券，请使用后再兑换');
+            Methods::jsonData(0,'你已经有该优惠券，请使用后再领取');
         }
         $user = Member::find()->where("id = $uid")->one();
         if(!$user){
             Methods::jsonData(0,'没有该用户');
+        }elseif($user->member != 1){
+            Methods::jsonData(0,'你还不是会员，无法领取');
         }
-        $integral = $user->integral;
-        $integral = $integral?$integral:0;
-        if($integral < $need){
-            Methods::jsonData(0,'你的积分不够');
-        }
-        $user->integral = $integral - $need;
-        $res = $user->save();
+//        $integral = $user->integral;
+//        $integral = $integral?$integral:0;
+//        if($integral < $need){
+//            Methods::jsonData(0,'你的积分不够');
+//        }
+//        $user->integral = $integral - $need;
+//        $res = $user->save();
+        //优惠券有效时间
+        $endTime = time() + 86400*$day;
+        $model = new UserCoupon();
+        $model->uid = $uid;
+        $model->couponId = $couponId;
+        $model->createTime = time();
+        $model->status = 0;
+        $model->endTime = $endTime;
+        $res = $model->save();
         if($res){
-            $model = new UserCoupon();
-            $model->uid = $uid;
-            $model->couponId = $couponId;
-            $model->createTime = time();
-            $model->status = 0;
-            $model->save();
             //记录积分消耗
-            Integral::saveRecord($uid,$need,1,'积分兑换优惠卷');//1-减少 2-新增
+//            Integral::saveRecord($uid,$need,1,'积分兑换优惠卷');//1-减少 2-新增
             Methods::jsonData(1,'兑换成功');
         }else{
             Methods::jsonData(0,'兑换失败');
@@ -2701,6 +2708,9 @@ class ApiController extends  Controller
         }
         $sql = " select *,c.id as couponId from {{%user_coupon}} uc inner join {{%coupon}} c on c.id = uc.couponId where uc.uid = $uid and uc.status =0";
         $coupons = Yii::$app->db->createCommand($sql)->queryAll();
+        foreach($coupons as $k => $v){
+            $coupons[$k]['endTimeStr'] = date('Y-m-d H:i',$v['endTime']);
+        }
         $count = count($coupons);
         Methods::jsonData(1,'success',['total'=>$count,'coupons'=>$coupons]);
     }

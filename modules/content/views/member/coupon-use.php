@@ -23,7 +23,7 @@
                 <th>优惠起步价</th>
                 <th>优惠券说明</th>
                 <th>订单id</th>
-                <th>使用时间</th>
+                <th>领取时间</th>
                 <th >操作</th>
             </tr>
             </thead>

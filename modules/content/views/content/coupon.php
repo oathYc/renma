@@ -23,7 +23,8 @@
                 <th>ID</th>
                 <th>名称</th>
                 <th>价格</th>
-                <th>兑换积分</th>
+<!--                <th>兑换积分</th>-->
+                <th>有效期(天)</th>
                 <th>起步价</th>
                 <th>说明</th>
                 <th>时间</th>
@@ -38,7 +39,7 @@
                     <td ><span><?php echo $v['id']?></span></td>
                     <td ><span ><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['money']?></span></td>
-                    <td ><span><?php echo $v['integral']?></span></td>
+                    <td ><span><?php echo $v['day']?></span></td>
                     <td ><span><?php echo $v['least']?></span></td>
                     <td ><span title="<?php echo $v['remark']?>"><?php echo $v['remark']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>

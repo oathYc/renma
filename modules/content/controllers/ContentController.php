@@ -206,21 +206,23 @@ class ContentController  extends AdminController
             $least = Yii::$app->request->post('least',0);
             $number = Yii::$app->request->post('number',0);//为0时是店铺优惠价  大于0 积分兑换
             $remark = Yii::$app->request->post('remark');
+            $day = Yii::$app->request->post('day',7);//有效期 默认7天
             if(!$name){
                 echo "<script>alert('请填写优惠券名称');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-//            if(!$money || $money <= 0){
-//                echo "<script>alert('请填写正确的优惠券金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
-//            }
-            if(!$number || $number < 1){
-                echo "<script>alert('请填写正确的兑换积分数量');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            if(!$money || $money <= 0){
+                echo "<script>alert('请填写正确的优惠券金额');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
+//            if(!$number || $number < 1){
+//                echo "<script>alert('请填写正确的兑换积分数量');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
             $model = new Coupon();
             $model->name = $name;
             $model->money = $money;
             $model->least = $least?$least:0;
             $model->integral = $number;
             $model->remark = $remark;
+            $model->day = $day;
             $model->createTime = time();
             $res = $model->save();
             if($res){

@@ -20,10 +20,16 @@
                     <input type="text" name="money" id="money" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />
                 </div>
             </div>
+<!--            <div class="control-group">-->
+<!--                <label for="modulename" class="control-label">积分</label>-->
+<!--                <div class="controls">-->
+<!--                    <input type="text" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" placeholder="不填为店铺优惠卷"/>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="control-group">
-                <label for="modulename" class="control-label">积分</label>
+                <label for="modulename" class="control-label">有效期</label>
                 <div class="controls">
-                    <input type="text" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" placeholder="不填为店铺优惠卷"/>
+                    <input type="text" name="day" id="day" value="" onkeyup="value = value.replace(/[^0-9]/g,'')" placeholder="单位天 不填默认7天"/>
                 </div>
             </div>
             <div class="control-group">
