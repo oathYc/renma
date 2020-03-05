@@ -12,7 +12,7 @@
                 <label for="modulename" class="control-label">类型</label>
                 <div class="controls">
                     <label for="img" style="display: inline;"><input type="radio" name="type" id="img" value="1"  />&nbsp;&nbsp;电压</label>&nbsp;&nbsp;
-                    <label for="mv" style="display: inline;"><input type="radio" name="type" id="mv" value="2" />&nbsp;&nbsp;续航里程</label>
+                    <label for="mv" style="display: inline;"><input type="radio" name="type" id="mv" value="2" />&nbsp;&nbsp;续航里程</label>&nbsp;&nbsp;
                     <label for="mv" style="display: inline;"><input type="radio" name="type" id="mv" value="3" />&nbsp;&nbsp;品牌</label>
                 </div>
             </div>

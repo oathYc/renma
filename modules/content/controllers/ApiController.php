@@ -1882,6 +1882,7 @@ class ApiController extends  Controller
         $recharge = MemberRecharge::find()->orderBy('rank desc')->asArray()->all();
         //订单使用积分
         $useIntegral = Order::find()->where("uid = $uid and type = 2 and status = 1 and typeStatus = 5")->sum('integral');
+        $useIntegral = $useIntegral?$useIntegral:0;
         //优惠券优化的金额加服务费
         $integralPrice = $useIntegral?($useIntegral/100):0;//积分对应金额
         $yhjfwf = $reduceMoney - $integralPrice;
