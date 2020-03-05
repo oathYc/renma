@@ -1745,9 +1745,11 @@ class ApiController extends  Controller
         $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
         foreach($myShare as $k => $v){
             //订单数
-            $myShare[$k]['orderNumber'] = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->count();
+            $orderNumber = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->count();
+            $myShare[$k]['orderNumber'] = $orderNumber?$orderNumber:0;
             //消费金额
-            $myShare[$k]['orderMoney'] = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->sum('payPrice');
+            $orderMoney = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->sum('payPrice')；
+            $myShare[$k]['orderMoney'] = $orderMoney?$orderMoney:0;
         }
         $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
         Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare,'shareUrl'=>$shareUrl]);
