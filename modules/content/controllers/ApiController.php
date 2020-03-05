@@ -1748,7 +1748,7 @@ class ApiController extends  Controller
             $orderNumber = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->count();
             $myShare[$k]['orderNumber'] = $orderNumber?$orderNumber:0;
             //消费金额
-            $orderMoney = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->sum('payPrice')；
+            $orderMoney = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->sum('payPrice');
             $myShare[$k]['orderMoney'] = $orderMoney?$orderMoney:0;
         }
         $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
