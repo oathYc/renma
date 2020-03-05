@@ -1866,9 +1866,12 @@ class ApiController extends  Controller
             $endTime = MemberLog::find()->where("uid = $uid")->orderBy('endTime desc')->asArray()->one()['endTime'];
             $endTime = date("Y-m-d H:i:s",(86399+$endTime));
             $member = 1;
+            //会员类型
+            $levelStr = MemberRecharge::find()->where("level = {$user['memberLevel']}")->asArray()->one()['title'];
         }else{
             $member = 0;
             $endTime = '';
+            $levelStr = '';
         }
         //节省金额
         $reduceMoney = Order::find()->where("uid = $uid and status = 1 and type = 2 and typeStatus = 5")->sum('reducePrice');
@@ -1886,7 +1889,8 @@ class ApiController extends  Controller
         //优惠券优化的金额加服务费
         $integralPrice = $useIntegral?($useIntegral/100):0;//积分对应金额
         $yhjfwf = $reduceMoney - $integralPrice;
-        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge,'useIntegral'=>$useIntegral,'yhjfwf'=>$yhjfwf];
+
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge,'useIntegral'=>$useIntegral,'yhjfwf'=>$yhjfwf,'levelStr'=>$levelStr];
         Methods::jsonData(1,'success',$data);
     }
     /**
