@@ -30,6 +30,7 @@ class Product extends ActiveRecord
      * type 0-全部 1-最新 2-有图 3-视频
      */
     public static function getCommentByType($productId,$type=0,$page=1,$pageSize=10){
+        self::addGoodComment();
         if(!$page){$page=1;}
         $limit = " limit ".($pageSize*($page-1)).",$pageSize";
         $where = " where o.productId = $productId and o.evalTime > 0 ";
@@ -82,5 +83,21 @@ class Product extends ActiveRecord
             ['type'=>3,'number'=>$count3],
         ];
         return ['count'=>$counts,'comment'=>$data];
+    }
+    /**
+     * 订单超过48小时自动好评
+     */
+    public static function addGoodComment(){
+        $now = time();
+        $time = $now - 86400*2;//截止时间
+        $order = Order::find()->where("status = 1 and typeStatus = 3 and repairSuccess < $time")->asArray()->all();
+        foreach($order as $k => $v){
+            $model = Order::findOne($v['id']);
+            $model->typeStatus = 5;
+            $model->evaluate = '用户默认好评';
+            $model->evalTime = $now;
+            $model->save();
+        }
+        return true;
     }
 }

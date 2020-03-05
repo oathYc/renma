@@ -226,7 +226,7 @@ class Member extends ActiveRecord
         }
         $now = time();
         $time = $now - 86400*2;//截止时间
-        $order = Order::find()->where("status = 1 and typeStatus = 3 and repairSuccess < $time")->asArray()->all();
+        $order = Order::find()->where("status = 1 and typeStatus = 3 and repairSuccess < $time and uid = $uid")->asArray()->all();
         foreach($order as $k => $v){
             $model = Order::findOne($v['id']);
             $model->typeStatus = 5;
