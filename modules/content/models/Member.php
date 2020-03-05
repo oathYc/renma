@@ -215,4 +215,25 @@ class Member extends ActiveRecord
         }
         return $return;
     }
+    /**
+     * 用户订单状态判断跟新
+     * 待评论订单超过48小时自动平台好评
+     * 好评内容  用户默认好评
+     */
+    public static function updateOrder($uid){
+        if(!$uid){
+            return false;
+        }
+        $now = time();
+        $time = $now - 86400*2;//截止时间
+        $order = Order::find()->where("status = 1 and typeStatus = 3 and repairSuccess < $time")->asArray()->all();
+        foreach($order as $k => $v){
+            $model = Order::findOne($v['id']);
+            $model->typeStatus = 5;
+            $model->evaluate = '用户默认好评';
+            $model->evalTime = $now;
+            $model->save();
+        }
+        return true;
+    }
 }

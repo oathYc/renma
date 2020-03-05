@@ -421,8 +421,10 @@ class ContentController  extends AdminController
             $val = Yii::$app->request->post('val',0);
             if($type ==1){
                 $name = '电压';
-            }else{
+            }elseif($type == 2){
                 $name = '续航里程';
+            }else{
+                $name = '品牌';
             }
             $model = new Search();
             $model->name = $name;

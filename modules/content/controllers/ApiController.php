@@ -1590,6 +1590,8 @@ class ApiController extends  Controller
         //会员优惠说明
         $memberDesc = ShopMessage::find()->where("type =5")->asArray()->one()['content'];
         $user['memberDesc'] = $memberDesc;
+        //用户订单评论更新
+        Member::updateOrder($uid);
         Methods::jsonData(1,'success',$user);
     }
     /**
@@ -1743,9 +1745,9 @@ class ApiController extends  Controller
         $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
         foreach($myShare as $k => $v){
             //订单数
-            $myShare[$k]['orderNumber'] = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2")->count();
+            $myShare[$k]['orderNumber'] = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->count();
             //消费金额
-            $myShare[$k]['orderMoney'] = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2")->sum('payPrice');
+            $myShare[$k]['orderMoney'] = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5")->sum('payPrice');
         }
         $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
         Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare,'shareUrl'=>$shareUrl]);
@@ -1869,7 +1871,7 @@ class ApiController extends  Controller
             $endTime = '';
         }
         //节省金额
-        $reduceMoney = Order::find()->where("uid = $uid and status = 1 and type = 2")->sum('reducePrice');
+        $reduceMoney = Order::find()->where("uid = $uid and status = 1 and type = 2 and typeStatus = 5")->sum('reducePrice');
         //优惠券数量
         $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
         //免单数量
@@ -1878,7 +1880,12 @@ class ApiController extends  Controller
         $coupons = Coupon::find()->asArray()->all();
         //会员充值数据
         $recharge = MemberRecharge::find()->orderBy('rank desc')->asArray()->all();
-        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge];
+        //订单使用积分
+        $useIntegral = Order::find()->where("uid = $uid and type = 2 and status = 1 and typeStatus = 5")->sum('integral');
+        //优惠券优化的金额加服务费
+        $integralPrice = $useIntegral?($useIntegral/100):0;//积分对应金额
+        $yhjfwf = $reduceMoney - $integralPrice;
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge,'useIntegral'=>$useIntegral,'yhjfwf'=>$yhjfwf];
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -2513,6 +2520,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单状态不对');
         }
         $order->typeStatus = 3;
+        $order->repairSuccess = time();
         $res = $order->save();
         if($res){
             //维修商品判断
@@ -2726,6 +2734,7 @@ class ApiController extends  Controller
     }
     /**
      * 电压值获取
+     * 1-电压 2-续航 3-品牌
      */
     public function actionVoltage(){
         self::areaCheck();
@@ -3625,5 +3634,19 @@ class ApiController extends  Controller
     public function actionOptionPhone(){
         $data = ShopMessage::find()->where("type = 19")->asArray()->one();
         Methods::jsonData(1,'success',['data'=>$data]);
+    }
+    /**
+     * 筛选值获取
+     * 1-电压 2-续航 3-品牌
+     */
+    public function actionSearchType(){
+        self::areaCheck();
+        $type = Yii::$app->request->post('type',0);
+        if($type){
+            $data = Search::find()->where(" type = $type")->asArray()->all();
+        }else{
+            $data = [];
+        }
+        Methods::jsonData(1,'success',$data);
     }
 }

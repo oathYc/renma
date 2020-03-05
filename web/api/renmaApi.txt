@@ -549,3 +549,7 @@
     接口地址        /content/api/option-phone
     接口参数
 
+    接口名称        筛选内容
+    接口地址        /content/api/search-type
+    接口参数        type  1-电压 2-续航 3-品牌
+
