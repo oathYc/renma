@@ -296,9 +296,13 @@ class ApiController extends  Controller
             $orderNumber = 'RM'.time().rand(123456,999999);
             $uid = $model->id;
             if(!$res){//第一次登录
+                $month = MemberRecharge::find()->where("level = 1")->asArray()->one()['month'];
+                if(!$month){
+                    $month = 1;//默认一个月
+                }
                 $orderId = Order::createOrder($uid,$orderNumber,0,'注册小程序赠送会员',1);
                 $beginTime = time();
-                $endTime = $beginTime + 86400*365;
+                $endTime = $beginTime + 86400*30*$month;
                 $model = new MemberLog();
                 $model->uid = $uid;
                 $model->beginTime = $beginTime;
