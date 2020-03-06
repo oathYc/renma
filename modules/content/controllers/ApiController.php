@@ -3284,9 +3284,10 @@ class ApiController extends  Controller
                 $date = date('Y-m-d');
                 $begin = strtotime($date);
                 $end = $begin + 86399;
-                $where = " status = 1 and repairUid = $uid and typeStatus = 3 and repairSuccess between $begin and $end";
+                $where = " status = 1 and repairUid = $uid and typeStatus = 3";
                 $todayMoney = Order::find()->where($where)->sum('totalPrice');
                 $offset = 10*($page-1);
+                $where .= "  and repairSuccess between $begin and $end";
                 $record = Order::find()->where($where)->offset($offset)->limit(10)->asArray()->all();
                 $total = Order::find()->where($where)->count();
                 $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'record'=>$record,'total'=>$total];
