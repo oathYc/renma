@@ -172,7 +172,7 @@ class MemberController  extends AdminController
             $user->memberMoney = $finalMoney;
             $user->save();
             //记录余额消费
-            MoneyRecord::saveRecord($data->uid,$data->orderNumber,$data->totalMoney,2,2);
+            MoneyRecord::saveRecord($data->uid,$data->id,$data->totalMoney,2,2);
             echo "<script>alert('用户提现成功');setTimeout(function(){location.href='user-return';},1000)</script>";die;
         }else{
             echo "<script>alert('用户提现失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
