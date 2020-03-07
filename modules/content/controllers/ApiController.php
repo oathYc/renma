@@ -3702,8 +3702,13 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $collect = [];
         if($uid){
-            $sql = "select *,uc.id as collectId from {{%user_collect}} uc inner join {{%product}} p on p.id = uc.productId ";
+            $sql = "select *,uc.id as collectId from {{%user_collect}} uc inner join {{%product}} p on p.id = uc.productId where uc.uid = $uid ";
             $collect = Yii::$app->db->createCommand($sql)->queryAll();
+        }
+        foreach($collect as $k => $v){
+            $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = {$v['productId']}")->count();
+            $hadbuy = $hadbuy?$hadbuy:0;
+            $collect[$k]['hadbuy'] = $hadbuy;
         }
         Methods::jsonData(1,'success',$collect);
     }
