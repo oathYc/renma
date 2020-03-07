@@ -3754,8 +3754,11 @@ class ApiController extends  Controller
         }
         $returnMoney = ShopMessage::find()->where("type = 20")->asArray()->one()['content'];
         $money = Member::find()->where("id = $uid")->asArray()->one()['memberMoney'];
+        //提现审核中的金额
+        $hadMoney = MemberReturn::find()->where(" uid = $uid and status = 0")->sum('totalMoney');
+        $hadMoney = $hadMoney?$hadMoney:0;
         $returnMoney = $returnMoney?$returnMoney:0;
-        Methods::jsonData(1,'success',['money'=>$money?$money:0,'retrunMoney'=>$returnMoney]);
+        Methods::jsonData(1,'success',['money'=>$money?$money:0,'retrunMoney'=>$returnMoney,'hadMoney'=>$hadMoney]);
     }
     /**
      * 提现接口
@@ -3782,7 +3785,10 @@ class ApiController extends  Controller
         if($needMoney == $fee){
             $totalMoney = $needMoney + $money;
             $memberMoney = Member::find()->where("id = $uid")->asArray()->one()['memberMoney'];
-            if($memberMoney < $totalMoney){
+            //提现审核中的金额
+            $hadMoney = MemberReturn::find()->where(" uid = $uid and status = 0")->sum('totalMoney');
+            $hadMoney = $hadMoney?$hadMoney:0;
+            if($memberMoney < ($totalMoney+$hadMoney)){
                 Methods::jsonData(0,'余额不足');
             }
             //记录提现申请
