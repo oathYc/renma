@@ -736,17 +736,25 @@ class ApiController extends  Controller
                 $userAddress = Address::find()->where("uid = $uid and `default` = 1")->asArray()->one();
                 //用户优惠券
                 $userCoupon = Coupon::getUserCoupon($uid);
+                //用户收藏
+                $had = Collect::find()->where("uid= $uid and productId = $productId")->one();
+                if($had){
+                    $collect = 1;//1-已收藏 0-未收藏
+                }else{
+                    $collect = 0;
+                }
             }else{
                 $userIntegral = 0;
                 $userAddress = [];
                 $userCoupon = [];
                 $member = 0;
+                $collect = 0;
             }
             $comment = Product::getComment($productId,$page);
             $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = $productId")->count();
             $hadbuy = $hadbuy?$hadbuy:0;
         }
-        $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment,'hadbuy'=>$hadbuy];
+        $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment,'hadbuy'=>$hadbuy,'collect'=>$collect];
         Methods::jsonData(1,'success',$data);
     }
     /**
