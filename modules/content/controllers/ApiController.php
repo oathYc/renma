@@ -946,11 +946,12 @@ class ApiController extends  Controller
         $reducePrice = $inteMoney+$couponMoney;
         //服务费
         $isMember = Member::find()->where("id = $uid and member = 1")->one();
+        $serverFee = $product->serverFee;//商品服务费
+        $oldFee = $serverFee?$serverFee:0;//原价服务费
         if($isMember){//会员
             $serverFee = 0;
         }else{
-            $serverFee = $product->serverFee;//商品服务费
-            $serverFee = $serverFee?$serverFee:0;
+            $serverFee = $oldFee;//需支付的服务费
         }
         $serFee = $serFee?$serFee:0;
         if($serFee != $serverFee){
@@ -999,6 +1000,7 @@ class ApiController extends  Controller
         $model->integral = $integral;
         $model->remark = $remark;
         $model->serverFee = $serFee;
+        $model->oldFee = $oldFee;
         $res = $model->save();
         if($res){
             //记录用户优惠券使用记录
@@ -1067,6 +1069,7 @@ class ApiController extends  Controller
         $productInfo = [];
         //服务费
         $serverFee = 0;
+        $oldFee = 0;//原价服务费
         $isMember = Member::find()->where("id = $uid and member = 1")->one();
 
         foreach($products as $k => $v){
@@ -1094,11 +1097,7 @@ class ApiController extends  Controller
                 }
 
                 $productInfo[] = $productName.' (规格：'.$cateName.') x '.$arr[1];
-                if($isMember){
-                    $productFee = 0;
-                }else{
-                    $productFee = Product::find()->where("id = {$arr[0]}")->asArray()->one()['serverFee'];
-                }
+                $productFee = Product::find()->where("id = {$arr[0]}")->asArray()->one()['serverFee'];
 
             }else{
                 $price = Product::find()->where("id = {$arr[0]}")->asArray()->one()['price'];
@@ -1111,14 +1110,17 @@ class ApiController extends  Controller
                 }
 
                 if(!$price)$price=0;
-                if($isMember){
-                    $productFee = 0;
-                }else{
-                    $productFee = Product::find()->where("id = {$arr[0]}")->asArray()->one()['serverFee'];
-                }
+                $productFee = Product::find()->where("id = {$arr[0]}")->asArray()->one()['serverFee'];
             }
+
             $productFee = $productFee?$productFee:0;
-            $serverFee += $productFee*$arr[1];
+            $oldFee +=  $productFee*$arr[1];//原价服务费
+            if($isMember){
+                $needFee = 0;
+            }else{
+                $needFee = $productFee;
+            }
+            $serverFee += $needFee*$arr[1];//需要支付的服务费
             $numbers += $arr[1];
             $price = $arr[1]*$price;
             $totalPrice += $price;
@@ -1201,6 +1203,7 @@ class ApiController extends  Controller
         $model->integral = $integral;
         $model->remark = $remark;
         $model->serverFee = $serFee;
+        $model->oldFee = $oldFee;
         $model->productInfo = implode(',',$productInfo);
         $res = $model->save();
         if($res){
@@ -1883,12 +1886,12 @@ class ApiController extends  Controller
             $endTime = '';
             $levelStr = '';
         }
-        //节省金额
+        //节省金额  积分 + 优惠卷
         $reduceMoney = Order::find()->where("uid = $uid and status = 1 and type = 2 and typeStatus = 5")->sum('reducePrice');
         //优惠券数量
         $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
         //免单数量
-        $feeCount = Order::find()->where("uid = $uid and status = 1 and serverFee = 0 and type = 2")->count();
+        $feeCount = Order::find()->where("uid = $uid and status = 1 and typeStatus = 5 and serverFee = 0 and type = 2")->count();
         //优惠卷兑换
         $coupons = Coupon::find()->asArray()->all();
         //会员充值数据
@@ -1898,9 +1901,14 @@ class ApiController extends  Controller
         $useIntegral = $useIntegral?$useIntegral:0;
         //优惠券优化的金额加服务费
         $integralPrice = $useIntegral?($useIntegral/100):0;//积分对应金额
-        $yhjfwf = $reduceMoney - $integralPrice;
-
-        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge,'useIntegral'=>$useIntegral,'yhjfwf'=>$yhjfwf,'levelStr'=>$levelStr];
+        $yhj = $reduceMoney - $integralPrice;//优惠卷金额
+        $oldFee = Order::find()->where("uid = $uid and type = 2 and status = 1 and typeStatus = 5")->sum('oldFee');
+        $serFee = Order::find()->where("uid = $uid and type = 2 and status = 1 and typeStatus = 5")->sum('serverFee');
+        //服务费优惠
+        $reduceFee = $serFee-$oldFee;
+        //止口金额
+        $dikou = $reduceMoney + $reduceFee;
+        $data = ['id'=>$uid,'member'=>$member,'endTime'=>$endTime,'money'=>100,'reduceMoney'=>$reduceMoney?$reduceMoney:0,'userCoupon'=>$userCou,'feeCount'=>$feeCount,'coupons'=>$coupons,'recharge'=>$recharge,'useIntegral'=>$useIntegral,'yhj'=>$yhj,'levelStr'=>$levelStr,'dikou'=>$dikou];
         Methods::jsonData(1,'success',$data);
     }
     /**
