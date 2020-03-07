@@ -565,5 +565,22 @@
 
     接口名称        提现手续费
     接口地址        /content/api/return-money
-    接口参数
+    接口参数        uid     用户id
+    响应参数        money  当前余额
+                    returnMoney   手续费 百分比
 
+
+    接口名称        用户历史提现记录
+    接口地址        /content/api/user-return-history
+    接口参数        uid     用户id
+                    page    页数 默认1 可不传 每页10条
+    响应参数        money  提现余额
+                    fee   手续费用
+                    totalMoney  总金额
+                    status  状态 0-待审核 1-已提现
+
+    接口名称        用户提现
+    接口地址        /content/api/user-return
+    接口参数        uid     用户id
+                    money   提现金额
+                    fee      提现费用  （最多两位小数 如 5  5.00 5.01）

@@ -20,6 +20,7 @@ use app\modules\content\models\Logo;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberLog;
 use app\modules\content\models\MemberRecharge;
+use app\modules\content\models\MemberReturn;
 use app\modules\content\models\MoneyRecord;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
@@ -3717,8 +3718,74 @@ class ApiController extends  Controller
      *提现手续费
      */
     public function actionReturnMoney(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
         $returnMoney = ShopMessage::find()->where("type = 20")->asArray()->one()['content'];
+        $money = Member::find()->where("id = $uid")->asArray()->one()['memberMoney'];
         $returnMoney = $returnMoney?$returnMoney:0;
-        Methods::jsonData(1,'success',['retrunMoney'=>$returnMoney]);
+        Methods::jsonData(1,'success',['money'=>$money?$money:0,'retrunMoney'=>$returnMoney]);
+    }
+    /**
+     * 提现接口
+     * 组团收益提现
+     */
+    public function actionUserReturn(){
+        $uid = Yii::$app->request->post('uid');
+        $money = Yii::$app->request->post('money');//提现金额
+        $fee = Yii::$app->request->post('fee',0);//提现收费费  两位小数
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$money){
+            Methods::jsonData(0,'提现金额不存在');
+        }
+        $returnMoney = ShopMessage::find()->where("type = 20")->asArray()->one()['content'];//手续费比例
+        $fee = $fee?$fee:0;
+        if($returnMoney) {
+            $needMoney = ($money * $returnMoney)/100;
+            $needMoney = round($needMoney,2);//手续费
+        }else{
+            $needMoney = 0;
+        }
+        if($needMoney == $fee){
+            $totalMoney = $needMoney + $money;
+            $memberMoney = Member::find()->where("id = $uid")->asArray()->one()['memberMoney'];
+            if($memberMoney < $totalMoney){
+                Methods::jsonData(0,'余额不足');
+            }
+            //记录提现申请
+            $model = new MemberReturn();
+            $model->uid = $uid;
+            $model->money = $money;
+            $model->fee = $needMoney;
+            $model->totalMoney = $totalMoney;
+            $model->status = 0;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                Methods::jsonData(1,'提交成功，等待审核');
+            }else{
+                Methods::jsonData(0,'提交失败，请重试');
+            }
+        }else{
+            Methods::jsonData(0,'手续费不对');
+        }
+    }
+    /**
+     * 提现记录
+     */
+    public function actionUserReturnHistory(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $page = Yii::$app->request->post('page',1);
+        $pageSize = 10;
+        $offset = ($page-1)*$pageSize;
+        $total = MemberReturn::find()->where("uid = $uid")->count();
+        $data = MemberReturn::find()->where("uid = $uid")->orderBy('createTime desc')->asArray()->offset($offset)->limit($pageSize)->all();
+        Methods::jsonData(1,'success',['total'=>$total,'data'=>$data]);
     }
 }
