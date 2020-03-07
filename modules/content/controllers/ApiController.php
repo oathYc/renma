@@ -3789,6 +3789,7 @@ class ApiController extends  Controller
             $model->totalMoney = $totalMoney;
             $model->status = 0;
             $model->createTime = time();
+            $model->orderNumber = "RenmaReturn".time();
             $res = $model->save();
             if($res){
                 Methods::jsonData(1,'提交成功，等待审核');

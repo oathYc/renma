@@ -5,8 +5,10 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\libs\WeixinReturn;
 use app\modules\content\models\Address;
 use app\modules\content\models\Member;
+use app\modules\content\models\MemberReturn;
 use app\modules\content\models\RepairReturn;
 use app\modules\content\models\ShopCart;
 use app\modules\content\models\UserCoupon;
@@ -122,6 +124,56 @@ class MemberController  extends AdminController
             $data[$k]['nickname'] = Member::find()->where("id = {$v['uid']}")->asArray()->one()['nickname'];
         }
         return $this->render('user-collect',['data'=>$data,'page'=>$pages,'count'=>$count]);
+    }
+    /**
+     * 用户提现
+     */
+    public function actionUserReturn(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $page = Yii::$app->request->get('page',1);
+        $pageSize = 10;
+        $limit = " limit ".($pageSize*($page-1)).",$pageSize";
+        $sql = "select mr.*,m.nickname from {{%member_return}} mr inner join {{%member}} m on m.id = mr.uid ";
+        $total = Yii::$app->db->createCommand($sql)->queryAll();
+        $count = count($total);
+        $pages = new Pagination(['totalCount'=>$count,'pageSize'=>$pageSize]);
+        $sql .= " order by createTime desc";
+        $sql .= $limit;
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+        return $this->render('user-return',['data'=>$data,'page'=>$pages,'count'=>$count]);
+    }
+    /**
+     * 用户提现
+     * 商家同意
+     */
+    public function actionReturnSuccess(){
+        $id = Yii::$app->request->get('id');
+        if(!$id){
+            echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $data = MemberReturn::findOne($id);
+        if(!$data){
+            echo "<script>alert('没有该数据');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        //验证余额
+        $user = Member::findOne($data->uid);
+        if(!$user){
+            echo "<script>alert('没有相应用户');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $finalMoney = $user->memberMoney - $data->totalMoney;
+        if($finalMoney < 0){
+            echo "<script>alert('用户余额不足');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $return  = WeixinReturn::WeixinReturn($data->uid,$data->orderNumber,$data->money,2);//2-提现
+        if($return){
+            //扣除相应余额
+            $user->memberMoney = $finalMoney;
+            $user->save();
+            echo "<script>alert('用户提现成功');setTimeout(function(){location.href='user-return';},1000)</script>";die;
+        }else{
+            echo "<script>alert('用户提现失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
     }
 
 

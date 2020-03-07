@@ -558,7 +558,7 @@
     接口参数        uid     用户id
 
     接口名称        用户收藏商品（取消收藏）
-    接口地址        /content/api/search-type
+    接口地址        /content/api/add-collect
     接口参数        uid         用户id
                     productId   商品id
                     collect     状态 1-添加收藏 0-取消收藏 默认1 可不传

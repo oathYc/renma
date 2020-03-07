@@ -6,6 +6,7 @@ namespace app\modules\content\controllers;
 
 use app\libs\AdminController;
 use app\libs\Methods;
+use app\libs\WeixinReturn;
 use app\modules\content\models\Address;
 use app\modules\content\models\Logistics;
 use app\modules\content\models\Member;
@@ -214,11 +215,16 @@ class OrderController  extends AdminController
      */
     public function actionOrderSureReturn(){
         $id = Yii::$app->request->get('id');
-        $res = Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"id = $id");
-        if($res){
-            echo "<script>alert('确认成功');setTimeout(function(){location.href='order-list';},1000)</script>";die;
+//        $res = Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"id = $id");
+        $order = Order::findOne($id);
+        if(!$order){
+            echo "<script>alert('没有该订单');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+        $return = WeixinReturn::WeixinReturn($order->uid,$order->orderNumber,$order->payPrice,1);//type  1退款
+        if($return){
+            echo "<script>alert('退款成功');setTimeout(function(){location.href='order-list';},1000)</script>";die;
         }else{
-            echo "<script>alert('确认失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            echo "<script>alert('退款失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
     /**
