@@ -3449,7 +3449,11 @@ class ApiController extends  Controller
             $offset = 10*($page-1);
             $record = MoneyRecord::find()->where(" type = 1 and uid = $uid ")->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
             foreach($record as $k => $v){
-                $record[$k]['title'] = Order::find()->where("id = {$v['orderId']}")->asArray()->one()['productTitle'];
+                if($v['moneyType'] == 1){
+                    $record[$k]['title'] = Order::find()->where("id = {$v['orderId']}")->asArray()->one()['productTitle'];
+                }else{
+                    $record[$k]['title'] = '余额提现';
+                }
             }
             $total = MoneyRecord::find()->where(" type = 1 and uid = $uid ")->count();
             $data = ['yue'=>$yue?$yue:0,'totalMoney'=>$totalMoney?$totalMoney:0,'todayMoney'=>$todayMoney?$todayMoney:0,'record'=>$record,'total'=>$total];

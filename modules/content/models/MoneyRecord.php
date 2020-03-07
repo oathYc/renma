@@ -15,7 +15,7 @@ class MoneyRecord extends ActiveRecord
     /**
      * 记录金额数据
      * $add 1=新增 2-减少
-     * $type 1-组团
+     * $type 1-组团 2-提现
      */
     public static function saveRecord($uid,$orderId,$money,$add=1,$type=1){
         $model = new self();

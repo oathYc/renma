@@ -9,6 +9,7 @@ use app\libs\WeixinReturn;
 use app\modules\content\models\Address;
 use app\modules\content\models\Member;
 use app\modules\content\models\MemberReturn;
+use app\modules\content\models\MoneyRecord;
 use app\modules\content\models\RepairReturn;
 use app\modules\content\models\ShopCart;
 use app\modules\content\models\UserCoupon;
@@ -170,6 +171,8 @@ class MemberController  extends AdminController
             //扣除相应余额
             $user->memberMoney = $finalMoney;
             $user->save();
+            //记录余额消费
+            MoneyRecord::saveRecord($data->uid,$data->orderNumber,$data->totalMoney,2,2);
             echo "<script>alert('用户提现成功');setTimeout(function(){location.href='user-return';},1000)</script>";die;
         }else{
             echo "<script>alert('用户提现失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
