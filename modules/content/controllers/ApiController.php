@@ -3439,15 +3439,19 @@ class ApiController extends  Controller
         }
         $member = Member::findOne($uid);
         if($member){
+            //总收入
             $totalMoney = MoneyRecord::find()->where("uid = $uid and type = 1")->sum('money');
+            //余额
             $yue = $member->memberMoney;
+            //今日收入
             $date = date('Y-m-d');
             $begin = strtotime($date);
             $end = $begin + 86399;
             $where = " type = 1 and uid = $uid  and createTime between $begin and $end";
             $todayMoney = MoneyRecord::find()->where($where)->sum('money');
             $offset = 10*($page-1);
-            $record = MoneyRecord::find()->where(" type = 1 and uid = $uid ")->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
+            //历史记录
+            $record = MoneyRecord::find()->where(" type in （1,2) and uid = $uid ")->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
             foreach($record as $k => $v){
                 if($v['moneyType'] == 1){
                     $record[$k]['title'] = Order::find()->where("id = {$v['orderId']}")->asArray()->one()['productTitle'];
