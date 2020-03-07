@@ -3451,7 +3451,7 @@ class ApiController extends  Controller
             $todayMoney = MoneyRecord::find()->where($where)->sum('money');
             $offset = 10*($page-1);
             //历史记录
-            $record = MoneyRecord::find()->where(" type in （1,2) and uid = $uid ")->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
+            $record = MoneyRecord::find()->where(" type in (1,2) and uid = $uid ")->offset($offset)->limit(10)->orderBy('createTime desc')->asArray()->all();
             foreach($record as $k => $v){
                 if($v['moneyType'] == 1){
                     $record[$k]['title'] = Order::find()->where("id = {$v['orderId']}")->asArray()->one()['productTitle'];
