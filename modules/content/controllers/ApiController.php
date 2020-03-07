@@ -633,6 +633,7 @@ class ApiController extends  Controller
 //        $mileageMax = Yii::$app->request->post('mileageMax');//续航里程最大
         $priceOrder = Yii::$app->request->post('order',0);//价格顺序 1-低到高 2-高到低 0-默认按刷新时间
         $sex = Yii::$app->request->post('sex',0);//1-男 2-女
+        $uid = Yii::$app->request->post('uid');
         $where = " type = $type ";
         if($search){
 //            $where .= " and ( title like '%{$search}%' or voltage like '%{$search}%' or mileage like '%{$search}%' or tradeAddress like '%{$search}%' or brand like '%{$search}%' ) ";
@@ -681,6 +682,18 @@ class ApiController extends  Controller
         $product = Product::find()->where($where)->orderBy($order)->asArray()->offset($offset)->limit(10)->all();
         foreach($product as $k => $v){
             $product[$k]['image'] = unserialize($v['image']);
+            //用户收藏
+            if($uid){
+                $had = Collect::find()->where("uid= $uid and productId = {$v['id']}")->one();
+                if($had){
+                    $collect = 1;//1-已收藏 0-未收藏
+                }else{
+                    $collect = 0;
+                }
+            }else{
+                $collect = 0;
+            }
+            $product[$k]['collect'] = $collect;
         }
         //电压
         $voltages = Search::find()->where('type =1')->orderBy('val asc')->asArray()->all();
