@@ -50,7 +50,7 @@ class WeixinReturn
             if($type ==1){//退款
                 Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"uid = $uid and orderNumber = '{$orderNumber}'");
             }else{//提现
-                MemberReturn::updateAll(['status'=>1],"uid = $uid and orderNumber = '{$orderNumber}'");
+                MemberReturn::updateAll(['status'=>1,'successTime'=>time()],"uid = $uid and orderNumber = '{$orderNumber}'");
             }
             return true;
         }else{
