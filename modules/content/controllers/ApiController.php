@@ -9,6 +9,7 @@ use app\modules\content\models\Address;
 use app\modules\content\models\Advert;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Category;
+use app\modules\content\models\Collect;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
 use app\modules\content\models\GroupCategory;
@@ -708,6 +709,7 @@ class ApiController extends  Controller
             $userAddress = [];
             $userCoupon = [];
             $member = 0;
+            $hadbuy = 0;//已售出
         }else{
             if($product['catPid']){
                 $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
@@ -740,8 +742,10 @@ class ApiController extends  Controller
                 $member = 0;
             }
             $comment = Product::getComment($productId,$page);
+            $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = $productId")->count();
+            $hadbuy = $hadbuy?$hadbuy:0;
         }
-        $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment];
+        $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'userCoupon'=>$userCoupon,'comment'=>$comment,'hadbuy'=>$hadbuy];
         Methods::jsonData(1,'success',$data);
     }
     /**
@@ -3641,10 +3645,10 @@ class ApiController extends  Controller
         Methods::jsonData(1,'success',['data'=>$data]);
     }
     /**
-     * 反馈电话
+     * 反馈微信和电话
      */
     public function actionOptionPhone(){
-        $data = ShopMessage::find()->where("type = 19")->asArray()->one();
+        $data = ShopMessage::find()->select("*,content as weixin")->where("type = 19")->asArray()->one();
         Methods::jsonData(1,'success',['data'=>$data]);
     }
     /**
@@ -3660,5 +3664,53 @@ class ApiController extends  Controller
             $data = [];
         }
         Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 收藏列表
+     */
+    public function actionUserCollect(){
+        $uid = Yii::$app->request->post('uid');
+        $collect = [];
+        if($uid){
+            $sql = "select *,uc.id as collectId from {{%user_collect}} uc inner join {{%product}} p on p.id = uc.productId ";
+            $collect = Yii::$app->db->createCommand($sql)->queryAll();
+        }
+        Methods::jsonData(1,'success',$collect);
+    }
+    /**
+     * 添加收藏 取消收藏
+     */
+    public function actionAddCollect(){
+        $uid = Yii::$app->request->post('uid');
+        $productId = Yii::$app->request->post('productId');
+        $collect = Yii::$app->request->post('collect',1);//1-添加收藏 0-取消收藏
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        if($collect == 1){
+            $had = Collect::find()->where("uid = $uid and productId = $productId")->one();
+            if(!$had){
+                $model = new Collect();
+                $model->uid = $uid;
+                $model->productId = $productId;
+                $model->createTime = time();
+                $model->save();
+            }
+            Methods::jsonData(1,'收藏成功');
+        }else{
+            Collect::deleteAll("uid = $uid and productId = $productId");
+            Methods::jsonData(1,'取消收藏成功');
+        }
+    }
+    /**
+     *提现手续费
+     */
+    public function actionReturnMoney(){
+        $returnMoney = ShopMessage::find()->where("type = 20")->asArray()->one()['content'];
+        $returnMoney = $returnMoney?$returnMoney:0;
+        Methods::jsonData(1,'success',['retrunMoney'=>$returnMoney]);
     }
 }

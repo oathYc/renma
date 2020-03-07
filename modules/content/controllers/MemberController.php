@@ -102,6 +102,27 @@ class MemberController  extends AdminController
         $data = ShopCart::getUserShopCart($page);
         return $this->render('shop-cart',$data);
     }
+    /**
+     * 用户收藏
+     */
+    public function actionUserCollect(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $page = Yii::$app->request->get('page',1);
+        $pageSize = 10;
+        $limit = " limit ".($pageSize*($page-1)).",$pageSize";
+        $sql = "select uc.*,uc.id as collectId,uc.createTime as collectTime,p.title from {{%user_collect}} uc inner join {{%product}} p on p.id = uc.productId ";
+        $total = Yii::$app->db->createCommand($sql)->queryAll();
+        $count = count($total);
+        $pages = new Pagination(['totalCount'=>$count,'pageSize'=>$pageSize]);
+        $sql .= " order by collectTime desc";
+        $sql .= $limit;
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+        foreach($data as $k => $v){
+            $data[$k]['nickname'] = Member::find()->where("id = {$v['uid']}")->asArray()->one()['nickname'];
+        }
+        return $this->render('user-collect',['data'=>$data,'page'=>$pages,'count'=>$count]);
+    }
 
 
 }

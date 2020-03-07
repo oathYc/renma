@@ -11,6 +11,12 @@
         <fieldset>
 
             <div class="control-group">
+                <label for="modulename" class="control-label">反馈微信</label>
+                <div class="controls">
+                    <input type="text" name="content"  placeholder="请填写反馈微信" value="<?php echo isset($data['content'])?$data['content']:''?>" />
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">反馈电话</label>
                 <div class="controls">
                     <input type="text" name="phone" onkeyup="value = value.replace(/[^0-9]/g,'')" placeholder="请填写反馈联系电话" value="<?php echo isset($data['phone'])?$data['phone']:''?>" />

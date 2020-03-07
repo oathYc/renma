@@ -735,7 +735,7 @@ class ContentController  extends AdminController
         }
     }
     /**
-     * 商品刷新金额设置
+     * 反馈微信电话设置
      */
     public function actionOptionPhone(){
         $action = \Yii::$app->controller->action->id;
@@ -743,8 +743,12 @@ class ContentController  extends AdminController
         if($_POST){
             $id = Yii::$app->request->post('id');
             $phone = Yii::$app->request->post('phone');
+            $content = Yii::$app->request->post('content');
             if(!$phone){
                 echo "<script>alert('请填写反馈电话');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+             if(!$content){
+                echo "<script>alert('请填写反馈微信');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
 
             if($id){
@@ -753,7 +757,7 @@ class ContentController  extends AdminController
                 $model = new ShopMessage();
             }
             $model->phone = $phone;
-            $model->content = '反馈联系电话';
+            $model->content = $content;
             $model->type = 19; // 1-关于我们 2-客服说明 3-会员充值说明  11-地区设置 12-刷新金额 19-反馈电话
             $model->createTime = time();
             $res = $model->save();
@@ -765,6 +769,38 @@ class ContentController  extends AdminController
         }else{
             $about = ShopMessage::find()->where("type = 19")->asArray()->one();
             return $this->render('option-phone',['data'=>$about]);
+        }
+    }
+    /**
+     * 提现手续费
+     * 1-关于我们  2-客服联系 3-会员充值说明 4-积分规则 5-会员优惠说明 11-地区设置 12-刷新金额 13-购物车背景图 14-积分明细背景图 15-邀请朋友圈背景图 16-邀请有奖背景图 17-维修师背景图 18-活动规则 19-反馈电话 20-提现手续费
+     */
+    public function actionReturnMoney(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写提现手续费');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = ShopMessage::findOne($id);
+            }else{
+                $model = new ShopMessage();
+            }
+            $model->content = $content;
+            $model->type = 20;// 20-提现手续费
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('编辑成功');setTimeout(function(){location.href='return-money';},1000)</script>";die;
+            }else{
+                echo "<script>alert('编辑失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $data = ShopMessage::find()->where("type = 20")->asArray()->one();
+            return $this->render('return-money',['data'=>$data]);
         }
     }
 }
