@@ -48,6 +48,7 @@ class Methods
     public static  function postCa($url, $post_data = '', $timeout = 5){//curl
         $ch = curl_init();
         curl_setopt ($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);//设置执行最长秒数
         curl_setopt ($ch, CURLOPT_POST, 1);
         if(is_array($post_data)){
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
@@ -61,10 +62,9 @@ class Methods
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         //默认格式为PEM，可以注释
-        $host = Yii::$app->params['domain'];
-        $cert = $host."/wxCa/apiclient_cert.pem";
-        $key = $host.'/wxCa/apiclient_key.pem';
-        var_dump($cert,$key);
+        $dir = dirname(__FILE__);
+        $cert = $dir."/wxCa/apiclient_cert.pem";
+        $key = $dir.'/wxCa/apiclient_key.pem';
         curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
         curl_setopt($ch,CURLOPT_SSLCERT,$cert);
         //默认格式为PEM，可以注释
@@ -76,7 +76,10 @@ class Methods
             return $data;
         } else {
             $error = curl_errno($ch);
+//            $info = curl_getinfo($ch);
+//            var_dump($info);
             echo "call faild, errorCode:$error\n";
+            echo "<a href='http://curl.haxx.se/libcurl/c/libcurl-errors.html'>错误原因查询</a></br>";
             curl_close($ch);
             return false;
         }
