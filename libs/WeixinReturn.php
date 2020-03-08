@@ -45,9 +45,7 @@ class WeixinReturn
         //组合xml数据
         $xml = self::getXml($signArr);
         $return = Methods::postCa($url,$xml);
-        var_dump($return);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
-        var_dump($return);die;
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
             if($type ==1){//退款
                 Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"uid = $uid and orderNumber = '{$orderNumber}'");
