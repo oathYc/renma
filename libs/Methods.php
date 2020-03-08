@@ -62,16 +62,24 @@ class Methods
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         //默认格式为PEM，可以注释
         $host = Yii::$app->params['domain'];
-        $cert = $host."/../wxCa/apiclient_cert/pem";
-        $key = $host.'/../libs/wxCa/apiclient_key.pem';
+        $cert = $host."/wxCa/apiclient_cert.pem";
+        $key = $host.'/wxCa/apiclient_key.pem';
+        var_dump($cert,$key);
         curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
         curl_setopt($ch,CURLOPT_SSLCERT,$cert);
         //默认格式为PEM，可以注释
         curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
         curl_setopt($ch,CURLOPT_SSLKEY,$key);
-        $file_contents = curl_exec($ch);
-        curl_close($ch);
-        return $file_contents;
+        $data = curl_exec($ch);
+        if ($data) {
+            curl_close($ch);
+            return $data;
+        } else {
+            $error = curl_errno($ch);
+            echo "call faild, errorCode:$error\n";
+            curl_close($ch);
+            return false;
+        }
     }
 
     /**

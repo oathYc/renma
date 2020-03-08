@@ -35,8 +35,7 @@ class WeixinReturn
         $check_name = 'NO_CHECK';//校验用户姓名选项 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
         $amount = 100*$money;//金额  分
         $desc = $type == 1?'用户订单退款':'用户余额提现';///企业付款备注
-//        $spbill_create_ip = $_SERVER['REMOTE_ADDR'];//ip地址
-        $spbill_create_ip = '183.222.22.103';//ip地址
+        $spbill_create_ip = $_SERVER['REMOTE_ADDR'];//ip地址
         $signArr = ['openid'=>$openid,'mch_appid'=>$mch_appid,'mchid'=>$mchid,'nonce_str'=>$nonce_str,'partner_trade_no'=>$partner_trade_no,'check_name'=>$check_name,'amount'=>$amount,'desc'=>$desc,'spbill_create_ip'=>$spbill_create_ip];
         //生成签名
         ksort($signArr);
