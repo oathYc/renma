@@ -214,10 +214,10 @@ class OrderController  extends AdminController
      * 订单退款
      */
     public function actionOrderSureReturn(){
-        $id = Yii::$app->request->get('id');
+        $id = Yii::$app->request->post('id');
         $order = Order::findOne($id);
         if(!$order){
-            echo "<script>alert('没有该订单');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            Methods::jsonData(0,'没有该订单');
         }
         $return = WeixinReturn::WeixinReturn($order->uid,$order->orderNumber,$order->payPrice,1);//type  1退款
         if($return['code'] ==1){
