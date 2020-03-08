@@ -215,17 +215,16 @@ class OrderController  extends AdminController
      */
     public function actionOrderSureReturn(){
         $id = Yii::$app->request->get('id');
-//        $res = Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"id = $id");
         $order = Order::findOne($id);
         if(!$order){
             echo "<script>alert('没有该订单');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
         $return = WeixinReturn::WeixinReturn($order->uid,$order->orderNumber,$order->payPrice,1);//type  1退款
         if($return['code'] ==1){
-            echo "<script>alert('退款成功');setTimeout(function(){location.href='order-list?status=-1';},1000)</script>";die;
+            Methods::jsonData(1,'退款成功');
         }else{
             $msg = $return['message'];
-            echo "<script>alert('$msg');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            Methods::jsonData(0,$msg);
         }
     }
     /**

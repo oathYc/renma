@@ -87,7 +87,7 @@
                         <div>
                             <!--                            <a class="btn" href="/content/shop/shop-detail?id=--><?php //echo $v['id']; ?><!--">详情</a>-->
                             <?php if($v['status'] == -1){?>
-                                <a class="btn" href="JavaScript:if(confirm('确认退款？')){location.href='/content/order/order-sure-return?id=<?php echo $v['id']; ?>'}">确认退款</a>&nbsp;
+                                <a class="btn" href="#" onclick="sureReturn(<?php echo $v['id']; ?>)" >确认退款</a>&nbsp;
                                 <a class="btn" href="#" onclick="refuseRemark(<?php echo $v['id']; ?>,<?php echo $kss;?>)">拒绝退款</a>&nbsp;
                             <?php }?>
                             <a class="btn" href="JavaScript:if(confirm('确认删除？')){location.href='/content/order/order-delete?id=<?php echo $v['id']; ?>'}">删除</a>
@@ -132,6 +132,18 @@
         }
         if(confirm('确认拒绝退款？')){
             $.post('/content/order/order-sure-refuse',{id:id,remark:val},function(e){
+                alert(e.message);
+                if(e.code ==1){
+                    window.location.reload();
+                }
+            },'json');
+        }else{
+            return false;
+        }
+    }
+    function sureReturn(id){
+        if(confirm('确认退款？')){
+            $.post('/content/order/order-sure-return',{id:id},function(e){
                 alert(e.message);
                 if(e.code ==1){
                     window.location.reload();
