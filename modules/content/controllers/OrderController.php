@@ -222,7 +222,7 @@ class OrderController  extends AdminController
         }
         $return = WeixinReturn::WeixinReturn($order->uid,$order->orderNumber,$order->payPrice,1);//type  1退款
         if($return['code'] ==1){
-            echo "<script>alert('退款成功');setTimeout(function(){location.href='order-list?status=1';},1000)</script>";die;
+            echo "<script>alert('退款成功');setTimeout(function(){location.href='order-list?status=-1';},1000)</script>";die;
         }else{
             $msg = $return['message'];
             echo "<script>alert('$msg');setTimeout(function(){history.go(-1);},1000)</script>";die;
