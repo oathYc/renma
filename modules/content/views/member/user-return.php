@@ -23,6 +23,7 @@
                 <th>提现总金额</th>
                 <th>提现状态</th>
                 <th>申请时间</th>
+                <th>提现时间</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -38,6 +39,7 @@
                     <td ><span><?php echo $v['totalMoney']?></span></td>
                     <td ><span><?php echo $v['status'] == 1?'已提现':'审核中'?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
+                    <td ><span><?php echo $v['status']==1?date('Y-m-d H:i:s',$v['createTime']):'';?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>

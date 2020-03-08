@@ -52,7 +52,7 @@ class WeixinReturn
             }else{//提现
                 MemberReturn::updateAll(['status'=>1,'successTime'=>time()],"uid = $uid and orderNumber = '{$orderNumber}'");
             }
-            return ['code'=>0,'message'=>'success'];
+            return ['code'=>1,'message'=>'success'];
         }elseif(isset($return['return_msg'])){
             return ['code'=>0,'message'=>$return['return_msg']];
         }else{
