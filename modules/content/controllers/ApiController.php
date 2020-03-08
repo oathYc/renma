@@ -44,6 +44,7 @@ class ApiController extends  Controller
     public $enableCsrfValidation = false;
     public static  function areaCheck()
     {
+        return true;
         //验证进入地区  地区限制
         $city = ShopMessage::find()->where('type =11')->asArray()->one()['content'];
         if($city){
@@ -3836,4 +3837,22 @@ class ApiController extends  Controller
     public function actionTestReturn(){
     WeixinReturn::WeixinReturn(55,'renma'.time(),1,2);
 }
+    /**
+     * 限制地区经纬度获取
+     */
+    public function actionAreaLimit(){
+        $data = ShopMessage::find()->where("type = 11")->asArray()->one()['content'];
+        $jingdu = 0;
+        $weidu = 0;
+        $area = 0;
+        if($data){
+            $arr = explode('-',$data);
+            if(count($arr) == 3){
+                $jingdu = $arr[0];
+                $weidu = $arr[1];
+                $area = $arr[2];
+            }
+        }
+        Methods::jsonData(1,'success',['jingdu'=>$jingdu,'weidu'=>$weidu,'area'=>$area]);
+    }
 }

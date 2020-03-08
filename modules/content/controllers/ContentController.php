@@ -504,6 +504,13 @@ class ContentController  extends AdminController
             }else{
                 $model = new ShopMessage();
             }
+            if($content){
+                $arr = explode('-',$content);
+                $count = count($arr);
+                if( $count != 3){
+                    echo "<script>alert('请填写正确的格式内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }
             $model->content = $content;
             $model->type = 11; // 1-关于我们 2-客服说明 3-会员充值说明  11-地区设置
             $model->createTime = time();
