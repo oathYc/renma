@@ -37,6 +37,42 @@ class Methods
         curl_close($ch);
         return $file_contents;
     }
+    /**
+     * post请求
+     * @param $url
+     * @param string $post_data
+     * @param int $timeout
+     * @return mixed
+     * @Obelisk
+     */
+    public static  function postCa($url, $post_data = '', $timeout = 5){//curl
+        $ch = curl_init();
+        curl_setopt ($ch, CURLOPT_URL, $url);
+        curl_setopt ($ch, CURLOPT_POST, 1);
+        if(is_array($post_data)){
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
+        }else{
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$post_data);//微信 xml数据
+        }
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        //忽略证书
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        //默认格式为PEM，可以注释
+        $host = Yii::$app->params['domain'];
+        $cert = $host."/../wxCa/apiclient_cert/pem";
+        $key = $host.'/../libs/wxCa/apiclient_key.pem';
+        curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+        curl_setopt($ch,CURLOPT_SSLCERT,$cert);
+        //默认格式为PEM，可以注释
+        curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
+        curl_setopt($ch,CURLOPT_SSLKEY,$key);
+        $file_contents = curl_exec($ch);
+        curl_close($ch);
+        return $file_contents;
+    }
 
     /**
      * @param $imageFile

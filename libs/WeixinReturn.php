@@ -18,43 +18,48 @@ class WeixinReturn
      * type  1-退款 2-提现
      */
     public static function WeixinReturn($uid,$orderNumber,$money,$type =1){
-        return false;
+//        return false;
         if(!$uid  || !$money){
-            return false;
+            return ['code'=>0,'message'=>'参数错误'];
         }
         $user = Member::findOne($uid);
         if(!$user){
-            return false;
+            return ['code'=>0,'message'=>'没有该用户'];
         }
         $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
         $openid = $user->openId;//用户openid
-        $mch_appid = Yii::$app->params['wx51c34099f4e38b33'];;//appid
-        $mchid = Yii::$app->params['1565796831'];//商户号
+        $mch_appid = Yii::$app->params['appId'];;//appid
+        $mchid = Yii::$app->params['wxMchId'];//商户号
         $nonce_str = md5($orderNumber);//随机字符串
         $partner_trade_no = $orderNumber;//商户订单号
         $check_name = 'NO_CHECK';//校验用户姓名选项 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
         $amount = 100*$money;//金额  分
         $desc = $type == 1?'用户订单退款':'用户余额提现';///企业付款备注
-        $spbill_create_ip = $_SERVER['REMOTE_ADDR'];//ip地址
+//        $spbill_create_ip = $_SERVER['REMOTE_ADDR'];//ip地址
+        $spbill_create_ip = '183.222.22.103';//ip地址
         $signArr = ['openid'=>$openid,'mch_appid'=>$mch_appid,'mchid'=>$mchid,'nonce_str'=>$nonce_str,'partner_trade_no'=>$partner_trade_no,'check_name'=>$check_name,'amount'=>$amount,'desc'=>$desc,'spbill_create_ip'=>$spbill_create_ip];
         //生成签名
-        ksort($paramArr);
+        ksort($signArr);
         $key = \Yii::$app->params['wxMchKey'];
-        $sign = self::signWxpay($paramArr,$key);//签名
+        $sign = self::signWxpay($signArr,$key);//签名
         $signArr['sign'] = $sign;
         //组合xml数据
         $xml = self::getXml($signArr);
-        $return = Methods::post($url,$xml);
+        $return = Methods::postCa($url,$xml);
+        var_dump($return);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
+        var_dump($return);die;
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
             if($type ==1){//退款
                 Order::updateAll(['status'=>-2,'returnSuccess'=>time()],"uid = $uid and orderNumber = '{$orderNumber}'");
             }else{//提现
                 MemberReturn::updateAll(['status'=>1,'successTime'=>time()],"uid = $uid and orderNumber = '{$orderNumber}'");
             }
-            return true;
+            return ['code'=>0,'message'=>'success'];
+        }elseif(isset($return['return_msg'])){
+            return ['code'=>0,'message'=>$return['return_msg']];
         }else{
-            return false;
+            return ['code'=>0,'message'=>'微信提现接口请求失败'];
         }
     }
     /**
@@ -78,7 +83,7 @@ class WeixinReturn
     /**
      * xsm数据组合
      */
-    public function getXml($data){
+    public static function getXml($data){
         if(is_array($data)){
             $xml = '<xml>';
             foreach($data as $k => $v){

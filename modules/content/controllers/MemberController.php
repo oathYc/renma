@@ -167,7 +167,7 @@ class MemberController  extends AdminController
             echo "<script>alert('用户余额不足');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
         $return  = WeixinReturn::WeixinReturn($data->uid,$data->orderNumber,$data->money,2);//2-提现
-        if($return){
+        if($return['code'] == 1){
             //扣除相应余额
             $user->memberMoney = $finalMoney;
             $user->save();
@@ -175,7 +175,8 @@ class MemberController  extends AdminController
             MoneyRecord::saveRecord($data->uid,$data->id,$data->totalMoney,2,2);
             echo "<script>alert('用户提现成功');setTimeout(function(){location.href='user-return';},1000)</script>";die;
         }else{
-            echo "<script>alert('用户提现失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            $msg = $return['message'];
+            echo "<script>alert('$msg');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
 

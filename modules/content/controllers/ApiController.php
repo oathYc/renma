@@ -5,6 +5,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\Methods;
+use app\libs\WeixinReturn;
 use app\modules\content\models\Address;
 use app\modules\content\models\Advert;
 use app\modules\content\models\Catalog;
@@ -3829,4 +3830,10 @@ class ApiController extends  Controller
         $data = MemberReturn::find()->where("uid = $uid")->orderBy('createTime desc')->asArray()->offset($offset)->limit($pageSize)->all();
         Methods::jsonData(1,'success',['total'=>$total,'data'=>$data]);
     }
+    /**
+     * 提现接口测试
+     */
+    public function actionTestReturn(){
+    WeixinReturn::WeixinReturn(55,'renma'.time(),1,2);
+}
 }
