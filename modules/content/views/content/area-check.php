@@ -13,7 +13,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">地区设置</label>
                 <div class="controls">
-                    <input type="text" name="content" placeholder="内容格式：经度-纬度-限制公里" value="<?php echo isset($data['content'])?$data['content']:''?>" />
+                    <input type="text" name="content" placeholder="格式：经度-纬度-限制公里" value="<?php echo isset($data['content'])?$data['content']:''?>" />
                 </div>
             </div>
             <div class="control-group">
