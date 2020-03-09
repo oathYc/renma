@@ -647,7 +647,7 @@ class ApiController extends  Controller
         if($priceMax){
             $where .= " and price <= $priceMax";
         }
-        if($brand){
+        if($brand && $brand != '全部'){
             $where .= " and brand = '{$brand}'";
         }
 //        if($voltageMin){
@@ -662,10 +662,10 @@ class ApiController extends  Controller
 //        if($mileageMax){
 //            $where .= " and mileage <= $mileageMax";
 //        }
-        if($voltage){
+        if($voltage &&  $voltage != '全部'){
             $where .= " and voltage = '{$voltage}'";
         }
-        if($mileage){
+        if($mileage && $mileage != '全部'){
             $where .= " and mileage = '{$mileage}'";
         }
         if($sex){
