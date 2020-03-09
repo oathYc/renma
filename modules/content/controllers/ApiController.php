@@ -698,9 +698,9 @@ class ApiController extends  Controller
             $product[$k]['collect'] = $collect;
         }
         //电压
-        $voltages = Search::find()->where('type =1')->orderBy('val asc')->asArray()->all();
+        $voltages = Search::find()->where('type =1')->orderBy('rank desc')->asArray()->all();
         //续航
-        $mileages = Search::find()->where('type =2')->orderBy('val asc')->asArray()->all();
+        $mileages = Search::find()->where('type =2')->orderBy('rank desc')->asArray()->all();
         //使用性别
         $sexs = [['type'=>0,'name'=>'通用'],['type'=>1,'name'=>'男'],['type'=>2,'name'=>'女']];
         Methods::jsonData(1,'success',['total'=>$total,'product'=>$product,'voltages'=>$voltages,'mileages'=>$mileages,'sexs'=>$sexs]);
