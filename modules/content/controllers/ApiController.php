@@ -3700,7 +3700,7 @@ class ApiController extends  Controller
         self::areaCheck();
         $type = Yii::$app->request->post('type',0);
         if($type){
-            $data = Search::find()->where(" type = $type")->asArray()->all();
+            $data = Search::find()->where(" type = $type")->asArray()->orderBy('rank desc')->all();
         }else{
             $data = [];
         }

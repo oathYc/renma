@@ -407,7 +407,7 @@ class ContentController  extends AdminController
         parent::setActionId($action);
         $count = Search::find()->asArray()->count();
         $page =  new Pagination(['totalCount'=>$count]);
-        $data = Search::find()->asArray()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->all();
+        $data = Search::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
         return $this->render('search',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
     /**
@@ -419,6 +419,7 @@ class ContentController  extends AdminController
         if($_POST){
             $type = Yii::$app->request->post('type',1);//1-电压 2-续航
             $val = Yii::$app->request->post('val',0);
+            $rank = Yii::$app->request->post('rank',0);
             if($type ==1){
                 $name = '电压';
             }elseif($type == 2){
@@ -430,6 +431,7 @@ class ContentController  extends AdminController
             $model->name = $name;
             $model->type = $type;
             $model->val = $val;
+            $model->rank = $rank;
             $model->createTime = time();
             $res = $model->save();
             if($res){

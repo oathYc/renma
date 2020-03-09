@@ -23,6 +23,7 @@
                 <th>ID</th>
                 <th>名称</th>
                 <th>内容</th>
+                <th>排序</th>
                 <th>时间</th>
                 <th >操作</th>
             </tr>
@@ -35,6 +36,7 @@
                     <td ><span><?php echo $v['id']?></span></td>
                     <td ><span ><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['val']?></span></td>
+                    <td ><span><?php echo $v['rank']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">

@@ -22,6 +22,12 @@
                     <input type="text" name="val" id="val" value=""  />
                 </div>
             </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">排序</label>
+                <div class="controls">
+                    <input type="text" name="rank" id="rank" onkeyup="value = value.replace(/[^0-9]/g,'')" value="" placeholder="倒叙"  />
+                </div>
+            </div>
             <br/>
             <div class="control-group">
                 <div class="controls">
