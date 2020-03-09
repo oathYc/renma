@@ -3720,6 +3720,7 @@ class ApiController extends  Controller
             $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = {$v['productId']}")->count();
             $hadbuy = $hadbuy?$hadbuy:0;
             $collect[$k]['hadbuy'] = $hadbuy;
+            $collect[$k]['image'] = unserialize($v['image']);
         }
         Methods::jsonData(1,'success',$collect);
     }
