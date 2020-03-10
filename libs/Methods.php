@@ -322,19 +322,20 @@ class Methods
         $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
-            $data = "{
-                'touser':'{$v['openId']}',
-                'template_id':'{$templateId}',
-                'page':'page/index/index',
-                'data':{
-                        'thing6':{
-                            'value':'{$date}',
+            $oprnId = $v['openId'];
+            $data = '{
+                "touser":"'.$oprnId.'",
+                "template_id":"'.$templateId.'",
+                "page":"page/index/index",
+                "data":{
+                        "thing6":{
+                            "value":"'.$date.'",
                         },
-                        'time2':{
-                            'value':'{$desc}',
+                        "time2":{
+                            "value":"'.$desc.'",
                         }
                     },
-                }";
+                }';
             $log = 'text.txt';
             self::varDumpLog($log,$data,'a');
             self::varDumpLog($log,"\n",'a');
