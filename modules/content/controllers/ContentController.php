@@ -326,8 +326,12 @@ class ContentController  extends AdminController
             $id = Yii::$app->request->post('id');
             $content = Yii::$app->request->post('content');
             $image = Yii::$app->request->post('image');
+            $phone = Yii::$app->request->post('phone');
             if(!$content){
                 echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$phone){
+                echo "<script>alert('请填写联系电话');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if(!$image){
                 echo "<script>alert('请上传图片');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -345,6 +349,7 @@ class ContentController  extends AdminController
             $model->content = $content;
             $model->type = 2; // 1-关于我们 2-客服说明 3-会员充值说明
             $model->createTime = time();
+            $model->phone = $phone;
             $model->image = $image;
             $res = $model->save();
             if($res){

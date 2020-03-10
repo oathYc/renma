@@ -20,6 +20,12 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">联系电话</label>
+                <div class="controls">
+                    <input type="text" name="phone" id="phone" value="<?php echo isset($data['phone'])?$data['phone']:''?>"  />&nbsp;&nbsp;
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">图片</label>
                 <div class="controls">
                     <div style="margin-bottom: 10px" >
