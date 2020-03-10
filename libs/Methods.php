@@ -321,14 +321,16 @@ class Methods
         //获取维修师信息
         $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
         foreach($repirs as $k => $v){
+            $json = [
+                'thing6'=>['value'=>$date],
+                'time2'=>['value'=>$desc],
+            ];
+            $json = json_encode($json);
             $data = [
                 'touser'=>$v['openId'],//推送人的openid
                 'template_id'=>Yii::$app->params['template_id'],//模板id
                 'page'=>'page/index/index',//跳转路径
-                'data'=>[
-                    'thing6'=>['value'=>$date],
-                    'time2'=>['value'=>$desc],
-                ],
+                'data'=>$json,
             ];
             $log = 'text.txt';
             self::varDumpLog($log,json_encode($data),'a');
