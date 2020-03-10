@@ -345,7 +345,7 @@ class Methods
                   "miniprogram_state":"developer",
                   "lang":"zh_CN",
                   "data": {
-                      "number01": {
+                      "thing6": {
                           "value": "339208499"
                       },
                       "date01": {
