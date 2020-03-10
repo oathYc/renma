@@ -326,14 +326,14 @@ class Methods
                 'touser':'{$v['openId']}',
                 'template_id':'{$templateId}',
                 'page':'page/index/index',
-                'data':'{
-                        'thing6':'{
+                'data':{
+                        'thing6':{
                             'value':'{$date}',
-                        }',
+                        },
                         'time2':{
                             'value':'{$desc}',
-                        }'
-                    }',
+                        }
+                    },
                 }";
             $log = 'text.txt';
             self::varDumpLog($log,$data,'a');
