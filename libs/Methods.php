@@ -348,9 +348,15 @@ class Methods
                       "thing6": {
                           "value": "339208499"
                       },
-                      "time2": {
+                      "date01": {
                           "value": "2015年01月05日"
                       },
+                      "site01": {
+                          "value": "TIT创意园"
+                      } ,
+                      "site02": {
+                          "value": "广州市新港中路397号"
+                      }
                   }
                 }';
             $log = 'text.txt';
