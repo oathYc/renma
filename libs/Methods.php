@@ -315,11 +315,11 @@ class Methods
      */
     public static function messagePush(){
         $access_token = self::getAccessToken();
-        $date = date("Y-m-d H:i:s");
+        $date = date("Y-m-d H:i");
         $desc = '有一个新的订单需要服务';
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
         //获取维修师信息
-        $repirs = Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
+        $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
         foreach($repirs as $k => $v){
             $data = [
                 'touser'=>$v['openId'],//推送人的openid

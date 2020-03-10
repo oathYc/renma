@@ -3343,7 +3343,8 @@ class ApiController extends  Controller
         }
     }
     public function actionTest(){
-        Methods::getAccessToken();
+//        Methods::getAccessToken();
+        Methods::messagePush();
     }
     /**
      * 我的优惠券
