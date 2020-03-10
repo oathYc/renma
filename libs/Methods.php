@@ -336,6 +336,9 @@ class Methods
                       "time2": {
                           "value": "'.$date.'"
                       },
+                      "site01": {
+                          "value": "TIT创意园"
+                      } ,
                   }
                 }';
             $log = 'text.txt';
