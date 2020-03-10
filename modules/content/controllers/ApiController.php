@@ -3340,9 +3340,7 @@ class ApiController extends  Controller
         }
     }
     public function actionTest(){
-        self::areaCheck();
-        $orderId = Yii::$app->request->post('id');
-        Order::updateCartOrder($orderId);
+        Methods::getAccessToken();
     }
     /**
      * 我的优惠券

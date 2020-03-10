@@ -1,5 +1,7 @@
 <?php
 namespace app\libs;
+use app\modules\cn\models\Member;
+use app\modules\content\models\MemberRecharge;
 use yii;
 
 class Methods
@@ -220,5 +222,115 @@ class Methods
         $result = curl_exec($curl);
         curl_close($curl);
         return $result;
+    }
+    /**
+     * 微信内容检测
+     * 图片
+     */
+    public function weiXinImgCheck($img){
+        $access_token = self::getAccessToken();
+        $url = "https://api.weixin.qq.com/wxa/img_sec_check?access_token=".$access_token;
+        $file_data = array("media"  => new \CURLFile($img));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch , CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch , CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $file_data);
+        $output = curl_exec($ch);//发送请求获取结果
+        curl_close($ch);//关闭会话
+        $output=json_decode($output,true);
+        if($output['errcode'] ==0){
+            return true;
+        }else{
+            Methods::jsonData(0,$output['errmsg']);
+        }
+    }
+    /**
+     * 微信内容检测
+     * 文本检测
+     */
+    public function weiXinContentCheck($access_tokec,$content){
+        $url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=".$access_tokec;
+        // $content="hello world!";
+        $file_data = '{ "content":"'.$content.'" }';//$content(需要检测的文本内容，最大520KB)
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch , CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch , CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $file_data);
+        $output = curl_exec($ch);//发送请求获取结果
+        curl_close($ch);//关闭会话
+        $output=json_decode($output,true);
+        if($output['errcode'] == 0){
+            return true;
+        }else{
+            Methods::jsonData(0,$output['errmsg']);
+        }
+    }
+    /**
+     * 获取微信access_token
+     */
+    public static function getAccessToken(){
+        $appid = Yii::$app->params['appId'];
+        $secret = Yii::$app->params['secret'];
+        //判断当前是否有access_token
+        $file = './access_token.json';
+        if(is_file($file)){
+            $data = file_get_contents($file);
+            $data = json_decode($data,true);
+            $time = time();//当前时间
+            if($time >= $data['expireTime']){//超时重新获取
+                $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$secret";
+                $data = file_get_contents($url);
+                $data = json_decode($data,true);
+                $exireTime = $time + $data['expires_in'];//过期时间
+                $data['expireTime'] = $exireTime;
+                $access_token = $data['access_token'];
+                $data = json_encode($data);
+                file_put_contents('./access_token.json',$data);
+            }else{
+                $access_token = $data['access_token'];
+            }
+            return $access_token;
+        }else{//还没有生成过access_token
+            $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$secret";
+            $data = file_get_contents($url);
+            $data = json_decode($data,true);
+            $time = time();//当前时间
+            $exireTime = $time + $data['expires_in'];//过期时间
+            $data['expireTime'] = $exireTime;
+            $access_token = $data['access_token'];
+            $data = json_encode($data);
+            file_put_contents('./access_token.json',$data);
+            return $access_token;
+        }
+    }
+    /**
+     * 消息推送
+     * 小程序推送用户
+     */
+    public static function messagePush(){
+        $access_token = self::getAccessToken();
+        $date = date("Y-m-d H:i:s");
+        $desc = '有一个新的订单需要服务';
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
+        //获取维修师信息
+        $repirs = Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
+        foreach($repirs as $k => $v){
+            $data = [
+                'touser'=>$v['openId'],//推送人的openid
+                'template_id'=>'NWalE81q_yJ9tEY1ILAu9h_kpCFTGHlTIn_pSp9By2o',//模板id
+                'page'=>'page/index/index',//跳转路径
+                'data'=>[
+                    'thing6'=>['value'=>$date],
+                    'time2'=>['value'=>$desc],
+                ],
+            ];
+            self::post($url,$data);
+        }
     }
 }

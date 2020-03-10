@@ -222,6 +222,8 @@ class WeixinPayController extends  Controller{
                     if($orderData['productType'] ==3){
                         Order::updateCartOrder($orderData['id']);
                     }
+                    //通知维修师
+                    Methods::messagePush();
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
