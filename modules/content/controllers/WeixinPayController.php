@@ -223,7 +223,7 @@ class WeixinPayController extends  Controller{
                         Order::updateCartOrder($orderData['id']);
                     }
                     //通知维修师
-                    Methods::messagePush();
+//                    Methods::messagePush();
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
