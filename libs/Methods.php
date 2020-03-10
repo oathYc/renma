@@ -348,7 +348,7 @@ class Methods
                       "thing6": {
                           "value": "339208499"
                       },
-                      "date01": {
+                      "time2": {
                           "value": "2015年01月05日"
                       },
                       "site01": {
