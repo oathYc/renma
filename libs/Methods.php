@@ -315,7 +315,7 @@ class Methods
      */
     public static function messagePush(){
         $access_token = self::getAccessToken();
-        $date = date("Y年m月d日H时i分");
+        $date = date("Y-m-d H:i");
         $desc = '有一个新的订单需要服务';
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
         //获取维修师信息
@@ -323,6 +323,20 @@ class Methods
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
             $openId = $v['openId'];
+//            $data = '{
+//                "touser":"'.$openId.'",
+//                "template_id":"'.$templateId.'",
+//                "page":"index",
+//                "miniprogram_state":"developer",
+//                "data":{
+//                        "thing6":{
+//                            "value":"'.$date.'",
+//                        },
+//                        "time2":{
+//                            "value":"'.$desc.'",
+//                        }
+//                    },
+//                }';
             $data = '
             {
                   "touser": "'.$openId.'",
@@ -335,7 +349,7 @@ class Methods
                           "value": "339208499"
                       },
                       "time2": {
-                          "value": "'.$date.'"
+                          "value": "2015年01月05日"
                       },
                   }
                 }';
