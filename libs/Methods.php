@@ -315,41 +315,26 @@ class Methods
      */
     public static function messagePush(){
         $access_token = self::getAccessToken();
-        $date = date("Y-m-d H:i");
-        $desc = '有一个新的订单需要服务';
+        $date = date("Y年m月d日H时i分");
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
         //获取维修师信息
         $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
             $openId = $v['openId'];
-//            $data = '{
-//                "touser":"'.$openId.'",
-//                "template_id":"'.$templateId.'",
-//                "page":"index",
-//                "miniprogram_state":"developer",
-//                "data":{
-//                        "thing6":{
-//                            "value":"'.$date.'",
-//                        },
-//                        "time2":{
-//                            "value":"'.$desc.'",
-//                        }
-//                    },
-//                }';
             $data = '
             {
                   "touser": "'.$openId.'",
                   "template_id": "'.$templateId.'",
-                  "page": "index",
+                  "page": "page/index/index",
                   "miniprogram_state":"developer",
                   "lang":"zh_CN",
                   "data": {
                       "thing6": {
-                          "value": "339208499"
+                          "value": "有一个新的订单需要服务"
                       },
                       "time2": {
-                          "value": "2015年01月05日"
+                          "value": "'.$date.'"
                       },
                       "site01": {
                           "value": "TIT创意园"
