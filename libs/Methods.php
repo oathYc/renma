@@ -330,9 +330,12 @@ class Methods
                     'time2'=>['value'=>$desc],
                 ],
             ];
-            $log = './text.txt';
-            file_put_contents($log,json_encode($data));
-            self::post($url,$data);
+            $log = 'text.txt';
+            self::varDumpLog($log,json_encode($data),'a');
+            self::varDumpLog($log,"\n",'a');
+            $res = self::post($url,$data);
+            self::varDumpLog($log,$res,'a');
+            self::varDumpLog($log,"\n",'a');
         }
     }
 }
