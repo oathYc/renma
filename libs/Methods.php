@@ -323,40 +323,20 @@ class Methods
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
             $openId = $v['openId'];
-//            $data = '{
-//                "touser":"'.$openId.'",
-//                "template_id":"'.$templateId.'",
-//                "page":"index",
-//                "miniprogram_state":"developer",
-//                "data":{
-//                        "thing6":{
-//                            "value":"'.$date.'",
-//                        },
-//                        "time2":{
-//                            "value":"'.$desc.'",
-//                        }
-//                    },
-//                }';
             $data = '
             {
                   "touser": "'.$openId.'",
                   "template_id": "'.$templateId.'",
-                  "page": "index",
+                  "page": "page/index/index",
                   "miniprogram_state":"developer",
                   "lang":"zh_CN",
                   "data": {
                       "thing6": {
-                          "value": "339208499"
+                          "value": "'.$desc.'"
                       },
                       "time2": {
-                          "value": "2015年01月05日"
+                          "value": "'.$date.'"
                       },
-                      "site01": {
-                          "value": "TIT创意园"
-                      } ,
-                      "site02": {
-                          "value": "广州市新港中路397号"
-                      }
                   }
                 }';
             $log = 'text.txt';
