@@ -318,7 +318,7 @@ class Methods
         $date = date("Y年m月d日");
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
         //获取维修师信息
-        $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
+        $repirs = \app\modules\content\models\Member::find()->select("id,openId,pushNumber")->where('repair = 1')->asArray()->all();
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
             $openId = $v['openId'];
@@ -350,6 +350,15 @@ class Methods
             $res = self::post($url,$data);
             self::varDumpLog($log,$res,'a');
             self::varDumpLog($log,"\n",'a');
+            $res = json_decode($res,'true');
+            if(isset($res['errcode']) && $res['errcode'] == 0){
+                //记录用户推送次数
+                $member = \app\modules\content\models\Member::findOne($v['id']);
+                $number = $member->pushNumber?$member->pushMember:0;
+                $number += 1;
+                $member->pushNumber = $number;
+                $member->save();
+            }
         }
     }
 }
