@@ -9,6 +9,13 @@
     <form action="/content/order/order-after" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+                <td width="100">订单号：</td>
+                <td>
+                    <input type="text" name="orderNumber" value="<?php echo isset($_GET['orderNumber'])?$_GET['orderNumber']:'';?>"/>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
             </tr>
         </table>
     </form>
@@ -17,7 +24,7 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>订单id</th>
+                <th>订单号</th>
                 <th>商品名</th>
                 <th>商品品牌</th>
                 <th>商品钢印时间</th>
@@ -37,7 +44,7 @@
                 ?>
                 <tr>
                     <td ><span><?php echo $v['id']?></span></td>
-                    <td ><span ><?php echo $v['orderId']?></span></td>
+                    <td ><span ><?php echo $v['orderNumber']?></span></td>
                     <td ><span>
                             <?php if(isset($v['infos'])){?>
                                 <?php

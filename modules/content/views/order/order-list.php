@@ -20,6 +20,10 @@
                         <option value="-2" <?php if(isset($_GET['status']) && $_GET['status'] ==-2) echo 'selected'?>>退款成功</option>
                     </select>
                 </td>
+                <td>订单号：</td>
+                <td>
+                    <input type="text" name="orderNumber" value="<?php echo isset($_GET['orderNumber'])?$_GET['orderNumber']:'';?>"/>
+                </td>
                 <td>
                     <button class="btn btn-primary" type="submit">查询</button>
                 </td>

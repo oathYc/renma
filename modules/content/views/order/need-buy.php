@@ -9,7 +9,13 @@
     <form action="/content/order/need-buy" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-                <td></td>
+                <td width="100">订单号：</td>
+                <td>
+                    <input type="text" name="orderNumber" value="<?php echo isset($_GET['orderNumber'])?$_GET['orderNumber']:'';?>"/>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
             </tr>
         </table>
     </form>

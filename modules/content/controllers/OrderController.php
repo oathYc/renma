@@ -36,9 +36,13 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $status = Yii::$app->request->get('status',0);
+        $orderNumber = Yii::$app->request->get('orderNumber','');
         $where = " type = 2 ";
         if($status){
             $where .= " and status = $status";
+        }
+        if($orderNumber){
+            $where .= " and orderNumber = '{$orderNumber}'";
         }
         $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
@@ -121,6 +125,10 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $where = " status = 1 and proType != 1";//支付成功才有后续的物流信息
+        $orderNumber = Yii::$app->request->get('orderNumber','');
+        if($orderNumber){
+            $where .= " and orderNumber = '{$orderNumber}'";
+        }
         $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $order = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
@@ -251,6 +259,15 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $where = " after > 0 ";//售后订单才能进行后续
+        $orderNumber = Yii::$app->request->get('orderNumber','');
+        if($orderNumber){
+            $orderId = Order::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one()['id'];
+            if($orderId){
+                $where .= " and orderId = $orderId";
+            }else{
+                $where .= " and 1 > 2";
+            }
+        }
         $count = Quality::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $order = Quality::find()->where($where)->orderBy('afterTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
@@ -267,6 +284,7 @@ class OrderController  extends AdminController
             $order[$k]['afterPhone'] = $afterPhone;
             $productInfos = Order::find()->where(" id = {$v['orderId']}")->asArray()->one()['productInfo'];
             $order[$k]['infos'] = explode(',',$productInfos);
+            $order[$k]['orderNumber'] = Order::find()->where("id = {$v['orderId']}")->asArray()->one()['orderNumber'];
 
         }
         return $this->render('order-after',['data'=>$order,'page'=>$page,'count'=>$count]);
@@ -313,6 +331,10 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $where = " type = 2 and status = 1";//售后订单才能进行后续
+        $orderNumber = Yii::$app->request->get('orderNumber','');
+        if($orderNumber){
+            $where .= " and orderNumber = '{$orderNumber}'";
+        }
         $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
@@ -342,6 +364,10 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $where = " type = 2 and status = 0";//售后订单才能进行后续
+        $orderNumber = Yii::$app->request->get('orderNumber','');
+        if($orderNumber){
+            $where .= " and orderNumber = '{$orderNumber}'";
+        }
         $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
@@ -371,6 +397,10 @@ class OrderController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $where = " type = 2 and status = 1 and typeStatus =  2 and proType in (2,3)";//售后订单才能进行后续
+        $orderNumber = Yii::$app->request->get('orderNumber','');
+        if($orderNumber){
+            $where .= " and orderNumber = '{$orderNumber}'";
+        }
         $count = Order::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = Order::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
