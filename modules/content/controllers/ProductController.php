@@ -73,7 +73,7 @@ class ProductController  extends AdminController
      * 商品删除
      */
     public function actionProductDelete(){
-        $id = Yii::$app->request->post('id');
+        $id = Yii::$app->request->get('id');
         if($id){
             $advert = Product::findOne($id);
             if(!$advert){
