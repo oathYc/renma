@@ -339,26 +339,26 @@ class Methods
 //                }';
             $data = '
             {
-  "touser": "OPENID",
-  "template_id": "TEMPLATE_ID",
-  "page": "index",
-  "miniprogram_state":"developer",
-  "lang":"zh_CN",
-  "data": {
-      "number01": {
-          "value": "339208499"
-      },
-      "date01": {
-          "value": "2015年01月05日"
-      },
-      "site01": {
-          "value": "TIT创意园"
-      } ,
-      "site02": {
-          "value": "广州市新港中路397号"
-      }
-  }
-}';
+                  "touser": "'.$openId.'",
+                  "template_id": "'.$templateId.'",
+                  "page": "index",
+                  "miniprogram_state":"developer",
+                  "lang":"zh_CN",
+                  "data": {
+                      "number01": {
+                          "value": "339208499"
+                      },
+                      "date01": {
+                          "value": "2015年01月05日"
+                      },
+                      "site01": {
+                          "value": "TIT创意园"
+                      } ,
+                      "site02": {
+                          "value": "广州市新港中路397号"
+                      }
+                  }
+                }';
             $log = 'text.txt';
             self::varDumpLog($log,$data,'a');
             self::varDumpLog($log,"\n",'a');
