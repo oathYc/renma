@@ -326,7 +326,7 @@ class Methods
             {
                   "touser": "'.$openId.'",
                   "template_id": "'.$templateId.'",
-                  "page": "index",
+                  "page": "pages/index/index",
                   "miniprogram_state":"developer",
                   "lang":"zh_CN",
                   "data": {
