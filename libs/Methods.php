@@ -315,7 +315,7 @@ class Methods
      */
     public static function messagePush(){
         $access_token = self::getAccessToken();
-        $date = date("Y-m-d H:i");
+        $date = date("Y年m月d日 H时i分");
         $desc = '有一个新的订单需要服务';
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
         //获取维修师信息
