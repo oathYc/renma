@@ -336,7 +336,7 @@ class Methods
                     }',
                 }";
             $log = 'text.txt';
-            self::varDumpLog($log,json_encode($data),'a');
+            self::varDumpLog($log,$data,'a');
             self::varDumpLog($log,"\n",'a');
             $res = self::post($url,$data);
             self::varDumpLog($log,$res,'a');
