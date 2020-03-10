@@ -330,6 +330,8 @@ class Methods
                     'time2'=>['value'=>$desc],
                 ],
             ];
+            $log = './text.txt';
+            file_put_contents($log,json_encode($data));
             self::post($url,$data);
         }
     }
