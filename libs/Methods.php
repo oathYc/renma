@@ -326,7 +326,8 @@ class Methods
             $data = '{
                 "touser":"'.$openId.'",
                 "template_id":"'.$templateId.'",
-                "url":"page/index/index",
+                "page":"index",
+                "miniprogram_state":"developer",
                 "data":{
                         "thing6":{
                             "value":"'.$date.'",
