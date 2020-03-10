@@ -336,12 +336,6 @@ class Methods
                       "time2": {
                           "value": "'.$date.'"
                       },
-                      "site01": {
-                          "value": "TIT创意园"
-                      } ,
-                      "site02": {
-                          "value": "广州市新港中路397号"
-                      }
                   }
                 }';
             $log = 'text.txt';
