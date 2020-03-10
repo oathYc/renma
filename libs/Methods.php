@@ -322,11 +322,11 @@ class Methods
         $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
-            $oprnId = $v['openId'];
+            $openId = $v['openId'];
             $data = '{
-                "touser":"'.$oprnId.'",
+                "touser":"'.$openId.'",
                 "template_id":"'.$templateId.'",
-                "page":"page/index/index",
+                "url":"page/index/index",
                 "data":{
                         "thing6":{
                             "value":"'.$date.'",
