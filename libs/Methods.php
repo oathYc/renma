@@ -316,7 +316,6 @@ class Methods
     public static function messagePush(){
         $access_token = self::getAccessToken();
         $date = date("Y年m月d日H时i分");
-        $desc = '有一个新的订单需要服务';
         $url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$access_token;
         //获取维修师信息
         $repirs = \app\modules\content\models\Member::find()->select("id,openId")->where('repair = 1')->asArray()->all();
@@ -332,10 +331,10 @@ class Methods
                   "lang":"zh_CN",
                   "data": {
                       "thing6": {
-                          "value": "'.$desc.'"
+                          "value": "有一个新的订单需要服务"
                       },
                       "time2": {
-                          "value": "'.$date.'"
+                          "value": "2015年10月12日"
                       },
                   }
                 }';
