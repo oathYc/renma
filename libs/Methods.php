@@ -323,7 +323,7 @@ class Methods
         foreach($repirs as $k => $v){
             $data = [
                 'touser'=>$v['openId'],//推送人的openid
-                'template_id'=>'NWalE81q_yJ9tEY1ILAu9h_kpCFTGHlTIn_pSp9By2o',//模板id
+                'template_id'=>Yii::$app->params['template_id'],//模板id
                 'page'=>'page/index/index',//跳转路径
                 'data'=>[
                     'thing6'=>['value'=>$date],

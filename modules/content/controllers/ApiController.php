@@ -1625,6 +1625,9 @@ class ApiController extends  Controller
         //会员优惠说明
         $memberDesc = ShopMessage::find()->where("type =5")->asArray()->one()['content'];
         $user['memberDesc'] = $memberDesc;
+        //消息模板id
+        $template_id = Yii::$app->params['template_id'];
+        $user['template_id'] = $template_id;
         //用户订单评论更新
         Member::updateOrder($uid);
         Methods::jsonData(1,'success',$user);
