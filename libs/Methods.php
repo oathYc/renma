@@ -227,7 +227,7 @@ class Methods
      * 微信内容检测
      * 图片
      */
-    public function weiXinImgCheck($img){
+    public static function weiXinImgCheck($img){
         $access_token = self::getAccessToken();
         $url = "https://api.weixin.qq.com/wxa/img_sec_check?access_token=".$access_token;
         $file_data = array("media"  => new \CURLFile($img));
@@ -243,6 +243,8 @@ class Methods
         $output=json_decode($output,true);
         if($output['errcode'] ==0){
             return true;
+        }elseif($output['errcode'] == 87014){
+            Methods::jsonData(0,'图片有敏感内容，请传递合法的内容');
         }else{
             Methods::jsonData(0,$output['errmsg']);
         }
@@ -251,8 +253,9 @@ class Methods
      * 微信内容检测
      * 文本检测
      */
-    public function weiXinContentCheck($access_tokec,$content){
-        $url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=".$access_tokec;
+    public static function weiXinContentCheck($content){
+        $access_token = self::getAccessToken();
+        $url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=".$access_token;
         // $content="hello world!";
         $file_data = '{ "content":"'.$content.'" }';//$content(需要检测的文本内容，最大520KB)
         $ch = curl_init();
@@ -265,8 +268,11 @@ class Methods
         $output = curl_exec($ch);//发送请求获取结果
         curl_close($ch);//关闭会话
         $output=json_decode($output,true);
+        return $output;
         if($output['errcode'] == 0){
             return true;
+        }elseif($output['errcode'] == 87014){
+            Methods::jsonData(0,'文本有敏感内容，请传递合法的内容');
         }else{
             Methods::jsonData(0,$output['errmsg']);
         }
@@ -344,7 +350,7 @@ class Methods
                       }
                   }
                 }';
-            $log = 'text.txt';
+            $log = 'push-'.date("Y-m-d").'.txt';
             self::varDumpLog($log,$data,'a');
             self::varDumpLog($log,"\n",'a');
             $res = self::post($url,$data);
@@ -354,7 +360,7 @@ class Methods
             if(isset($res['errcode']) && $res['errcode'] == 0){
                 //记录用户推送次数
                 $member = \app\modules\content\models\Member::findOne($v['id']);
-                $number = $member->pushNumber?$member->pushMember:0;
+                $number = $member->pushNumber?$member->pushNumber:0;
                 $number += 1;
                 $member->pushNumber = $number;
                 $member->save();
