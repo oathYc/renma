@@ -3867,6 +3867,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'用户id不存在');
         }
         $user = Member::find()->select("id ,repair,pushNumber")->where("id = $uid")->asArray()->one();
+        $user['reloadNumber'] = 6;//重新订阅次数规定
         Methods::jsonData(1,'success',$user);
     }
 }
