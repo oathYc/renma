@@ -3339,7 +3339,7 @@ class ApiController extends  Controller
     public function actionTest(){
         Methods::messagePush();
 //        $img = '';
-//        $content = '西藏独立';
+//        $content = '港独';
 //        $res = Methods::weiXinContentCheck($content);
 //        $res = Methods::weiXinImgCheck($img);
 //        var_dump($res);die;

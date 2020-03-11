@@ -268,7 +268,6 @@ class Methods
         $output = curl_exec($ch);//发送请求获取结果
         curl_close($ch);//关闭会话
         $output=json_decode($output,true);
-        return $output;
         if($output['errcode'] == 0){
             return true;
         }elseif($output['errcode'] == 87014){
@@ -328,12 +327,12 @@ class Methods
         foreach($repirs as $k => $v){
             $templateId = Yii::$app->params['template_id'];
             $openId = $v['openId'];
+            // "miniprogram_state":"developer",测试版参数
             $data = '
             {
                   "touser": "'.$openId.'",
                   "template_id": "'.$templateId.'",
                   "page": "pages/index/index",
-                  "miniprogram_state":"developer",
                   "lang":"zh_CN",
                   "data": {
                       "thing6": {
