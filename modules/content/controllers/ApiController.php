@@ -3858,4 +3858,15 @@ class ApiController extends  Controller
         }
         Methods::jsonData(1,'success',['jingdu'=>$jingdu,'weidu'=>$weidu,'area'=>$area]);
     }
+    /**
+     * 用户订阅消息推送次数获取
+     */
+    public function actionPushNumber(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $user = Member::find()->select("id ,repair,pushNumber")->where("id = $uid")->asArray()->one();
+        Methods::jsonData(1,'success',$user);
+    }
 }

@@ -591,3 +591,8 @@
     响应参数        jingdu      经度
                     weidu       纬度
                     area        限制公里 公里为单位   三个参数为0的时候表示不限制
+
+
+    接口名称        用户订阅推送次数获取
+    接口地址        /content/api/push-number
+    接口参数        uid     用户id
