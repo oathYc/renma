@@ -2689,8 +2689,8 @@ class ApiController extends  Controller
             }else{
                 $products = $order->extInfo;
                 $array = explode(',',$products);
-                foreach($array as $k =>$v){
-                    $arr = explode('-',$v);
+                foreach($array as $kk =>$vk){
+                    $arr = explode('-',$vk);
                     $number = $arr[1];
                     $catPriceId = $arr[2];
                     if($catPriceId){
