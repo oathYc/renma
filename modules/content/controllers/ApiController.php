@@ -926,10 +926,9 @@ class ApiController extends  Controller
             $productInfo[] = $product->title.' (规格：'.$catPrice->cateDesc.') x '.$number;
 
             //判断库存是否充足
-            if($number > $catPrice->number && $product->number >0){
+            if($number > $catPrice->number && $catPrice->number >0){
                 Methods::jsonData(0,'商品库存仅剩'.$catPrice->number.'件，请重新选择商品数量');
             }
-
         }else{
             $totalPrice = $number*$product->price;
             $productInfo[] = $product->title.' (规格：默认) x '.$number;
@@ -1802,6 +1801,7 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
+        self::deleteNeedPay($uid);
         $where = " uid = $uid and type = 2";
         $page =Yii::$app->request->post('page',1);
         $offset = ($page -1)*10;
@@ -1839,6 +1839,8 @@ class ApiController extends  Controller
                 $orders[$k]['repairPhone'] = '';
             }
             $orders[$k]['infos'] = explode(',',$v['productInfo']);
+            $extInfo = json_decode($v['extInfo'],true);
+            $orders[$k]['address'] = isset($extInfo['address'])?$extInfo['address']:'';
         }
         Methods::jsonData(1,'success',['total'=>$total,'order'=>$orders]);
     }
@@ -1916,7 +1918,8 @@ class ApiController extends  Controller
         //节省金额  积分 + 优惠卷
         $reduceMoney = Order::find()->where("uid = $uid and status = 1 and type = 2 and typeStatus = 5")->sum('reducePrice');
         //优惠券数量
-        $userCou = UserCoupon::find()->where("uid = $uid and status = 0")->count();
+        $now = time();
+        $userCou = UserCoupon::find()->where("uid = $uid and status = 0 and endTime > $now")->count();
         //免单数量
         $feeCount = Order::find()->where("uid = $uid and status = 1 and typeStatus = 5 and serverFee = 0 and type = 2")->count();
         //优惠卷兑换
@@ -2057,7 +2060,8 @@ class ApiController extends  Controller
         if($type != 99){
             $where .= " and status = $type";
         }
-        $offset = ($page-1)*10;
+        $where .= " and status != -1";//已退款订单
+        $offset = ($page-1)*10;;
         $total = UserGroup::find()->where($where)->count();
         $data = UserGroup::find()->where($where)->orderBy(" createTime desc")->asArray()->offset($offset)->limit(10)->all();
         foreach($data as $k => $v){
@@ -2635,22 +2639,82 @@ class ApiController extends  Controller
         if(!$order){
             Methods::jsonData(0,'你没有下过改单');
         }
+        $productType = $order->productType;
+        $catPriceId = $order->catPriceId;
+        $number = $order->number;
         if($order->status != 0){
             Methods::jsonData(0,'订单状态不对，无法取消');
         }
         $res = Order::deleteAll("id = $orderId");
         if($res){
+            if($productType !=  2){//不是组团购买添加对应库存
+                //添加库存
+                if($catPriceId){
+                    $catPrice = ProductCategory::findOne($catPriceId);
+                    $newNumber = $catPrice->number + $number;
+                    $catPrice->number = $newNumber;
+                    $catPrice->save();
+                }
+            }
+            //删除对应的组团数据
+            UserGroup::deleteAll("orderId = {$orderId}");
             Methods::jsonData(1,'success');
         }else{
             Methods::jsonData(0,'删除失败');
         }
     }
     /**
+     * 删除超时订单
+     * 15分钟
+     */
+    public static function deleteNeedPay($uid){
+        if(!$uid){
+            return false;
+        }
+        $now = time();
+        $endTime = $now - 60*15;
+        $orders = Order::find()->where("uid = $uid and status = 0 and createTime <= $endTime and productType in (1,3)")->asArray()->all();
+        foreach($orders as $k => $v){
+            $order = Order::findOne($v['id']);
+            if($v['productType'] == 1){//单个商品购买
+                //添加库存
+                $catPriceId = $order->catPriceId;
+                $number = $order->number;
+                if($catPriceId){
+                    $catPrice = ProductCategory::findOne($catPriceId);
+                    $newNumber = $catPrice->number + $number;
+                    $catPrice->number = $newNumber;
+                    $catPrice->save();
+                }
+            }else{
+                $products = $order->extInfo;
+                $array = explode(',',$products);
+                foreach($array as $k =>$v){
+                    $arr = explode('-',$v);
+                    $number = $arr[1];
+                    $catPriceId = $arr[2];
+                    if($catPriceId){
+                        $catPrice = ProductCategory::findOne($catPriceId);
+                        $newNumber = $catPrice->number + $number;
+                        $catPrice->number = $newNumber;
+                        $catPrice->save();
+                    }
+                }
+            }
+            Order::deleteAll("id = {$v['id']}");
+            //删除对应的组团数据
+            UserGroup::deleteAll("orderId = {$v['id']}");
+        }
+        return true;
+    }
+    /**
      * 订单类型数量
      */
     public function actionMyOrderNumber(){
         self::areaCheck();
+        //删除超过15分钟的待支付订单
         $uid = Yii::$app->request->post('uid');
+        self::deleteNeedPay($uid);
         $type = [0,1,2,3,4];// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
         $data = [];
         foreach($type as $k => $v){

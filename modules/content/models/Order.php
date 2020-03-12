@@ -53,7 +53,7 @@ class Order extends ActiveRecord
         }
         foreach($array as $k =>$v){
             $arr = explode('-',$v);
-            if(count($arr) ==2){
+            if($arr){
                 $productId = $arr[0];
                 $number = $arr[1];
                 $model = new self();

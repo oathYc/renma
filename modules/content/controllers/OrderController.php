@@ -13,6 +13,7 @@ use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
 use app\modules\content\models\Quality;
+use app\modules\content\models\UserGroup;
 use yii\data\Pagination;
 use yii;
 
@@ -229,6 +230,8 @@ class OrderController  extends AdminController
         }
         $return = WeixinReturn::WeixinReturn($order->uid,$order->orderNumber,$order->payPrice,1);//type  1退款
         if($return['code'] ==1){
+            //修改对应订单
+            UserGroup::updateAll(['status'=>-1],"orderId = '{$id}'");
             Methods::jsonData(1,'退款成功');
         }else{
             $msg = $return['message'];

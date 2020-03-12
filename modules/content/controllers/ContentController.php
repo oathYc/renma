@@ -795,9 +795,9 @@ class ContentController  extends AdminController
         if($_POST){
             $id = Yii::$app->request->post('id');
             $content = Yii::$app->request->post('content');
-            if(!$content){
-                echo "<script>alert('请填写提现手续费');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
+//            if(!$content){
+//                echo "<script>alert('请填写提现手续费');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
             if($id){
                 $model = ShopMessage::findOne($id);
             }else{
