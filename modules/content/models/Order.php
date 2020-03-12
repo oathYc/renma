@@ -75,6 +75,7 @@ class Order extends ActiveRecord
                 $model->typeStatus = 1;//0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
                 $model->createTime = $order->createTime;
                 $model->proType = $product->type;
+                $model->productType = 3;//购物车
                 $model->finishTime = time();
                 $model->payType = 1;
                 $model->type = 2;
