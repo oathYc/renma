@@ -801,12 +801,12 @@ class ApiController extends  Controller
         $phone = Yii::$app->request->post('phone');
         $default = Yii::$app->request->post('default',0);
         $label = Yii::$app->request->post('label','');
-        if(!$province){
-            Methods::jsonData(0,'请选择省份');
-        }
-        if(!$city){
-            Methods::jsonData(0,'请选择市区');
-        }
+//        if(!$province){
+//            Methods::jsonData(0,'请选择省份');
+//        }
+//        if(!$city){
+//            Methods::jsonData(0,'请选择市区');
+//        }
         if(!$name){
             Methods::jsonData(0,'请填写收货人');
         }
