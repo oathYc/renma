@@ -37,8 +37,8 @@ class Product extends ActiveRecord
         $order = "  order by o.evalTime desc ";
         $today = strtotime(date('Y-m-d'));
         $where1 = "$where and o.evalTime >= $today";//最新
-        $where2 = "$where and !isnull(o.evalImage)";//有图
-        $where3 = "$where and o.evalVideo not like '%s%' ";//视频
+        $where2 = "$where and !isnull(o.evalImage) and o.evalImage like '%http%'";//有图
+        $where3 = "$where and !isnull(o.evalVideo) and o.evalVideo like '%http%'";//视频
         if($type ==1){
             $where = $where1;
         }
