@@ -2114,12 +2114,13 @@ class ApiController extends  Controller
         self::areaCheck();
 //        Methods::jsonData(1,'success',['status'=>999999]);
         $userGroupId = Yii::$app->request->post('userGroupId');
+        $promoterUid = Yii::$app->request->post('promoterUid');
 
         if($userGroupId){
             //根据userGroupId 获取groupid
-            $groupId = UserGroup::find()->where(['userGroupId'=>$userGroupId])->one()['groupId'];
+            $groupId = UserGroup::find()->where(['id'=>$userGroupId])->one()['groupId'];
             //获取当前拼团的数量
-            $count = UserGroup::find()->where(['userGroupId'=>$userGroupId,'status'=>1,'promoter'=>0])->count();
+            $count = UserGroup::find()->where(['userGroupId'=>$userGroupId,'promoterUid'=>$promoterUid,'status'=>1,'promoter'=>0])->count();
             //获取当前团 的允许数量
             $number = GroupProduct::find()->where(['id'=>$groupId])->one()['number'];
             if($count >= $number){
