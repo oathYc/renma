@@ -13,6 +13,18 @@
     <form action="/content/product/product-list" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+                <td width="100">商品类型：</td>
+                <td>
+                    <select name="type">
+                        <option value="1" <?php if(isset($_GET['type']) && $_GET['type'] ==1)echo 'selected';?>>维修</option>
+                        <option value="2" <?php if(isset($_GET['type']) && $_GET['type'] ==2)echo 'selected';?>>新车</option>
+                        <option value="3" <?php if(isset($_GET['type']) && $_GET['type'] ==3)echo 'selected';?>>二手车</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
+                <td></td>
             </tr>
         </table>
     </form>
@@ -27,6 +39,7 @@
                 <th>续航里程</th>
                 <th>交易地点</th>
                 <th>品牌名称</th>
+                <th>商品类型</th>
                 <th>商品分类</th>
                 <th>上传时间</th>
                 <th>服务费/元</th>
@@ -46,6 +59,7 @@
                     <td ><span><?php echo $v['tradeAddress']?></span></td>
                     <td ><span><?php echo $v['brand']?></span></td>
                     <td ><span><?php echo $v['category']?></span></td>
+                    <td ><span><?php echo $v['desc']?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
                     <td>
                         <span>

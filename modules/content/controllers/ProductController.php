@@ -35,9 +35,11 @@ class ProductController  extends AdminController
     public function actionProductList(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
+        $type = Yii::$app->request->get('type',1);//1-维修 2-新车 3-二手车
+        $where  = " type = $type";
         $count = Product::find()->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
-        $data = Product::find()->asArray()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->all();
+        $data = Product::find()->where($where)->asArray()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
 //            if($v['catPid']){
 //                $parent = Category::findOne($v['catPid']);
@@ -53,6 +55,15 @@ class ProductController  extends AdminController
 //            }
             $catName = $v['type']==1?'维修':($v['type']==2?'新车':($v['type'] ==3?'二手车':''));
             $data[$k]['category'] = $catName;
+            //获取商品分类
+            $productId = $v['id'];
+            $cate = ProductCategory::find()->where("productId = $productId")->orderBy("number asc")->asArray()->all();
+            $desc = [];
+            foreach($cate as $r => $t){
+                $desc[] = $t['desc'].'：'.$t['price'].'元'.' 库存：'.$v['number'];
+            }
+            $desc = implode("\n",$desc);
+            $data[$k]['desc'] = $desc;
         }
         return $this->render('product-list',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
