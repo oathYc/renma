@@ -62,7 +62,7 @@ class ProductController  extends AdminController
             foreach($cate as $r => $t){
                 $desc[] = $t['cateDesc'].'：'.$t['price'].'元'.' 库存：'.$v['number'];
             }
-            $desc = implode("\n\r\t",$desc);
+            $desc = implode("<br>",$desc);
             $data[$k]['desc'] = $desc;
         }
         return $this->render('product-list',['count'=>$count,'page'=>$page,'data'=>$data]);
