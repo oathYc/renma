@@ -60,7 +60,7 @@ class ProductController  extends AdminController
             $cate = ProductCategory::find()->where("productId = $productId")->orderBy("number asc")->asArray()->all();
             $desc = [];
             foreach($cate as $r => $t){
-                $desc[] = $t['cateDesc'].'：'.$t['price'].'元'.' 库存：'.$v['number'];
+                $desc[] = $t['cateDesc'].'：'.$t['price'].'元'.' 库存：'.$t['number'];
             }
             $desc = implode("<br>",$desc);
             $data[$k]['desc'] = $desc;
