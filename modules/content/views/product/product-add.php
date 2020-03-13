@@ -180,6 +180,16 @@
                     <textarea name="submit[remark]" id="remark" ><?php echo isset($data['remark'])?$data['remark']:'';?></textarea>
                 </div>
             </div>
+
+            <div class="control-group">
+                <label for="modulename" class="control-label">商品视频</label>
+                <div class="controls">
+                    <div style="margin-bottom: 10px" >
+                        <input type="text" name="submit[video]" id="video" value="<?php echo isset($data['video'])?$data['video']:''?>" readonly />&nbsp;&nbsp;
+                        <a href="#" class="btn btn-info" onclick="upFiles2();">上传视频</a>
+                    </div>
+                </div>
+            </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">商品封面</label>
                 <div class="controls">
@@ -206,16 +216,6 @@
                                    id="img3Id<?php echo $k + 1; ?>"/>
                         <?php }
                     }?>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label for="modulename" class="control-label">商品视频</label>
-                <div class="controls">
-                    <div style="margin-bottom: 10px" >
-                        <input type="text" name="submit[video]" id="video" value="<?php echo isset($data['video'])?$data['video']:''?>" readonly />&nbsp;&nbsp;
-                        <a href="#" class="btn btn-info" onclick="upFiles2();">上传视频</a>
-                    </div>
                 </div>
             </div>
             <div class="control-group">
