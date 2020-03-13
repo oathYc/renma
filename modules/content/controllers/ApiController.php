@@ -2249,6 +2249,7 @@ class ApiController extends  Controller
         $groupId = Yii::$app->request->post('groupId',0);//组团id
         $addressId = Yii::$app->request->post('addressId');//收货地址id
         $catPriceId = Yii::$app->request->post('catPriceId',0);//分类价格id
+        $extInfo = Yii::$app->request->post('extInfo');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -2279,7 +2280,7 @@ class ApiController extends  Controller
         if($res){
             //记录同一组团标识
             UserGroup::updateAll(['userGroupId'=>$model->id],"id = {$model->id}");
-            $data = self::GroupBuy($model->id,$addressId,1);
+            $data = self::GroupBuy($model->id,$addressId,1,$extInfo);
             die(json_encode($data));
         }else{
             Methods::jsonData(0,'发起组团失败');
@@ -2291,7 +2292,7 @@ class ApiController extends  Controller
      * 进行支付
      * first 1-发起组团 0 参与组团
      */
-    public static function GroupBuy($groupId,$addressId,$first=1){
+    public static function GroupBuy($groupId,$addressId,$first=1,$extInfo=''){
         if(!$groupId){
             $data = ['code'=>0,'message'=>'参数错误'];
             return $data;
@@ -2350,6 +2351,7 @@ class ApiController extends  Controller
             $model->remark = '用户组团购买商品';
             $model->productType = 2;
             $model->proType = $product->type;
+            $model->extInfo = $extInfo;
             $model->save();
             $order = Order::findOne($model->id);
             $data = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->payPrice,$order->id);
@@ -2368,6 +2370,7 @@ class ApiController extends  Controller
         $groupId = Yii::$app->request->post('userGroupId');//组团人发起的的组团id
         $addressId = Yii::$app->request->post('addressId');//收货地址id
         $catPriceId = Yii::$app->request->post('catPriceId',0);//分类价格id
+        $extInfo = Yii::$app->request->post('extInfo');
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
@@ -2411,7 +2414,7 @@ class ApiController extends  Controller
         $model->catPriceId = $catPriceId;
         $res = $model->save();
         if($res){
-            $data = self::GroupBuy($model->id,$addressId,0);
+            $data = self::GroupBuy($model->id,$addressId,0,$extInfo);
             die(json_encode($data));
         }else{
             Methods::jsonData(0,'参与组团失败');

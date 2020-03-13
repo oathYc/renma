@@ -315,6 +315,7 @@
                     addressId   收货地址Id
                     groupId     组团商品表id
                     catPriceId   分类价格id 不传为默认价格
+                    extInfo      附加信息 字符串
 
 
     接口名称        参与组团
@@ -323,6 +324,7 @@
                     addressId       收货地址Id
                     userGroupId     发起人组团的组团id
                     catPriceId      分类价格id 不传为默认价格
+                    extInfo      附加信息 字符串
 
     接口名称        组团分享
     接口地址        /content/api/group-product-share
