@@ -1782,10 +1782,10 @@ class ApiController extends  Controller
         $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
         foreach($myShare as $k => $v){
             //订单数
-            $orderNumber = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5 and productType != 2")->count();
+            $orderNumber = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus in (3,5) and productType != 2")->count();
             $myShare[$k]['orderNumber'] = $orderNumber?$orderNumber:0;
             //消费金额
-            $orderMoney = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus = 5 and productType != 2")->sum('payPrice');
+            $orderMoney = Order::find()->where("uid = {$v['id']} and status = 1 and type = 2 and typeStatus in (3,5) and productType != 2")->sum('payPrice');
             $myShare[$k]['orderMoney'] = $orderMoney?$orderMoney:0;
         }
         $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
@@ -2604,7 +2604,7 @@ class ApiController extends  Controller
             if(isset($member->inviterCode)){//一年时间内邀请人获得比例兑换积分
                 $now = time();//当前时间
                 $registerTime = isset($member->createTime)?$member->createTime:0;;//注册时间
-                $expirTime = $registerTime + 86400+365;//一年后
+                $expirTime = $registerTime + 86400*365;//一年后
                 if($expirTime > $now){
                     $inviter = Member::find()->where("inviteCode = '{$member->inviterCode}'")->asArray()->one();
                     if($inviter){
@@ -3306,6 +3306,7 @@ class ApiController extends  Controller
                 //购买者会员判断
                 $buyUid = $order->uid;
                 $buyMember = Member::find()->where("id = {$buyUid}")->one();
+                //购买者会员判断
                 $isMember = isset($buyMember->member)?$buyMember->member:0;
                 if($isMember){//会员才有积分赠送功能
                     $addIntegral = floor($order->payPrice);
@@ -3314,6 +3315,23 @@ class ApiController extends  Controller
                         $userIntegral = $buyMember->integral;
                         $add = $userIntegral + $addIntegral;
                         Member::updateAll(['integral'=>$add],"id = $buyUid");//赠送会员积分
+                    }
+                }
+                //邀请人判断
+                $inviterCode =  isset($buyMember->inviterCode)?$buyMember->inviterCode:'';
+                if($inviterCode){//一年时间内邀请人获得比例兑换积分
+                    $now = time();//当前时间
+                    $registerTime = isset($buyMember->createTime)?$buyMember->createTime:0;;//注册时间
+                    $expirTime = $registerTime + 86400*365;//一年后
+                    if($expirTime > $now){
+                        $inviter = Member::find()->where("inviteCode = '{$inviterCode}'")->asArray()->one();
+                        if($inviter){
+                            $getIntegral = floor($order->payPrice);
+                            $inviterIntegral = $inviter['integral'];
+                            $endIntegral = $inviterIntegral + $getIntegral;
+                            Member::updateAll(['integral'=>$endIntegral]," id = {$inviter['id']}");
+                            Integral::saveRecord($inviter['id'],$getIntegral,2,'邀请奖励：对方购买商品你获取比例积分');
+                        }
                     }
                 }
             }
