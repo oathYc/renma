@@ -197,7 +197,7 @@
                         <a href="#" class="btn btn-info" onclick="upFiles3();">上传内容</a>
                     </div>
                 </div>
-                <div class="controls" id="imgDiv3" data-imgNum="<?php echo isset($data['headImgs'])?count($data['headImgs']):0?>">
+                <div class="controls" id="imgDivLp" data-imgNum="<?php echo isset($data['headImgs'])?count($data['headImgs']):0?>">
                     <?php if(isset($data['headImgs']) && is_array($data['headImgs'])) { ?>
                         <?php foreach ($data['headImgs'] as $k => $v) { ?>
                             <img width="120px" data-imgId="img3Id<?php echo $k + 1; ?>" title="双击删除" height="90px"
@@ -271,9 +271,9 @@
         var img3Id = $(_this).attr('data-imgId');
         $('#'+img3Id).remove();
         //img 数量减一
-        var imgNum = $('#imgDiv3').attr('data-imgNum');
+        var imgNum = $('#imgDivLp').attr('data-imgNum');
         imgNum--;
-        $('#imgDiv3').attr('data-imgNum',imgNum);
+        $('#imgDivLp').attr('data-imgNum',imgNum);
         $(_this).remove();
     }
 
@@ -405,7 +405,7 @@
 <script>
 
     //实例化编辑器
-    var o_ueditorupload3 = UE.getEditor('j_ueditorupload',
+    var o_ueditorupload3 = UE.getEditor('j_ueditorupload3',
         {
             autoHeightEnabled:false
         });
@@ -426,10 +426,10 @@
          * d.execCommand("insertHtml",l)
          * 之后插入d.fireEvent('afterUpfile',b)
          */
-        o_ueditorupload.addListener('afterUpfile', function (t, arg)
+        o_ueditorupload3.addListener('afterUpfile', function (t, arg)
         {
             var str = '';
-            var imgNum =  $('#imgDiv3').attr('data-imgNum');
+            var imgNum =  $('#imgDivLp').attr('data-imgNum');
             if(!imgNum){
                 imgNum = 0;
             }
@@ -438,8 +438,8 @@
                 str += '<img width="120px" data-imgId="img3Id'+imgNum+'" title="双击删除" height="90px" src="'+arg[t].url+'" ondblclick="imgDelete3(this)" />&nbsp;&nbsp;';
                 str += '<input type="hidden" name="imageFiles3[]" value="'+arg[t].url+'" id="img3Id'+imgNum+'"/>';
             }
-            $('#imgDiv3').attr('data-imgNum',imgNum);
-            $('#imgDiv3').append(str);
+            $('#imgDivLp').attr('data-imgNum',imgNum);
+            $('#imgDivLp').append(str);
         });
     });
 
