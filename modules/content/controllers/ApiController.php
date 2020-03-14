@@ -2061,6 +2061,7 @@ class ApiController extends  Controller
             $where .= " and status = $type";
         }
         $where .= " and status != -1";//已退款订单
+        $where .= " and status != 2";//组团失败订单 wyd 20200314
         $offset = ($page-1)*10;;
         $total = UserGroup::find()->where($where)->count();
         $data = UserGroup::find()->where($where)->orderBy(" createTime desc")->asArray()->offset($offset)->limit(10)->all();
@@ -3052,7 +3053,20 @@ class ApiController extends  Controller
             $had->status = -1;//退款中
             $had->returnRemark = $remark;
             $had->returnTime = time();
-            $had->save();
+            $return = $had->save();
+            if($return && $had->productType == 2){
+                //去掉绑定组团关系 wyd
+                $group = UserGroup::find()->where("orderId = $orderId and uid = $uid")->one();
+                if($group){
+                    UserGroup::updateAll([
+                        'promoter'=>1,
+                        'promoterUid'=>$group->uid,
+                        'status'=>2,
+                        'userGroupId'=>$group->id,
+                        ],"id = $group->id");
+                }
+            }
+            //wyd  end
             Methods::jsonData(1,'申请退款成功');
         }else{
             Methods::jsonData(0,'订单状态不对，不可申请退款');
@@ -3072,7 +3086,7 @@ class ApiController extends  Controller
         if(!$orderId){
             Methods::jsonData(0,'订单id不存在');
         }
-        $data = Order::find()->asArray()->select("id,payPrice,returnTime,status,refuseRemark,typeStatus,returnRemark")->where("uid = $uid and id = $orderId and status < 0")->one();
+        $data = Order::find()->asArray()->select("id,payPrice,returnTime,status,refuseRemark,productType,typeStatus,returnRemark")->where("uid = $uid and id = $orderId and status < 0")->one();
         Methods::jsonData(1,'success',$data);
     }
     /**
