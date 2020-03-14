@@ -2680,10 +2680,10 @@ class ApiController extends  Controller
         }
         $now = time();
         $endTime = $now - 60*15;
-        $orders = Order::find()->where("uid = $uid and status = 0 and createTime <= $endTime and productType in (1,3)")->asArray()->all();
+        $orders = Order::find()->where("uid = $uid and status = 0 and createTime <= $endTime ")->asArray()->all();
         foreach($orders as $k => $v){
             $order = Order::findOne($v['id']);
-            if($v['productType'] == 1){//单个商品购买
+            if($v['productType'] != 3){//单个商品购买  3-购物车购买
                 //添加库存
                 $catPriceId = $order->catPriceId;
                 $number = $order->number;
