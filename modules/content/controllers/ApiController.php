@@ -2689,9 +2689,11 @@ class ApiController extends  Controller
                 $number = $order->number;
                 if($catPriceId){
                     $catPrice = ProductCategory::findOne($catPriceId);
-                    $newNumber = $catPrice->number + $number;
-                    $catPrice->number = $newNumber;
-                    $catPrice->save();
+                    if($catPrice){
+                        $newNumber = $catPrice->number + $number;
+                        $catPrice->number = $newNumber;
+                        $catPrice->save();
+                    }
                 }
             }else{
                 $products = $order->extInfo;
