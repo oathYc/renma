@@ -209,7 +209,7 @@ class UserGroup extends ActiveRecord
                         $groupStatus = '已结束';
                     }
 //                    $sql = " select ug.*,m.avatar,m.nickname,o.payPrice,o.typeStatus from {{%user_group}} ug inner join {{%order}} o on o.id = ug.orderId left join {{%member}} m on m.id = o.uid where o.status = 1 and ug.status = 1 and ug.userGroupId = $userGroupId and ug.id != $userGroupId and o.typeStatus >= 1";//订单已完成  用户确认收货  同一组团
-                    $sql = " select ug.*,m.avatar,m.nickname,o.payPrice,o.typeStatus from {{%user_group}} ug inner join {{%order}} o on o.id = ug.orderId left join {{%member}} m on m.id = o.uid where o.status = 1 and ug.status = 1 and ug.userGroupId = $userGroupId and ug.id != $userGroupId and o.typeStatus >= 1";//订单已完成  用户确认收货  同一组团
+                    $sql = " select ug.*,m.avatar,m.nickname,o.payPrice,o.typeStatus,o.status as ostatus from {{%user_group}} ug inner join {{%order}} o on o.id = ug.orderId left join {{%member}} m on m.id = o.uid where o.status = 1  and ug.status = 1 and ug.userGroupId = $userGroupId and ug.id != $userGroupId and o.typeStatus >= 1";//订单已完成  用户确认收货  同一组团
                     $data = \Yii::$app->db->createCommand($sql)->queryAll();
                     $buyNumber = count($data);
                 }
