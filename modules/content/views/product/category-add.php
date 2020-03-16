@@ -35,7 +35,7 @@
                 <label for="modulename" class="control-label">分类图片</label>
                 <div class="controls">
                     <div style="margin-bottom: 10px" >
-                        <input type="text" name="image" id="image" placeholder="请上传png格式的图片" value="<?php echo isset($data['image'])?$data['image']:''?>" readonly />&nbsp;&nbsp;
+                        <input type="text" name="image" id="image"  value="<?php echo isset($data['image'])?$data['image']:''?>" readonly />&nbsp;&nbsp;
                         <a href="#" class="btn btn-info" onclick="upImage();">上传图片</a>
                     </div>
                 </div>
