@@ -35,13 +35,13 @@ class Category extends ActiveRecord
             $data[$k]['action'] = $str;
             $data[$k]['rank'] = '<input type="text" value="'.$v->rank.'" id="index'.$v->id.'"  style="width:30px;position:relative;margin-top:4px;" onkeyup="setRank('.$v->id.',this)"/>';
             $data[$k]['createTime'] = date('Y-m-d H:i');
+            $data[$k]['image'] = '<img src="'.$v->image.'" />';
         }
         foreach($data as $k => $v){
             $childData = $this->getAllCate($v['id'],$catId);
             if(count($childData) > 0){
                 $data[$k]['children'] = $childData ;
             }
-
         }
         return $data;
     }

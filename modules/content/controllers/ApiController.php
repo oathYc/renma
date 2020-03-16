@@ -280,8 +280,12 @@ class ApiController extends  Controller
                 $model->createTime = time();
                 $model->openId = $openId;
                 //第一次授权登录 赠送一级会员
-                $model->member = 1;//会员
-                $model->memberLevel = 1;//会员等级 1-12个月
+//                $model->member = 1;//会员
+//                $model->memberLevel = 1;//会员等级 1-12个月
+                //取消会员赠送
+                $model->member = 0;//会员
+                $model->memberLevel = 0;//会员等级 1-12个月
+
             }
             $model->nickname = $nickname;
             if($avatar){
@@ -297,26 +301,26 @@ class ApiController extends  Controller
             //判断用户邀请码
             Member::inviteCode($model->id);
             //会员赠送
-            $orderNumber = 'RM'.time().rand(123456,999999);
-            $uid = $model->id;
-            if(!$res){//第一次登录
-                $month = MemberRecharge::find()->where("level = 1")->asArray()->one()['month'];
-                if(!$month){
-                    $month = 1;//默认一个月
-                }
-                $orderId = Order::createOrder($uid,$orderNumber,0,'注册小程序赠送会员',1);
-                $beginTime = time();
-                $endTime = $beginTime + 86400*30*$month;
-                $model = new MemberLog();
-                $model->uid = $uid;
-                $model->beginTime = $beginTime;
-                $model->endTime = $endTime;
-                $model->orderId = $orderId;
-                $model->createTime = time();
-                $model->save();
-                //赠送优惠券
-                Member::sendCoupon($uid);
-            }
+//            $orderNumber = 'RM'.time().rand(123456,999999);
+//            $uid = $model->id;
+//            if(!$res){//第一次登录
+//                $month = MemberRecharge::find()->where("level = 1")->asArray()->one()['month'];
+//                if(!$month){
+//                    $month = 1;//默认一个月
+//                }
+//                $orderId = Order::createOrder($uid,$orderNumber,0,'注册小程序赠送会员',1);
+//                $beginTime = time();
+//                $endTime = $beginTime + 86400*30*$month;
+//                $model = new MemberLog();
+//                $model->uid = $uid;
+//                $model->beginTime = $beginTime;
+//                $model->endTime = $endTime;
+//                $model->orderId = $orderId;
+//                $model->createTime = time();
+//                $model->save();
+//                //赠送优惠券
+//                Member::sendCoupon($uid);
+//            }
             Methods::jsonData(1,'登录成功',$member);
         }else{
             Methods::jsonData(0,'请求错误',$return);
@@ -1870,14 +1874,17 @@ class ApiController extends  Controller
     public function actionGuessYou(){
         self::areaCheck();
         $uid = Yii::$app->request->post('uid');
-//        $offset = rand(11,99);
-        $data = Product::find()->limit(10)->asArray()->all();
+        $total = Product::find()->count();
+        $limit = 15;
+        $end = $total - $limit;
+        $offset = rand(0,$end);
+        $data = Product::find()->offset($offset)->limit($limit)->asArray()->all();
         if($data){
             foreach ($data as &$datum){
                 $datum['image'] = unserialize($datum['image']);
             }
         }
-        Methods::jsonData(1,'sucess',$data);
+        Methods::jsonData(1,'success',$data);
     }
     /**
      * 会员充值页面

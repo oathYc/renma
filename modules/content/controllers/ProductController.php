@@ -242,6 +242,7 @@ class ProductController  extends AdminController
             $model = new Category();
             $categoryData = Yii::$app->request->post('category');
             $id = Yii::$app->request->post('id');
+            $image = Yii::$app->request->post('image');
             if(empty($categoryData['name'])){
                 die('<script>alert("请添加分类名称");history.go(-1);</script>');
             }
@@ -259,6 +260,13 @@ class ProductController  extends AdminController
             if(empty($categoryData['rank'])){
                 $categoryData['rank'] = 0;
             }
+            if($image){
+                if(!preg_match("/http/",$image)){
+                    $domain = Yii::$app->params['domain'];
+                    $image = $domain.$image;
+                }
+            }
+            $categoryData['image'] = $image;
             if($id){
                 $re = $model->updateAll($categoryData,'id = :id',[':id' => $id]);
             }else{

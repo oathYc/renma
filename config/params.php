@@ -17,5 +17,6 @@ return [
     'wxJSAPI'=>'JSAPI',//小程序支付
     'wxAttach'=>'微信小程序支付',//小程序支付
     'domain'=>'https://lck.hzlyzhenzhi.com',
+//    'domain'=>'http://renma.cn',
     'template_id'=>'NWalE81q_yJ9tEY1ILAu9h_kpCFTGHlTIn_pSp9By2o',
     ];
