@@ -13,8 +13,11 @@ use app\modules\content\models\Category;
 use app\modules\content\models\Collect;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
+use app\modules\content\models\Group;
 use app\modules\content\models\GroupCategory;
+use app\modules\content\models\GroupPrice;
 use app\modules\content\models\GroupProduct;
+use app\modules\content\models\GroupRecord;
 use app\modules\content\models\Integral;
 use app\modules\content\models\Logistics;
 use app\modules\content\models\Logo;
@@ -2455,14 +2458,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'参与组团失败');
         }
     }
-    /**
-     * 组团商品
-     * 组团邀请
-     */
-    public function actionGroupInvite(){
-        self::areaCheck();
 
-    }
     /**
      * 获取所有分类
      */
@@ -4009,5 +4005,188 @@ class ApiController extends  Controller
         $user = Member::find()->select("id ,repair,pushNumber")->where("id = $uid")->asArray()->one();
         $user['reloadNumber'] = 6;//重新订阅次数规定
         Methods::jsonData(1,'success',$user);
+    }
+
+    //组团改版
+    /**
+     * 组团首页
+     * 组团改版
+     */
+    public function actionGroupIndex(){
+        $total = Group::find()->count();
+        $page = Yii::$app->request->post('page',1);
+        $page = $page?$page:1;
+        $pageSize = 10;
+        $offset = ($page-1)*$pageSize;
+        $data = Group::find()->offset($offset)->limit($pageSize)->asArray()->orderBy('rank desc')->all();
+        Methods::jsonData(1,'success',['total'=>$total,'group'=>$data]);
+    }
+    /**
+     * 组团进入
+     * 组团改版
+     */
+    public function actionGroupAccess(){
+        $groupId = Yii::$app->request->post('groupId');
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        $group = Group::findOne($groupId);
+        if(!$group){
+            Methods::jsonData(0,'没有该组团活动');
+        }
+        //获取当前组团活动的组团情况  组团中并且是开团人的组团数据
+        $current = UserGroup::find()->select("id,uid,groupId,promoter,status,createTime")->where("groupId = $groupId and status = 1 and promoter = 1")->asArray()->all();
+        foreach($current as $k => $v){
+            $reduceTime = 86400*($group->day);
+            $endTime = $v['createTime'] + $reduceTime;//组团结束时间
+            $current[$k]['endTime'] = $endTime;
+            $user = Member::findOne($v['uid']);
+            $current[$k]['nickname'] = $user->nickname;
+            $current[$k]['avatar'] = $user->avatar;
+        }
+        Methods::jsonData(1,'success',$current);
+
+    }
+    /**
+     * 组团商品进入
+     * 组团改版
+     * 组团商品列表
+     */
+    public function actionGroupList(){
+        $groupId = Yii::$app->request->post('groupId');
+        $uid = Yii::$app->request->post('uid');//用户id
+        $createUid = Yii::$app->request->post('createUid');//发起组团的用户id
+        $userGroupId = Yii::$app->request->post('userGroupId');//开团人发起的组团id
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$createUid){
+            Methods::jsonData(0,'开团人id不存在');
+        }
+        //记录进入数据
+        GroupRecord::groupRecord($uid,$createUid,$userGroupId,$groupId);
+    }
+
+    /**
+     * 组团商品
+     * 组团改版
+     * 用户开团
+     */
+    public function actionGroupCreate(){
+        $uid = Yii::$app->request->post('uid');
+        $groupId = Yii::$app->request->post('groupId');
+        $productId = Yii::$app->request->post('productId');
+        $type = Yii::$app->request->post('type',1);//1-单独购买 2-开团 3-参团
+        $catPriceId = Yii::$app->request->post('catPriceId');//对应的分类id
+        $addressId = Yii::$app->request->post('addressId');
+        $extInfo = Yii::$app->request->post('extInfo');//附加信息
+        if(!$addressId){
+            Methods::jsonData(0,'收货地址id不存在');
+        }
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $group = Group::findOne($groupId);
+        if(!$group){
+            Methods::jsonData(0,'没有该组团活动');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'该用户不存在');
+        }
+        if($member->member != 1 && $type > 1){//不是会员 且不是单独购买
+            Methods::jsonData(0,'组团为会员特权');
+        }
+        if($type == 1){//单独购买
+            $price = ProductCategory::find()->where("id = $catPriceId")->asArray()->one()['price'];
+        }else{//组团参团
+            $price = GroupPrice::find()->where(" id = $catPriceId")->asArray()->one()['groupPrice'];
+        }
+        $time =  time();
+        $model = new UserGroup();
+        $model->uid = $uid;
+        $model->groupId = $groupId;
+        $model->promoter = 1;
+        $model->promoterUid = $uid;
+        $model->status = 0;//状态 0-待支付 1-开团成功/参团成功-组团人数不够 2-组团成功 -1 退款成功
+        $model->createTime = $time;
+        $model->catPriceId = $catPriceId;
+        $model->productId = $productId;
+        $model->type = $type;//1-单独购买 2-开团 3-参团
+        $res = $model->save();
+        if($res){
+            //记录同一组团标识
+            UserGroup::updateAll(['userGroupId'=>$model->id],"id = {$model->id}");
+            $data = self::GroupOrder($model->id,$addressId,$price,$extInfo);
+            die(json_encode($data));
+        }else{
+            Methods::jsonData(0,'发起组团失败');
+        }
+    }
+    /**
+     * 组团订单生成
+     * 组团改版
+     * 进行支付
+     */
+    public static function GroupOrder($groupId,$addressId,$price,$extInfo=''){
+        if(!$groupId){
+            $data = ['code'=>0,'message'=>'参数错误'];
+            return $data;
+        }else{
+            $group = UserGroup::findOne($groupId);
+            if(!$group){
+                $data = ['code'=>0,'message'=>'用户没有参与组团'];
+                return $data;
+            }
+            $product = Product::findOne($group['productId']);
+            if(!$product){
+                $data = ['code'=>0,'message'=>'商品已下架'];
+                return $data;
+            }
+            $catPriceId = $group->catPriceId;
+            if($group->type != 1){//不是单独购买 分类id为组团分类id
+                $catPriceId = GroupPrice::find()->where("id = $catPriceId")->asArray()->one()['catPriceId'];
+            }
+            if($catPriceId){
+                $cateDesc = GroupCategory::find()->where("id = $catPriceId")->asArray()->one()['cateDesc'];//分类价格
+                $cateDesc = $cateDesc?$cateDesc:'默认';
+            }else{
+                $cateDesc = '默认';
+            }
+
+            $model = new Order();
+            $model->orderNumber = 'RMZT'.time().rand(11111,99999);
+            $model->uid = $group->uid;
+            $model->productId = $group['productId'];
+            $model->productTitle = $product->title;
+            $model->totalPrice = $price;
+            $model->productInfo = $product->title.' (规格：'.$cateDesc.') x 1';
+            $model->payPrice = $price;
+            $model->catPriceId = $catPriceId?$catPriceId:0;
+            $model->status = 0;
+            $model->createTime = time();
+            $model->payType = 1;
+            $model->type = 2;
+            $model->address = $addressId;
+            $model->remark = '用户组团购买商品';
+            $model->productType = 2;
+            $model->proType = $product->type;
+            $model->extInfo = $extInfo;
+            $model->save();
+            $order = Order::findOne($model->id);
+            $data = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->payPrice,$order->id);
+            //记录组团对应的订单id
+            UserGroup::updateAll(['orderId'=>$model->id],"id = $groupId");
+            return $data;
+        }
     }
 }

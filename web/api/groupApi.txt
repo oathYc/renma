@@ -1,0 +1,14 @@
+
+仁马小程序接口
+    域名      https://lck.hzlyzhenzhi.com
+    请求参数    post方式
+    返回结构    code (0-报错 1-成功)    message(对应的code信息)  data(返回的数据信息)
+
+    接口名称       微信授权登录
+    接口地址        /content/api/weixin-login
+    接口参数        code        微信授权后返回的临时code
+                    avatar      头像
+                    province    省
+                    city        市
+                    area        地区
+                    nickname    昵称
