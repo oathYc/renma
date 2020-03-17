@@ -5,13 +5,17 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\libs\Methods;
 use app\modules\content\models\Address;
+use app\modules\content\models\Group;
 use app\modules\content\models\GroupCategory;
+use app\modules\content\models\GroupPrice;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Logistics;
 use app\modules\content\models\Member;
 use app\modules\content\models\Order;
 use app\modules\content\models\Product;
+use app\modules\content\models\ProductCategory;
 use app\modules\content\models\Quality;
 use app\modules\content\models\UserGroup;
 use yii\data\Pagination;
@@ -32,7 +36,7 @@ class GroupController  extends AdminController
     /**
      * 商品组团
      */
-    public function actionProductGroup(){
+    public function actionProductGroup1(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $count = GroupProduct::find()->count();
@@ -56,7 +60,7 @@ class GroupController  extends AdminController
      * 组团商品
      * 添加商品
      */
-    public function actionGroupProductAdd(){
+    public function actionGroupProductAdd1(){
         if($_POST){
             $id = Yii::$app->request->post('id');
             $productId = Yii::$app->request->post('productId');
@@ -162,5 +166,101 @@ class GroupController  extends AdminController
         $page = Yii::$app->request->get('page',1);
         $data = UserGroup::getUserGroup($page);
         return $this->render('group-list',$data);
+    }
+
+    /**
+     * 商品组团
+     * 改版
+     */
+    public function actionProductGroup(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Group::find()->count();
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $data = Group::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $id = $v['id'];
+            $sql = "select pc.*,gp.groupId,gp.groupPrice from {{%group_price}} gp left join {{%product_category}} pc on pc.id = gp.catPriceId where gp.groupId = $id order by pc.number asc";
+            $catData = Yii::$app->db->createCommand($sql)->queryAll();
+            $priceData = [];
+            foreach($catData as $t => $y){
+                $productId = $y['productId'];
+                $product = Product::findOne($productId);
+                if(!isset($priceData[$productId])){
+                    $priceData[$productId] = $product->title.'（'.$product->brand.'）<br>';
+                }
+                $priceData[$productId] .= $y['cateDesc']."：原价".$y['price'].'元 组团价：'.$y['groupPrice'].' 库存：'.$y['number'].'<br>';
+
+            }
+            $priceData = implode('<br/>',$priceData);
+            $data[$k]['catData'] = $priceData;
+        }
+        return $this->render('group',['count'=>$count,'page'=>$page,'data'=>$data]);
+    }
+
+    /**
+     * 组团商品
+     * 改版
+     */
+    public function actionGroupProductAdd(){
+        if($_POST){
+            $image = Yii::$app->request->post('image');
+            $productId = Yii::$app->request->post('productId');
+            $number = Yii::$app->request->post('number',2);
+            $day = Yii::$app->request->post('day',1);
+            $rank = Yii::$app->request->post('rank',0);
+            $catData = Yii::$app->request->post('catData','');
+            if(!$image){
+                Methods::jsonData(0,'请上传图片');
+            }else{
+                if(!preg_match("/http/",$image)){
+                    $domain = Yii::$app->params['domain'];
+                    $image = $domain.$image;
+                }
+            }
+            if(!$catData){
+                Methods::jsonData(0,'没有组团数据');
+            }
+            if(!$productId){
+                Methods::jsonData(0,'没有组团id');
+            }
+            $model = new Group();
+            $model->headImage = $image;
+            $model->productIds = $productId;
+            $model->day = $day?$day:1;
+            $model->number = $number?$number:2;
+            $model->rank = $rank?$rank:0;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                $groupId = $model->id;
+                //记录组团分类数据
+                foreach($catData as $k => $v){
+                    $arr = explode('-',$v);
+                    $proId = isset($arr[0])?$arr[0]:0;
+                    $catPriceId = isset($arr[1])?$arr[1]:0;
+                    $groupPrice = isset($arr[2])?$arr[2]:0;
+                    $model = new GroupPrice();
+                    $model->groupId = $groupId;
+                    $model->productId = $proId;
+                    $model->catPriceId = $catPriceId;
+                    $model->groupPrice = $groupPrice?$groupId:0;
+                    $model->createTime = time();
+                    $model->save();
+                }
+                Methods::jsonData(1,'创建成功');
+            }else{
+                Methods::jsonData(0,'创建失败，请重试');
+            }
+        }else{
+            $id = Yii::$app->request->get('id');
+            if($id){
+                $data = Group::find()->where("id = $id")->asArray()->one();
+
+            }else{
+                $data = [];
+            }
+            return $this->render('group-add',['data'=>$data]);
+        }
     }
 }

@@ -245,6 +245,32 @@ class ApiController extends  Controller
         $imgPath = ShopMessage::find()->where("type = 15")->asArray()->one()['image'];
         die($imgPath);
     }
+    /**
+     *商品组团
+     * 获取商品信息
+     * 改版
+     */
+    public function actionGetGroupProduct(){
+        $ids = Yii::$app->request->post('ids','');
+        $ids = trim($ids);
+        $ids = trim($ids,',');
+        if(!$ids){
+            $data = [];
+        }else{
+            $data = Product::find()->select("id,title,brand,headMsg,price")->where("id in ({$ids})")->asArray()->all();
+            foreach($data as $k => $v){
+                //获取分类规格数据
+                $catData = [];
+                $catPrice = ProductCategory::find()->where("productId = {$v['id']}")->orderBy('number asc')->asArray()->all();
+                foreach($catPrice as $t => $y){
+                    $str = $y['cateDesc'].'：'.$y['price'].'元 '.' 库存：'.$y['number'].'件';
+                    $catData[]= ['productId'=>$v['id'],'catPriceId'=>$y['id'],'str'=>$str];
+                }
+                $data[$k]['catData'] = $catData;
+            }
+        }
+        Methods::jsonData(1,'success',$data);
+    }
 
     //小程序接口
     /**
