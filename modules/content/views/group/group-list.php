@@ -19,6 +19,7 @@
                 <th>组团ID</th>
                 <th>用户uid</th>
                 <th>用户姓名</th>
+                <th>组团活动id</th>
                 <th>商品id</th>
                 <th>商品名称</th>
                 <th>组团状态</th>
@@ -35,8 +36,9 @@
                     <td ><span ><?php echo $v['uid']?></span></td>
                     <td ><span ><?php echo $v['name']?$v['name']:$v['nickname'];?></span></td>
                     <td ><span><?php echo $v['groupId']?></span></td>
+                    <td ><span><?php echo $v['productId']?></span></td>
                     <td ><span><?php echo $v['title']?></span></td>
-                    <td ><span><?php echo $v['status']==1?'组团成功':($v['status']==2?'组团失败':'组团中')?></span></td>
+                    <td ><span><?php echo $v['status']==1?'组团中':($v['status']==2?'组团成功':'组团失败')?></span></td>
                     <td ><span><?php echo date('Y-m-d H:i:s',$v['ugTime']);?></span></td>
 
 <!--                    <td  class="notSLH" style="width: 247px;">-->
