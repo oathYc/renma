@@ -22,6 +22,6 @@ class GroupRecord extends ActiveRecord
         $model->createTime = time();
         $model->groupId = $groupId;
         $model->save();
-        return true;
+        return $model->id;
     }
 }

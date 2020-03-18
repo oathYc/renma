@@ -4035,7 +4035,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'没有该组团活动');
         }
         //获取当前组团活动的组团情况  组团中并且是开团人的组团数据
-        $current = UserGroup::find()->select("id,uid,groupId,promoter,status,createTime")->where("groupId = $groupId and status = 1 and promoter = 1")->asArray()->all();
+        $current = UserGroup::find()->select("id,uid,groupId,promoter,status,createTime")->where("groupId = $groupId and status = 1 and promoter = 1 and type = 2")->asArray()->all();
         foreach($current as $k => $v){
             $reduceTime = 86400*($group->day);
             $endTime = $v['createTime'] + $reduceTime;//组团结束时间
@@ -4044,7 +4044,9 @@ class ApiController extends  Controller
             $current[$k]['nickname'] = $user->nickname;
             $current[$k]['avatar'] = $user->avatar;
         }
-        Methods::jsonData(1,'success',$current);
+        $total = count($current);
+        $data = ['total'=>$total,'current'=>$current];
+        Methods::jsonData(1,'success',$data);
 
     }
     /**
@@ -4063,24 +4065,179 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        if(!$createUid){
-            Methods::jsonData(0,'开团人id不存在');
+//        if(!$createUid){
+//            Methods::jsonData(0,'开团人id不存在');
+//        }
+        if($createUid && $userGroupId){//点击参团进入
+            //记录进入数据  判断邀请
+            $shareId = GroupRecord::groupRecord($uid,$createUid,$userGroupId,$groupId);
+        }else{
+            $shareId = 0;//开团人记录id
         }
-        //记录进入数据
-        GroupRecord::groupRecord($uid,$createUid,$userGroupId,$groupId);
+        //获取改组团活动下的组团商品数据
+        $productIds = Group::find()->where("id = $groupId")->asArray()->one()['productIds'];
+        $data = [];
+        if($productIds){
+            $ids = explode(',',$productIds);
+            foreach($ids as $k =>$v){
+                $product = Product::findOne($v);
+                if($product){
+//                    //分类规则数据
+//                    $groupPrice = GroupPrice::find()->where("groupId = $groupId and productId = $v")->asArray()->all();
+//                    foreach($groupPrice as $t => $y){
+//                        $catPrice = GroupCategory::find()->where(" id = ".$y['catPriceId'])->asArray()->one();
+//                        $groupPrice[$t]['cateDesc'] = $catPrice['cateDesc'];
+//                        $groupPrice[$t]['catPrice'] = $catPrice['price'];
+//                        $groupPrice[$t]['number'] = $catPrice['number'];
+//                    }
+                    $data[] = ['productId'=>$v,'title'=>$product['title'],'brand'=>$product['brand'],'headImage'=>$product['headMsg'],'price'=>$product['price']];
+                }
+            }
+        }
+        //获取品牌 1-电压 2-续航 3-品牌
+        $brands = Search::find()->where("type = 3")->asArray()->all();//品牌
+        $voltage = Search::find()->where("type = 2")->asArray()->all();//电压
+        $mileage = Search::find()->where("type = 2")->asArray()->all();//里程
+        //使用性别
+        $sexs = [['type'=>0,'name'=>'通用'],['type'=>1,'name'=>'男'],['type'=>2,'name'=>'女']];
+        $datas = ['brand'=>$brands,'voltage'=>$voltage,'mileage'=>$mileage,'sexs'=>$sexs,'product'=>$data,'shareId'=>$shareId];
+        Methods::jsonData(1,'success',$datas);
     }
+    /**
+     * 组团商品列表
+     * 组团改版
+     * 商品搜索
+     */
+    public function actionGroupSearch(){
+        $groupId = Yii::$app->request->post('groupId');
+        $search =Yii::$app->request->post('search','');
+        $priceMin = Yii::$app->request->post('priceMin');//最低价
+        $priceMax = Yii::$app->request->post('priceMax');//最高价
+        $brand = Yii::$app->request->post('brand');//品牌
+        $voltage = Yii::$app->request->post('voltage');//电压
+        $mileage = Yii::$app->request->post('mileage');//续航里程
+        $priceOrder = Yii::$app->request->post('order',0);//价格顺序 1-低到高 2-高到低 0-默认按刷新时间
+        $sex = Yii::$app->request->post('sex',0);//1-男 2-女
+        if(!$groupId){
+            Methods::jsonData(0,'组团活动id不存在');
+        }
+        $where = " 1 = 1 ";
+        if($search){
+            $where .= " and  title like '%{$search}%'   ";
+        }
+        if($priceMin){
+            $where .= " and price >= $priceMin";
+        }
+        if($priceMax){
+            $where .= " and price <= $priceMax";
+        }
+        if($brand && $brand != '全部'){
+            $where .= " and brand = '{$brand}'";
+        }
+        if($voltage &&  $voltage != '全部'){
+            $where .= " and voltage = '{$voltage}'";
+        }
+        if($mileage && $mileage != '全部'){
+            $where .= " and mileage = '{$mileage}'";
+        }
+        if($sex){
+            $where .= " and sex = $sex";
+        }
+        if($priceOrder ==1){
+            $order = " price asc ";
+        }elseif($priceOrder ==2){
+            $order = " price desc";
+        }else{
+            $order = " flushTime desc";
+        }
+        $productIds = Group::find()->where(" id = $groupId")->asArray()->one()['productIds'];
+        if(!$productIds){
+            $data = [];
+        }else{
+            $where .= " and id in ($productIds)";
+            $data = Product::find()->select("id as productId,title,headMsg,brand,price")->where($where)->orderBy($order)->asArray()->all();
+        }
+        //获取品牌 1-电压 2-续航 3-品牌
+        $brands = Search::find()->where("type = 3")->asArray()->all();//品牌
+        $voltage = Search::find()->where("type = 1")->asArray()->all();//电压
+        $mileage = Search::find()->where("type = 2")->asArray()->all();//里程
+        //使用性别
+        $sexs = [['type'=>0,'name'=>'通用'],['type'=>1,'name'=>'男'],['type'=>2,'name'=>'女']];
+        $datas = ['product'=>$data,'brand'=>$brands,'voltage'=>$voltage,'mileage'=>$mileage,'sexs'=>$sexs];
+        Methods::jsonData(1,'success',$datas);
+    }
+    /**
+     * 组团商品
+     * 商品详情
+     * 组团改版
+     */
+    public function actionGroupDetail(){
+        $groupId = Yii::$app->request->post('groupId');
+        $productId = Yii::$app->request->post('productId');
+        $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        $groupPrice = GroupPrice::find()->where("groupId = $groupId and productId = $productId")->asArray()->all();
+        $product = Product::find()->where("id = $productId")->asArray()->one();
+        if(!$groupPrice || !$product){
+            Methods::jsonData(0,'没有相应组团产品');
+        }
+        if($product['catPid']){
+            $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
+        }else{
+            $product['catPidName'] = '';
+        }
+        if($product['catCid']){
+            $product['catCidName'] = Category::find()->where("id = {$product['catCid']}")->asArray()->one()['name'];
+        }else{
+            $product['catCidName'] = '';
+        }
+        $product['image'] = unserialize($product['image']);
+        $product['headImgs'] = unserialize($product['headImgs']);
+        if($uid){
+            $user = Member::find()->select("id,integral,member")->where("id = $uid")->asArray()->one();
+            //用户积分
+            $userIntegral = $user['integral'];
+            //用户会员
+            $member = $user['member']?$user['member']:0;
+            //用户默认收货地址数据
+            $userAddress = Address::find()->where("uid = $uid and `default` = 1")->asArray()->one();
 
+        }else{
+            $userIntegral = 0;
+            $userAddress = [];
+            $member = 0;
+        }
+        foreach($groupPrice as $k => $v){//获取原本的分类规则信息
+            $catPriceId = $v['catPriceId'];
+            $productCate = ProductCategory::findOne($catPriceId);
+            $groupPrice[$k]['cateDesc'] = $productCate->cateDesc;
+            $groupPrice[$k]['catePrice'] = $productCate->price;
+            $groupPrice[$k]['number']=$productCate->number;
+        }
+        $comment = Product::getComment($productId,$page);
+        $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = $productId ")->count();
+        $hadbuy = $hadbuy?$hadbuy:0;
+        $product['groupPriceData'] = $groupPrice;
+        $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'comment'=>$comment,'hadbuy'=>$hadbuy];
+        Methods::jsonData(1,'success',$data);
+    }
     /**
      * 组团商品
      * 组团改版
-     * 用户开团
+     * 用户开团 单独购买
      */
     public function actionGroupCreate(){
         $uid = Yii::$app->request->post('uid');
         $groupId = Yii::$app->request->post('groupId');
         $productId = Yii::$app->request->post('productId');
-        $type = Yii::$app->request->post('type',1);//1-单独购买 2-开团 3-参团
-        $catPriceId = Yii::$app->request->post('catPriceId');//对应的分类id
+        $type = Yii::$app->request->post('type',1);//1-单独购买 2-开团
+        $catPriceId = Yii::$app->request->post('catPriceId');//对应的分类id  单独购买传原来的规格分类id  开团组团传对应的组团规格分类id
         $addressId = Yii::$app->request->post('addressId');
         $extInfo = Yii::$app->request->post('extInfo');//附加信息
         if(!$addressId){
@@ -4133,16 +4290,85 @@ class ApiController extends  Controller
         }
     }
     /**
+     * 组团商品
+     * 组团改版
+     * 用户参团
+     */
+    public function actionGroupJoin(){
+        $uid = Yii::$app->request->post('uid');
+        $groupId = Yii::$app->request->post('groupId');
+        $productId = Yii::$app->request->post('productId');
+        $catPriceId = Yii::$app->request->post('catPriceId');//对应的分类id  单独购买传原来的规格分类id  开团组团传对应的组团规格分类id
+        $addressId = Yii::$app->request->post('addressId');
+        $extInfo = Yii::$app->request->post('extInfo');//附加信息
+        $shareId = Yii::$app->request->post('shareId');//开团人记录id
+        if(!$addressId){
+            Methods::jsonData(0,'收货地址id不存在');
+        }
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$groupId){
+            Methods::jsonData(0,'组团id不存在');
+        }
+        if(!$productId){
+            Methods::jsonData(0,'商品id不存在');
+        }
+        if(!$shareId){
+            Methods::jsonData(0,'没有对应的开团人记录id');
+        }else{
+            $share = GroupRecord::findOne($shareId);
+            if(!$share){
+                Methods::jsonData(0,'没有对应的开团人记录');
+            }
+        }
+        $userGroupId = $share->userGroupId;
+        //开团人的uid
+        $createUid = $share->createUid;
+        $group = Group::findOne($groupId);
+        if(!$group){
+            Methods::jsonData(0,'没有该组团活动');
+        }
+        $member = Member::findOne($uid);
+        if(!$member){
+            Methods::jsonData(0,'该用户不存在');
+        }
+        if($member->member != 1){//不是会员 且不是单独购买
+            Methods::jsonData(0,'参团为会员特权');
+        }
+        //参团
+        $price = GroupPrice::find()->where(" id = $catPriceId")->asArray()->one()['groupPrice'];
+        $time =  time();
+        $model = new UserGroup();
+        $model->uid = $uid;
+        $model->groupId = $groupId;
+        $model->promoter = 0;
+        $model->promoterUid = $createUid;//开团人的uid
+        $model->status = 0;//状态 0-待支付 1-开团成功/参团成功-组团人数不够 2-组团成功 -1 退款成功
+        $model->createTime = $time;
+        $model->catPriceId = $catPriceId;
+        $model->productId = $productId;
+        $model->userGroupId = $userGroupId;//开团人的组团id
+        $model->type = 3;//1-单独购买 2-开团 3-参团
+        $res = $model->save();
+        if($res){
+            $data = self::GroupOrder($model->id,$addressId,$price,$extInfo);
+            die(json_encode($data));
+        }else{
+            Methods::jsonData(0,'发起组团失败');
+        }
+    }
+    /**
      * 组团订单生成
      * 组团改版
      * 进行支付
      */
-    public static function GroupOrder($groupId,$addressId,$price,$extInfo=''){
-        if(!$groupId){
+    public static function GroupOrder($userGroupId,$addressId,$price,$extInfo=''){
+        if(!$userGroupId){
             $data = ['code'=>0,'message'=>'参数错误'];
             return $data;
         }else{
-            $group = UserGroup::findOne($groupId);
+            $group = UserGroup::findOne($userGroupId);
             if(!$group){
                 $data = ['code'=>0,'message'=>'用户没有参与组团'];
                 return $data;
@@ -4152,12 +4378,15 @@ class ApiController extends  Controller
                 $data = ['code'=>0,'message'=>'商品已下架'];
                 return $data;
             }
+            $catId = 0;
             $catPriceId = $group->catPriceId;
             if($group->type != 1){//不是单独购买 分类id为组团分类id
                 $catPriceId = GroupPrice::find()->where("id = $catPriceId")->asArray()->one()['catPriceId'];
+                $catId = $catPriceId;
+
             }
-            if($catPriceId){
-                $cateDesc = GroupCategory::find()->where("id = $catPriceId")->asArray()->one()['cateDesc'];//分类价格
+            if($catId){
+                $cateDesc = ProductCategory::find()->where("id = $catId")->asArray()->one()['cateDesc'];//分类价格
                 $cateDesc = $cateDesc?$cateDesc:'默认';
             }else{
                 $cateDesc = '默认';
@@ -4171,7 +4400,7 @@ class ApiController extends  Controller
             $model->totalPrice = $price;
             $model->productInfo = $product->title.' (规格：'.$cateDesc.') x 1';
             $model->payPrice = $price;
-            $model->catPriceId = $catPriceId?$catPriceId:0;
+            $model->catPriceId = $group->catPriceId?$group->catPriceId:$catPriceId;
             $model->status = 0;
             $model->createTime = time();
             $model->payType = 1;
@@ -4185,8 +4414,55 @@ class ApiController extends  Controller
             $order = Order::findOne($model->id);
             $data = WeixinPayController::WxOrder($order->orderNumber,$order->productTitle,$order->payPrice,$order->id);
             //记录组团对应的订单id
-            UserGroup::updateAll(['orderId'=>$model->id],"id = $groupId");
+            UserGroup::updateAll(['orderId'=>$model->id],"id = $userGroupId");
             return $data;
         }
+    }
+    /**
+     * 我的组团
+     * 组团改版
+     */
+    public function actionGroupRecord(){
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        $user = Member::findOne($uid);
+        $nickname = $user->nickname;
+        $avatar = $user->avatar;
+        //我的开团
+        $myCreate = UserGroup::find()->where("uid = $uid and promoter = 1")->asArray()->all();
+        foreach($myCreate as $k => $v){
+            $groupId = $v['groupId'];
+            $day = Group::find()->where("id = $groupId")->asArray()->one()['day'];
+            $end = $v['finishTime'] + (86400*$day);
+            $myCreate[$k]['endTime'] = $end;
+            //参团人员
+            $join = UserGroup::find()->where(" groupId = $groupId and userGroupId = {$v['userGroupId']} and promoter = 0 and status in (1,2)")->asArray()->all();
+            foreach($join as $e => $q){
+                $member = Member::findOne($q['uid']);
+                $join[$e]['nickname'] = $member->nickname;
+                $join[$e]['avatar'] = $member->avatar;
+            }
+            $myCreate[$k]['join'] = $join;
+            //商品信息
+            $product = Product::find()->where(" id = {$v['productId']}")->asArray()->one();
+            $myCreate[$k]['product'] = $product;
+        }
+        //我的参团
+        $myJoin = UserGroup::find()->where("uid = $uid and promoter = 0")->asArray()->all();
+        foreach($myJoin as $r => $y){
+            //商品信息
+            $product = Product::find()->where(" id = {$y['productId']}")->asArray()->one();
+            $myJoin[$r]['product'] = $product;
+            //开团人信息
+            $ktrUid = $y['promoterUid'];
+            $ktr = Member::findOne($ktrUid);
+            $myJoin[$r]['ktrNickname'] = $ktr->nickname;
+            $myJoin[$r]['ktrAvatar'] = $ktr->avatar;
+            $myJoin[$r]['ktTime'] = UserGroup::find()->where(" id = {$y['userGroupId']}")->asArray()->one()['finishTime'];
+        }
+        $data = ['nickname'=>$nickname,'avatar'=>$avatar,'myCreate'=>$myCreate,'myJoin'=>$myJoin];
+        Methods::jsonData(1,'success',$data);
     }
 }
