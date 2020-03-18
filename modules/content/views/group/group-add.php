@@ -115,7 +115,7 @@
                 function(e){
                     alert(e.message);
                     if(e.code == 1){
-                        location.href = '/content/group/group-product';
+                        location.href = '/content/group/product-group';
                     }
                 },
                 'json');

@@ -172,6 +172,7 @@ class WeixinPayController extends  Controller{
 
             $result = self::checkWxpaySign($orderNo);
             if($result){
+                $typeStatus = 1;//待接单
                 $time = time();
                 $amount = $amount/100;//换成元
                 $orderData = Order::find()->where("orderNumber = '{$orderNo}' and payPrice = $amount")->asArray()->one();
@@ -196,23 +197,29 @@ class WeixinPayController extends  Controller{
                             $groupId = $userGroup->groupId;//组团活动id
                             $groupNumber = Group::find()->where("id = $groupId")->asArray()->one()['number'];
                             $groupType = $userGroup->type;//1-单独购买 2-开团 3-参团
-                            if($groupType == 1){
+                            if($groupType == 1){//单独购买
                                 $userGroup->status = 2;// 0-待支付 1-开团成功/参团成功-组团人数不够 2-组团成功 -1 退款成功
                             }elseif($groupType == 2){//开团
                                 if($groupNumber < 2){//不足两个人 开团即组团成功
                                     $userGroup->status = 2;
                                 }else{
                                     $userGroup->status = 1;//待组团中
+                                    $typeStatus = -1;//组团中 大厅内不展示
                                 }
                             }else{//参团订单
                                 $userGroupId = $userGroup->userGroupId;//同一组组团
                                 $count = UserGroup::find()->where("groupId = $groupId and userGroupId = $userGroupId and status in (1,2)")->count();
-                                if($count >= ($groupNumber-1)){//达到组团人数
+                                if($count >= ($groupNumber-1)){//达到组团人数临界点
                                     $userGroup->status = 2;
                                     //修改其他组团状态
+                                    $orderData = UserGroup::find()->where("groupId = $groupId and userGroupId = $userGroupId and status = 1")->asArray()->all();
                                     UserGroup::updateAll(['status'=>2],"groupId = $groupId and userGroupId = $userGroupId and status = 1");
+                                    foreach($orderData as $k => $v){
+                                        Order::updateAll(['typeStatus'=>1]," id = {$v['orderId']}");//修改订单状态 可接单 展示在维修师大厅
+                                    }
                                 }else{
                                     $userGroup->status = 1;
+                                    $typeStatus = -1;//组团中 大厅内不展示
                                 }
                             }
                             $userGroup->finishTime = $time;//支付成功记录时间
@@ -237,7 +244,7 @@ class WeixinPayController extends  Controller{
                     }
                     $integral = $hadIntegral + $addIntegral - $reduceIntegral ;//一元得一个积分
                     Member::updateAll(['integral'=>$integral]," id = {$orderData['uid']}");
-                    Order::updateAll(['status'=>1,'typeStatus'=>1,'finishTime'=>$time],"orderNumber='{$orderNo}'");//修改订单状态
+                    Order::updateAll(['status'=>1,'typeStatus'=>$typeStatus,'finishTime'=>$time],"orderNumber='{$orderNo}'");//修改订单状态
                     //优惠券判断
                     if($orderData['coupon'] > 0){
                         UserCoupon::updateAll(['status'=>1]," uid = {$orderData['uid']} and status = 0 and couponId = {$orderData['coupon']}");

@@ -2683,14 +2683,19 @@ class ApiController extends  Controller
         }
         $res = Order::deleteAll("id = $orderId");
         if($res){
-            if($productType !=  2){//不是组团购买添加对应库存
-                //添加库存
-                if($catPriceId){
-                    $catPrice = ProductCategory::findOne($catPriceId);
-                    $newNumber = $catPrice->number + $number;
-                    $catPrice->number = $newNumber;
-                    $catPrice->save();
+            if($productType ==  2){//组团商品
+                $userGroup = UserGroup::find()->where("orderId = $orderId")->asArray()->one();
+                if($userGroup['type'] != 1){//开团 参团
+                    $groupCatId = $userGroup['catPriceId'];//对应的组团分类id
+                    $catPriceId = GroupPrice::find()->where(" id = $groupCatId")->asArray()->one()['catPriceId'];
                 }
+            }
+            //添加库存
+            if($catPriceId){
+                $catPrice = ProductCategory::findOne($catPriceId);
+                $newNumber = $catPrice->number + $number;
+                $catPrice->number = $newNumber;
+                $catPrice->save();
             }
             //删除对应的组团数据
             UserGroup::deleteAll("orderId = {$orderId}");
@@ -2711,11 +2716,24 @@ class ApiController extends  Controller
         $endTime = $now - 60*15;
         $orders = Order::find()->where("uid = $uid and status = 0 and createTime <= $endTime ")->asArray()->all();
         foreach($orders as $k => $v){
-            $order = Order::findOne($v['id']);
+            $order = Order::findOne($v['id']);//添加库存
+            $catPriceId = $order->catPriceId;
+            $number = $order->number;
             if($v['productType'] != 3){//单个商品购买  3-购物车购买
-                //添加库存
-                $catPriceId = $order->catPriceId;
-                $number = $order->number;
+                if($catPriceId){
+                    $catPrice = ProductCategory::findOne($catPriceId);
+                    if($catPrice){
+                        $newNumber = $catPrice->number + $number;
+                        $catPrice->number = $newNumber;
+                        $catPrice->save();
+                    }
+                }
+            }elseif($v['productType'] == 2){//组团商品购买
+                $userGroup = UserGroup::find()->where("orderId = {$v['id']}")->asArray()->one();
+                if($userGroup['type'] != 1){//开团 参团
+                    $groupCatId = $userGroup['catPriceId'];//对应的组团分类id
+                    $catPriceId = GroupPrice::find()->where(" id = $groupCatId")->asArray()->one()['catPriceId'];
+                }
                 if($catPriceId){
                     $catPrice = ProductCategory::findOne($catPriceId);
                     if($catPrice){
@@ -4264,9 +4282,37 @@ class ApiController extends  Controller
             Methods::jsonData(0,'组团为会员特权');
         }
         if($type == 1){//单独购买
-            $price = ProductCategory::find()->where("id = $catPriceId")->asArray()->one()['price'];
+            $productCategroy = ProductCategory::find()->where("id = $catPriceId")->asArray()->one();
+            if(!$productCategroy){
+                Methods::jsonData(0,'没有该规则的分类id(单独购买)');
+            }
+            //判断库存
+            if($productCategroy['number'] < 1){
+                Methods::jsonData(0,'该商品规则分类的库存不足(单独购买)');
+            }else{//减库存
+                $hadNumber = $productCategroy['number'] - 1;
+                ProductCategory::updateAll(['number'=>$hadNumber],"id = $catPriceId");
+            }
+            $price = $productCategroy['price'];
         }else{//组团参团
-            $price = GroupPrice::find()->where(" id = $catPriceId")->asArray()->one()['groupPrice'];
+            $groupPrice = GroupPrice::find()->where(" id = $catPriceId")->asArray()->one();
+            if(!$groupPrice){
+                Methods::jsonData(0,'没有该规则的组团分类id(开团)');
+            }
+            $price = $groupPrice['groupPrice'];
+            //判断库存
+            $catId = $groupPrice['catPriceId'];
+            $productCategory = ProductCategory::find()->where("id = $catId")->asArray()->one();
+            if(!$productCategory){
+                Methods::jsonData(0,'没有该规则的库存id(开团)');
+            }
+            //判断库存
+            if($productCategory['number'] < 1){
+                Methods::jsonData(0,'该商品规则分类的库存不足(开团)');
+            }else{//减库存
+                $hadNumber = $productCategory['number'] - 1;
+                ProductCategory::updateAll(['number'=>$hadNumber],"id = $catId");
+            }
         }
         $time =  time();
         $model = new UserGroup();
@@ -4337,7 +4383,24 @@ class ApiController extends  Controller
             Methods::jsonData(0,'参团为会员特权');
         }
         //参团
-        $price = GroupPrice::find()->where(" id = $catPriceId")->asArray()->one()['groupPrice'];
+        $groupPrice = GroupPrice::find()->where(" id = $catPriceId")->asArray()->one();
+        if(!$groupPrice){
+            Methods::jsonData(0,'没有该规则的组团分类id(参团)');
+        }
+        //判断库存
+        $catId = $groupPrice['catPriceId'];
+        $productCategory = ProductCategory::find()->where("id = $catId")->asArray()->one();
+        if(!$productCategory){
+            Methods::jsonData(0,'没有该规则的库存id(参团)');
+        }
+        //判断库存
+        if($productCategory['number'] < 1){
+            Methods::jsonData(0,'该商品规则分类的库存不足(参团)');
+        }else{//减库存
+            $hadNumber = $productCategory['number'] - 1;
+            ProductCategory::updateAll(['number'=>$hadNumber],"id = $catId");
+        }
+        $price = $groupPrice['groupPrice'];
         $time =  time();
         $model = new UserGroup();
         $model->uid = $uid;
