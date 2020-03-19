@@ -4086,7 +4086,7 @@ class ApiController extends  Controller
 //        if(!$createUid){
 //            Methods::jsonData(0,'开团人id不存在');
 //        }
-        if($createUid && $userGroupId){//点击参团进入
+        if(is_numeric($createUid) && is_numeric($userGroupId)){//点击参团进入
             //记录进入数据  判断邀请
             $shareId = GroupRecord::groupRecord($uid,$createUid,$userGroupId,$groupId);
         }else{
