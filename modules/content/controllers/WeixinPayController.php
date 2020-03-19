@@ -178,6 +178,7 @@ class WeixinPayController extends  Controller{
                 $amount = $amount/100;//换成元
                 $orderData = Order::find()->where("orderNumber = '{$orderNo}' and payPrice = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
+                    $code = 1;//推送消息
                     $member = Member::findOne($orderData['uid']);
                     //判断会员状态
                     if($orderData['type'] == 1){//充值
@@ -206,6 +207,7 @@ class WeixinPayController extends  Controller{
                                 }else{
                                     $userGroup->status = 1;//待组团中
                                     $typeStatus = -1;//组团中 大厅内不展示
+                                    $code = 0;//取消推送
                                 }
                             }else{//参团订单
                                 $userGroupId = $userGroup->userGroupId;//同一组组团
@@ -213,14 +215,15 @@ class WeixinPayController extends  Controller{
                                 if($count >= ($groupNumber-1)){//达到组团人数临界点
                                     $userGroup->status = 2;
                                     //修改其他组团状态
-                                    $orderData = UserGroup::find()->where("groupId = $groupId and userGroupId = $userGroupId and status = 1")->asArray()->all();
+                                    $orderDatas = UserGroup::find()->where("groupId = $groupId and userGroupId = $userGroupId and status = 1")->asArray()->all();
                                     UserGroup::updateAll(['status'=>2],"groupId = $groupId and userGroupId = $userGroupId and status = 1");
-                                    foreach($orderData as $k => $v){
+                                    foreach($orderDatas as $k => $v){
                                         Order::updateAll(['typeStatus'=>1]," id = {$v['orderId']}");//修改订单状态 可接单 展示在维修师大厅
                                     }
                                 }else{
                                     $userGroup->status = 1;
                                     $typeStatus = -1;//组团中 大厅内不展示
+                                    $code = 0;//取消推送
                                 }
                             }
                             $userGroup->finishTime = $time;//支付成功记录时间
@@ -259,8 +262,10 @@ class WeixinPayController extends  Controller{
                     if($orderData['productType'] ==3){
                         Order::updateCartOrder($orderData['id']);
                     }
-                    //通知维修师
-                    Methods::messagePush();
+                    if($code ==1){
+                        //通知维修师
+                        Methods::messagePush();
+                    }
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
