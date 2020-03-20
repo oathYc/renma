@@ -4495,48 +4495,86 @@ class ApiController extends  Controller
      */
     public function actionGroupRecord(){
         $uid = Yii::$app->request->post('uid');
+        $page = Yii::$app->request->post('page',1);
+        $type = Yii::$app->request->post('type',0);//1-单独购买 2-开团 3-参团
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
+        }
+        $where = " status in (1,2)";
+        if($type){
+            $where .= " and type = $type";
         }
         $user = Member::findOne($uid);
         $nickname = $user->nickname;
         $avatar = $user->avatar;
-        //我的开团
-        $myCreate = UserGroup::find()->where("uid = $uid and promoter = 1")->asArray()->all();
-        foreach($myCreate as $k => $v){
+        $total = UserGroup::find()->where($where)->count();
+        $pageSize = 10;
+        $offset = ($page-1)*$pageSize;
+        $data = UserGroup::find()->where($where)->orderBy('createTime desc')->offset($offset)->limit($pageSize)->asArray()->all();
+        foreach($data as $k => $v){
+            $userGroupId = $v['userGroupId'];
             $groupId = $v['groupId'];
             $day = Group::find()->where("id = $groupId")->asArray()->one()['day'];
-            $end = $v['finishTime'] + (86400*$day);
-            $myCreate[$k]['endTime'] = $end;
-            //参团人员
-            $join = UserGroup::find()->where(" groupId = $groupId and userGroupId = {$v['userGroupId']} and promoter = 0 and status in (1,2)")->asArray()->all();
+            if($v['type'] == 2 && $v['status'] == 1){
+                $end = $v['finishTime'] + (86400*$day);
+            }else{
+                $end = 0;
+            }
+            $data[$k]['endTime'] = $end;
+            $join = UserGroup::find()->where(" userGroupId = $userGroupId and id != {$v['id']} and status in(1,2)")->asArray()->all();
             foreach($join as $e => $q){
                 $member = Member::findOne($q['uid']);
                 $join[$e]['nickname'] = $member->nickname;
                 $join[$e]['avatar'] = $member->avatar;
             }
-            $myCreate[$k]['join'] = $join;
+            $data[$k]['join'] = $join;
             //商品信息
             $product = Product::find()->where(" id = {$v['productId']}")->asArray()->one();
-            $myCreate[$k]['product'] = $product;
+            $data[$k]['product'] = $product;
             //组团活动图片
             $groupImg = Group::find()->where("id = $groupId")->asArray()->one()['headImage'];
-            $myCreate[$k]['groupImg'] = $groupImg;
+            $data[$k]['groupImg'] = $groupImg;
         }
-        //我的参团
-        $myJoin = UserGroup::find()->where("uid = $uid and promoter = 0")->asArray()->all();
-        foreach($myJoin as $r => $y){
-            //商品信息
-            $product = Product::find()->where(" id = {$y['productId']}")->asArray()->one();
-            $myJoin[$r]['product'] = $product;
-            //开团人信息
-            $ktrUid = $y['promoterUid'];
-            $ktr = Member::findOne($ktrUid);
-            $myJoin[$r]['ktrNickname'] = $ktr->nickname;
-            $myJoin[$r]['ktrAvatar'] = $ktr->avatar;
-            $myJoin[$r]['ktTime'] = UserGroup::find()->where(" id = {$y['userGroupId']}")->asArray()->one()['finishTime'];
-        }
-        $data = ['nickname'=>$nickname,'avatar'=>$avatar,'myCreate'=>$myCreate,'myJoin'=>$myJoin];
+        $data = ['total'=>$total,'nickname'=>$nickname,'avatar'=>$avatar,'data'=>$data];
         Methods::jsonData(1,'success',$data);
+    }
+    /**
+     * 我的组团
+     * 组团详情
+     */
+    public function actionGroupOrder(){
+        $userGroupId = Yii::$app->request->post('userGroupId');
+        $uid = Yii::$app->request->post('uid');
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }
+        if(!$userGroupId){
+            Methods::jsonData(0,'用户参团记录id不存在');
+        }
+        $userGroup = UserGroup::find()->where(" id = $userGroupId")->asArray()->one();
+        $hadId = $userGroup['userGroupId'];
+        $join = UserGroup::find()->where(" userGroupId = $hadId and id != {$userGroupId}")->asArray()->all();
+        foreach($join as $e => $q){
+            $member = Member::findOne($q['uid']);
+            $join[$e]['nickname'] = $member->nickname;
+            $join[$e]['avatar'] = $member->avatar;
+        }
+        $userGroup['join'] = $join;
+        //商品信息
+        $product = Product::find()->where(" id = {$userGroup['productId']}")->asArray()->one();
+        $userGroup['product'] = $product;
+        //组团活动图片
+        $groupImg = Group::find()->where("id = {$userGroup['groupId']}")->asArray()->one()['headImage'];
+        $userGroup['groupImg'] = $groupImg;
+        //结束时间
+        $groupId = $userGroup['groupId'];
+        $day = Group::find()->where("id = $groupId")->asArray()->one()['day'];
+        if($userGroup['type'] == 2 && $userGroup['status'] == 1){//开团且未完成的情况
+            $end = $userGroup['finishTime'] + (86400*$day);
+        }else{
+            $end = 0;
+        }
+        $userGroup['endTime'] = $end;
+        Methods::jsonData(1,'success',$userGroup);
     }
 }

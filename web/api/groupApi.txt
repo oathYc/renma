@@ -67,11 +67,17 @@
                     extInfo         附加信息
                     shareId         开团人记录id（组团活动商品列表接口返回的）
 
-    接口名称        我的组团
+    接口名称        我的组团列表
     接口地址        /content/api/group-record
     接口参数        uid             用户id
-    相应参数        myCreate         我的开团（包含单独购买）  endTime 组团结束时间  status 状态 0-待支付 1-开团成功/参团成功-组团人数不够 2-组团成功 -1 退款成功  join集合 开团下的参团人员
-                    myJoin          我的参团  ktrNickname 开团人姓名 ktrAvatar 开团人头像 ktTime  开团时间
+                    type            默认0  0-全部 1-单独购买 2-开团 3-参团
+    相应参数
+
+    接口名称        组团详情
+    接口地址        /content/api/group-order
+    接口参数        uid             用户id
+                    userGroupId      用户参团记录id
+    相应参数
 
 
 
