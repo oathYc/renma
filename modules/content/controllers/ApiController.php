@@ -260,6 +260,9 @@ class ApiController extends  Controller
         if(!$ids){
             $data = [];
         }else{
+//            $idArr = explode(',',$ids);
+//            $idArr = array_unique($idArr);
+//            $ids = implode(',',$idArr);
             $data = Product::find()->select("id,title,brand,headMsg,price")->where("id in ({$ids})")->asArray()->all();
             foreach($data as $k => $v){
                 //获取分类规格数据

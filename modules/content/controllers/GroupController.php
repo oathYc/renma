@@ -142,12 +142,13 @@ class GroupController  extends AdminController
     public function actionGroupProductDelete(){
         $id = \Yii::$app->request->get('id');
         if($id){
-            $advert = GroupProduct::findOne($id);
+            $advert = Group::findOne($id);
             if(!$advert){
                 echo "<script>alert('没有该内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            $res = GroupProduct::deleteAll("id = $id");
+            $res = Group::deleteAll("id = $id");
             if($res){
+                GroupPrice::deleteAll("groupId = $id");
                 echo "<script>alert('删除成功');setTimeout(function(){location.href='product-group';},1000)</script>";die;
             }else{
                 echo "<script>alert('删除失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -210,9 +211,7 @@ class GroupController  extends AdminController
             $day = Yii::$app->request->post('day',1);
             $rank = Yii::$app->request->post('rank',0);
             $catData = Yii::$app->request->post('catData','');
-            if(!$image){
-                Methods::jsonData(0,'请上传图片');
-            }else{
+            if($image){
                 if(!preg_match("/http/",$image)){
                     $domain = Yii::$app->params['domain'];
                     $image = $domain.$image;
@@ -240,11 +239,17 @@ class GroupController  extends AdminController
                     $proId = isset($arr[0])?$arr[0]:0;
                     $catPriceId = isset($arr[1])?$arr[1]:0;
                     $groupPrice = isset($arr[2])?$arr[2]:0;
+                    $catImage = isset($arr[3])?$arr[3]:'';
+                    if(!preg_match("/http/",$catImage)){
+                        $domain = Yii::$app->params['domain'];
+                        $catImage = $domain.$catImage;
+                    }
                     $model = new GroupPrice();
                     $model->groupId = $groupId;
                     $model->productId = $proId;
                     $model->catPriceId = $catPriceId;
-                    $model->groupPrice = $groupPrice?$groupId:0;
+                    $model->groupPrice = $groupPrice?$groupPrice:0;
+                    $model->catImage = $catImage;
                     $model->createTime = time();
                     $model->save();
                 }

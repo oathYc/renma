@@ -12,8 +12,8 @@
                 <label for="modulename" class="control-label">团购活动图片</label>
                 <div class="controls">
                     <div style="margin-bottom: 10px" >
-                        <input type="text" name="image" id="image" value="<?php echo isset($data['image'])?$data['image']:''?>" readonly />&nbsp;&nbsp;
-                        <a href="#" class="btn btn-info" onclick="upImage();">上传图片</a>
+                        <input type="text" name="image" id="catImghead" value="<?php echo isset($data['image'])?$data['image']:''?>" readonly />&nbsp;&nbsp;
+                        <a href="#" class="btn btn-info" onclick="upImage('head');">上传图片</a>
                     </div>
                 </div>
             </div>
@@ -49,6 +49,7 @@
             <div class="control-group">
                 <div class="controls">
                     <input type="hidden" name="id" value="<?php echo isset($data['id'])?$data['id']:'';?>" />
+                    <intpu type="hidden" id="groupImgId" value="" />
                     <input type="button" class="btn " value="提交" onclick="groupCheck()">&nbsp;&nbsp;&nbsp;
                 </div>
             </div>
@@ -73,8 +74,10 @@
                         str += '<input type="hidden" value="'+catPrice[j].productId+'" class="productIdInput" />';
                         str += '<input type="hidden" value="'+catPrice[j].catPriceId+'" class="catPriceIdInput" />';
                         str += '<span>'+catPrice[j].str+'</span>&nbsp;&nbsp;';
-                        str += '<input type="text" style="width: 70px;" class="groupPriceInput" placeholder="组团价格" onkeyup="value = value.replace(/[^.0-9]/g,\'\')" /><br>';
-                        str += '<br></div>';
+                        str += '<input type="text" style="width: 70px;" class="groupPriceInput" placeholder="组团价格" onkeyup="value = value.replace(/[^.0-9]/g,\'\')" />&nbsp;&nbsp;&nbsp;&nbsp;';
+                        str += '<input type="text"  id="catImg'+catPrice[j].catPriceId+'"  placeholder="分类图片" onkeyup="value = value.replace(/[^.0-9]/g,\'\')" class="catImageInput" />&nbsp;&nbsp;&nbsp;&nbsp;';
+                        str += '<a href="#" class="btn btn-info" onclick="upImage('+catPrice[j].catPriceId+');">上传图片</a>';
+                        str += '<br></div><br>';
                     }
                     str += '<br></div>';
                 }
@@ -83,7 +86,7 @@
     }
     function groupCheck(){
         if(confirm('一旦修改便不可再修改，确认提交？')){
-            var img = $('#image').val();
+            var img = $('#catImghead').val();
             var productIds = $('#productId').val();
             var day = $('#day').val();
             var number = $('#number').val();
@@ -103,7 +106,8 @@
                 var productId = $(this).find(".productIdInput").val();
                 var catPriceId = $(this).find(".catPriceIdInput").val();
                 var groupPrice = $(this).find(".groupPriceInput").val();
-                arr[index] = productId+'-'+catPriceId+'-'+groupPrice;
+                var catImage = $(this).find(".catImageInput").val();
+                arr[index] = productId+'-'+catPriceId+'-'+groupPrice+'-'+catImage;
             });
             if(cont < 1){
                 alert('请获取有效的商品信息（点击确认按钮）');
@@ -138,8 +142,9 @@
         //监听图片上传
         o_ueditorupload.addListener('beforeInsertImage', function (t,arg)
         {
-
-            $('#image').val(arg[0].src);
+            var str = $('#groupImgId').val();
+            var obj = '#'+str;
+            $(obj).val(arg[0].src);
 
         });
 
@@ -156,8 +161,10 @@
     });
 
     //弹出图片上传的对话框
-    function upImage()
+    function upImage(catPriceId)
     {
+        var str = 'catImg'+catPriceId;
+        $('#groupImgId').val(str);
         var myImage = o_ueditorupload.getDialog("insertimage");
         myImage.open();
     }
