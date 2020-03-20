@@ -75,8 +75,8 @@
                         str += '<input type="hidden" value="'+catPrice[j].catPriceId+'" class="catPriceIdInput" />';
                         str += '<span>'+catPrice[j].str+'</span>&nbsp;&nbsp;';
                         str += '<input type="text" style="width: 70px;" class="groupPriceInput" placeholder="组团价格" onkeyup="value = value.replace(/[^.0-9]/g,\'\')" />&nbsp;&nbsp;&nbsp;&nbsp;';
-                        str += '<input type="text"  id="catImg'+catPrice[j].catPriceId+'"  placeholder="分类图片" onkeyup="value = value.replace(/[^.0-9]/g,\'\')" class="catImageInput" />&nbsp;&nbsp;&nbsp;&nbsp;';
-                        str += '<a href="#" class="btn btn-info" onclick="upImage('+catPrice[j].catPriceId+');">上传图片</a>';
+                        // str += '<input type="text"  id="catImg'+catPrice[j].catPriceId+'"  placeholder="分类图片" onkeyup="value = value.replace(/[^.0-9]/g,\'\')" class="catImageInput" />&nbsp;&nbsp;&nbsp;&nbsp;';
+                        // str += '<a href="#" class="btn btn-info" onclick="upImage('+catPrice[j].catPriceId+');">上传图片</a>';
                         str += '<br></div><br>';
                     }
                     str += '<br></div>';
@@ -106,8 +106,8 @@
                 var productId = $(this).find(".productIdInput").val();
                 var catPriceId = $(this).find(".catPriceIdInput").val();
                 var groupPrice = $(this).find(".groupPriceInput").val();
-                var catImage = $(this).find(".catImageInput").val();
-                arr[index] = productId+'-'+catPriceId+'-'+groupPrice+'-'+catImage;
+                // var catImage = $(this).find(".catImageInput").val();
+                arr[index] = productId+'-'+catPriceId+'-'+groupPrice;
             });
             if(cont < 1){
                 alert('请获取有效的商品信息（点击确认按钮）');

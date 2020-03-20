@@ -762,6 +762,7 @@ class ApiController extends  Controller
             $userCoupon = [];
             $member = 0;
             $hadbuy = 0;//已售出
+            $collect = 0;
         }else{
             if($product['catPid']){
                 $product['catPidName'] = Category::find()->where("id = {$product['catPid']}")->asArray()->one()['name'];
@@ -4243,6 +4244,7 @@ class ApiController extends  Controller
             $groupPrice[$k]['cateDesc'] = $productCate->cateDesc;
             $groupPrice[$k]['catePrice'] = $productCate->price;
             $groupPrice[$k]['number']=$productCate->number;
+            $groupPrice[$k]['catImage']=$productCate->catImage;
         }
         $comment = Product::getComment($productId,$page);
         $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = $productId ")->count();

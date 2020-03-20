@@ -417,4 +417,50 @@ class ProductController  extends AdminController
             echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
+    /**
+     * 商品分类图片
+     *列表
+     */
+    public function actionCategoryImg(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = ProductCategory::find()->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = ProductCategory::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k => $v){
+            $product = Product::findOne($v['productId']);
+            $data[$k]['title'] = isset($product->title)?$product->title:'';
+        }
+        return $this->render('category-img',['data'=>$data,'page'=>$page,'count'=>$count]);
+
+    }
+    /**
+     * 商品规格分类图片编辑
+     *
+     */
+    public function actionCategoryImgAdd(){
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $image = Yii::$app->request->post('catImage');
+            if($image && !preg_match("/http/",$image)){
+                $domain = Yii::$app->params['domain'];
+                $image = $domain.$image;
+            }
+            if(!$id){
+                echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            ProductCategory::updateAll(['catImage'=>$image]," id = $id");
+            echo "<script>alert('修改成功');setTimeout(function(){location.href='category-img';},1000)</script>";die;
+        }else{
+            $id = Yii::$app->request->get('id');
+            if(!$id){
+                echo "<script>alert('参数不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $data = ProductCategory::find()->where("id = $id")->asArray()->one();
+            if($data){
+                $data['title'] = Product::find()->where("id = {$data['productId']}")->asArray()->one()['title'];
+            }
+            return $this->render('category-img-add',['data'=>$data]);
+        }
+    }
 }

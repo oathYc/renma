@@ -239,17 +239,17 @@ class GroupController  extends AdminController
                     $proId = isset($arr[0])?$arr[0]:0;
                     $catPriceId = isset($arr[1])?$arr[1]:0;
                     $groupPrice = isset($arr[2])?$arr[2]:0;
-                    $catImage = isset($arr[3])?$arr[3]:'';
-                    if(!preg_match("/http/",$catImage)){
-                        $domain = Yii::$app->params['domain'];
-                        $catImage = $domain.$catImage;
-                    }
+////                    $catImage = isset($arr[3])?$arr[3]:'';
+//                    if(!preg_match("/http/",$catImage)){
+//                        $domain = Yii::$app->params['domain'];
+//                        $catImage = $domain.$catImage;
+//                    }
                     $model = new GroupPrice();
                     $model->groupId = $groupId;
                     $model->productId = $proId;
                     $model->catPriceId = $catPriceId;
                     $model->groupPrice = $groupPrice?$groupPrice:0;
-                    $model->catImage = $catImage;
+//                    $model->catImage = $catImage;
                     $model->createTime = time();
                     $model->save();
                 }
