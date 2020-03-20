@@ -4520,6 +4520,13 @@ class ApiController extends  Controller
             }else{
                 $end = 0;
             }
+            //参团价格
+            if($v['type'] !=1){//不是单曲购买
+                $groupPrice = GroupPrice::find()->where("id = {$v['catPriceId']}")->asArray()->one()['groupPrice'];
+            }else{
+                $groupPrice = ProductCategory::find()->where(" id = {$v['catPriceId']}")->asArray()->one()['price'];
+            }
+            $data[$k]['groupPrice'] = $groupPrice?$groupPrice:0;
             $data[$k]['endTime'] = $end;
             $join = UserGroup::find()->where(" userGroupId = $userGroupId and id != {$v['id']} and status in(1,2)")->asArray()->all();
             foreach($join as $e => $q){
@@ -4553,6 +4560,13 @@ class ApiController extends  Controller
         }
         $userGroup = UserGroup::find()->where(" id = $userGroupId")->asArray()->one();
         $hadId = $userGroup['userGroupId'];
+        //参团价格
+        if($userGroup['type'] !=1){//不是单曲购买
+            $groupPrice = GroupPrice::find()->where("id = {$userGroup['catPriceId']}")->asArray()->one()['groupPrice'];
+        }else{
+            $groupPrice = ProductCategory::find()->where(" id = {$userGroup['catPriceId']}")->asArray()->one()['price'];
+        }
+        $userGroup['groupPrice'] = $groupPrice?$groupPrice:0;
         $join = UserGroup::find()->where(" userGroupId = $hadId and id != {$userGroupId}")->asArray()->all();
         foreach($join as $e => $q){
             $member = Member::findOne($q['uid']);
