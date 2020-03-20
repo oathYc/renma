@@ -4517,6 +4517,9 @@ class ApiController extends  Controller
             //商品信息
             $product = Product::find()->where(" id = {$v['productId']}")->asArray()->one();
             $myCreate[$k]['product'] = $product;
+            //组团活动图片
+            $groupImg = Group::find()->where("id = $groupId")->asArray()->one()['headImage'];
+            $myCreate[$k]['groupImg'] = $groupImg;
         }
         //我的参团
         $myJoin = UserGroup::find()->where("uid = $uid and promoter = 0")->asArray()->all();
