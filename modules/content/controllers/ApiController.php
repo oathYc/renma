@@ -2511,7 +2511,7 @@ class ApiController extends  Controller
      */
     public function actionShareSuccess(){
         self::areaCheck();
-        $log = 'login.txt';
+        $log = 'login-'.date('Y-m-d').'.txt';
         Methods::varDumpLog($log,'邀请测试：','a');
        $uid = Yii::$app->request->post('uid');
        $inviterCode = Yii::$app->request->post('inviterCode');//邀请人的邀请码
@@ -2534,6 +2534,9 @@ class ApiController extends  Controller
         }
         if($self->inviterCode){
             Methods::jsonData(0,'该用户已经有邀请人');
+        }
+        if($self->inviteCode == $inviterCode){
+            Methods::jsonData(0,'不能自己邀请自己');
         }
         $self->inviterCode = $inviterCode;
         $res = $self->save();
