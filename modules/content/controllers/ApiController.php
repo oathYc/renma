@@ -4570,6 +4570,16 @@ class ApiController extends  Controller
             $data[$k]['groupTitle'] = $groupTitle;
             //订单信息
             $order = Order::find()->where(" id = {$v['orderId']}")->asArray()->one();
+            $orderExtInfo = json_decode($order['extInfo'],true);
+            if(isset($orderExtInfo['address'])){
+                $order['address'] = $orderExtInfo['address'];
+            }else{
+                if($order['address']){
+                    $order['address'] = Address::find()->where(" id = {$order['address']}")->asArray()->one()['address'];
+                }else{
+                    $order['address'] = '';
+                }
+            }
             $data[$k]['orderData'] = $order;
         }
         $data = ['total'=>$total,'nickname'=>$nickname,'avatar'=>$avatar,'data'=>$data];
@@ -4621,6 +4631,16 @@ class ApiController extends  Controller
         $userGroup['endTime'] = $end;
         //订单信息
         $order = Order::find()->where(" id = {$userGroup['orderId']}")->asArray()->one();
+        $orderExtInfo = json_decode($order['extInfo'],true);
+        if(isset($orderExtInfo['address'])){
+            $order['address'] = $orderExtInfo['address'];
+        }else{
+            if($order['address']){
+                $order['address'] = Address::find()->where(" id = {$order['address']}")->asArray()->one()['address'];
+            }else{
+                $order['address'] = '';
+            }
+        }
         $userGroup['orderData'] = $order;
         Methods::jsonData(1,'success',$userGroup);
     }
