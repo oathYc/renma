@@ -128,7 +128,7 @@
             }
             $.post(
                 "/content/group/group-product-add",
-                {image:img,productId:productIds,day:day,number:number,rank:rank,catData:arr},
+                {image:img,productId:productIds,day:day,number:number,rank:rank,catData:arr,title:title},
                 function(e){
                     alert(e.message);
                     if(e.code == 1){
