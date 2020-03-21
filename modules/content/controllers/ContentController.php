@@ -109,7 +109,8 @@ class ContentController  extends AdminController
                 if(!$gro){
                     echo "<script>alert('没有该商品，请填写正确的组团商品id');setTimeout(function(){history.go(-1);},1000)</script>";die;
                 }else{
-                    $turnUrl = '/pages/pintuan/goodsinfo/index?id='.$imageUrl;;
+//                    $turnUrl = '/pages/pintuan/goodsinfo/index?id='.$imageUrl;
+                    $turnUrl = '/pages/pintuan/memberGroup/index?type=1&groupId='.$imageUrl;
                 }
             }
             if($id){

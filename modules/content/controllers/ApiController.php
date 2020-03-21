@@ -777,6 +777,7 @@ class ApiController extends  Controller
             $product['image'] = unserialize($product['image']);
             //轮播图和视频合并
             $headImgs = unserialize($product['headImgs']);
+            $product['headImgs'] = $headImgs;
             $productMsg = [];
             foreach($headImgs as $o => $p){
                 $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
@@ -4238,6 +4239,7 @@ class ApiController extends  Controller
         $product['image'] = unserialize($product['image']);
         //轮播图和视频合并
         $headImgs = unserialize($product['headImgs']);
+        $product['headImgs'] = $headImgs;
         $productMsg = [];
         foreach($headImgs as $o => $p){
             $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
