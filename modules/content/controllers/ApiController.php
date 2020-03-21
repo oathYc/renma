@@ -4619,6 +4619,9 @@ class ApiController extends  Controller
             $end = 0;
         }
         $userGroup['endTime'] = $end;
+        //订单信息
+        $order = Order::find()->where(" id = {$userGroup['orderId']}")->asArray()->one();
+        $userGroup['orderData'] = $order;
         Methods::jsonData(1,'success',$userGroup);
     }
 }
