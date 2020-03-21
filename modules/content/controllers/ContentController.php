@@ -10,6 +10,7 @@ use app\modules\content\models\Advert;
 use app\modules\content\models\Category;
 use app\modules\content\models\Coupon;
 use app\modules\content\models\GoodProduct;
+use app\modules\content\models\Group;
 use app\modules\content\models\GroupProduct;
 use app\modules\content\models\Logo;
 use app\modules\content\models\MemberRecharge;
@@ -105,7 +106,7 @@ class ContentController  extends AdminController
                 }
             }
             if($imageType ==2){//组团
-                $gro = GroupProduct::findOne($imageUrl);
+                $gro = Group::findOne($imageUrl);
                 if(!$gro){
                     echo "<script>alert('没有该商品，请填写正确的组团商品id');setTimeout(function(){history.go(-1);},1000)</script>";die;
                 }else{
