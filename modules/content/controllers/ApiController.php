@@ -460,7 +460,7 @@ class ApiController extends  Controller
             Methods::jsonData(0,'请上传文件');
         }
         $upload = new \UploadFile();
-        $upload->int_max_size = 3145728;
+        $upload->int_max_size = 9145728000;
         $upload->arr_allow_exts = array('avi', 'rm', 'rmvb', 'divx','mpg','wmv','mp4','mkv');
         $upload->str_save_path = Yii::$app->params['uploadDir'];
         $arr_rs = $upload->upload($file);
