@@ -9,6 +9,14 @@
     <form action="#" method="" class="form-horizontal" >
         <fieldset>
             <div class="control-group">
+                <label for="modulename" class="control-label">团购活动标题</label>
+                <div class="controls">
+                    <div style="margin-bottom: 10px" >
+                        <input type="text" name="title" id="title"  value="<?php echo isset($data['title'])?$data['title']:''?>"  />
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">团购活动图片</label>
                 <div class="controls">
                     <div style="margin-bottom: 10px" >
@@ -86,6 +94,7 @@
     }
     function groupCheck(){
         if(confirm('一旦修改便不可再修改，确认提交？')){
+            var title = $('#title').val();
             var img = $('#catImghead').val();
             var productIds = $('#productId').val();
             var day = $('#day').val();
@@ -93,6 +102,10 @@
             var rank =$('#rank').val();
             var cont = 0;
             var arr = new Array();
+            if(!title){
+                alert('请上传团购活动标题');
+                return false;
+            }
             if(!img){
                 alert('请上传团购活动图片');
                 return false;

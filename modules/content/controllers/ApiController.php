@@ -4096,6 +4096,10 @@ class ApiController extends  Controller
         if(is_numeric($createUid) && is_numeric($userGroupId)){//点击参团进入
             //记录进入数据  判断邀请
             $shareId = GroupRecord::groupRecord($uid,$createUid,$userGroupId,$groupId);
+            //自己不能参加自己开的组团
+            if($createUid == $uid){
+                Methods::jsonData(0,'自己不能参加自己的组团');
+            }
         }else{
             $shareId = 0;//开团人记录id
         }
@@ -4539,8 +4543,11 @@ class ApiController extends  Controller
             $product = Product::find()->where(" id = {$v['productId']}")->asArray()->one();
             $data[$k]['product'] = $product;
             //组团活动图片
-            $groupImg = Group::find()->where("id = $groupId")->asArray()->one()['headImage'];
+            $group = Group::find()->where("id = $groupId")->asArray()->one();
+            $groupImg = $group['headImage'];
+            $groupTitle = $group['title'];
             $data[$k]['groupImg'] = $groupImg;
+            $data[$k]['groupTitle'] = $groupTitle;
         }
         $data = ['total'=>$total,'nickname'=>$nickname,'avatar'=>$avatar,'data'=>$data];
         Methods::jsonData(1,'success',$data);

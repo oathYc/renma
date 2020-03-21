@@ -211,6 +211,10 @@ class GroupController  extends AdminController
             $day = Yii::$app->request->post('day',1);
             $rank = Yii::$app->request->post('rank',0);
             $catData = Yii::$app->request->post('catData','');
+            $title = Yii::$app->request->post('title');
+            if(!$title){
+                Methods::jsonData(0,'组团活动标题不存在');
+            }
             if($image){
                 if(!preg_match("/http/",$image)){
                     $domain = Yii::$app->params['domain'];
@@ -230,6 +234,7 @@ class GroupController  extends AdminController
             $model->number = $number?$number:2;
             $model->rank = $rank?$rank:0;
             $model->createTime = time();
+            $model->title = $title;
             $res = $model->save();
             if($res){
                 $groupId = $model->id;
