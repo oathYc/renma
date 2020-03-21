@@ -21,6 +21,7 @@
             <thead>
             <tr>
                 <th>组团ID</th>
+                <th>组团标题</th>
                 <th>图片</th>
                 <th>商品ID</th>
                 <th>有效时间（天）</th>
@@ -37,6 +38,7 @@
                 ?>
                 <tr>
                     <td ><span><?php echo $v['id']?></span></td>
+                    <td ><span><?php echo $v['title']?></span></td>
                     <td ><span ><img src="<?php echo $v['headImage']?>" style="width: 125px;height: 80px;"/></span></td>
                     <td ><span><?php echo $v['productIds']?></span></td>
                     <td ><span><?php echo $v['day']?></span></td>

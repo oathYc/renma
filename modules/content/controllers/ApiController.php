@@ -775,7 +775,16 @@ class ApiController extends  Controller
                 $product['catCidName'] = '';
             }
             $product['image'] = unserialize($product['image']);
-            $product['headImgs'] = unserialize($product['headImgs']);
+            //轮播图和视频合并
+            $headImgs = unserialize($product['headImgs']);
+            $productMsg = [];
+            foreach($headImgs as $o => $p){
+                $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
+            }
+            if($product['video']){
+                $productMsg[] = ['type'=>2,'content'=>$product['video']];
+            }
+            $product['productMsg'] = $productMsg;
             //商品分类价格
             $product['catPrice'] = ProductCategory::find()->where("productId = $productId")->asArray()->all();
             if($uid){
@@ -4227,7 +4236,16 @@ class ApiController extends  Controller
             $product['catCidName'] = '';
         }
         $product['image'] = unserialize($product['image']);
-        $product['headImgs'] = unserialize($product['headImgs']);
+        //轮播图和视频合并
+        $headImgs = unserialize($product['headImgs']);
+        $productMsg = [];
+        foreach($headImgs as $o => $p){
+            $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
+        }
+        if($product['video']){
+            $productMsg[] = ['type'=>2,'content'=>$product['video']];
+        }
+        $product['productMsg'] = $productMsg;
         if($uid){
             $user = Member::find()->select("id,integral,member")->where("id = $uid")->asArray()->one();
             //用户积分
@@ -4548,6 +4566,9 @@ class ApiController extends  Controller
             $groupTitle = $group['title'];
             $data[$k]['groupImg'] = $groupImg;
             $data[$k]['groupTitle'] = $groupTitle;
+            //订单信息
+            $order = Order::find()->where(" id = {$v['orderId']}")->asArray()->one();
+            $data[$k]['orderData'] = $order;
         }
         $data = ['total'=>$total,'nickname'=>$nickname,'avatar'=>$avatar,'data'=>$data];
         Methods::jsonData(1,'success',$data);
