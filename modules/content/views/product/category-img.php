@@ -10,7 +10,7 @@
                href="/content/product/category-img-add">添加商品</a>
         </li>
     </ul>
-    <form action="/content/product/category-img-add" method="get" class="form-horizontal">
+    <form action="/content/product/category-img" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td width="100">分类图片：</td>

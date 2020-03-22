@@ -14,6 +14,7 @@ use app\modules\content\models\Product;
 use app\modules\content\models\ProductCategory;
 use app\modules\content\models\Quality;
 use app\modules\content\models\Search;
+use app\modules\content\models\YinShang;
 use yii\data\Pagination;
 use yii;
 
@@ -424,9 +425,15 @@ class ProductController  extends AdminController
     public function actionCategoryImg(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = ProductCategory::find()->count();
+        $type = Yii::$app->request->get('type',1);//1-全部 2-有 3-无
+        if($type ==2){
+            $where = " !ISNULL(catImage) ";
+        }elseif($type ==3){
+            $where = " ISNULL(catImage)";
+        }
+        $count = ProductCategory::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $data = ProductCategory::find()->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $data = ProductCategory::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $product = Product::findOne($v['productId']);
             $data[$k]['title'] = isset($product->title)?$product->title:'';
