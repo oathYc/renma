@@ -2788,7 +2788,7 @@ class ApiController extends  Controller
         //删除超过15分钟的待支付订单
         $uid = Yii::$app->request->post('uid');
         self::deleteNeedPay($uid);
-        $type = [0,1,2,3,4];// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后
+        $type = [0,1,2,3,4,5];// 0-代付款 1-待接单 2-已接单 3-待评价 4-待售后 5-我的组团
         $data = [];
         foreach($type as $k => $v){
             if(!$uid){
@@ -2801,8 +2801,12 @@ class ApiController extends  Controller
 //                    $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
 //                    $total = Order::find()->where($where)->count();
 //                }
-                $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
-                $total = Order::find()->where($where)->count();
+                if($v == 5){
+                    $total = UserGroup::find()->where(" promoter = 1 and promoterUid  = $uid and status = 1")->count();
+                }else{
+                    $where = " uid = $uid  and typeStatus = $v and type = 2 and status!= -2  ";  //wyd
+                    $total = Order::find()->where($where)->count();
+                }
                 $data[] = ['type'=>$v,'number'=>$total];
             }
         }
