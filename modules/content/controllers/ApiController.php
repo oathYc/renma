@@ -779,11 +779,11 @@ class ApiController extends  Controller
             $headImgs = unserialize($product['headImgs']);
             $product['headImgs'] = $headImgs;
             $productMsg = [];
-            foreach($headImgs as $o => $p){
-                $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
-            }
             if($product['video']){
                 $productMsg[] = ['type'=>2,'content'=>$product['video']];
+            }
+            foreach($headImgs as $o => $p){
+                $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
             }
             $product['productMsg'] = $productMsg;
             //商品分类价格
@@ -4241,11 +4241,11 @@ class ApiController extends  Controller
         $headImgs = unserialize($product['headImgs']);
         $product['headImgs'] = $headImgs;
         $productMsg = [];
-        foreach($headImgs as $o => $p){
-            $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
-        }
         if($product['video']){
             $productMsg[] = ['type'=>2,'content'=>$product['video']];
+        }
+        foreach($headImgs as $o => $p){
+            $productMsg[] = ['type'=>1,'content'=>$p];//type 1-图片 2-视频
         }
         $product['productMsg'] = $productMsg;
         if($uid){
@@ -4521,18 +4521,21 @@ class ApiController extends  Controller
         $uid = Yii::$app->request->post('uid');
         $page = Yii::$app->request->post('page',1);
         $type = Yii::$app->request->post('type',0);//1-单独购买 2-开团 3-参团
-        if(!$uid){
-            Methods::jsonData(0,'用户id不存在');
-        }
+
         $where = " status in (1,2)";
         if($type){
             $where .= " and type = $type";
+        }
+        if(!$uid){
+            Methods::jsonData(0,'用户id不存在');
+        }else{
+            $where .= " and uid = $uid ";
         }
         $user = Member::findOne($uid);
         $nickname = $user->nickname;
         $avatar = $user->avatar;
         $total = UserGroup::find()->where($where)->count();
-        $pageSize = 10;
+        $pageSize = 30;
         $offset = ($page-1)*$pageSize;
         $data = UserGroup::find()->where($where)->orderBy('createTime desc')->offset($offset)->limit($pageSize)->asArray()->all();
         foreach($data as $k => $v){
@@ -4598,7 +4601,10 @@ class ApiController extends  Controller
         if(!$userGroupId){
             Methods::jsonData(0,'用户参团记录id不存在');
         }
-        $userGroup = UserGroup::find()->where(" id = $userGroupId")->asArray()->one();
+        $userGroup = UserGroup::find()->where(" id = $userGroupId and uid = $uid")->asArray()->one();
+        if(!$userGroup){
+            Methods::jsonData(0,'没有该组团数据');
+        }
         $hadId = $userGroup['userGroupId'];
         //参团价格
         if($userGroup['type'] !=1){//不是单曲购买
