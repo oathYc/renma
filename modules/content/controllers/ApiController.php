@@ -1825,7 +1825,8 @@ class ApiController extends  Controller
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
         }
-        $shareCode = Member::find()->where("id = $uid")->asArray()->one()['inviteCode'];
+        $member = Member::find()->where("id = $uid")->asArray()->one();
+        $shareCode = $member['inviteCode'];
         $myShare = Member::find()->select("id,nickname,name,avatar,createTime")->where("inviterCode = '{$shareCode}'")->asArray()->all();
         foreach($myShare as $k => $v){
             //订单数
@@ -1836,7 +1837,7 @@ class ApiController extends  Controller
             $myShare[$k]['orderMoney'] = $orderMoney?$orderMoney:0;
         }
         $shareUrl = Methods::wxCreateQrcode($uid,$shareCode);
-        Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare,'shareUrl'=>$shareUrl]);
+        Methods::jsonData(1,'success',['inviteCode'=>$shareCode,'myShare'=>$myShare,'shareUrl'=>$shareUrl,'member'=>$member]);
     }
     /**
      * 我的订单
