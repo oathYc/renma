@@ -13,6 +13,14 @@
     <form action="/content/product/category-img" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+                <td width="100">商品类型：</td>
+                <td>
+                    <select name="productType">
+                        <option value="1" <?php if(isset($_GET['productType']) && $_GET['productType'] ==1)echo 'selected';?>>维修</option>
+                        <option value="2" <?php if(isset($_GET['productType']) && $_GET['productType'] ==2)echo 'selected';?>>新车</option>
+                        <option value="3" <?php if(isset($_GET['productType']) && $_GET['productType'] ==3)echo 'selected';?>>二手车</option>
+                    </select>
+                </td>
                 <td width="100">分类图片：</td>
                 <td>
                     <select name="type">
