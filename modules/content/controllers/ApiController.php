@@ -1024,11 +1024,11 @@ class ApiController extends  Controller
             $serverFee = $oldFee;//需支付的服务费
         }
         $serFee = $serFee?$serFee:0;
-        if($serFee != $serverFee){
-            Methods::jsonData(0,'服务费有误');
-        }
+//        if($serFee != $serverFee){
+//            Methods::jsonData(0,'服务费有误');
+//        }
         //实际支付价格
-        $payPrice = $totalPrice - $reducePrice + $serFee;
+        $payPrice = $totalPrice - $reducePrice + $serverFee;
         if($payPrice <= 0){
             $payPrice = 0;
             $status = 1;//支付成功 不需调微信下单接口
@@ -1069,7 +1069,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->integral = $integral;
         $model->remark = $remark;
-        $model->serverFee = $serFee;
+        $model->serverFee = $serverFee;
         $model->oldFee = $oldFee;
         $res = $model->save();
         if($res){
@@ -1232,11 +1232,11 @@ class ApiController extends  Controller
         $reducePrice = $inteMoney+$couponMoney;
         //服务费判断
         $serFee = $serFee?$serFee:0;
-        if($serFee != $serverFee){
-            Methods::jsonData(0,'服务费有误');
-        }
+//        if($serFee != $serverFee){
+//            Methods::jsonData(0,'服务费有误');
+//        }
         //实际支付价格
-        $payPrice = $totalPrice - $reducePrice + $serFee;
+        $payPrice = $totalPrice - $reducePrice + $serverFee;
         if($payPrice <= 0){
             $payPrice = 0;
             $status = 1;//支付成功 不需调微信下单接口
@@ -1272,7 +1272,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->integral = $integral;
         $model->remark = $remark;
-        $model->serverFee = $serFee;
+        $model->serverFee = $serverFee;
         $model->oldFee = $oldFee;
         $model->productInfo = implode(',',$productInfo);
         $res = $model->save();
