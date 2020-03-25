@@ -67,6 +67,9 @@ class WeixinPayController extends  Controller{
             <openid>{$paramArr['openid']}</openid>
           </xml>";
         $return = Methods::post($url,$post_data);
+        $log = 'weixin-log-'.date('Y-m-d').'.txt';
+        Methods::varDumpLog($log,$return,'a');
+        Methods::varDumpLog($log,"\n",'a');
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
 //            $return['paySign'] = $sign;
