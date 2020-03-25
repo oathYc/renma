@@ -28,7 +28,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">团购商品ID</label>
                 <div class="controls">
-                    <input type="text" name="productId"  id="productId" value="<?php echo isset($data['productId'])?$data['productId']:'';?>" onkeyup="value = value.replace(/[^,0-9]/g,'')" placeholder="多个英文id逗号隔开"/>&nbsp;&nbsp;
+                    <input type="text" name="productId"  id="productId" value="<?php echo isset($data['productId'])?$data['productId']:'';?>" onkeyup="value = value.replace(/[^,0-9]/g,'')" placeholder="多个id英文逗号隔开"/>&nbsp;&nbsp;
                     <a href="#" class="btn btn-info" onclick="getProduct()">确认</a>
                 </div>
                 <div class="controls" id="productPrice">
