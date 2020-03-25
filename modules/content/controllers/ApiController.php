@@ -483,9 +483,9 @@ class ApiController extends  Controller
         self::areaCheck();
         $pid = Yii::$app->request->post('pid',0);
         if($pid){
-            $category = Category::find()->where("pid = $pid")->asArray()->all();
+            $category = Category::find()->where("pid = $pid")->orderBy('rank desc')->asArray()->all();
         }else{
-            $category = Category::find()->where("pid = 0")->asArray()->all();
+            $category = Category::find()->where("pid = 0")->orderBy('rank desc')->asArray()->all();
         }
         if(!$category)$category=[];
         Methods::jsonData(1,'success',$category);
@@ -2479,7 +2479,7 @@ class ApiController extends  Controller
      */
     public function actionProductAllCate(){
         self::areaCheck();
-        $pid = Category::find()->where("pid = 0")->asArray()->all();
+        $pid = Category::find()->where("pid = 0")->orderBy('rank desc')->asArray()->all();
         foreach($pid as $k => $v){
             $child = Category::find()->where("pid = {$v['id']}")->asArray()->all();
             $pid[$k]['child'] = $child;
