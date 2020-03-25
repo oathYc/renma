@@ -300,7 +300,8 @@ class WeixinPayController extends  Controller{
         $paramArr['appid'] = \Yii::$app->params['appId'];
         $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
         $paramArr['nonce_str'] = md5($orderNumber);//随机数
-        $paramArr['body'] = $orderData['productTitle'];//商品描述
+//        $paramArr['body'] = $orderData['productTitle'];//商品描述
+        $paramArr['body'] = '仁马商品购买';//商品描述
         $paramArr['out_trade_no'] = $orderNumber;//商户订单号
         $paramArr['total_fee'] = $orderData['payPrice']*100;;//总金额 金额处理 单位为分
         $paramArr['spbill_create_ip'] = $orderData['ip'];//终端ip
