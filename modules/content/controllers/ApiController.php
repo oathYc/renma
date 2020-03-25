@@ -3289,8 +3289,10 @@ class ApiController extends  Controller
         $type = Yii::$app->request->post('type',0);//状态 0-所有 2-接单中 3-已完成
         $page = Yii::$app->request->post('page',1);
         $where = "status = 1  and type = 2 and repairUid = $uid ";
-        if($type){
+        if($type == 2){
             $where .= " and typeStatus = $type";
+        }elseif($type == 3){
+            $where .= " and typeStatus > 2";
         }
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
