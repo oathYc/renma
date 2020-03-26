@@ -4117,8 +4117,15 @@ class ApiController extends  Controller
             if($createUid == $uid){
                 Methods::jsonData(0,'自己不能参加自己的组团');
             }
+            $status = UserGroup::find()->where(" id = $userGroupId")->asArray()->one()['status'];
+            if($status == 2){
+                $hadGroup = 1;
+            }else{
+                $hadGroup = 0;
+            }
         }else{
             $shareId = 0;//开团人记录id
+            $hadGroup = 0;//是否已经组团成功 0-否 1-是
         }
         //获取改组团活动下的组团商品数据
         $productIds = Group::find()->where("id = $groupId")->asArray()->one()['productIds'];
@@ -4146,7 +4153,7 @@ class ApiController extends  Controller
         $mileage = Search::find()->where("type = 2")->asArray()->all();//里程
         //使用性别
         $sexs = [['type'=>0,'name'=>'通用'],['type'=>1,'name'=>'男'],['type'=>2,'name'=>'女']];
-        $datas = ['brand'=>$brands,'voltage'=>$voltage,'mileage'=>$mileage,'sexs'=>$sexs,'product'=>$data,'shareId'=>$shareId];
+        $datas = ['brand'=>$brands,'voltage'=>$voltage,'mileage'=>$mileage,'sexs'=>$sexs,'product'=>$data,'shareId'=>$shareId,'hadGroup'=>$hadGroup];
         Methods::jsonData(1,'success',$datas);
     }
     /**
