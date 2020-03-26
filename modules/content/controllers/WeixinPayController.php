@@ -35,7 +35,8 @@ class WeixinPayController extends  Controller{
         $paramArr['appid'] = \Yii::$app->params['appId'];
         $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
         $paramArr['nonce_str'] = md5($orderNumber);//随机数
-        $paramArr['body'] = $productName;//商品描述
+//        $paramArr['body'] = substr($productName,0,126);//商品描述
+        $paramArr['body'] = '仁马商品购买';//商品描述
         $paramArr['out_trade_no'] = $orderNumber;//商户订单号
         $paramArr['total_fee'] = $amount*100;;//总金额 金额处理 单位为分
         $paramArr['spbill_create_ip'] = self::getIP();//终端ip
@@ -67,6 +68,9 @@ class WeixinPayController extends  Controller{
             <openid>{$paramArr['openid']}</openid>
           </xml>";
         $return = Methods::post($url,$post_data);
+        $log = 'weixin-log-'.date('Y-m-d').'.txt';
+        Methods::varDumpLog($log,$return,'a');
+        Methods::varDumpLog($log,"\n",'a');
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
 //            $return['paySign'] = $sign;
@@ -296,7 +300,8 @@ class WeixinPayController extends  Controller{
         $paramArr['appid'] = \Yii::$app->params['appId'];
         $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
         $paramArr['nonce_str'] = md5($orderNumber);//随机数
-        $paramArr['body'] = $orderData['productTitle'];//商品描述
+//        $paramArr['body'] = $orderData['productTitle'];//商品描述
+        $paramArr['body'] = '仁马商品购买';//商品描述
         $paramArr['out_trade_no'] = $orderNumber;//商户订单号
         $paramArr['total_fee'] = $orderData['payPrice']*100;;//总金额 金额处理 单位为分
         $paramArr['spbill_create_ip'] = $orderData['ip'];//终端ip

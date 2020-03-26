@@ -426,18 +426,23 @@ class ProductController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $type = Yii::$app->request->get('type',1);//1-全部 2-有 3-无
+        $productType = Yii::$app->request->get('productType',1);//1-维修 2-新车 3-二手车
+        $page = Yii::$app->request->get('page',1);
+        $where = " 1 = 1";
         if($type ==2){
-            $where = " !ISNULL(catImage) ";
+            $where .= "  and !ISNULL(pc.catImage) ";
         }elseif($type ==3){
-            $where = " ISNULL(catImage)";
+            $where .= " and ISNULL(pc.catImage)";
         }
-        $count = ProductCategory::find()->where($where)->count();
+        if($productType){
+            $where .= " and p.type = $productType";
+        }
+        $sql = " select pc.*,p.title from {{%product_category}} pc left join {{%product}} p on p.id = pc.productId where $where order by pc.createTime desc ";
+        $total = Yii::$app->db->createCommand($sql)->queryAll();
+        $count = count($total);
+        $sql .= " limit ".(10*($page-1)).',10';
         $page = new Pagination(['totalCount'=>$count]);
-        $data = ProductCategory::find()->where($where)->orderBy('createTime desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
-        foreach($data as $k => $v){
-            $product = Product::findOne($v['productId']);
-            $data[$k]['title'] = isset($product->title)?$product->title:'';
-        }
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
         return $this->render('category-img',['data'=>$data,'page'=>$page,'count'=>$count]);
 
     }

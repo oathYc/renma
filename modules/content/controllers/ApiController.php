@@ -483,9 +483,9 @@ class ApiController extends  Controller
         self::areaCheck();
         $pid = Yii::$app->request->post('pid',0);
         if($pid){
-            $category = Category::find()->where("pid = $pid")->asArray()->all();
+            $category = Category::find()->where("pid = $pid")->orderBy('rank desc')->asArray()->all();
         }else{
-            $category = Category::find()->where("pid = 0")->asArray()->all();
+            $category = Category::find()->where("pid = 0")->orderBy('rank desc')->asArray()->all();
         }
         if(!$category)$category=[];
         Methods::jsonData(1,'success',$category);
@@ -1024,11 +1024,11 @@ class ApiController extends  Controller
             $serverFee = $oldFee;//需支付的服务费
         }
         $serFee = $serFee?$serFee:0;
-        if($serFee != $serverFee){
-            Methods::jsonData(0,'服务费有误');
-        }
+//        if($serFee != $serverFee){
+//            Methods::jsonData(0,'服务费有误');
+//        }
         //实际支付价格
-        $payPrice = $totalPrice - $reducePrice + $serFee;
+        $payPrice = $totalPrice - $reducePrice + $serverFee;
         if($payPrice <= 0){
             $payPrice = 0;
             $status = 1;//支付成功 不需调微信下单接口
@@ -1069,7 +1069,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->integral = $integral;
         $model->remark = $remark;
-        $model->serverFee = $serFee;
+        $model->serverFee = $serverFee;
         $model->oldFee = $oldFee;
         $res = $model->save();
         if($res){
@@ -1232,11 +1232,11 @@ class ApiController extends  Controller
         $reducePrice = $inteMoney+$couponMoney;
         //服务费判断
         $serFee = $serFee?$serFee:0;
-        if($serFee != $serverFee){
-            Methods::jsonData(0,'服务费有误');
-        }
+//        if($serFee != $serverFee){
+//            Methods::jsonData(0,'服务费有误');
+//        }
         //实际支付价格
-        $payPrice = $totalPrice - $reducePrice + $serFee;
+        $payPrice = $totalPrice - $reducePrice + $serverFee;
         if($payPrice <= 0){
             $payPrice = 0;
             $status = 1;//支付成功 不需调微信下单接口
@@ -1272,7 +1272,7 @@ class ApiController extends  Controller
         $model->address = $address;
         $model->integral = $integral;
         $model->remark = $remark;
-        $model->serverFee = $serFee;
+        $model->serverFee = $serverFee;
         $model->oldFee = $oldFee;
         $model->productInfo = implode(',',$productInfo);
         $res = $model->save();
@@ -2479,7 +2479,7 @@ class ApiController extends  Controller
      */
     public function actionProductAllCate(){
         self::areaCheck();
-        $pid = Category::find()->where("pid = 0")->asArray()->all();
+        $pid = Category::find()->where("pid = 0")->orderBy('rank desc')->asArray()->all();
         foreach($pid as $k => $v){
             $child = Category::find()->where("pid = {$v['id']}")->asArray()->all();
             $pid[$k]['child'] = $child;
@@ -3289,8 +3289,10 @@ class ApiController extends  Controller
         $type = Yii::$app->request->post('type',0);//状态 0-所有 2-接单中 3-已完成
         $page = Yii::$app->request->post('page',1);
         $where = "status = 1  and type = 2 and repairUid = $uid ";
-        if($type){
+        if($type == 2){
             $where .= " and typeStatus = $type";
+        }elseif($type == 3){
+            $where .= " and typeStatus > 2";
         }
         if(!$uid){
             Methods::jsonData(0,'用户id不存在');
@@ -4115,8 +4117,15 @@ class ApiController extends  Controller
             if($createUid == $uid){
                 Methods::jsonData(0,'自己不能参加自己的组团');
             }
+            $status = UserGroup::find()->where(" id = $userGroupId")->asArray()->one()['status'];
+            if($status == 2){
+                $hadGroup = 1;
+            }else{
+                $hadGroup = 0;
+            }
         }else{
             $shareId = 0;//开团人记录id
+            $hadGroup = 0;//是否已经组团成功 0-否 1-是
         }
         //获取改组团活动下的组团商品数据
         $productIds = Group::find()->where("id = $groupId")->asArray()->one()['productIds'];
@@ -4144,7 +4153,7 @@ class ApiController extends  Controller
         $mileage = Search::find()->where("type = 2")->asArray()->all();//里程
         //使用性别
         $sexs = [['type'=>0,'name'=>'通用'],['type'=>1,'name'=>'男'],['type'=>2,'name'=>'女']];
-        $datas = ['brand'=>$brands,'voltage'=>$voltage,'mileage'=>$mileage,'sexs'=>$sexs,'product'=>$data,'shareId'=>$shareId];
+        $datas = ['brand'=>$brands,'voltage'=>$voltage,'mileage'=>$mileage,'sexs'=>$sexs,'product'=>$data,'shareId'=>$shareId,'hadGroup'=>$hadGroup];
         Methods::jsonData(1,'success',$datas);
     }
     /**
