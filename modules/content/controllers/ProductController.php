@@ -153,7 +153,7 @@ class ProductController  extends AdminController
                     $submit['headMsg'] = $domain.$submit['headMsg'];
                 }
             }
-            if(isset($submit['video'])){
+            if(isset($submit['video']) && $submit['video'] ){
                 if(!preg_match("/http/",$submit['video'])){
                     $submit['video'] = $domain.$submit['video'];
                 }
@@ -197,7 +197,7 @@ class ProductController  extends AdminController
             $model->zhibao = $submit['zhibao'];
             $model->remark = $submit['remark'];
             $model->phone = $submit['phone'];
-            $model->video = $submit['video'];
+            $model->video = isset($submit['video'])?$submit['video']:'';
             $res = $model->save();
             if($res){
                 $priceCat = isset($submit['priceCat'])?$submit['priceCat']:[];
