@@ -4143,7 +4143,8 @@ class ApiController extends  Controller
 //                        $groupPrice[$t]['catPrice'] = $catPrice['price'];
 //                        $groupPrice[$t]['number'] = $catPrice['number'];
 //                    }
-                    $data[] = ['productId'=>$v,'title'=>$product['title'],'brand'=>$product['brand'],'headImage'=>$product['headMsg'],'price'=>$product['price']];
+                    $price = GroupPrice::find()->where(" groupId = $groupId and productId = $v")->asArray()->one()['headPrice'];
+                    $data[] = ['productId'=>$v,'title'=>$product['title'],'brand'=>$product['brand'],'headImage'=>$product['headMsg'],'price'=>$price];
                 }
             }
         }
@@ -4209,6 +4210,10 @@ class ApiController extends  Controller
         }else{
             $where .= " and id in ($productIds)";
             $data = Product::find()->select("id as productId,title,headMsg,brand,price")->where($where)->orderBy($order)->asArray()->all();
+            foreach($data as $k => $v){
+                $price = GroupPrice::find()->where(" groupId = $groupId and productId = {$v['productId']}")->asArray()->one()['headPrice'];
+                $data[$k]['price'] = $price;
+            }
         }
         //获取品牌 1-电压 2-续航 3-品牌
         $brands = Search::find()->where("type = 3")->asArray()->all();//品牌
@@ -4288,6 +4293,9 @@ class ApiController extends  Controller
         $hadbuy = Order::find()->where("status = 1 and typeStatus = 5 and productId = $productId ")->count();
         $hadbuy = $hadbuy?$hadbuy:0;
         $product['groupPriceData'] = $groupPrice;
+        //组团商品封面价格
+        $price = GroupPrice::find()->where(" groupId = $groupId and productId = {$productId}")->asArray()->one()['headPrice'];
+        $product['price'] = $price;
         $data = ['member'=>$member,'userIntegral'=>$userIntegral,'product'=>$product,'userAddress'=>$userAddress,'comment'=>$comment,'hadbuy'=>$hadbuy];
         Methods::jsonData(1,'success',$data);
     }

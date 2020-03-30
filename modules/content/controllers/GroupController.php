@@ -181,16 +181,17 @@ class GroupController  extends AdminController
         $data = Group::find()->asArray()->orderBy('rank desc')->offset($page->offset)->limit($page->limit)->all();
         foreach($data as $k => $v){
             $id = $v['id'];
-            $sql = "select pc.*,gp.groupId,gp.groupPrice from {{%group_price}} gp left join {{%product_category}} pc on pc.id = gp.catPriceId where gp.groupId = $id order by pc.number asc";
+            $sql = "select pc.*,gp.groupId,gp.groupPrice,gp.headPrice from {{%group_price}} gp left join {{%product_category}} pc on pc.id = gp.catPriceId where gp.groupId = $id order by pc.number asc";
             $catData = Yii::$app->db->createCommand($sql)->queryAll();
             $priceData = [];
+//            var_dump($catData);die;
             foreach($catData as $t => $y){
                 $productId = $y['productId'];
                 $product = Product::findOne($productId);
                 if(!isset($priceData[$productId])){
                     $priceData[$productId] = $product->title.'（'.$product->brand.'）<br>';
                 }
-                $priceData[$productId] .= $y['cateDesc']."：原价".$y['price'].'元 组团价：'.$y['groupPrice'].' 库存：'.$y['number'].'<br>';
+                $priceData[$productId] .= $y['cateDesc']."：封面价 ".$y['headPrice'].'元 组团价：'.$y['groupPrice'].' 库存：'.$y['number'].'<br>';
 
             }
             $priceData = implode('<br/>',$priceData);
@@ -244,6 +245,7 @@ class GroupController  extends AdminController
                     $proId = isset($arr[0])?$arr[0]:0;
                     $catPriceId = isset($arr[1])?$arr[1]:0;
                     $groupPrice = isset($arr[2])?$arr[2]:0;
+                    $headPrice = isset($arr[3])?$arr[3]:0;
 ////                    $catImage = isset($arr[3])?$arr[3]:'';
 //                    if(!preg_match("/http/",$catImage)){
 //                        $domain = Yii::$app->params['domain'];
@@ -254,7 +256,7 @@ class GroupController  extends AdminController
                     $model->productId = $proId;
                     $model->catPriceId = $catPriceId;
                     $model->groupPrice = $groupPrice?$groupPrice:0;
-//                    $model->catImage = $catImage;
+                    $model->headPrice = $headPrice;
                     $model->createTime = time();
                     $model->save();
                 }
