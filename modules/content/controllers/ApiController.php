@@ -4672,4 +4672,17 @@ class ApiController extends  Controller
         $userGroup['orderData'] = $order;
         Methods::jsonData(1,'success',$userGroup);
     }
+
+
+    public function actionRedisTest(){
+        $redis = new \Redis();
+        $redis->connect("127.0.0.1",6379);
+        $val = $redis->get('oathYc');
+        if($val){
+            echo 'had';
+        }else{
+            $redis->set('oathYc','yuchao',10);
+            echo 'no';
+        }
+    }
 }
